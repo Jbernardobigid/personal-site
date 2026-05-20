@@ -15,7 +15,7 @@ html { scroll-behavior: smooth; font-size: 16px; }
 
 /* ── Variables ──────────────────────────────────────────── */
 :root {
-  --black:       #000000;
+  --black:       #1e1a14;
   --terra:       #5e412d;
   --night:       #1c314a;
   --ash:         #d9d9d9;
@@ -389,6 +389,12 @@ nav.scrolled {
   flex-direction: column;
   justify-content: center;
 }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
 .about-heading {
   font-family: var(--font-display);
   font-size: clamp(36px, 4vw, 60px);
@@ -409,10 +415,32 @@ nav.scrolled {
   font-size: 17px;
   line-height: 1.82;
   color: var(--mid);
-  max-width: 500px;
 }
 .about-body p + p { margin-top: 20px; }
 .about-body strong { color: var(--white); font-weight: 600; }
+.about-facts {
+  padding-top: 8px;
+  border-left: 1px solid var(--border);
+  padding-left: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.about-fact dt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--terra-light);
+  margin-bottom: 6px;
+}
+.about-fact dd {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ash);
+  margin: 0;
+}
 
 /* ── Career ─────────────────────────────────────────────── */
 #carreira {
@@ -456,13 +484,24 @@ nav.scrolled {
   gap: 32px;
   padding: 36px 0;
   border-bottom: 1px solid var(--border);
-  transition: background 0.25s ease;
+  transition: background 0.3s ease, padding-left 0.3s ease;
+  position: relative;
   cursor: default;
 }
+.career-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: var(--terra-light);
+  transition: width 0.35s cubic-bezier(.25,.46,.45,.94);
+}
 .career-row:hover {
-  background: rgba(94,65,45,0.06);
-  padding-left: 12px;
-  padding-right: 12px;
+  background: rgba(94,65,45,0.08);
+  padding-left: 16px;
+}
+.career-row:hover::before {
+  width: 3px;
 }
 .career-num {
   font-family: var(--font-mono);
@@ -479,7 +518,9 @@ nav.scrolled {
   letter-spacing: -0.02em;
   line-height: 1.15;
   margin-bottom: 6px;
+  transition: color 0.3s ease;
 }
+.career-row:hover .career-role { color: var(--terra-light); }
 .career-company {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -501,6 +542,40 @@ nav.scrolled {
   white-space: nowrap;
   padding-top: 6px;
   letter-spacing: 0.06em;
+}
+
+/* ── Marquee strip ──────────────────────────────────────── */
+.marquee-strip {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  padding: 14px 0;
+  background: rgba(94,65,45,0.06);
+}
+.marquee-track {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  animation: marquee-scroll 28s linear infinite;
+  width: max-content;
+}
+.marquee-item {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terra-light);
+  padding: 0 28px;
+  flex-shrink: 0;
+}
+.marquee-item.sep {
+  color: var(--terra);
+  opacity: 0.4;
+  padding: 0;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 /* ── Work / Projetos ────────────────────────────────────── */
@@ -973,6 +1048,9 @@ footer {
   .about-photo { min-height: 60vw; }
   .about-photo::after { display: none; }
   .about-content { padding: 60px 28px; }
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .about-facts { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 28px; flex-direction: row; flex-wrap: wrap; gap: 20px; }
+  .about-fact { min-width: 140px; }
 
   #carreira { padding: 80px 28px; }
   .career-top { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
@@ -1078,24 +1156,46 @@ footer {
   </div>
   <div class="about-content">
     <div class="section-num gsap-hidden">— 01</div>
-    <h2 class="about-heading gsap-hidden">
-      Construindo<br>
-      o que o mundo<br>
-      ainda não sabia<br>
-      que <em>precisava.</em>
-    </h2>
-    <div class="about-body gsap-hidden">
-      <p>
-        Por mais de uma década, venho criando negócios na interseção entre
-        <strong>estética radical e visão de negócios.</strong> Cada projeto parte
-        de uma convicção clara: belas ideias merecem existir no mundo com
-        excelência e propósito.
-      </p>
-      <p>
-        Falo inglês, espanhol e português — e navego com a mesma fluência entre
-        culturas, mercados e disciplinas. Do conceito ao lançamento, do movimento
-        ao produto.
-      </p>
+    <div class="about-grid">
+      <div class="about-main">
+        <h2 class="about-heading gsap-hidden">
+          Construindo<br>
+          o que o mundo<br>
+          ainda não sabia<br>
+          que <em>precisava.</em>
+        </h2>
+        <div class="about-body gsap-hidden">
+          <p>
+            Por mais de uma década, venho criando negócios na interseção entre
+            <strong>estética radical e visão de negócios.</strong> Cada projeto parte
+            de uma convicção clara: belas ideias merecem existir no mundo com
+            excelência e propósito.
+          </p>
+          <p>
+            Falo inglês, espanhol e português — e navego com a mesma fluência entre
+            culturas, mercados e disciplinas. Do conceito ao lançamento, do movimento
+            ao produto.
+          </p>
+        </div>
+      </div>
+      <dl class="about-facts gsap-hidden">
+        <div class="about-fact">
+          <dt>Cargo atual</dt>
+          <dd>Sr. Technical Trainer<br>BigID</dd>
+        </div>
+        <div class="about-fact">
+          <dt>Especialidade</dt>
+          <dd>Data Security<br>AI Governance · Privacy</dd>
+        </div>
+        <div class="about-fact">
+          <dt>Fundador</dt>
+          <dd>DePretoPraPreto<br>afterALL</dd>
+        </div>
+        <div class="about-fact">
+          <dt>Formação</dt>
+          <dd>MBA · FGV<br>MIT AI/ML · Instituto Infnet</dd>
+        </div>
+      </dl>
     </div>
   </div>
 </section>
@@ -1133,20 +1233,6 @@ footer {
     <div class="career-row gsap-hidden">
       <span class="career-num">02</span>
       <div class="career-body">
-        <div class="career-company">De Preto Pra Preto</div>
-        <div class="career-role">Fundador</div>
-        <div class="career-desc">
-          Fundei uma marca e movimento social que une consciência racial, representatividade
-          e empoderamento no mundo do ciclismo. Direção criativa, estratégia de marca e
-          comunidade — usando o esporte como plataforma para empreendedorismo negro.
-        </div>
-      </div>
-      <span class="career-period">2022 — atual</span>
-    </div>
-
-    <div class="career-row gsap-hidden">
-      <span class="career-num">03</span>
-      <div class="career-body">
         <div class="career-company">BigID</div>
         <div class="career-role">Senior Delivery Services Engineer</div>
         <div class="career-desc">
@@ -1159,7 +1245,7 @@ footer {
     </div>
 
     <div class="career-row gsap-hidden">
-      <span class="career-num">04</span>
+      <span class="career-num">03</span>
       <div class="career-body">
         <div class="career-company">Forcepoint</div>
         <div class="career-role">Client Solutions Manager & Senior Cyber Engineer, LATAM</div>
@@ -1173,7 +1259,7 @@ footer {
     </div>
 
     <div class="career-row gsap-hidden">
-      <span class="career-num">05</span>
+      <span class="career-num">04</span>
       <div class="career-body">
         <div class="career-company">Symantec</div>
         <div class="career-role">DLP Technical Account Manager → Principal TAM</div>
@@ -1188,6 +1274,32 @@ footer {
   </div>
 </section>
 
+<!-- ── Marquee strip ─────────────────────────────────────── -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Data Security</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">AI Governance</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Privacy Engineering</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">DePretoPraPreto</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Cycling Culture</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Racial Equity</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">BigID</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Forcepoint</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Symantec</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Empreendedorismo Negro</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Data Security</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">AI Governance</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Privacy Engineering</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">DePretoPraPreto</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Cycling Culture</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Racial Equity</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">BigID</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Forcepoint</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Symantec</span><span class="marquee-item sep">·</span>
+    <span class="marquee-item">Empreendedorismo Negro</span><span class="marquee-item sep">·</span>
+  </div>
+</div>
+
 <!-- ── Projetos ──────────────────────────────────────────── -->
 <section id="projetos">
   <div class="section-num gsap-hidden">— 03</div>
@@ -1198,7 +1310,7 @@ footer {
   <div class="work-list">
     <a href="https://www.depretoprapreto.com.br/" target="_blank" rel="noopener" class="work-item gsap-hidden">
       <span class="work-num">01</span>
-      <span class="work-name">De Preto Pra Preto</span>
+      <span class="work-name">DePretoPraPreto</span>
       <span class="work-cat">Brand · Ciclismo</span>
       <span class="work-year">2022</span>
       <span class="work-arrow">↗</span>
@@ -1231,7 +1343,7 @@ footer {
       <em>É um movimento.</em>
     </h3>
     <p class="dppp-body gsap-hidden">
-      De Preto Pra Preto nasce da certeza de que Beleza Negra, excelência
+      DePretoPraPreto nasce da certeza de que Beleza Negra, excelência
       e ciclismo caminham juntos — e sempre caminharam. Cada peça carrega
       identidade, resistência e propósito. Feita para quem pedala com
       intenção.
@@ -1245,10 +1357,10 @@ footer {
       <img src="images/dppp-main.jpg" alt="De Preto Pra Preto — Resistência">
     </div>
     <div class="dppp-photo-sm">
-      <img src="images/dppp-1.jpg" alt="De Preto Pra Preto">
+      <img src="images/feira-1.jpg" alt="DePretoPraPreto — Feira Preta 2022">
     </div>
     <div class="dppp-photo-sm">
-      <img src="images/dppp-2.jpg" alt="De Preto Pra Preto — Resistência">
+      <img src="images/feira-2.jpg" alt="DePretoPraPreto — Coleção jerseys">
     </div>
   </div>
 </section>
@@ -1467,12 +1579,17 @@ gsap.to('.hero-right img', {
   scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
 });
 
-/* ── About photo reveal ─────────────────────────────────── */
+/* ── About photo reveal + parallax ─────────────────────── */
 gsap.fromTo('.about-photo img',
   { scale: 1.06 },
   { scale: 1, duration: 1.4, ease: 'power2.out',
     scrollTrigger: { trigger: '#sobre', start: 'top 80%', once: true }
   });
+gsap.to('.about-photo img', {
+  yPercent: -7,
+  ease: 'none',
+  scrollTrigger: { trigger: '#sobre', start: 'top bottom', end: 'bottom top', scrub: 1 },
+});
 
 /* ── Generic scroll reveals ─────────────────────────────── */
 gsap.utils.toArray('.gsap-hidden').forEach((el, i) => {
