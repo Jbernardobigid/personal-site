@@ -1348,6 +1348,15 @@ footer {
   .contato-grid { grid-template-columns: 1fr; gap: 64px; }
 
   footer { padding: 24px 28px; flex-direction: column; gap: 10px; text-align: center; }
+
+  #photoViewerClose {
+    top: 20px; right: 20px;
+    padding: 14px 20px;
+    font-size: 13px;
+    min-width: 44px; min-height: 44px;
+  }
+  #photoViewerNav { bottom: 32px; gap: 16px; }
+  .pv-dot { width: 8px; height: 8px; padding: 10px; box-sizing: content-box; }
 }
 
 @media (max-width: 480px) {
@@ -2112,6 +2121,13 @@ function updateNav(activeId) {
     if (e.key === 'ArrowRight') showPhoto(currentIdx + 1);
     if (e.key === 'ArrowLeft')  showPhoto(currentIdx - 1);
   });
+
+  let pvTouchX = 0;
+  viewer.addEventListener('touchstart', e => { pvTouchX = e.touches[0].clientX; }, { passive: true });
+  viewer.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - pvTouchX;
+    if (Math.abs(dx) > 50) dx < 0 ? showPhoto(currentIdx + 1) : showPhoto(currentIdx - 1);
+  }, { passive: true });
 })();
 </script>
 
