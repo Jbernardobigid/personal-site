@@ -798,6 +798,162 @@ nav.scrolled {
   pointer-events: none;
 }
 
+/* ── Ciclismo ────────────────────────────────────────────── */
+#ciclismo {
+  border-top: 1px solid var(--border);
+}
+.cycling-hero-wrap {
+  position: relative;
+  height: 88vh;
+  overflow: hidden;
+}
+.cycling-hero-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+}
+.cycling-hero-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, var(--black) 0%, transparent 22%, transparent 52%, var(--black) 100%),
+    linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cycling-hero-text {
+  position: absolute;
+  bottom: 72px;
+  left: 72px;
+  z-index: 2;
+}
+.cycling-main-heading {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 9vw, 144px);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.042em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 14px 0 0;
+}
+.cycling-main-heading em {
+  font-weight: 300;
+  font-style: italic;
+  text-transform: none;
+  color: var(--terra-light);
+}
+.cycling-content {
+  padding: 80px 72px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+.cycling-narrative p {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.85;
+  color: var(--mid);
+  margin-bottom: 24px;
+}
+.cycling-narrative p:first-child {
+  font-size: 20px;
+  color: var(--ash);
+  font-weight: 500;
+}
+.cycling-narrative p strong { color: var(--white); }
+.cycling-org-card {
+  background: rgba(94,65,45,0.1);
+  border: 1px solid var(--border-terra);
+  border-left: 3px solid var(--terra-light);
+  padding: 36px 40px;
+  margin-top: 4px;
+}
+.org-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--terra-light);
+  margin-bottom: 10px;
+}
+.org-name {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 18px;
+}
+.org-desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.78;
+  color: var(--mid);
+  margin-bottom: 24px;
+}
+.org-link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--terra-light);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.org-link:hover { color: var(--white); }
+.cycling-mosaic {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 460px 360px 440px;
+  gap: 3px;
+}
+.cycling-mosaic-item {
+  overflow: hidden;
+  position: relative;
+}
+.cycling-mosaic-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s cubic-bezier(.25,.46,.45,.94);
+}
+.cycling-mosaic-item:hover img { transform: scale(1.06); }
+.cm-1 { grid-column: 1;     grid-row: 1; }
+.cm-2 { grid-column: 2 / 4; grid-row: 1; }
+.cm-3 { grid-column: 1 / 3; grid-row: 2; }
+.cm-4 { grid-column: 3;     grid-row: 2; }
+.cm-5 { grid-column: 1;     grid-row: 3; }
+.cm-6 { grid-column: 2 / 4; grid-row: 3; }
+.cycling-quote {
+  padding: 88px 72px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.cycling-quote p {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 60px);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: -0.025em;
+  color: var(--ash);
+  margin-bottom: 20px;
+  max-width: 900px;
+}
+.cycling-quote cite {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--terra-light);
+  font-style: normal;
+}
+
 /* ── Stats ──────────────────────────────────────────────── */
 #stats {
   background: var(--night);
@@ -1067,6 +1223,19 @@ footer {
   #dppp { grid-template-columns: 1fr; }
   .dppp-content { padding: 60px 28px; }
   .dppp-photos { min-height: 80vw; grid-template-rows: 1fr 1fr; }
+
+  .cycling-hero-wrap { height: 70svh; }
+  .cycling-hero-text { bottom: 40px; left: 28px; }
+  .cycling-main-heading { font-size: clamp(52px, 13vw, 88px); }
+  .cycling-content { padding: 60px 28px; grid-template-columns: 1fr; gap: 44px; }
+  .cycling-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 280px 220px 280px; }
+  .cm-1 { grid-column: 1; grid-row: 1; }
+  .cm-2 { grid-column: 2; grid-row: 1; }
+  .cm-3 { grid-column: 1; grid-row: 2; }
+  .cm-4 { grid-column: 2; grid-row: 2; }
+  .cm-5 { grid-column: 1; grid-row: 3; }
+  .cm-6 { grid-column: 2; grid-row: 3; }
+  .cycling-quote { padding: 60px 28px; }
 
   #stats { grid-template-columns: 1fr; padding: 60px 28px; gap: 0; }
   .stat-item {
@@ -1362,6 +1531,62 @@ footer {
     <div class="dppp-photo-sm">
       <img src="images/feira-2.jpg" alt="DePretoPraPreto — Coleção jerseys">
     </div>
+  </div>
+</section>
+
+<!-- ── Ciclismo ──────────────────────────────────────────── -->
+<section id="ciclismo">
+  <div class="cycling-hero-wrap">
+    <img src="images/cycling-hero.jpg" alt="Jorge Bernardo — ciclista em pista">
+    <div class="cycling-hero-text">
+      <div class="section-num gsap-hidden">— 05</div>
+      <h2 class="cycling-main-heading gsap-hidden">
+        A velocidade<br>tem <em>cor.</em>
+      </h2>
+    </div>
+  </div>
+
+  <div class="cycling-content">
+    <div class="cycling-narrative gsap-hidden">
+      <p>Para mim, ciclismo nunca foi só um esporte. É onde aprendo a disciplina que sustenta tudo o que construo — na tecnologia, nos negócios, na vida.</p>
+      <p>É também onde descubro que o meu corpo — num esporte historicamente embranquecido — é um ato de presença por si só. Cada pedalada é uma declaração. Cada jersey carrega um símbolo. Cada quilômetro percorrido é território conquistado.</p>
+      <p>O ciclismo africano cresce e ganha voz global. Iniciativas como a <strong>Team Africa Rising</strong> levam formação profissional para Uganda, Ruanda e Eritreia desde 2007 — provando que o esporte pertence a todos. No Brasil, eu quero fazer o mesmo: de preto, pra preto.</p>
+      <p>A bicicleta me ensinou que resistência não é apenas física. É identidade. É estratégia. É o que liga o atleta ao ativista.</p>
+    </div>
+    <div class="gsap-hidden">
+      <div class="cycling-org-card">
+        <div class="org-label">Iniciativa Global</div>
+        <div class="org-name">Team Africa Rising</div>
+        <p class="org-desc">Desde 2007, desenvolvendo o ciclismo profissional em todo o continente africano — conectando jovens talentos com o UCI World Cycling Center, formando treinadores e mecânicos, e construindo uma voz africana no esporte mundial. Presentes em mais de 60.000 seguidores e cobertura no NYT, BBC e The Guardian.</p>
+        <a href="https://teamafricarising.org/" target="_blank" rel="noopener" class="org-link">teamafricarising.org ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cycling-mosaic">
+    <div class="cycling-mosaic-item cm-1 gsap-hidden">
+      <img src="images/cycling-1.jpg" alt="Jorge Bernardo — ciclista, jersey azul">
+    </div>
+    <div class="cycling-mosaic-item cm-2 gsap-hidden">
+      <img src="images/cycling-2.jpg" alt="Jorge Bernardo — estrada aberta, jersey laranja">
+    </div>
+    <div class="cycling-mosaic-item cm-3 gsap-hidden">
+      <img src="images/cycling-3.jpg" alt="Jorge Bernardo — velocidade, jersey branco">
+    </div>
+    <div class="cycling-mosaic-item cm-4 gsap-hidden">
+      <img src="images/cycling-4.jpg" alt="Jorge Bernardo — posição aerodinâmica, jersey branco">
+    </div>
+    <div class="cycling-mosaic-item cm-5 gsap-hidden">
+      <img src="images/cycling-5.jpg" alt="Jorge Bernardo — gravel, sorrindo">
+    </div>
+    <div class="cycling-mosaic-item cm-6 gsap-hidden">
+      <img src="images/cycling-6.jpg" alt="Jorge Bernardo — estrada de terra, jersey laranja">
+    </div>
+  </div>
+
+  <div class="cycling-quote gsap-hidden">
+    <p>"Pedalar é um ato político."</p>
+    <cite>— Jorge Bernardo</cite>
   </div>
 </section>
 
@@ -1667,6 +1892,32 @@ gsap.utils.toArray('#stats .stat-item').forEach((item, i) => {
 gsap.utils.toArray('.dppp-photos img').forEach(img => {
   gsap.to(img, {
     yPercent: -8,
+    ease: 'none',
+    scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: 1 },
+  });
+});
+
+/* ── Cycling hero parallax ──────────────────────────────── */
+gsap.to('.cycling-hero-wrap img', {
+  yPercent: 12,
+  ease: 'none',
+  scrollTrigger: { trigger: '#ciclismo', start: 'top top', end: 'center top', scrub: true },
+});
+
+/* ── Cycling mosaic stagger ─────────────────────────────── */
+gsap.utils.toArray('.cycling-mosaic-item').forEach((item, i) => {
+  gsap.fromTo(item,
+    { scale: 1.06, opacity: 0 },
+    { scale: 1, opacity: 1, duration: 1.1, ease: 'power2.out',
+      scrollTrigger: { trigger: item, start: 'top 88%', once: true },
+      delay: (i % 3) * 0.1,
+    });
+});
+
+/* ── Cycling mosaic parallax ─────────────────────────────── */
+gsap.utils.toArray('.cycling-mosaic-item img').forEach(img => {
+  gsap.to(img, {
+    yPercent: -6,
     ease: 'none',
     scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: 1 },
   });
