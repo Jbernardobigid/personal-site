@@ -1,4 +1,7 @@
 temporary screenshots/
+node_modules/
 *.mp4
 brand_assets/
 mohamedshehata.net_.png
+precificacao.md
+.claude/
