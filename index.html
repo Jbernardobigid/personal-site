@@ -248,7 +248,7 @@ nav.scrolled {
 }
 .hero-intro {
   font-family: var(--font-body);
-  font-size: clamp(20px, 2vw, 28px);
+  font-size: clamp(22px, 2.2vw, 30px);
   font-weight: 400;
   line-height: 1.72;
   color: var(--ash);
@@ -384,19 +384,19 @@ nav.scrolled {
   pointer-events: none;
 }
 .about-content {
-  padding: 100px 72px 100px 64px;
+  padding: 72px 60px 72px 52px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 .about-heading {
   font-family: var(--font-display);
-  font-size: clamp(32px, 3.5vw, 52px);
+  font-size: clamp(36px, 4vw, 60px);
   font-weight: 900;
   letter-spacing: -0.032em;
   line-height: 1.05;
   text-transform: uppercase;
-  margin-bottom: 36px;
+  margin-bottom: 32px;
   overflow: hidden;
 }
 .about-heading em {
@@ -406,24 +406,24 @@ nav.scrolled {
   color: var(--terra-light);
 }
 .about-body {
-  font-size: 15px;
-  line-height: 1.85;
+  font-size: 17px;
+  line-height: 1.82;
   color: var(--mid);
-  max-width: 480px;
+  max-width: 500px;
 }
-.about-body p + p { margin-top: 18px; }
+.about-body p + p { margin-top: 20px; }
 .about-body strong { color: var(--white); font-weight: 600; }
 
 /* ── Career ─────────────────────────────────────────────── */
 #carreira {
-  padding: 120px 72px;
+  padding: 88px 60px;
   border-top: 1px solid var(--border);
 }
 .career-top {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
   align-items: end;
 }
 .career-heading {
@@ -441,8 +441,8 @@ nav.scrolled {
   color: var(--terra-light);
 }
 .career-intro {
-  font-size: 15px;
-  line-height: 1.8;
+  font-size: 17px;
+  line-height: 1.78;
   color: var(--mid);
   padding-bottom: 8px;
 }
@@ -474,7 +474,7 @@ nav.scrolled {
 .career-body { flex: 1; }
 .career-role {
   font-family: var(--font-display);
-  font-size: clamp(20px, 2vw, 28px);
+  font-size: clamp(22px, 2.2vw, 32px);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
@@ -489,10 +489,10 @@ nav.scrolled {
   margin-bottom: 10px;
 }
 .career-desc {
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 16px;
+  line-height: 1.75;
   color: var(--mid);
-  max-width: 520px;
+  max-width: 560px;
 }
 .career-period {
   font-family: var(--font-mono);
@@ -505,7 +505,7 @@ nav.scrolled {
 
 /* ── Work / Projetos ────────────────────────────────────── */
 #projetos {
-  padding: 120px 72px;
+  padding: 88px 60px;
   border-top: 1px solid var(--border);
 }
 .projetos-heading {
@@ -586,7 +586,7 @@ nav.scrolled {
 
 /* ── Statement ──────────────────────────────────────────── */
 #statement {
-  padding: 160px 72px;
+  padding: 100px 60px;
   border-top: 1px solid var(--border);
   position: relative;
   overflow: hidden;
@@ -637,7 +637,7 @@ nav.scrolled {
   min-height: 80vh;
 }
 .dppp-content {
-  padding: 100px 56px 100px 72px;
+  padding: 72px 48px 72px 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -726,7 +726,7 @@ nav.scrolled {
 /* ── Stats ──────────────────────────────────────────────── */
 #stats {
   background: var(--night);
-  padding: 100px 72px;
+  padding: 80px 60px;
   border-top: 1px solid rgba(28,49,74,0.5);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -760,7 +760,7 @@ nav.scrolled {
 
 /* ── Contact ────────────────────────────────────────────── */
 #contato {
-  padding: 120px 72px 100px;
+  padding: 88px 60px 80px;
   border-top: 1px solid var(--border);
 }
 .contato-heading {
@@ -1109,9 +1109,9 @@ footer {
       <em>Muitas<br>frentes.</em>
     </h2>
     <p class="career-intro gsap-hidden">
-      Fundei marcas que desafiam o que é possível — cada uma com uma missão
-      própria, todas conectadas por um fio condutor: resistência, excelência
-      e beleza com propósito.
+      Mais de 15 anos construindo expertise em segurança de dados, governança por IA
+      e formação técnica global — em empresas como Symantec, Forcepoint e BigID —
+      e fundando iniciativas que transformam espaços.
     </p>
   </div>
 
@@ -1119,56 +1119,71 @@ footer {
     <div class="career-row gsap-hidden">
       <span class="career-num">01</span>
       <div class="career-body">
-        <div class="career-company">De Preto Pra Preto</div>
-        <div class="career-role">Fundador & Diretor Criativo</div>
+        <div class="career-company">BigID</div>
+        <div class="career-role">Sr. Technical Trainer</div>
         <div class="career-desc">
-          Criei uma marca de ciclismo afrofuturista que une Beleza Negra, resistência
-          e performance. Mais do que jerseys — é uma declaração de identidade que
-          redefine quem pertence ao esporte.
+          Projeto e lidero experiências de aprendizado globais para engenheiros, arquitetos
+          e profissionais de privacidade em LATAM, América do Norte, Europa e APAC —
+          traduzindo segurança de dados e governança por IA em treinamentos práticos de alto impacto.
+        </div>
+      </div>
+      <span class="career-period">2024 — atual</span>
+    </div>
+
+    <div class="career-row gsap-hidden">
+      <span class="career-num">02</span>
+      <div class="career-body">
+        <div class="career-company">De Preto Pra Preto</div>
+        <div class="career-role">Fundador</div>
+        <div class="career-desc">
+          Fundei uma marca e movimento social que une consciência racial, representatividade
+          e empoderamento no mundo do ciclismo. Direção criativa, estratégia de marca e
+          comunidade — usando o esporte como plataforma para empreendedorismo negro.
         </div>
       </div>
       <span class="career-period">2022 — atual</span>
     </div>
 
     <div class="career-row gsap-hidden">
-      <span class="career-num">02</span>
-      <div class="career-body">
-        <div class="career-company">afterALL</div>
-        <div class="career-role">Fundador</div>
-        <div class="career-desc">
-          Plataforma de bem-estar construída para ir além das superfícies —
-          saúde com intenção, profundidade e design que respeita quem a usa.
-        </div>
-      </div>
-      <span class="career-period">2023 — atual</span>
-    </div>
-
-    <div class="career-row gsap-hidden">
       <span class="career-num">03</span>
       <div class="career-body">
-        <div class="career-company">Feira Preta</div>
-        <div class="career-role">Parceiro & Representante</div>
+        <div class="career-company">BigID</div>
+        <div class="career-role">Senior Delivery Services Engineer</div>
         <div class="career-desc">
-          Participação no maior festival negro da América Latina — representando
-          a marca De Preto Pra Preto e conectando-a com uma comunidade vibrante
-          que celebra cultura, criatividade e excelência negra.
+          Liderava implementações técnicas de segurança de dados e privacidade para clientes
+          enterprise globais — colaborando com stakeholders multidisciplinares e equipes de
+          Engenharia e Produto para garantir adoção bem-sucedida das soluções BigID.
         </div>
       </div>
-      <span class="career-period">2022</span>
+      <span class="career-period">2021 — 2024</span>
     </div>
 
     <div class="career-row gsap-hidden">
       <span class="career-num">04</span>
       <div class="career-body">
-        <div class="career-company">Brand & Strategy</div>
-        <div class="career-role">Estrategista Criativo</div>
+        <div class="career-company">Forcepoint</div>
+        <div class="career-role">Client Solutions Manager & Senior Cyber Engineer, LATAM</div>
         <div class="career-desc">
-          Construção de identidade de marca, posicionamento e lançamento de
-          produtos com foco em excelência radical — da narrativa visual
-          à experiência de mercado.
+          Atuei como SME em serviços e soluções de cibersegurança no processo de pré-vendas
+          para toda a América Latina, além de liderar instalações e treinamentos para
+          clientes de segurança na nuvem (CASB).
         </div>
       </div>
-      <span class="career-period">2020 — atual</span>
+      <span class="career-period">2018 — 2021</span>
+    </div>
+
+    <div class="career-row gsap-hidden">
+      <span class="career-num">05</span>
+      <div class="career-body">
+        <div class="career-company">Symantec</div>
+        <div class="career-role">DLP Technical Account Manager → Principal TAM</div>
+        <div class="career-desc">
+          Oito anos como especialista técnico em Data Loss Prevention para grandes clientes
+          corporativos na América Latina — crescendo de Support Engineer a Principal TAM,
+          protegendo dados em escala e construindo relações de confiança duradouras.
+        </div>
+      </div>
+      <span class="career-period">2010 — 2018</span>
     </div>
   </div>
 </section>
@@ -1241,12 +1256,12 @@ footer {
 <!-- ── Stats ─────────────────────────────────────────────── -->
 <section id="stats">
   <div class="stat-item">
-    <div class="stat-value gsap-hidden" data-count="2">0</div>
+    <div class="stat-value gsap-hidden">2</div>
     <div class="stat-label gsap-hidden">Marcas fundadas<br>do zero</div>
   </div>
   <div class="stat-item">
-    <div class="stat-value accent gsap-hidden" data-count="3">0</div>
-    <div class="stat-label gsap-hidden">Idiomas falados<br>EN · ES · PT-BR</div>
+    <div class="stat-value accent gsap-hidden">3</div>
+    <div class="stat-label gsap-hidden">Idiomas falados<br>PT-BR · EN · ES</div>
   </div>
   <div class="stat-item">
     <div class="stat-value gsap-hidden" style="font-size: clamp(56px,6vw,88px);">∞</div>
@@ -1511,19 +1526,14 @@ gsap.utils.toArray('#dppp img').forEach((img, i) => {
     });
 });
 
-/* ── Counter animation ──────────────────────────────────── */
-gsap.utils.toArray('[data-count]').forEach(el => {
-  const target = parseInt(el.dataset.count);
-  ScrollTrigger.create({
-    trigger: el,
-    start: 'top 80%',
-    once: true,
-    onEnter: () => {
-      gsap.fromTo({ val: 0 }, { val: target, duration: 1.8, ease: 'power2.out',
-        onUpdate() { el.textContent = Math.round(this.targets()[0].val); }
-      });
-    },
-  });
+/* ── Stat values punch-in ───────────────────────────────── */
+gsap.utils.toArray('#stats .stat-value').forEach((el, i) => {
+  gsap.fromTo(el,
+    { y: 24, opacity: 0, scale: 0.9 },
+    { y: 0, opacity: 1, scale: 1, duration: 0.75, ease: 'back.out(1.5)',
+      scrollTrigger: { trigger: '#stats', start: 'top 80%', once: true },
+      delay: i * 0.12,
+    });
 });
 
 /* ── Stats section reveal ───────────────────────────────── */
