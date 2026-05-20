@@ -1192,6 +1192,97 @@ footer {
 /* ── Reveal (fallback for no-JS) ───────────────────────── */
 .gsap-hidden { opacity: 0; }
 
+/* ── Photo viewer ────────────────────────────────────────── */
+.cycling-mosaic-item { cursor: zoom-in; }
+#photoViewer {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+#photoViewerBg {
+  position: absolute;
+  inset: 0;
+  background: rgba(18,14,10,0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+#photoViewerImg {
+  position: relative;
+  z-index: 1;
+  max-width: min(88vw, 780px);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  opacity: 0;
+  transform: scale(0.88);
+  transition: opacity 0.38s ease, transform 0.38s cubic-bezier(.25,.46,.45,.94);
+  cursor: zoom-out;
+  border-radius: 1px;
+}
+#photoViewer.open {
+  pointer-events: auto;
+}
+#photoViewer.open #photoViewerBg { opacity: 1; }
+#photoViewer.open #photoViewerImg {
+  opacity: 1;
+  transform: scale(1);
+}
+#photoViewerClose {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  z-index: 2;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.55);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  padding: 9px 16px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s, color 0.2s, border-color 0.2s;
+  line-height: 1;
+}
+#photoViewerClose:hover {
+  color: var(--white);
+  border-color: rgba(255,255,255,0.5);
+}
+#photoViewer.open #photoViewerClose { opacity: 1; }
+#photoViewerNav {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s;
+}
+#photoViewer.open #photoViewerNav { opacity: 1; }
+.pv-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+.pv-dot.active {
+  background: var(--terra-light);
+  transform: scale(1.4);
+}
+
 /* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 960px) {
   nav { padding: 0 28px; }
@@ -1950,5 +2041,79 @@ function updateNav(activeId) {
 
 } /* end !isPreview */
 </script>
+
+<!-- ── Photo viewer overlay ───────────────────────────────── -->
+<div id="photoViewer" role="dialog" aria-modal="true" aria-label="Visualizar foto">
+  <div id="photoViewerBg"></div>
+  <img id="photoViewerImg" src="" alt="">
+  <button id="photoViewerClose">ESC</button>
+  <div id="photoViewerNav"></div>
+</div>
+
+<script>
+/* ── Photo viewer ────────────────────────────────────────── */
+(function() {
+  const photos = Array.from(document.querySelectorAll('.cycling-mosaic-item img'));
+  if (!photos.length) return;
+  let currentIdx = 0;
+
+  const viewer   = document.getElementById('photoViewer');
+  const bg       = document.getElementById('photoViewerBg');
+  const img      = document.getElementById('photoViewerImg');
+  const closeBtn = document.getElementById('photoViewerClose');
+  const navEl    = document.getElementById('photoViewerNav');
+
+  /* Build navigation dots */
+  photos.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'pv-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Foto ' + (i + 1));
+    dot.addEventListener('click', e => { e.stopPropagation(); showPhoto(i); });
+    navEl.appendChild(dot);
+  });
+
+  function getDots() { return navEl.querySelectorAll('.pv-dot'); }
+
+  function showPhoto(idx) {
+    currentIdx = (idx + photos.length) % photos.length;
+    img.style.opacity = '0';
+    img.style.transform = 'scale(0.92)';
+    setTimeout(() => {
+      img.src = photos[currentIdx].src;
+      img.alt = photos[currentIdx].alt;
+      img.style.opacity = '';
+      img.style.transform = '';
+    }, 160);
+    getDots().forEach((d, i) => d.classList.toggle('active', i === currentIdx));
+  }
+
+  function openViewer(idx) {
+    currentIdx = idx;
+    img.src = photos[idx].src;
+    img.alt = photos[idx].alt;
+    getDots().forEach((d, i) => d.classList.toggle('active', i === idx));
+    viewer.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeViewer() {
+    viewer.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  photos.forEach((ph, i) => ph.addEventListener('click', () => openViewer(i)));
+  bg.addEventListener('click', closeViewer);
+  closeBtn.addEventListener('click', closeViewer);
+  img.addEventListener('click', closeViewer);
+
+  document.addEventListener('keydown', e => {
+    if (!viewer.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeViewer();
+    if (e.key === 'ArrowRight') showPhoto(currentIdx + 1);
+    if (e.key === 'ArrowLeft')  showPhoto(currentIdx - 1);
+  });
+})();
+</script>
+
 </body>
 </html>
