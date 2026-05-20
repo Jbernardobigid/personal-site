@@ -810,7 +810,7 @@ nav.scrolled {
 .cycling-hero-wrap img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center 40%;
+  object-position: center 18%;
   display: block;
 }
 .cycling-hero-wrap::after {
@@ -917,6 +917,7 @@ nav.scrolled {
 .cycling-mosaic-item img {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center 15%;
   display: block;
   transition: transform 0.8s cubic-bezier(.25,.46,.45,.94);
 }
@@ -927,6 +928,13 @@ nav.scrolled {
 .cm-4 { grid-column: 3;     grid-row: 2; }
 .cm-5 { grid-column: 1;     grid-row: 3; }
 .cm-6 { grid-column: 2 / 4; grid-row: 3; }
+/* Per-photo crop tuning — all portraits, face in top 15–25% */
+.cm-1 img { object-position: center 10%; }
+.cm-2 img { object-position: center 12%; }
+.cm-3 img { object-position: center 10%; }
+.cm-4 img { object-position: center 5%;  }
+.cm-5 img { object-position: center 8%;  }
+.cm-6 img { object-position: center 12%; }
 .cycling-quote {
   padding: 88px 72px;
   border-top: 1px solid var(--border);
