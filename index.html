@@ -1240,6 +1240,66 @@ nav.scrolled {
   border-radius: 1px;
 }
 
+/* ── Nav right wrapper ──────────────────────────────────── */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-shrink: 0;
+}
+
+/* ── Language Switcher ──────────────────────────────────── */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+.ls-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  transition: color 0.2s ease;
+  line-height: 1;
+  border-radius: 1px;
+}
+.ls-btn.active { color: var(--terra-light); }
+.ls-btn:hover:not(.active) { color: rgba(255,255,255,0.6); }
+.ls-sep {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(255,255,255,0.1);
+  user-select: none;
+  pointer-events: none;
+}
+.drawer-lang {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  justify-content: center;
+}
+.drawer-lang .ls-btn {
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  padding: 10px 20px;
+  color: rgba(255,255,255,0.35);
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  min-height: 44px;
+}
+.drawer-lang .ls-btn.active {
+  color: var(--terra-light);
+  border-color: var(--border-terra);
+}
+
 /* ── Footer ─────────────────────────────────────────────── */
 footer {
   padding: 28px 72px;
@@ -1359,7 +1419,7 @@ footer {
 /* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 960px) {
   nav { padding: 0 28px; }
-  .nav-links, .nav-cta { display: none; }
+  .nav-right { display: none; }
   .nav-hamburger { display: flex; }
 
   .hero { grid-template-columns: 1fr; height: auto; min-height: 100svh; }
@@ -1455,6 +1515,11 @@ footer {
   <a href="#ciclismo" onclick="closeDrawer()">Ciclismo</a>
   <a href="blog/" onclick="closeDrawer()">Blog</a>
   <a href="#contato" onclick="closeDrawer()">Contato</a>
+  <div class="drawer-lang" id="drawerLangSwitcher">
+    <button class="ls-btn active" data-lang="pt" aria-label="Português">PT</button>
+    <button class="ls-btn" data-lang="en" aria-label="English">EN</button>
+    <button class="ls-btn" data-lang="es" aria-label="Español">ES</button>
+  </div>
 </div>
 
 <!-- ── Nav ─────────────────────────────────────────────── -->
@@ -1469,7 +1534,16 @@ footer {
     <li><a href="#ciclismo">Ciclismo</a></li>
     <li><a href="blog/">Blog</a></li>
   </ul>
-  <a href="#contato" class="nav-cta">Contato</a>
+  <div class="nav-right">
+    <div class="lang-switcher" id="langSwitcher">
+      <button class="ls-btn active" data-lang="pt" aria-label="Português">PT</button>
+      <span class="ls-sep">·</span>
+      <button class="ls-btn" data-lang="en" aria-label="English">EN</button>
+      <span class="ls-sep">·</span>
+      <button class="ls-btn" data-lang="es" aria-label="Español">ES</button>
+    </div>
+    <a href="#contato" class="nav-cta">Contato</a>
+  </div>
   <button class="nav-hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -1842,7 +1916,7 @@ footer {
           <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5"
                 stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Mensagem enviada — obrigado!
+        <span id="successMsg">Mensagem enviada — obrigado!</span>
       </div>
       <div data-fs-error></div>
 
@@ -2175,6 +2249,367 @@ function updateNav(activeId) {
 }
 
 } /* end !isPreview */
+</script>
+
+<!-- ── i18n ───────────────────────────────────────────────── -->
+<script>
+(function () {
+  var T = {
+    pt: {
+      langAttr: 'pt-BR',
+      pageTitle: 'Jorge Bernardo — Empreendedor · Builder · Ciclista',
+      nav: { sobre: 'Sobre', carreira: 'Carreira', projetos: 'Projetos', ciclismo: 'Ciclismo', contato: 'Contato' },
+      hero: {
+        eyebrow: 'Empreendedor · Builder · Ciclista',
+        intro: 'Especialista em <strong>segurança de dados e governança por IA</strong> — e fundador de marcas que carregam significado. Nos dois mundos, o que me move é o mesmo: criar algo que as pessoas <strong>não conseguem deixar de notar.</strong>',
+        tags: ['Estratégia', 'Brand', 'Ciclismo', 'Comunidade', 'Afrofuturismo'],
+        scroll: 'Explorar',
+        stats: ['Anos de experiência', 'Continentes atendidos', 'Marcas fundadas'],
+      },
+      about: {
+        heading: 'Construindo<br>o que o mundo<br>ainda não sabia<br>que <em>precisava.</em>',
+        body: '<p>Por mais de 15 anos, construí expertise em <strong>segurança de dados, privacidade e governança por IA</strong> — treinando equipes de engenharia e arquitetura em LATAM, América do Norte, Europa e APAC.</p><p>Em paralelo, fundei marcas na interseção entre <strong>estética radical e identidade cultural.</strong> Belas ideias merecem existir no mundo com excelência e propósito — do conceito ao lançamento, do movimento ao produto.</p>',
+        factLabels: ['Cargo atual', 'Especialidade', 'Fundador', 'Formação'],
+      },
+      career: {
+        heading: 'Uma<br>Visão.<br><em>Muitas<br>frentes.</em>',
+        intro: 'Mais de 15 anos construindo expertise em segurança de dados, governança por IA e formação técnica global — em empresas como Symantec, Forcepoint e BigID — e fundando iniciativas que transformam espaços.',
+        descs: [
+          'Projeto e lidero experiências de aprendizado globais para engenheiros, arquitetos e profissionais de privacidade em LATAM, América do Norte, Europa e APAC — traduzindo segurança de dados e governança por IA em treinamentos práticos de alto impacto.',
+          'Fundei uma marca de ciclismo afrobrasileira — jerseys, identidade e movimento. DePretoPraPreto nasce da certeza de que Beleza Negra e excelência no esporte caminham juntos. Presente na Feira Preta e crescendo como referência cultural no ciclismo nacional.',
+          'Liderava implementações técnicas de segurança de dados e privacidade para clientes enterprise globais — colaborando com stakeholders multidisciplinares e equipes de Engenharia e Produto para garantir adoção bem-sucedida das soluções BigID.',
+          'Atuei como SME em serviços e soluções de cibersegurança no processo de pré-vendas para toda a América Latina, além de liderar instalações e treinamentos para clientes de segurança na nuvem (CASB).',
+          'Oito anos como especialista técnico em Data Loss Prevention para grandes clientes corporativos na América Latina — crescendo de Support Engineer a Principal TAM, protegendo dados em escala e construindo relações de confiança duradouras.',
+        ],
+        periods: ['2024 — atual', '2022 — atual', '2021 — 2024', '2018 — 2021', '2010 — 2018'],
+      },
+      projects: {
+        heading: 'Projetos<br><em>selecionados.</em>',
+        cats: ['Brand · Ciclismo', 'Wellness · Platform'],
+      },
+      statement: 'Quando a estética encontra a estratégia, as pessoas <strong>não conseguem deixar de notar.</strong>',
+      dppp: {
+        heading: 'Mais do<br>que jerseys.<br><em>É um movimento.</em>',
+        body: 'DePretoPraPreto nasce da certeza de que Beleza Negra, excelência e ciclismo caminham juntos — e sempre caminharam. Cada peça carrega identidade, resistência e propósito. Feita para quem pedala com intenção.',
+        link: 'Visitar o projeto',
+      },
+      cycling: {
+        heading: 'A velocidade<br>tem <em>cor.</em>',
+        narrative: [
+          'Para mim, ciclismo nunca foi só um esporte. É onde aprendo a disciplina que sustenta tudo o que construo — na tecnologia, nos negócios, na vida.',
+          'É também onde descubro que o meu corpo — num esporte historicamente embranquecido — é um ato de presença por si só. Cada pedalada é uma declaração. Cada jersey carrega um símbolo. Cada quilômetro percorrido é território conquistado.',
+          'O ciclismo africano cresce e ganha voz global. Iniciativas como a <strong>Team Africa Rising</strong> levam formação profissional para Uganda, Ruanda e Eritreia desde 2007 — provando que o esporte pertence a todos. No Brasil, eu quero fazer o mesmo: de preto, pra preto.',
+          'A bicicleta me ensinou que resistência não é apenas física. É identidade. É estratégia. É o que liga o atleta ao ativista.',
+        ],
+        orgLabel: 'Iniciativa Global',
+        orgDesc: 'Desde 2007, desenvolvendo o ciclismo profissional em todo o continente africano — conectando jovens talentos com o UCI World Cycling Center, formando treinadores e mecânicos, e construindo uma voz africana no esporte mundial. Presentes em mais de 60.000 seguidores e cobertura no NYT, BBC e The Guardian.',
+        quote: '"Pedalar é um ato político."',
+      },
+      stats: {
+        labels: ['Marcas fundadas<br>do zero', 'Idiomas falados<br>PT-BR · EN · ES', 'Anos construindo<br>em tecnologia'],
+      },
+      contact: {
+        heading: 'Vamos<br><em>construir</em><br>juntos.',
+        note: 'Envie uma mensagem diretamente.<br>Responderei em breve.',
+        formLabels: ['Nome', 'Email', 'Assunto', 'Mensagem'],
+        placeholders: ['Seu nome', 'seu@email.com', 'Do que se trata?', 'Sua mensagem...'],
+        submit: 'Enviar',
+        success: 'Mensagem enviada — obrigado!',
+        langLabel: 'Idiomas',
+        langPills: ['Português', 'English', 'Español'],
+      },
+      footer: 'Estética encontra Estratégia.',
+    },
+
+    en: {
+      langAttr: 'en',
+      pageTitle: 'Jorge Bernardo — Entrepreneur · Builder · Cyclist',
+      nav: { sobre: 'About', carreira: 'Career', projetos: 'Projects', ciclismo: 'Cycling', contato: 'Contact' },
+      hero: {
+        eyebrow: 'Entrepreneur · Builder · Cyclist',
+        intro: 'Specialist in <strong>data security and AI governance</strong> — and founder of brands that carry meaning. In both worlds, what drives me is the same: creating something people <strong>can\'t help but notice.</strong>',
+        tags: ['Strategy', 'Brand', 'Cycling', 'Community', 'Afrofuturism'],
+        scroll: 'Explore',
+        stats: ['Years of experience', 'Continents served', 'Brands founded'],
+      },
+      about: {
+        heading: 'Building<br>what the world<br>didn\'t yet know<br>it <em>needed.</em>',
+        body: '<p>For over 15 years, I have built expertise in <strong>data security, privacy, and AI governance</strong> — training engineering and architecture teams in LATAM, North America, Europe, and APAC.</p><p>In parallel, I founded brands at the intersection of <strong>radical aesthetics and cultural identity.</strong> Beautiful ideas deserve to exist in the world with excellence and purpose — from concept to launch, from movement to product.</p>',
+        factLabels: ['Current role', 'Specialty', 'Founder', 'Education'],
+      },
+      career: {
+        heading: 'One<br>Vision.<br><em>Many<br>fronts.</em>',
+        intro: 'Over 15 years building expertise in data security, AI governance, and global technical training — at companies like Symantec, Forcepoint, and BigID — and founding initiatives that transform spaces.',
+        descs: [
+          'I design and lead global learning experiences for engineers, architects, and privacy professionals in LATAM, North America, Europe, and APAC — translating data security and AI governance into high-impact practical training.',
+          'I founded an Afro-Brazilian cycling brand — jerseys, identity, and movement. DePretoPraPreto is born from the certainty that Black Beauty and sporting excellence go hand in hand. Present at Feira Preta and growing as a cultural reference in national cycling.',
+          'Led technical data security and privacy implementations for global enterprise clients — collaborating with cross-functional stakeholders and Engineering and Product teams to ensure successful adoption of BigID solutions.',
+          'Served as SME in cybersecurity services and solutions for pre-sales across Latin America, as well as leading installations and training for cloud security (CASB) clients.',
+          'Eight years as a technical specialist in Data Loss Prevention for large corporate clients in Latin America — growing from Support Engineer to Principal TAM, protecting data at scale and building lasting trust relationships.',
+        ],
+        periods: ['2024 — present', '2022 — present', '2021 — 2024', '2018 — 2021', '2010 — 2018'],
+      },
+      projects: {
+        heading: 'Selected<br><em>projects.</em>',
+        cats: ['Brand · Cycling', 'Wellness · Platform'],
+      },
+      statement: 'When aesthetics meets strategy, people <strong>can\'t help but notice.</strong>',
+      dppp: {
+        heading: 'More than<br>jerseys.<br><em>It\'s a movement.</em>',
+        body: 'DePretoPraPreto is born from the certainty that Black Beauty, excellence, and cycling go together — and always have. Each piece carries identity, resistance, and purpose. Made for those who ride with intention.',
+        link: 'Visit the project',
+      },
+      cycling: {
+        heading: 'Speed has<br><em>color.</em>',
+        narrative: [
+          'For me, cycling has never been just a sport. It\'s where I learn the discipline that sustains everything I build — in technology, in business, in life.',
+          'It is also where I discover that my body — in a historically whitened sport — is an act of presence in itself. Every pedal stroke is a statement. Every jersey carries a symbol. Every kilometer ridden is territory claimed.',
+          'African cycling is growing and gaining a global voice. Initiatives like <strong>Team Africa Rising</strong> have been bringing professional development to Uganda, Rwanda, and Eritrea since 2007 — proving that the sport belongs to everyone. In Brazil, I want to do the same: from Black, for Black.',
+          'The bicycle taught me that resistance is not only physical. It is identity. It is strategy. It is what connects the athlete to the activist.',
+        ],
+        orgLabel: 'Global Initiative',
+        orgDesc: 'Since 2007, developing professional cycling across the African continent — connecting young talents with the UCI World Cycling Center, training coaches and mechanics, and building an African voice in world sport. With over 60,000 followers and coverage in the NYT, BBC and The Guardian.',
+        quote: '"Cycling is a political act."',
+      },
+      stats: {
+        labels: ['Brands founded<br>from scratch', 'Languages spoken<br>PT-BR · EN · ES', 'Years building<br>in tech'],
+      },
+      contact: {
+        heading: 'Let\'s<br><em>build</em><br>together.',
+        note: 'Send a message directly.<br>I\'ll get back to you soon.',
+        formLabels: ['Name', 'Email', 'Subject', 'Message'],
+        placeholders: ['Your name', 'your@email.com', 'What is it about?', 'Your message...'],
+        submit: 'Send',
+        success: 'Message sent — thank you!',
+        langLabel: 'Languages',
+        langPills: ['Portuguese', 'English', 'Spanish'],
+      },
+      footer: 'Aesthetics meets Strategy.',
+    },
+
+    es: {
+      langAttr: 'es',
+      pageTitle: 'Jorge Bernardo — Emprendedor · Builder · Ciclista',
+      nav: { sobre: 'Sobre', carreira: 'Carrera', projetos: 'Proyectos', ciclismo: 'Ciclismo', contato: 'Contacto' },
+      hero: {
+        eyebrow: 'Emprendedor · Builder · Ciclista',
+        intro: 'Especialista en <strong>seguridad de datos y gobernanza por IA</strong> — y fundador de marcas que llevan significado. En ambos mundos, lo que me mueve es lo mismo: crear algo que la gente <strong>no puede dejar de notar.</strong>',
+        tags: ['Estrategia', 'Brand', 'Ciclismo', 'Comunidad', 'Afrofuturismo'],
+        scroll: 'Explorar',
+        stats: ['Años de experiencia', 'Continentes atendidos', 'Marcas fundadas'],
+      },
+      about: {
+        heading: 'Construyendo<br>lo que el mundo<br>aún no sabía<br>que <em>necesitaba.</em>',
+        body: '<p>Por más de 15 años, construí expertise en <strong>seguridad de datos, privacidad y gobernanza por IA</strong> — formando equipos de ingeniería y arquitectura en LATAM, América del Norte, Europa y APAC.</p><p>En paralelo, fundé marcas en la intersección entre <strong>estética radical e identidad cultural.</strong> Las ideas hermosas merecen existir en el mundo con excelencia y propósito — del concepto al lanzamiento, del movimiento al producto.</p>',
+        factLabels: ['Cargo actual', 'Especialidad', 'Fundador', 'Formación'],
+      },
+      career: {
+        heading: 'Una<br>Visión.<br><em>Muchos<br>frentes.</em>',
+        intro: 'Más de 15 años construyendo expertise en seguridad de datos, gobernanza por IA y formación técnica global — en empresas como Symantec, Forcepoint y BigID — y fundando iniciativas que transforman espacios.',
+        descs: [
+          'Diseño y lidero experiencias de aprendizaje globales para ingenieros, arquitectos y profesionales de privacidad en LATAM, América del Norte, Europa y APAC — traduciendo la seguridad de datos y la gobernanza por IA en formación práctica de alto impacto.',
+          'Fundé una marca de ciclismo afrobrasileña — jerseys, identidad y movimiento. DePretoPraPreto nace de la certeza de que la Belleza Negra y la excelencia deportiva van de la mano. Presente en Feira Preta y creciendo como referencia cultural en el ciclismo nacional.',
+          'Lideraba implementaciones técnicas de seguridad de datos y privacidad para clientes enterprise globales — colaborando con stakeholders multidisciplinarios y equipos de Ingeniería y Producto para garantizar la adopción exitosa de las soluciones BigID.',
+          'Actué como SME en servicios y soluciones de ciberseguridad en el proceso de preventa para toda América Latina, además de liderar instalaciones y capacitaciones para clientes de seguridad en la nube (CASB).',
+          'Ocho años como especialista técnico en Data Loss Prevention para grandes clientes corporativos en América Latina — creciendo de Support Engineer a Principal TAM, protegiendo datos a escala y construyendo relaciones de confianza duraderas.',
+        ],
+        periods: ['2024 — actual', '2022 — actual', '2021 — 2024', '2018 — 2021', '2010 — 2018'],
+      },
+      projects: {
+        heading: 'Proyectos<br><em>seleccionados.</em>',
+        cats: ['Brand · Ciclismo', 'Wellness · Plataforma'],
+      },
+      statement: 'Cuando la estética encuentra la estrategia, la gente <strong>no puede dejar de notar.</strong>',
+      dppp: {
+        heading: 'Más que<br>jerseys.<br><em>Es un movimiento.</em>',
+        body: 'DePretoPraPreto nace de la certeza de que la Belleza Negra, la excelencia y el ciclismo van juntos — y siempre han ido. Cada pieza lleva identidad, resistencia y propósito. Hecha para quienes pedalean con intención.',
+        link: 'Visitar el proyecto',
+      },
+      cycling: {
+        heading: 'La velocidad<br>tiene <em>color.</em>',
+        narrative: [
+          'Para mí, el ciclismo nunca fue solo un deporte. Es donde aprendo la disciplina que sustenta todo lo que construyo — en tecnología, en negocios, en la vida.',
+          'También es donde descubro que mi cuerpo — en un deporte históricamente blanqueado — es un acto de presencia por sí mismo. Cada pedalada es una declaración. Cada jersey lleva un símbolo. Cada kilómetro recorrido es territorio conquistado.',
+          'El ciclismo africano crece y gana voz global. Iniciativas como <strong>Team Africa Rising</strong> llevan formación profesional a Uganda, Ruanda y Eritrea desde 2007 — demostrando que el deporte pertenece a todos. En Brasil, yo quiero hacer lo mismo: de negro, para negro.',
+          'La bicicleta me enseñó que la resistencia no es solo física. Es identidad. Es estrategia. Es lo que une al atleta con el activista.',
+        ],
+        orgLabel: 'Iniciativa Global',
+        orgDesc: 'Desde 2007, desarrollando el ciclismo profesional en todo el continente africano — conectando jóvenes talentos con el UCI World Cycling Center, formando entrenadores y mecánicos, y construyendo una voz africana en el deporte mundial. Con más de 60.000 seguidores y cobertura en NYT, BBC y The Guardian.',
+        quote: '"Pedalear es un acto político."',
+      },
+      stats: {
+        labels: ['Marcas fundadas<br>desde cero', 'Idiomas hablados<br>PT-BR · EN · ES', 'Años construyendo<br>en tecnología'],
+      },
+      contact: {
+        heading: 'Vamos<br><em>construir</em><br>juntos.',
+        note: 'Envía un mensaje directamente.<br>Responderé en breve.',
+        formLabels: ['Nombre', 'Email', 'Asunto', 'Mensaje'],
+        placeholders: ['Tu nombre', 'tu@email.com', '¿De qué se trata?', 'Tu mensaje...'],
+        submit: 'Enviar',
+        success: '¡Mensaje enviado — gracias!',
+        langLabel: 'Idiomas',
+        langPills: ['Portugués', 'English', 'Español'],
+      },
+      footer: 'Estética encuentra Estrategia.',
+    },
+  };
+
+  function applyLang(lang) {
+    var t = T[lang];
+    if (!t) return;
+
+    document.documentElement.lang = t.langAttr;
+    document.title = t.pageTitle;
+
+    /* Nav links — targets both desktop and mobile drawer via href */
+    var navMap = {
+      '#sobre':    t.nav.sobre,
+      '#carreira': t.nav.carreira,
+      '#projetos': t.nav.projetos,
+      '#ciclismo': t.nav.ciclismo,
+      '#contato':  t.nav.contato,
+    };
+    Object.keys(navMap).forEach(function (href) {
+      document.querySelectorAll('a[href="' + href + '"]').forEach(function (a) {
+        a.textContent = navMap[href];
+      });
+    });
+    var navCta = document.querySelector('.nav-cta');
+    if (navCta) navCta.textContent = t.nav.contato;
+
+    /* Hero */
+    var eyebrow = document.querySelector('.hero-eyebrow');
+    if (eyebrow) eyebrow.textContent = t.hero.eyebrow;
+    var heroIntro = document.querySelector('.hero-intro');
+    if (heroIntro) heroIntro.innerHTML = t.hero.intro;
+    document.querySelectorAll('.hero-tag').forEach(function (el, i) {
+      if (t.hero.tags[i]) el.textContent = t.hero.tags[i];
+    });
+    var scrollLabel = document.querySelector('.hero-scroll-label');
+    if (scrollLabel) scrollLabel.textContent = t.hero.scroll;
+    document.querySelectorAll('.hero-stat-label').forEach(function (el, i) {
+      if (t.hero.stats[i]) el.textContent = t.hero.stats[i];
+    });
+
+    /* About */
+    var aboutHeading = document.querySelector('.about-heading');
+    if (aboutHeading) aboutHeading.innerHTML = t.about.heading;
+    var aboutBody = document.querySelector('.about-body');
+    if (aboutBody) aboutBody.innerHTML = t.about.body;
+    document.querySelectorAll('.about-fact dt').forEach(function (el, i) {
+      if (t.about.factLabels[i]) el.textContent = t.about.factLabels[i];
+    });
+
+    /* Career */
+    var careerHeading = document.querySelector('.career-heading');
+    if (careerHeading) careerHeading.innerHTML = t.career.heading;
+    var careerIntro = document.querySelector('.career-intro');
+    if (careerIntro) careerIntro.textContent = t.career.intro;
+    document.querySelectorAll('.career-desc').forEach(function (el, i) {
+      if (t.career.descs[i]) el.textContent = t.career.descs[i];
+    });
+    document.querySelectorAll('.career-period').forEach(function (el, i) {
+      if (t.career.periods[i]) el.textContent = t.career.periods[i];
+    });
+
+    /* Projects */
+    var projHeading = document.querySelector('.projetos-heading');
+    if (projHeading) projHeading.innerHTML = t.projects.heading;
+    document.querySelectorAll('.work-cat').forEach(function (el, i) {
+      if (t.projects.cats[i]) el.textContent = t.projects.cats[i];
+    });
+
+    /* Statement */
+    var stmtText = document.querySelector('.statement-text');
+    if (stmtText) stmtText.innerHTML = t.statement;
+
+    /* DPPP */
+    var dpppHeading = document.querySelector('.dppp-heading');
+    if (dpppHeading) dpppHeading.innerHTML = t.dppp.heading;
+    var dpppBody = document.querySelector('.dppp-body');
+    if (dpppBody) dpppBody.textContent = t.dppp.body;
+    var dpppLink = document.querySelector('.dppp-link');
+    if (dpppLink) dpppLink.innerHTML = t.dppp.link + ' <span>↗</span>';
+
+    /* Cycling */
+    var cyclingHeading = document.querySelector('.cycling-main-heading');
+    if (cyclingHeading) cyclingHeading.innerHTML = t.cycling.heading;
+    document.querySelectorAll('.cycling-narrative p').forEach(function (el, i) {
+      if (t.cycling.narrative[i]) el.innerHTML = t.cycling.narrative[i];
+    });
+    var orgLabel = document.querySelector('.org-label');
+    if (orgLabel) orgLabel.textContent = t.cycling.orgLabel;
+    var orgDesc = document.querySelector('.org-desc');
+    if (orgDesc) orgDesc.textContent = t.cycling.orgDesc;
+    var cyclingQuote = document.querySelector('.cycling-quote p');
+    if (cyclingQuote) cyclingQuote.textContent = t.cycling.quote;
+
+    /* Stats */
+    document.querySelectorAll('#stats .stat-label').forEach(function (el, i) {
+      if (t.stats.labels[i]) el.innerHTML = t.stats.labels[i];
+    });
+
+    /* Contact */
+    var contatoHeading = document.querySelector('.contato-heading');
+    if (contatoHeading) contatoHeading.innerHTML = t.contact.heading;
+    var contatoNote = document.querySelector('.contato-note');
+    if (contatoNote) contatoNote.innerHTML = t.contact.note;
+    document.querySelectorAll('.form-label').forEach(function (el, i) {
+      if (t.contact.formLabels[i]) el.textContent = t.contact.formLabels[i];
+    });
+    var formInputs = [
+      document.getElementById('name'),
+      document.getElementById('email'),
+      document.getElementById('subject'),
+      document.getElementById('message'),
+    ];
+    formInputs.forEach(function (el, i) {
+      if (el && t.contact.placeholders[i]) el.placeholder = t.contact.placeholders[i];
+    });
+    var submitBtn = document.querySelector('.form-submit');
+    if (submitBtn) submitBtn.innerHTML = t.contact.submit + ' <span>→</span>';
+    var successMsg = document.getElementById('successMsg');
+    if (successMsg) successMsg.textContent = t.contact.success;
+    var langLabel = document.querySelector('.lang-label');
+    if (langLabel) langLabel.textContent = t.contact.langLabel;
+    document.querySelectorAll('.lang-pill').forEach(function (el, i) {
+      if (t.contact.langPills[i]) el.textContent = t.contact.langPills[i];
+    });
+
+    /* Footer */
+    var footerTagline = document.querySelector('.footer-tagline');
+    if (footerTagline) footerTagline.textContent = t.footer;
+
+    /* Sync all switcher buttons */
+    document.querySelectorAll('.ls-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    /* Persist */
+    try { localStorage.setItem('jb-lang', lang); } catch (e) {}
+  }
+
+  /* Init */
+  var savedLang = 'pt';
+  try { savedLang = localStorage.getItem('jb-lang') || 'pt'; } catch (e) {}
+  if (!T[savedLang]) savedLang = 'pt';
+
+  /* Wire buttons */
+  document.querySelectorAll('.ls-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      applyLang(btn.dataset.lang);
+    });
+  });
+
+  /* Apply saved language (skip re-applying PT to avoid redundant DOM work) */
+  if (savedLang !== 'pt') {
+    applyLang(savedLang);
+  } else {
+    document.querySelectorAll('.ls-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.lang === 'pt');
+    });
+  }
+})();
 </script>
 
 <!-- ── Photo viewer overlay ───────────────────────────────── -->
