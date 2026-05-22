@@ -11,5 +11,8 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "puppeteer-core": "^25.0.4"
+  },
+  "devDependencies": {
+    "jimp": "^1.6.1"
   }
 }

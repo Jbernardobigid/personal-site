@@ -150,19 +150,10 @@ nav.scrolled {
   flex-shrink: 0;
 }
 .nav-logo-img {
-  width: 32px;
-  height: 32px;
+  height: 48px;
+  width: auto;
   object-fit: contain;
-  filter: invert(1);
   opacity: 0.9;
-}
-.nav-logo-text {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--white);
-  opacity: 0.85;
 }
 .nav-links {
   display: flex;
@@ -262,16 +253,51 @@ nav.scrolled {
   min-height: 640px;
   display: grid;
   grid-template-columns: 54fr 46fr;
+  grid-template-rows: 1fr;
   padding-top: 64px;
   overflow: hidden;
 }
+
 .hero-left {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 80px 56px 80px 72px;
+  padding: 80px 56px 140px 72px;
   position: relative;
+  min-height: 0;
+  overflow: hidden;
   z-index: 2;
+}
+.hero-main {
+  display: flex;
+  flex-direction: column;
+}
+.hero-stats {
+  position: absolute;
+  bottom: 60px;
+  left: 72px;
+  right: 56px;
+  display: flex;
+  gap: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+}
+.hero-stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 2.8vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--terra-light);
+  margin-top: 6px;
 }
 .hero-eyebrow {
   font-family: var(--font-mono);
@@ -1434,8 +1460,7 @@ footer {
 <!-- ── Nav ─────────────────────────────────────────────── -->
 <nav id="mainNav">
   <a href="#" class="nav-logo">
-    <img class="nav-logo-img" src="images/logo-symbol.png" alt="JB">
-    <span class="nav-logo-text">Jorge Bernardo</span>
+    <img class="nav-logo-img" src="images/logo-transparent.png" alt="Jorge Bernardo">
   </a>
   <ul class="nav-links">
     <li><a href="#sobre">Sobre</a></li>
@@ -1453,23 +1478,39 @@ footer {
 <!-- ── Hero ────────────────────────────────────────────── -->
 <section class="hero" id="home">
   <div class="hero-left">
-    <div class="hero-eyebrow">Empreendedor · Builder · Ciclista</div>
-    <h1 class="hero-name">Jorge<br>Bernardo</h1>
-    <p class="hero-intro">
-      Especialista em <strong>segurança de dados e governança por IA</strong> — e
-      fundador de marcas que carregam significado. Nos dois mundos, o que me move é
-      o mesmo: criar algo que as pessoas <strong>não conseguem deixar de notar.</strong>
-    </p>
-    <div class="hero-tags">
-      <span class="hero-tag">Estratégia</span>
-      <span class="hero-tag">Brand</span>
-      <span class="hero-tag">Ciclismo</span>
-      <span class="hero-tag">Comunidade</span>
-      <span class="hero-tag">Afrofuturismo</span>
+    <div class="hero-main">
+      <div class="hero-eyebrow">Empreendedor · Builder · Ciclista</div>
+      <h1 class="hero-name">Jorge<br>Bernardo</h1>
+      <p class="hero-intro">
+        Especialista em <strong>segurança de dados e governança por IA</strong> — e
+        fundador de marcas que carregam significado. Nos dois mundos, o que me move é
+        o mesmo: criar algo que as pessoas <strong>não conseguem deixar de notar.</strong>
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">Estratégia</span>
+        <span class="hero-tag">Brand</span>
+        <span class="hero-tag">Ciclismo</span>
+        <span class="hero-tag">Comunidade</span>
+        <span class="hero-tag">Afrofuturismo</span>
+      </div>
+      <div class="hero-scroll-hint">
+        <span class="hero-scroll-line"></span>
+        <span class="hero-scroll-label">Explorar</span>
+      </div>
     </div>
-    <div class="hero-scroll-hint">
-      <span class="hero-scroll-line"></span>
-      <span class="hero-scroll-label">Explorar</span>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">15+</div>
+        <div class="hero-stat-label">Anos de experiência</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">3</div>
+        <div class="hero-stat-label">Continentes atendidos</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">2</div>
+        <div class="hero-stat-label">Marcas fundadas</div>
+      </div>
     </div>
   </div>
   <div class="hero-right">
@@ -1901,7 +1942,7 @@ function closeDrawer() {
 const isPreview = new URLSearchParams(location.search).has('preview');
 if (isPreview) {
   document.querySelectorAll(
-    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint'
+    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint, .hero-stats'
   ).forEach(el => { el.style.cssText += 'opacity:1!important;transform:none!important'; });
   document.querySelectorAll('img').forEach(img => {
     img.style.cssText += 'opacity:1!important;transform:none!important';
@@ -1985,7 +2026,10 @@ heroTl
     { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }, 1.0)
   .fromTo('.hero-scroll-hint',
     { opacity: 0 },
-    { opacity: 1, duration: 0.6 }, 1.3);
+    { opacity: 1, duration: 0.6 }, 1.3)
+  .fromTo('.hero-stats',
+    { y: 20, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' }, 1.4);
 
 /* ── Hero parallax ─────────────────────────────────────── */
 gsap.to('.hero-right img', {
