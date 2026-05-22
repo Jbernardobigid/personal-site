@@ -1,14 +1,16 @@
 /**
  * generate-post.mjs
  * Generates a blog post for Jorge Bernardo's site using the Claude API.
- * Rotates through 5 topic pillars, writes the post HTML, and updates blog/index.html.
+ * Rotates through 5 topic pillars, writes the post HTML, updates blog/index.html,
+ * regenerates sitemap.xml, and regenerates robots.txt.
  *
  * Usage:
  *   node generate-post.mjs
- *   node generate-post.mjs --pillar data-security   (force a specific pillar)
- *   node generate-post.mjs --dry-run                (generate but don't write files)
+ *   node generate-post.mjs --pillar cycling      (force specific pillar)
+ *   node generate-post.mjs --dry-run             (generate but don't write files)
  *
  * Requires: ANTHROPIC_API_KEY environment variable
+ * Optional: SITE_URL environment variable (defaults to placeholder — set in GitHub secrets)
  */
 
 import Anthropic from '@anthropic-ai/sdk';
@@ -20,6 +22,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR   = path.join(__dirname, 'blog');
 const POSTS_DIR  = path.join(BLOG_DIR, 'posts');
 const INDEX_FILE = path.join(BLOG_DIR, 'index.html');
+const SITEMAP    = path.join(__dirname, 'sitemap.xml');
+const ROBOTS     = path.join(__dirname, 'robots.txt');
+
+// Set SITE_URL as a GitHub Actions secret for the live URL.
+// When you get a custom domain, update the secret value — everything regenerates automatically.
+const SITE_URL = (process.env.SITE_URL || 'https://your-site.vercel.app').replace(/\/$/, '');
 
 const PILLARS = [
   {
@@ -77,23 +85,36 @@ IDENTITY & VOICE:
 - Writes in Brazilian Portuguese.
 `;
 
+/* ── Pillar rotation ─────────────────────────────────────── */
+
 function getNextPillar() {
   if (!fs.existsSync(POSTS_DIR)) return PILLARS[0];
   const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.html'));
   if (files.length === 0) return PILLARS[0];
 
-  // Read pillar metadata from the most recent post files to find rotation position
   const pillarCounts = Object.fromEntries(PILLARS.map(p => [p.id, 0]));
   for (const file of files) {
     const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8');
     const match = content.match(/data-pillar="([^"]+)"/);
-    if (match && pillarCounts[match[1]] !== undefined) {
-      pillarCounts[match[1]]++;
-    }
+    if (match && pillarCounts[match[1]] !== undefined) pillarCounts[match[1]]++;
   }
-  // Pick the pillar with the fewest posts (round-robin)
   return PILLARS.reduce((least, p) => pillarCounts[p.id] < pillarCounts[least.id] ? p : least);
 }
+
+/* ── Existing posts (for sitemap) ────────────────────────── */
+
+function getAllPostMeta() {
+  if (!fs.existsSync(POSTS_DIR)) return [];
+  return fs.readdirSync(POSTS_DIR)
+    .filter(f => f.endsWith('.html'))
+    .map(filename => {
+      const dateMatch = filename.match(/^(\d{4}-\d{2}-\d{2})/);
+      return { filename, date: dateMatch ? dateMatch[1] : isoDate(new Date()) };
+    })
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/* ── Utilities ───────────────────────────────────────────── */
 
 function slugify(text) {
   return text
@@ -106,9 +127,7 @@ function slugify(text) {
 }
 
 function formatDate(date) {
-  return date.toLocaleDateString('pt-BR', {
-    day: '2-digit', month: 'long', year: 'numeric'
-  });
+  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
 function isoDate(date) {
@@ -120,20 +139,74 @@ function estimateReadTime(text) {
   return Math.max(2, Math.round(words / 200));
 }
 
-function buildPostHtml({ title, pillar, date, readTime, content }) {
+function escapeXml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function escapeJson(str) {
+  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+/* ── Post HTML builder ───────────────────────────────────── */
+
+function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename }) {
   const formattedDate = formatDate(date);
   const iso = isoDate(date);
+  const postUrl = `${SITE_URL}/blog/posts/${filename}`;
+
+  const jsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description: excerpt,
+    url: postUrl,
+    datePublished: iso,
+    dateModified: iso,
+    inLanguage: 'pt-BR',
+    keywords: pillar.label,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+    author: {
+      '@type': 'Person',
+      name: 'Jorge Bernardo',
+      url: SITE_URL,
+      sameAs: [
+        'https://www.linkedin.com/in/jorge-bernardo/',
+        'https://www.depretoprapreto.com.br/'
+      ]
+    },
+    publisher: {
+      '@type': 'Person',
+      name: 'Jorge Bernardo',
+      url: SITE_URL
+    }
+  }, null, 2);
+
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${title} — Jorge Bernardo</title>
-<meta name="description" content="${title}">
+<meta name="description" content="${escapeJson(excerpt)}">
+<link rel="canonical" href="${postUrl}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${escapeJson(title)}">
+<meta property="og:description" content="${escapeJson(excerpt)}">
+<meta property="og:url" content="${postUrl}">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Jorge Bernardo">
+<meta property="article:author" content="Jorge Bernardo">
+<meta property="article:published_time" content="${iso}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="${escapeJson(title)}">
+<meta name="twitter:description" content="${escapeJson(excerpt)}">
 <link rel="icon" href="../../brand_assets/logo_page_20.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+${jsonLd}
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
@@ -172,6 +245,9 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 .author-block{display:flex;flex-direction:column;gap:6px}
 .author-name{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-0.01em}
 .author-role{font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--terra-light)}
+.author-links{display:flex;gap:16px;margin-top:8px}
+.author-link{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);text-decoration:none;transition:color .2s}
+.author-link:hover{color:var(--terra-light)}
 .back-link{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--terra-light);text-decoration:none;border-bottom:1px solid var(--border-terra);padding-bottom:4px;transition:color .2s,border-color .2s}
 .back-link:hover{color:var(--white);border-color:rgba(255,255,255,0.3)}
 footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -203,7 +279,7 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
   </div>
 </header>
 
-<article class="post-body">
+<article class="post-body" itemscope itemtype="https://schema.org/BlogPosting">
 ${content}
 </article>
 
@@ -211,6 +287,10 @@ ${content}
   <div class="author-block">
     <div class="author-name">Jorge Bernardo</div>
     <div class="author-role">Sr. Technical Trainer · Fundador · Ciclista</div>
+    <div class="author-links">
+      <a href="https://www.linkedin.com/in/jorge-bernardo/" target="_blank" rel="noopener" class="author-link">LinkedIn ↗</a>
+      <a href="https://www.depretoprapreto.com.br/" target="_blank" rel="noopener" class="author-link">DePretoPraPreto ↗</a>
+    </div>
   </div>
   <a href="../" class="back-link">← Voltar ao blog</a>
 </div>
@@ -222,6 +302,8 @@ ${content}
 </body>
 </html>`;
 }
+
+/* ── Blog index list item ─────────────────────────────────── */
 
 function buildPostListItem({ title, pillar, date, excerpt, filename }) {
   const formattedDate = formatDate(date);
@@ -241,18 +323,51 @@ function buildPostListItem({ title, pillar, date, excerpt, filename }) {
 
 function updateBlogIndex(newEntry) {
   let html = fs.readFileSync(INDEX_FILE, 'utf8');
-
-  // Remove empty state placeholder if present
   html = html.replace(/\s*<div class="posts-empty">[\s\S]*?<\/div>/, '');
-
-  // Insert new post at the top of the list
   html = html.replace(
     /(<div class="posts-list" id="postsList">)/,
     `$1\n${newEntry}`
   );
-
   fs.writeFileSync(INDEX_FILE, html, 'utf8');
 }
+
+/* ── Sitemap ─────────────────────────────────────────────── */
+
+function generateSitemap(posts) {
+  const postEntries = posts.map(p => `  <url>
+    <loc>${SITE_URL}/blog/posts/${escapeXml(p.filename)}</loc>
+    <lastmod>${p.date}</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE_URL}/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${SITE_URL}/blog/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+${postEntries}
+</urlset>`;
+}
+
+/* ── robots.txt ──────────────────────────────────────────── */
+
+function generateRobotsTxt() {
+  return `User-agent: *
+Allow: /
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
+}
+
+/* ── Main ────────────────────────────────────────────────── */
 
 async function main() {
   const args = process.argv.slice(2);
@@ -270,6 +385,7 @@ async function main() {
     : getNextPillar();
 
   console.log(`Generating post for pillar: ${pillar.label}`);
+  console.log(`Site URL: ${SITE_URL}`);
 
   const client = new Anthropic({ apiKey });
 
@@ -299,7 +415,7 @@ Requirements:
 Respond with a JSON object:
 {
   "title": "...",
-  "excerpt": "One sentence excerpt for the blog listing page (in Portuguese, ~25 words)",
+  "excerpt": "One sentence excerpt for the blog listing page (in Portuguese, ~25 words max, no quotes around it)",
   "content": "Full HTML post body — use <p>, <h2>, <h3>, <strong>, <em>, <blockquote><p>...</p></blockquote>, <ul><li>...</li></ul> tags only. Do NOT include the title in the content."
 }`;
 
@@ -329,24 +445,36 @@ Respond with a JSON object:
   const filename = `${isoDate(date)}-${slug}.html`;
   const postPath = path.join(POSTS_DIR, filename);
 
-  const postHtml = buildPostHtml({ title, pillar, date, readTime, content });
+  const postHtml = buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename });
   const listItem = buildPostListItem({ title, pillar, date, excerpt, filename });
 
   if (dryRun) {
-    console.log('\n--- DRY RUN: Post HTML (first 500 chars) ---');
-    console.log(postHtml.substring(0, 500));
-    console.log('\n--- DRY RUN: List item ---');
-    console.log(listItem);
+    console.log('\n--- DRY RUN: Title ---');
+    console.log(title);
+    console.log('\n--- DRY RUN: Excerpt ---');
+    console.log(excerpt);
+    console.log('\n--- DRY RUN: Filename ---');
+    console.log(filename);
+    console.log('\n--- DRY RUN: Canonical URL ---');
+    console.log(`${SITE_URL}/blog/posts/${filename}`);
     console.log('\nDry run complete. No files written.');
     return;
   }
 
   fs.mkdirSync(POSTS_DIR, { recursive: true });
   fs.writeFileSync(postPath, postHtml, 'utf8');
-  updateBlogIndex(listItem);
-
   console.log(`Post created: blog/posts/${filename}`);
-  console.log(`Blog index updated: blog/index.html`);
+
+  updateBlogIndex(listItem);
+  console.log('Blog index updated.');
+
+  // Regenerate sitemap with all posts including the new one
+  const allPosts = getAllPostMeta();
+  fs.writeFileSync(SITEMAP, generateSitemap(allPosts), 'utf8');
+  console.log(`Sitemap updated: ${allPosts.length} post(s) indexed.`);
+
+  fs.writeFileSync(ROBOTS, generateRobotsTxt(), 'utf8');
+  console.log('robots.txt updated.');
 }
 
 main().catch(err => {
