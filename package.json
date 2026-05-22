@@ -4,9 +4,12 @@
   "type": "module",
   "scripts": {
     "serve": "node serve.mjs",
-    "screenshot": "node screenshot.mjs"
+    "screenshot": "node screenshot.mjs",
+    "blog:generate": "node generate-post.mjs",
+    "blog:dry-run": "node generate-post.mjs --dry-run"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
     "puppeteer-core": "^25.0.4"
   }
 }
