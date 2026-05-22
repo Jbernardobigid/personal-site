@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://your-site.vercel.app/sitemap.xml
+Sitemap: https://personal-site-three-smoky.vercel.app/sitemap.xml
