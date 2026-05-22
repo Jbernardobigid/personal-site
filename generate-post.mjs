@@ -400,7 +400,31 @@ Writing style:
 - No hollow motivational phrases or corporate jargon
 - Use concrete examples from Jorge's actual experience when relevant
 - Paragraphs are short (2-4 sentences max)
-- End with something that opens a question or invites reflection, not a call-to-action`;
+- End with something that opens a question or invites reflection, not a call-to-action
+- Vary sentence length deliberately — short punchy sentences next to longer ones
+- Use contractions and natural spoken rhythm wherever they fit
+
+JOURNALISM TECHNIQUES — apply these rigorously:
+
+Anecdote lede: The first paragraph must open with a specific scene, moment, or detail from Jorge's life — not a broad statement about the world. "Era 5h da manhã quando saí de casa de bike..." not "O ciclismo tem muito a nos ensinar sobre disciplina."
+
+Nut graf: The second paragraph must make the stakes clear — what this is really about and why it matters right now. Pay off the lede before going deeper.
+
+Show, don't tell: Replace adjective-driven claims with a specific number, name, scene, or moment. "A reunião tinha 23 executivos, nenhum deles negro" hits harder than "o ambiente era pouco diverso."
+
+One idea per paragraph: Each paragraph carries exactly one idea. When a new idea appears, start a new paragraph. Never stack multiple points into one block.
+
+Cut adverbs: No adverbs. Find the verb that already contains the intensity. "Disparou" not "correu rapidamente." "Afirmou" not "disse claramente."
+
+WSJ close: If the post opens with a personal moment, return to it at the end with new meaning. The final paragraph must not summarize — it should land on a specific image, a quiet observation, or an open question. The last line cannot echo the title or the first paragraph.
+
+NEVER use the following — they are AI tells that break authenticity:
+- Em dash (—) as a clause separator. Use a comma, rewrite the sentence, or break it in two.
+- Transition filler words: "Além disso", "Portanto", "Vale ressaltar", "Em suma", "Cabe destacar", "É importante destacar", "Nesse contexto", "No entanto", "Dessa forma"
+- Openers like "O fato é que", "Isso significa que", "É fundamental que", "É essencial que"
+- Lists that always have exactly 3 bullets — use 2, 4, or skip the list entirely if prose flows better
+- A concluding paragraph that summarizes what the post just said
+- Any phrase that sounds like a LinkedIn caption or a motivational slide`;
 
   const userPrompt = `Write a blog post on the topic pillar: "${pillar.label}" — ${pillar.description}
 
@@ -411,6 +435,14 @@ Requirements:
 - Include at least one blockquote that captures a key insight
 - First paragraph must be a strong hook that draws the reader in immediately
 - The post should feel authentic to Jorge's dual identity as a data/tech professional AND an entrepreneur/activist/cyclist
+- Open with a specific anecdote or scene, not a broad claim
+- Second paragraph pays off the lede — states what this is really about
+- One idea per paragraph, no exceptions
+- No adverbs — rewrite with a stronger verb instead
+- No em dashes (—) anywhere in the text
+- No AI filler transitions (Além disso, Vale ressaltar, Em suma, etc.)
+- Close by returning to the opening moment or landing on a quiet image — never summarize
+- Sentence rhythm should feel uneven and human — not every paragraph the same length
 
 Respond with a JSON object:
 {
