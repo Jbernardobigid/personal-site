@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jorge Bernardo — Empreendedor · Builder · Ciclista</title>
+<meta name="description" content="Jorge Bernardo — especialista em segurança de dados e governança por IA, fundador da DePretoPraPreto e afterALL. Builder, ciclista, empreendedor.">
+<meta property="og:title" content="Jorge Bernardo">
+<meta property="og:description" content="Especialista em segurança de dados e governança por IA. Fundador da DePretoPraPreto e afterALL. Empreendedor · Builder · Ciclista.">
+<meta property="og:image" content="images/hero.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jorge Bernardo">
+<meta name="twitter:description" content="Especialista em segurança de dados e governança por IA. Fundador da DePretoPraPreto e afterALL.">
+<meta name="twitter:image" content="images/hero.jpg">
 <link rel="icon" href="brand_assets/logo_page_20.png" type="image/png">
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -181,7 +190,7 @@ nav.scrolled {
   gap: 5px;
   background: none;
   border: none;
-  cursor: none;
+  cursor: pointer;
   padding: 4px;
 }
 .nav-hamburger span {
@@ -306,6 +315,17 @@ nav.scrolled {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--mid);
+}
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 6.5vw, 92px);
+  font-weight: 900;
+  letter-spacing: -0.042em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 40px;
+  opacity: 0;
 }
 .hero-right {
   position: relative;
@@ -1108,7 +1128,7 @@ nav.scrolled {
   text-transform: uppercase;
   padding: 18px 40px;
   border: none;
-  cursor: none;
+  cursor: pointer;
   margin-top: 16px;
   transition: background 0.25s ease, gap 0.25s ease;
   border-radius: 1px;
@@ -1381,6 +1401,8 @@ footer {
   <a href="#sobre" onclick="closeDrawer()">Sobre</a>
   <a href="#carreira" onclick="closeDrawer()">Carreira</a>
   <a href="#projetos" onclick="closeDrawer()">Projetos</a>
+  <a href="#ciclismo" onclick="closeDrawer()">Ciclismo</a>
+  <a href="blog/" onclick="closeDrawer()">Blog</a>
   <a href="#contato" onclick="closeDrawer()">Contato</a>
 </div>
 
@@ -1394,6 +1416,8 @@ footer {
     <li><a href="#sobre">Sobre</a></li>
     <li><a href="#carreira">Carreira</a></li>
     <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#ciclismo">Ciclismo</a></li>
+    <li><a href="blog/">Blog</a></li>
   </ul>
   <a href="#contato" class="nav-cta">Contato</a>
   <button class="nav-hamburger" id="hamburger" aria-label="Menu">
@@ -1405,11 +1429,11 @@ footer {
 <section class="hero" id="home">
   <div class="hero-left">
     <div class="hero-eyebrow">Empreendedor · Builder · Ciclista</div>
+    <h1 class="hero-name">Jorge<br>Bernardo</h1>
     <p class="hero-intro">
-      Sou um empreendedor movido por <strong>excelência e estética radical.</strong>
-      Construo marcas que carregam significado — onde visão de negócios e identidade
-      cultural se encontram para criar algo que as pessoas <strong>não conseguem
-      deixar de notar.</strong>
+      Especialista em <strong>segurança de dados e governança por IA</strong> — e
+      fundador de marcas que carregam significado. Nos dois mundos, o que me move é
+      o mesmo: criar algo que as pessoas <strong>não conseguem deixar de notar.</strong>
     </p>
     <div class="hero-tags">
       <span class="hero-tag">Estratégia</span>
@@ -1445,15 +1469,14 @@ footer {
         </h2>
         <div class="about-body gsap-hidden">
           <p>
-            Por mais de uma década, venho criando negócios na interseção entre
-            <strong>estética radical e visão de negócios.</strong> Cada projeto parte
-            de uma convicção clara: belas ideias merecem existir no mundo com
-            excelência e propósito.
+            Por mais de 15 anos, construí expertise em <strong>segurança de dados,
+            privacidade e governança por IA</strong> — treinando equipes de engenharia
+            e arquitetura em LATAM, América do Norte, Europa e APAC.
           </p>
           <p>
-            Falo inglês, espanhol e português — e navego com a mesma fluência entre
-            culturas, mercados e disciplinas. Do conceito ao lançamento, do movimento
-            ao produto.
+            Em paralelo, fundei marcas na interseção entre <strong>estética radical
+            e identidade cultural.</strong> Belas ideias merecem existir no mundo com
+            excelência e propósito — do conceito ao lançamento, do movimento ao produto.
           </p>
         </div>
       </div>
@@ -1481,6 +1504,7 @@ footer {
 
 <!-- ── Carreira ─────────────────────────────────────────── -->
 <section id="carreira">
+  <div class="section-num gsap-hidden">— 02</div>
   <div class="career-top">
     <h2 class="career-heading gsap-hidden">
       Uma<br>
@@ -1512,6 +1536,21 @@ footer {
     <div class="career-row gsap-hidden">
       <span class="career-num">02</span>
       <div class="career-body">
+        <div class="career-company">De Preto Pra Preto</div>
+        <div class="career-role">Founder</div>
+        <div class="career-desc">
+          Fundei uma marca de ciclismo afrobrasileira — jerseys, identidade e movimento.
+          DePretoPraPreto nasce da certeza de que Beleza Negra e excelência no esporte
+          caminham juntos. Presente na Feira Preta e crescendo como referência cultural
+          no ciclismo nacional.
+        </div>
+      </div>
+      <span class="career-period">2022 — atual</span>
+    </div>
+
+    <div class="career-row gsap-hidden">
+      <span class="career-num">03</span>
+      <div class="career-body">
         <div class="career-company">BigID</div>
         <div class="career-role">Senior Delivery Services Engineer</div>
         <div class="career-desc">
@@ -1524,7 +1563,7 @@ footer {
     </div>
 
     <div class="career-row gsap-hidden">
-      <span class="career-num">03</span>
+      <span class="career-num">04</span>
       <div class="career-body">
         <div class="career-company">Forcepoint</div>
         <div class="career-role">Client Solutions Manager & Senior Cyber Engineer, LATAM</div>
@@ -1538,7 +1577,7 @@ footer {
     </div>
 
     <div class="career-row gsap-hidden">
-      <span class="career-num">04</span>
+      <span class="career-num">05</span>
       <div class="career-body">
         <div class="career-company">Symantec</div>
         <div class="career-role">DLP Technical Account Manager → Principal TAM</div>
@@ -1711,8 +1750,8 @@ footer {
     <div class="stat-label gsap-hidden">Idiomas falados<br>PT-BR · EN · ES</div>
   </div>
   <div class="stat-item">
-    <div class="stat-value gsap-hidden" style="font-size: clamp(56px,6vw,88px);">∞</div>
-    <div class="stat-label gsap-hidden">Resistência</div>
+    <div class="stat-value gsap-hidden">15<span style="font-size:0.55em;vertical-align:super;line-height:1">+</span></div>
+    <div class="stat-label gsap-hidden">Anos construindo<br>em tecnologia</div>
   </div>
 </section>
 
@@ -1747,6 +1786,12 @@ footer {
           <input class="form-input" type="text" id="name" name="name"
                  placeholder="Seu nome" required data-fs-field>
           <span class="field-error" data-fs-error="name"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" type="email" id="email" name="_replyto"
+                 placeholder="seu@email.com" required data-fs-field>
+          <span class="field-error" data-fs-error="email"></span>
         </div>
         <div class="form-group">
           <label class="form-label" for="subject">Assunto</label>
@@ -1788,7 +1833,7 @@ footer {
 
 <!-- ── Footer ────────────────────────────────────────────── -->
 <footer>
-  <span class="footer-copy">© 2025 Jorge Bernardo</span>
+  <span class="footer-copy">© <span id="footerYear">2025</span> Jorge Bernardo</span>
   <span class="footer-tagline">Estética encontra Estratégia.</span>
 </footer>
 
@@ -1808,11 +1853,30 @@ footer {
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
+/* ── Dynamic footer year ────────────────────────────────── */
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+/* ── closeDrawer (defined outside isPreview guard) ──────── */
+const hamburger = document.getElementById('hamburger');
+const drawer    = document.getElementById('navDrawer');
+let drawerOpen  = false;
+
+function closeDrawer() {
+  drawerOpen = false;
+  drawer.classList.remove('open');
+  document.body.style.overflow = '';
+  if (hamburger) {
+    hamburger.children[0].style.transform = '';
+    hamburger.children[1].style.opacity = '1';
+    hamburger.children[2].style.transform = '';
+  }
+}
+
 /* ── Preview mode: skip all animations ─────────────────── */
 const isPreview = new URLSearchParams(location.search).has('preview');
 if (isPreview) {
   document.querySelectorAll(
-    '.gsap-hidden, .hero-eyebrow, .hero-intro, .hero-tags, .hero-scroll-hint'
+    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint'
   ).forEach(el => { el.style.cssText += 'opacity:1!important;transform:none!important'; });
   document.querySelectorAll('img').forEach(img => {
     img.style.cssText += 'opacity:1!important;transform:none!important';
@@ -1860,18 +1924,6 @@ ScrollTrigger.create({
 });
 
 /* ── Mobile nav ────────────────────────────────────────── */
-const hamburger = document.getElementById('hamburger');
-const drawer    = document.getElementById('navDrawer');
-let drawerOpen  = false;
-
-function closeDrawer() {
-  drawerOpen = false;
-  drawer.classList.remove('open');
-  document.body.style.overflow = '';
-  hamburger.children[0].style.transform = '';
-  hamburger.children[1].style.opacity = '1';
-  hamburger.children[2].style.transform = '';
-}
 hamburger.addEventListener('click', () => {
   drawerOpen = !drawerOpen;
   drawer.classList.toggle('open', drawerOpen);
@@ -1897,9 +1949,12 @@ heroTl
   .fromTo('.hero-eyebrow',
     { y: 28, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0.4)
+  .fromTo('.hero-name',
+    { y: 48, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, 0.55)
   .fromTo('.hero-intro',
     { y: 40, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }, 0.65)
+    { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' }, 0.82)
   .fromTo('.hero-tags',
     { y: 24, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }, 1.0)
@@ -2057,7 +2112,7 @@ function updateNav(activeId) {
 <div id="photoViewer" role="dialog" aria-modal="true" aria-label="Visualizar foto">
   <div id="photoViewerBg"></div>
   <img id="photoViewerImg" src="" alt="">
-  <button id="photoViewerClose">ESC</button>
+  <button id="photoViewerClose" aria-label="Fechar visualizador">ESC</button>
   <div id="photoViewerNav"></div>
 </div>
 

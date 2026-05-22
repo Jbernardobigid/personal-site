@@ -28,6 +28,8 @@ const MIME = {
 http.createServer((req, res) => {
   let urlPath = req.url.split('?')[0];
   if (urlPath === '/') urlPath = '/index.html';
+  // Resolve trailing-slash directories to their index.html
+  if (urlPath.endsWith('/')) urlPath += 'index.html';
 
   const filePath = path.join(ROOT, urlPath);
 
