@@ -201,6 +201,10 @@ function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filena
 <meta name="twitter:title" content="${escapeJson(title)}">
 <meta name="twitter:description" content="${escapeJson(excerpt)}">
 <link rel="icon" href="../../brand_assets/logo_page_20.png" type="image/png">
+<script>
+  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
