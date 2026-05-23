@@ -1,33 +1,24 @@
 /**
  * post-to-linkedin.mjs
- * Reads post-meta.json written by generate-post.mjs, generates a DALL-E 3 image,
- * uploads it to LinkedIn, and publishes the post.
+ * Reads post-meta.json written by generate-post.mjs, uses the pre-generated
+ * OG image (falling back to generating a fresh one), and publishes to LinkedIn.
  *
  * Requires:
  *   LINKEDIN_ACCESS_TOKEN — OAuth 2.0 member token with w_member_social + openid + profile
- *   OPENAI_API_KEY        — for DALL-E 3 image generation
+ * Optional:
+ *   OPENAI_API_KEY        — only needed if no pre-generated image is found
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import OpenAI from 'openai';
+import { generatePostImage } from './generate-image.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN;
-const OPENAI_API_KEY        = process.env.OPENAI_API_KEY;
 
 if (!LINKEDIN_ACCESS_TOKEN) { console.error('Error: LINKEDIN_ACCESS_TOKEN is not set.'); process.exit(1); }
-if (!OPENAI_API_KEY)        { console.error('Error: OPENAI_API_KEY is not set.');        process.exit(1); }
-
-const IMAGE_PROMPTS = {
-  'data-security':    'Editorial abstract photograph, glowing encrypted data streams and floating network nodes in deep dark space, deep amber and indigo tones, cinematic dramatic lighting, ultra-sharp, professional magazine cover aesthetic, no text, no people, no letters',
-  'entrepreneurship': 'Editorial photograph, confident Black Brazilian professional in modern urban setting, warm golden hour light casting long shadows, São Paulo contemporary architecture in background, sophisticated and purposeful composition, no text, cinematic quality',
-  'cycling':          'Editorial sports photograph, Black cyclist riding powerfully through urban streets at dawn, motion blur on background with subject sharp, warm amber sunrise light, determination and grace, no text, cinematic sports magazine quality',
-  'brand':            'Editorial abstract, bold graphic identity system with color palettes and geometric forms arranged in dark space, warm terra cotta and black tones, sophisticated modernist composition, no text on elements, cinematic studio lighting',
-  'wellness':         'Editorial photograph, lone athlete in focused stillness in minimalist dark environment, single warm amber spotlight, sense of discipline and inner power, clean architectural background, no text, cinematic wellness magazine quality'
-};
 
 const HASHTAGS = {
   'data-security':    '#SegurançaDeDados #Privacidade #LGPD #GovernançaDeDados #IA',
@@ -37,6 +28,16 @@ const HASHTAGS = {
   'wellness':         '#Wellness #Desempenho #SaúdeMental #Atleta #afterALL'
 };
 
+async function getImageBuffer(imagePath, pillarId) {
+  if (imagePath && fs.existsSync(imagePath)) {
+    console.log('Using pre-generated OG image.');
+    return fs.readFileSync(imagePath);
+  }
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('No pre-generated image found and OPENAI_API_KEY is not set.');
+  return generatePostImage(pillarId, apiKey);
+}
+
 async function getMemberUrn() {
   const res = await fetch('https://api.linkedin.com/v2/userinfo', {
     headers: { Authorization: `Bearer ${LINKEDIN_ACCESS_TOKEN}` }
@@ -44,30 +45,6 @@ async function getMemberUrn() {
   if (!res.ok) throw new Error(`LinkedIn userinfo failed: ${res.status} ${await res.text()}`);
   const data = await res.json();
   return `urn:li:person:${data.sub}`;
-}
-
-async function generateImage(pillarId) {
-  const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
-  const prompt  = IMAGE_PROMPTS[pillarId] ?? IMAGE_PROMPTS['brand'];
-
-  console.log('Generating DALL-E 3 image...');
-  const response = await openai.images.generate({
-    model: 'gpt-image-2',
-    prompt,
-    n: 1,
-    size: '1536x1024',
-    quality: 'medium'
-  });
-
-  const item = response.data[0];
-  if (item.b64_json) {
-    console.log('Image generated (base64).');
-    return Buffer.from(item.b64_json, 'base64');
-  }
-  console.log('Image generated — downloading...');
-  const imgRes = await fetch(item.url);
-  if (!imgRes.ok) throw new Error(`Image download failed: ${imgRes.status}`);
-  return Buffer.from(await imgRes.arrayBuffer());
 }
 
 async function registerUpload(personUrn) {
@@ -148,13 +125,13 @@ async function main() {
     process.exit(1);
   }
 
-  const { title, excerpt, pillarId, postUrl } = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  const { title, excerpt, pillarId, postUrl, imagePath } = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
   console.log(`Posting to LinkedIn: "${title}"`);
 
   const personUrn   = await getMemberUrn();
-  console.log(`Member URN resolved.`);
+  console.log('Member URN resolved.');
 
-  const imageBuffer = await generateImage(pillarId);
+  const imageBuffer = await getImageBuffer(imagePath, pillarId);
   const { uploadUrl, assetUrn } = await registerUpload(personUrn);
   await uploadImage(uploadUrl, imageBuffer);
   await createPost({ personUrn, assetUrn, title, excerpt, pillarId, postUrl });
