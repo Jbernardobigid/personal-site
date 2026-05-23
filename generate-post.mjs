@@ -17,10 +17,12 @@ import Anthropic from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { generatePostImage } from './generate-image.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR   = path.join(__dirname, 'blog');
 const POSTS_DIR  = path.join(BLOG_DIR, 'posts');
+const IMAGES_DIR = path.join(POSTS_DIR, 'images');
 const INDEX_FILE = path.join(BLOG_DIR, 'index.html');
 const SITEMAP    = path.join(__dirname, 'sitemap.xml');
 const ROBOTS     = path.join(__dirname, 'robots.txt');
@@ -149,7 +151,7 @@ function escapeJson(str) {
 
 /* ── Post HTML builder ───────────────────────────────────── */
 
-function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename }) {
+function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl }) {
   const formattedDate = formatDate(date);
   const iso = isoDate(date);
   const postUrl = `${SITE_URL}/blog/posts/${filename}`;
@@ -194,10 +196,14 @@ function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filena
 <meta property="og:description" content="${escapeJson(excerpt)}">
 <meta property="og:url" content="${postUrl}">
 <meta property="og:locale" content="pt_BR">
+${imageUrl ? `<meta property="og:image" content="${imageUrl}">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">` : ''}
+<meta name="twitter:card" content="${imageUrl ? 'summary_large_image' : 'summary'}">
+<meta name="twitter:image" content="${imageUrl ?? ''}">
 <meta property="og:site_name" content="Jorge Bernardo">
 <meta property="article:author" content="Jorge Bernardo">
 <meta property="article:published_time" content="${iso}">
-<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${escapeJson(title)}">
 <meta name="twitter:description" content="${escapeJson(excerpt)}">
 <link rel="icon" href="../../brand_assets/logo_page_20.png" type="image/png">
@@ -483,8 +489,11 @@ Requirements:
   const slug = slugify(title);
   const filename = `${isoDate(date)}-${slug}.html`;
   const postPath = path.join(POSTS_DIR, filename);
+  const imageFilename = `${isoDate(date)}-${slug}.png`;
+  const imagePath = path.join(IMAGES_DIR, imageFilename);
+  const imageUrl = `${SITE_URL}/blog/posts/images/${imageFilename}`;
 
-  const postHtml = buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename });
+  const postHtml = buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl });
   const listItem = buildPostListItem({ title, pillar, date, excerpt, filename });
 
   if (dryRun) {
@@ -501,12 +510,23 @@ Requirements:
   }
 
   fs.mkdirSync(POSTS_DIR, { recursive: true });
+  fs.mkdirSync(IMAGES_DIR, { recursive: true });
   fs.writeFileSync(postPath, postHtml, 'utf8');
   console.log(`Post created: blog/posts/${filename}`);
 
+  let savedImagePath = null;
+  if (process.env.OPENAI_API_KEY) {
+    const imageBuffer = await generatePostImage(pillar.id, process.env.OPENAI_API_KEY);
+    fs.writeFileSync(imagePath, imageBuffer);
+    savedImagePath = imagePath;
+    console.log(`OG image saved: blog/posts/images/${imageFilename}`);
+  } else {
+    console.log('OPENAI_API_KEY not set — skipping OG image generation.');
+  }
+
   fs.writeFileSync(
     path.join(__dirname, 'post-meta.json'),
-    JSON.stringify({ title, excerpt, pillarId: pillar.id, postUrl: `${SITE_URL}/blog/posts/${filename}` }, null, 2),
+    JSON.stringify({ title, excerpt, pillarId: pillar.id, postUrl: `${SITE_URL}/blog/posts/${filename}`, imagePath: savedImagePath }, null, 2),
     'utf8'
   );
 

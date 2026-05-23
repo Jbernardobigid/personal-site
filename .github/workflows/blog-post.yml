@@ -33,6 +33,7 @@ jobs:
       - name: Generate blog post
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           if [ -n "${{ github.event.inputs.pillar }}" ]; then
             node generate-post.mjs --pillar "${{ github.event.inputs.pillar }}"
@@ -50,7 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add blog/
+          git add blog/ blog/posts/images/
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
