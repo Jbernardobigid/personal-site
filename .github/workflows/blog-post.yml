@@ -40,6 +40,12 @@ jobs:
             node generate-post.mjs
           fi
 
+      - name: Post to LinkedIn
+        env:
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node post-to-linkedin.mjs
+
       - name: Commit and push new post
         run: |
           git config user.name "github-actions[bot]"

@@ -504,6 +504,12 @@ Requirements:
   fs.writeFileSync(postPath, postHtml, 'utf8');
   console.log(`Post created: blog/posts/${filename}`);
 
+  fs.writeFileSync(
+    path.join(__dirname, 'post-meta.json'),
+    JSON.stringify({ title, excerpt, pillarId: pillar.id, postUrl: `${SITE_URL}/blog/posts/${filename}` }, null, 2),
+    'utf8'
+  );
+
   updateBlogIndex(listItem);
   console.log('Blog index updated.');
 
