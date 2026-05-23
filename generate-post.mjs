@@ -446,33 +446,36 @@ Requirements:
 - No em dashes (—) anywhere in the text
 - No AI filler transitions (Além disso, Vale ressaltar, Em suma, etc.)
 - Close by returning to the opening moment or landing on a quiet image — never summarize
-- Sentence rhythm should feel uneven and human — not every paragraph the same length
-
-Respond with a JSON object:
-{
-  "title": "...",
-  "excerpt": "One sentence excerpt for the blog listing page (in Portuguese, ~25 words max, no quotes around it)",
-  "content": "Full HTML post body — use <p>, <h2>, <h3>, <strong>, <em>, <blockquote><p>...</p></blockquote>, <ul><li>...</li></ul> tags only. Do NOT include the title in the content."
-}`;
+- Sentence rhythm should feel uneven and human — not every paragraph the same length`;
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 2048,
+    tools: [{
+      name: 'create_blog_post',
+      description: 'Create a blog post with title, excerpt, and HTML content',
+      input_schema: {
+        type: 'object',
+        properties: {
+          title: { type: 'string', description: 'The blog post title in Portuguese' },
+          excerpt: { type: 'string', description: 'One sentence excerpt (~25 words max) in Portuguese, no surrounding quotes' },
+          content: { type: 'string', description: 'Full HTML post body using only p, h2, h3, strong, em, blockquote>p, ul>li tags. Do NOT include the title.' }
+        },
+        required: ['title', 'excerpt', 'content']
+      }
+    }],
+    tool_choice: { type: 'tool', name: 'create_blog_post' },
     messages: [{ role: 'user', content: userPrompt }],
     system: systemPrompt,
   });
 
-  const raw = response.content[0].text;
-
-  let parsed;
-  try {
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    parsed = JSON.parse(jsonMatch[0]);
-  } catch {
-    console.error('Failed to parse Claude response as JSON.');
-    console.error(raw);
+  const toolUse = response.content.find(b => b.type === 'tool_use');
+  if (!toolUse) {
+    console.error('Claude did not return a tool_use block.');
+    console.error(JSON.stringify(response.content, null, 2));
     process.exit(1);
   }
+  const parsed = toolUse.input;
 
   const { title, excerpt, content } = parsed;
   const date = new Date();
