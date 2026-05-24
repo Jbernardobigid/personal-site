@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-24T00:00:00Z",
+  "title": "Design System: Jorge Bernardo",
+  "extensions": {
+    "colorMeta": {
+      "charred-earth": {
+        "role": "neutral",
+        "displayName": "Charred Earth",
+        "canonical": "#1e1a14",
+        "tonalRamp": ["#ede9e3", "#d4cfc8", "#b8b2aa", "#9b958d", "#7d7771", "#5e5952", "#403c37", "#1e1a14"]
+      },
+      "ancestral-root": {
+        "role": "primary",
+        "displayName": "Ancestral Root",
+        "canonical": "#5e412d",
+        "tonalRamp": ["#f0e8df", "#d9c4b0", "#c09f80", "#a07a56", "#7d5c3f", "#5e412d", "#3f2a1a", "#261808"]
+      },
+      "terracotta-signal": {
+        "role": "primary",
+        "displayName": "Terracotta Signal",
+        "canonical": "#a0714f",
+        "tonalRamp": ["#f5ece4", "#e2c9b3", "#cda682", "#b88458", "#a0714f", "#7d5438", "#583a24", "#352213"]
+      },
+      "night-intelligence": {
+        "role": "secondary",
+        "displayName": "Night Intelligence",
+        "canonical": "#1c314a",
+        "tonalRamp": ["#e0e8f0", "#b8ccdf", "#8dafc9", "#6293b3", "#3e7399", "#2a527a", "#1c314a", "#0d1e30"]
+      },
+      "dark-green-terroso": {
+        "role": "secondary",
+        "displayName": "Dark Green Terroso",
+        "canonical": "#273F29",
+        "tonalRamp": ["#dfeade", "#baced8", "#94b494", "#699c6a", "#4a7a4c", "#355e38", "#273F29", "#152217"]
+      },
+      "cool-ash": {
+        "role": "neutral",
+        "displayName": "Cool Ash",
+        "canonical": "#d9d9d9",
+        "tonalRamp": ["#f5f5f5", "#e8e8e8", "#d9d9d9", "#c4c4c4", "#adadad", "#949494", "#747474", "#4a4a4a"]
+      },
+      "pure-white": {
+        "role": "neutral",
+        "displayName": "Pure White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#ffffff", "#f2f2f2", "#e5e5e5", "#d9d9d9", "#cccccc", "#bfbfbf", "#b2b2b2", "#a6a6a6"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero name, landmark section headings. Used once per major section at most." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings with bold + italic-light mixed weight contrast." },
+      "body": { "displayName": "Body", "purpose": "All narrative prose. Lora. Max line length 65ch." },
+      "label": { "displayName": "Label", "purpose": "Operational metadata — section numbers, nav links, tags, timestamps. Never > 11px." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "state-change", "value": "0.2s ease", "purpose": "Default for opacity, color, border-color transitions." },
+      { "name": "character-move", "value": "0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)", "purpose": "Career row reveal, hover slide-in. Has weight and intent." },
+      { "name": "expand", "value": "0.5s ease", "purpose": "Work item underline expansion, full-width pseudo-element." },
+      { "name": "nav-transition", "value": "0.4s ease", "purpose": "Nav background fade on scroll." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "960px", "purpose": "Main layout breakpoint. Below: single column, drawer nav." },
+      { "name": "xs", "value": "480px", "purpose": "Tighter padding on smallest screens." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Form submit. Warm terracotta fill, mono uppercase. The one button that asks for something.",
+      "html": "<button class=\"ds-btn-primary\">Enviar mensagem <span>→</span></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 12px; background: #5e412d; color: #ffffff; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; padding: 18px 40px; border: none; border-radius: 1px; cursor: pointer; transition: background 0.25s ease, gap 0.25s ease; } .ds-btn-primary:hover { background: #a0714f; gap: 18px; } .ds-btn-primary:focus-visible { outline: 2px solid #a0714f; outline-offset: 3px; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "CTA / Ghost Button",
+      "kind": "button",
+      "refersTo": "button-cta",
+      "description": "Nav and section CTAs. Transparent with terra border — invites without demanding.",
+      "html": "<a class=\"ds-btn-cta\" href=\"#contato\">Contato</a>",
+      "css": ".ds-btn-cta { display: inline-flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #a0714f; text-decoration: none; border: 1px solid rgba(160,113,79,0.25); padding: 8px 20px; border-radius: 1px; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; } .ds-btn-cta:hover { background: #5e412d; color: #ffffff; border-color: #5e412d; } .ds-btn-cta:focus-visible { outline: 2px solid #a0714f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Tag / Chip",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Hero tags, language pills. Operational classification in terra border.",
+      "html": "<span class=\"ds-tag\">Afrofuturismo</span>",
+      "css": ".ds-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #a0714f; padding: 7px 16px; border: 1px solid rgba(160,113,79,0.25); border-radius: 1px; transition: background 0.2s ease, color 0.2s ease; cursor: default; } .ds-tag:hover { background: #5e412d; color: #ffffff; }"
+    },
+    {
+      "name": "Form Input",
+      "kind": "input",
+      "refersTo": "button-primary",
+      "description": "Underline-only input. No box, no radius. Focus shifts border to terracotta.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-name\">Nome</label><input class=\"ds-input\" id=\"ds-name\" type=\"text\" placeholder=\"Seu nome\"></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; } .ds-field-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); } .ds-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.09); padding: 12px 0; font-family: 'Lora', Georgia, serif; font-size: 16px; color: #ffffff; outline: none; transition: border-color 0.25s ease; appearance: none; } .ds-input::placeholder { color: rgba(255,255,255,0.18); font-style: italic; } .ds-input:focus { border-color: #a0714f; } .ds-input[aria-invalid='true'] { border-color: #c0392b; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "button-cta",
+      "description": "Fixed nav. Transparent at top; frosted charred-earth on scroll. The one elevated component.",
+      "html": "<nav class=\"ds-nav ds-nav--scrolled\"><a href=\"#\" class=\"ds-nav-logo\">JORGE BERNARDO</a><ul class=\"ds-nav-links\"><li><a href=\"#sobre\">Sobre</a></li><li><a href=\"#carreira\">Carreira</a></li><li><a href=\"#projetos\">Projetos</a></li></ul><a href=\"#contato\" class=\"ds-btn-cta\">Contato</a></nav>",
+      "css": ".ds-nav { position: fixed; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 52px; transition: background 0.4s ease, border-color 0.4s ease; border-bottom: 1px solid transparent; z-index: 100; } .ds-nav--scrolled { background: rgba(0,0,0,0.85); border-color: rgba(255,255,255,0.09); backdrop-filter: blur(12px); } .ds-nav-logo { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #ffffff; text-decoration: none; opacity: 0.85; } .ds-nav-links { display: flex; gap: 40px; list-style: none; } .ds-nav-links a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; text-decoration: none; opacity: 0.4; transition: opacity 0.2s ease; } .ds-nav-links a:hover { opacity: 1; }"
+    },
+    {
+      "name": "Career Row",
+      "kind": "custom",
+      "refersTo": "button-primary",
+      "description": "Signature list component. Hover reveals terracotta left-accent and warm tint. The system's canonical interactive row.",
+      "html": "<div class=\"ds-career-row\"><span class=\"ds-career-num\">01</span><div class=\"ds-career-body\"><div class=\"ds-career-company\">BigID</div><div class=\"ds-career-role\">Sr. Technical Trainer</div><div class=\"ds-career-desc\">Designing and leading global learning experiences across LATAM, North America, Europe, and APAC.</div></div><span class=\"ds-career-period\">2024 — present</span></div>",
+      "css": ".ds-career-row { display: grid; grid-template-columns: 56px 1fr auto; align-items: start; gap: 32px; padding: 36px 0; border-bottom: 1px solid rgba(255,255,255,0.09); position: relative; transition: background 0.3s ease, padding-left 0.3s ease; cursor: default; } .ds-career-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: #a0714f; transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); } .ds-career-row:hover { background: rgba(94,65,45,0.08); padding-left: 16px; } .ds-career-row:hover::before { width: 3px; } .ds-career-num { font-family: 'DM Mono', monospace; font-size: 11px; color: #a0714f; padding-top: 6px; letter-spacing: 0.08em; } .ds-career-company { font-family: 'DM Mono', monospace; font-size: 11px; color: #a0714f; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; } .ds-career-role { font-family: 'Noto Serif Display', Georgia, serif; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 6px; color: #ffffff; transition: color 0.3s ease; } .ds-career-row:hover .ds-career-role { color: #a0714f; } .ds-career-desc { font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.75; color: rgba(255,255,255,0.45); max-width: 560px; } .ds-career-period { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.25); white-space: nowrap; padding-top: 6px; }"
+    },
+    {
+      "name": "Work / Project Row",
+      "kind": "custom",
+      "refersTo": "button-cta",
+      "description": "Project list link. Bottom underline expands on hover. Name shifts to terracotta.",
+      "html": "<a class=\"ds-work-item\" href=\"https://www.depretoprapreto.com.br\"><span class=\"ds-work-num\">01</span><span class=\"ds-work-name\">DePretoPraPreto</span><span class=\"ds-work-cat\">Marca · Ciclismo</span><span class=\"ds-work-year\">2021</span><span class=\"ds-work-arrow\">↗</span></a>",
+      "css": ".ds-work-item { display: grid; grid-template-columns: 52px 1fr auto auto 48px; align-items: center; gap: 28px; padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,0.09); text-decoration: none; color: #ffffff; position: relative; overflow: hidden; } .ds-work-item::before { content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 0; background: #a0714f; transition: width 0.5s ease; } .ds-work-item:hover::before { width: 100%; } .ds-work-num { font-family: 'DM Mono', monospace; font-size: 11px; color: #a0714f; letter-spacing: 0.08em; } .ds-work-name { font-family: 'Noto Serif Display', Georgia, serif; font-size: 26px; font-weight: 700; letter-spacing: -0.025em; transition: color 0.25s ease; } .ds-work-item:hover .ds-work-name { color: #a0714f; } .ds-work-cat, .ds-work-year { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.45); white-space: nowrap; } .ds-work-arrow { font-size: 18px; color: rgba(255,255,255,0.3); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), color 0.2s ease; text-align: right; } .ds-work-item:hover .ds-work-arrow { transform: translate(5px,-5px); color: #a0714f; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Resistance",
+    "overview": "This system operates on a principle borrowed from Jorge's own brand guide: 'não se explica, se posiciona.' It doesn't explain itself. Every element earns its place through presence, not decoration. The design vocabulary is dark, warm, and surgical — it lives at the intersection Jorge lives at: corporate authority and cultural resistance, ancestral depth and algorithmic precision. The moodboard anchors are MR. ROBOT, Neo-Noir, and Afrofuturismo — not as aesthetic costumes, but as structural references for how power can speak quietly.\n\nThe system rejects the temptation to signal. Nothing shouts cultural identity; the terracotta is a color pulled from real clothing worn on real cobblestones in Madrid, not a diversity indicator. The Noto Serif Display is a liturgical column, not a headline trick. The grain on every surface is a film texture, not a design trend.\n\nWarm but deliberate. Every transition breathes — not elastic, not bouncy — but with the warmth of something handmade. The system never animates to please; it moves when it has a reason to move.",
+    "keyCharacteristics": [
+      "Dark warm ground (#1e1a14) — charred earth, not default dark mode",
+      "Terracotta as the one warm signal — used in ≤20% of any surface",
+      "Typography that mixes vertical authority (display) with literary warmth (body)",
+      "Near-zero radius everywhere — 1px, almost surgical",
+      "Grain texture as the depth layer — no traditional box-shadows",
+      "DM Mono for all operational metadata",
+      "Entrance motion via GSAP — staggered reveals, never gratuitous"
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Terracotta (both ancestral-root and terracotta-signal) appears on ≤20% of any given surface. Its scarcity is the entire point.", "section": "colors" },
+      { "name": "The No Invented Colors Rule", "body": "Use only the Futuro Preto palette. If a design requires a new color, the design is wrong — not the palette.", "section": "colors" },
+      { "name": "The Dark Green Reserve Rule", "body": "#273F29 is in the palette but not yet deployed. When a surface needs ancestral stability without terracotta warmth — use it intentionally.", "section": "colors" },
+      { "name": "The Italic Contrast Rule", "body": "Within display and headline type, italic + weight 300 signals the poetic or human dimension. Never italicize at 900 weight.", "section": "typography" },
+      { "name": "The No-Scale Collapse Rule", "body": "All headings use fluid clamp(). Never a fixed px heading value. The display-to-body ratio is ≥2.5× at all sizes.", "section": "typography" },
+      { "name": "The Mono Label Ceiling Rule", "body": "DM Mono labels never exceed 11px. Above that, mono reads as code, not metadata.", "section": "typography" },
+      { "name": "The No-Shadow Rule", "body": "Do not add box-shadow to components. Depth is grain + tonal layering. A shadow is a design error in this system.", "section": "elevation" },
+      { "name": "The One Float Rule", "body": "The scrolled nav is the only component with backdrop-filter: blur. Adding blur anywhere else introduces glassmorphism — absolute ban.", "section": "elevation" },
+      { "name": "The No-Card Rule", "body": "Do not introduce cards with border + background + shadow + radius. This system uses row lists, photo panels, and full-bleed sections.", "section": "components" }
+    ],
+    "dos": [
+      "Use only the five official Futuro Preto colors plus their site derivations.",
+      "Use #1e1a14 as the page background — warm near-black, not #000000.",
+      "Use Noto Serif Display for all titles, headings, and display type.",
+      "Keep border-radius at 1px everywhere.",
+      "Mix Noto Serif bold + italic-light for headings — the 'DECLARATION. qualifier.' pattern.",
+      "Apply the SVG grain texture to any new full-page surface.",
+      "Use DM Mono for all labels, metadata, section numbers, tags, and timestamps.",
+      "Use clamp() for all heading sizes.",
+      "Check brand_assets/ before writing any <img> placeholder.",
+      "Keep transitions warm but deliberate: 0.2s–0.4s ease for state changes."
+    ],
+    "donts": [
+      "Don't use box-shadow anywhere. Depth is grain + tonal layering.",
+      "Don't add backdrop-filter: blur to any component except the scrolled nav.",
+      "Don't build card grids — the system uses row lists and full-bleed sections.",
+      "Don't make the site look like a Generic SaaS Portfolio (navy + white, feature list, CTA grid).",
+      "Don't make it look like a LinkedIn-style resume — timeline-heavy, credential-first, corporate.",
+      "Don't use terracotta as a fill for large surfaces. Its rarity is its power.",
+      "Don't import DePretoPraPreto's visual language into the personal brand.",
+      "Don't use transition-all. Specify exactly which properties transition.",
+      "Don't use the default Tailwind palette as filler.",
+      "Don't add new fonts — the three-family system is complete.",
+      "Don't use gradient-text (background-clip: text). Absolute ban.",
+      "Don't add border-left greater than 1px as a colored stripe on cards or callouts.",
+      "Don't center-stack everything. Left-aligned asymmetric layouts are the default."
+    ]
+  }
+}
