@@ -57,9 +57,10 @@ html { scroll-behavior: smooth; font-size: 16px; }
 :root {
   --black:       #1e1a14;
   --terra:       #5e412d;
-  --night:       #1c314a;
-  --ash:         #d9d9d9;
   --terra-light: #a0714f;
+  --night:       #1c314a;
+  --green:       #273F29;
+  --ash:         #d9d9d9;
   --white:       #ffffff;
   --mid:         rgba(255,255,255,0.45);
   --border:      rgba(255,255,255,0.09);
@@ -271,6 +272,9 @@ nav.scrolled {
   min-height: 0;
   overflow: hidden;
   z-index: 2;
+  background:
+    radial-gradient(ellipse 70% 55% at 0% 90%, rgba(94,65,45,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 5%, rgba(28,49,74,0.12) 0%, transparent 50%);
 }
 .hero-main {
   display: flex;
@@ -373,10 +377,10 @@ nav.scrolled {
 }
 .hero-name {
   font-family: var(--font-display);
-  font-size: clamp(52px, 6.5vw, 92px);
+  font-size: clamp(56px, 7vw, 108px);
   font-weight: 900;
-  letter-spacing: -0.042em;
-  line-height: 0.9;
+  letter-spacing: -0.044em;
+  line-height: 0.88;
   text-transform: uppercase;
   color: var(--white);
   margin-bottom: 40px;
@@ -435,7 +439,7 @@ nav.scrolled {
 /* ── About ──────────────────────────────────────────────── */
 #sobre {
   display: grid;
-  grid-template-columns: 42fr 58fr;
+  grid-template-columns: 44fr 56fr;
   border-top: 1px solid var(--border);
 }
 .about-photo {
@@ -461,10 +465,11 @@ nav.scrolled {
   pointer-events: none;
 }
 .about-content {
-  padding: 72px 60px 72px 52px;
+  padding: 80px 64px 80px 56px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: radial-gradient(ellipse 70% 60% at 100% 0%, rgba(94,65,45,0.06) 0%, transparent 60%);
 }
 .about-grid {
   display: grid;
@@ -497,8 +502,7 @@ nav.scrolled {
 .about-body strong { color: var(--white); font-weight: 600; }
 .about-facts {
   padding-top: 8px;
-  border-left: 1px solid var(--border);
-  padding-left: 44px;
+  padding-left: 0;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -509,14 +513,27 @@ nav.scrolled {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--terra-light);
-  margin-bottom: 6px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.about-fact dt::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 1px;
+  background: var(--terra-light);
+  opacity: 0.5;
+  flex-shrink: 0;
 }
 .about-fact dd {
   font-family: var(--font-body);
   font-size: 15px;
-  line-height: 1.55;
+  line-height: 1.58;
   color: var(--ash);
   margin: 0;
+  padding-left: 24px;
 }
 
 /* ── Career ─────────────────────────────────────────────── */
@@ -568,17 +585,16 @@ nav.scrolled {
 .career-row::before {
   content: '';
   position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 0;
-  background: var(--terra-light);
-  transition: width 0.35s cubic-bezier(.25,.46,.45,.94);
+  inset: 0;
+  background: linear-gradient(90deg, rgba(94,65,45,0.14) 0%, transparent 72%);
+  opacity: 0;
+  transition: opacity 0.38s ease;
 }
 .career-row:hover {
-  background: rgba(94,65,45,0.08);
-  padding-left: 16px;
+  background: transparent;
 }
 .career-row:hover::before {
-  width: 3px;
+  opacity: 1;
 }
 .career-num {
   font-family: var(--font-mono);
@@ -626,8 +642,8 @@ nav.scrolled {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   overflow: hidden;
-  padding: 14px 0;
-  background: rgba(94,65,45,0.06);
+  padding: 16px 0;
+  background: rgba(94,65,45,0.09);
 }
 .marquee-track {
   display: flex;
@@ -738,32 +754,35 @@ nav.scrolled {
 
 /* ── Statement ──────────────────────────────────────────── */
 #statement {
-  padding: 100px 60px;
+  padding: 120px 72px 120px 60px;
   border-top: 1px solid var(--border);
   position: relative;
   overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 50%, rgba(28,49,74,0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 0% 0%, rgba(94,65,45,0.06) 0%, transparent 50%);
 }
 #statement::before {
   content: '"';
   position: absolute;
-  top: 60px; left: 52px;
+  top: 40px; left: 44px;
   font-family: var(--font-display);
-  font-size: 220px;
+  font-size: 280px;
   font-weight: 900;
   line-height: 1;
   color: var(--terra);
-  opacity: 0.12;
+  opacity: 0.10;
   pointer-events: none;
   user-select: none;
 }
 .statement-text {
   font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 58px);
+  font-size: clamp(30px, 4.2vw, 62px);
   font-weight: 300;
   font-style: italic;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  max-width: 900px;
+  line-height: 1.22;
+  letter-spacing: -0.024em;
+  max-width: 920px;
   position: relative;
   z-index: 1;
 }
@@ -874,6 +893,16 @@ nav.scrolled {
   z-index: 2;
   pointer-events: none;
 }
+/* Subtle earth/ground tint at bottom — anchors the photo grid */
+.dppp-photos::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 35%;
+  background: linear-gradient(to top, rgba(39,63,41,0.18) 0%, transparent 100%);
+  z-index: 3;
+  pointer-events: none;
+}
 
 /* ── Ciclismo ────────────────────────────────────────────── */
 #ciclismo {
@@ -942,9 +971,9 @@ nav.scrolled {
 }
 .cycling-narrative p strong { color: var(--white); }
 .cycling-org-card {
-  background: rgba(94,65,45,0.1);
+  background: rgba(94,65,45,0.08);
   border: 1px solid var(--border-terra);
-  border-left: 3px solid var(--terra-light);
+  border-top: 2px solid var(--terra-light);
   padding: 36px 40px;
   margin-top: 4px;
 }
@@ -1013,21 +1042,22 @@ nav.scrolled {
 .cm-5 img { object-position: center 8%;  }
 .cm-6 img { object-position: center 12%; }
 .cycling-quote {
-  padding: 88px 72px;
+  padding: 100px 72px;
   border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(39,63,41,0.07) 0%, transparent 70%);
 }
 .cycling-quote p {
   font-family: var(--font-display);
-  font-size: clamp(32px, 4vw, 60px);
+  font-size: clamp(34px, 4.2vw, 64px);
   font-weight: 300;
   font-style: italic;
   letter-spacing: -0.025em;
   color: var(--ash);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   max-width: 900px;
 }
 .cycling-quote cite {
@@ -1042,12 +1072,22 @@ nav.scrolled {
 /* ── Stats ──────────────────────────────────────────────── */
 #stats {
   background: var(--night);
-  padding: 80px 60px;
-  border-top: 1px solid rgba(28,49,74,0.5);
+  padding: 88px 60px;
+  border-top: 1px solid var(--border);
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
 }
+#stats::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 60px; right: auto;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--terra) 0%, transparent 55%);
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+}
+#stats.lines-drawn::before { width: calc(100% - 120px); }
 .stat-item {
   padding: 0 48px 0 0;
   border-right: 1px solid rgba(255,255,255,0.08);
@@ -1076,9 +1116,19 @@ nav.scrolled {
 
 /* ── Contact ────────────────────────────────────────────── */
 #contato {
-  padding: 88px 60px 80px;
+  padding: 96px 60px 88px;
   border-top: 1px solid var(--border);
+  position: relative;
 }
+#contato::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 60px;
+  width: 0; height: 2px;
+  background: var(--terra-light);
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+}
+#contato.lines-drawn::before { width: 72px; }
 .contato-heading {
   font-family: var(--font-display);
   font-size: clamp(60px, 9vw, 128px);
@@ -1306,7 +1356,7 @@ nav.scrolled {
 
 /* ── Footer ─────────────────────────────────────────────── */
 footer {
-  padding: 28px 72px;
+  padding: 32px 72px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -1318,6 +1368,21 @@ footer {
   color: rgba(255,255,255,0.22);
   letter-spacing: 0.08em;
 }
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.footer-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+.footer-link:hover { color: var(--terra-light); }
 .footer-tagline {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -1427,21 +1492,28 @@ footer {
   .nav-hamburger { display: flex; }
 
   .hero { grid-template-columns: 1fr; height: auto; min-height: 100svh; }
-  .hero-left { padding: 80px 28px 60px; justify-content: flex-end; min-height: 55svh; }
-  .hero-right { height: 50svh; order: -1; }
+  .hero-left {
+    padding: 32px 28px 56px;
+    justify-content: flex-end;
+    min-height: 55svh;
+    background: none;
+  }
+  .hero-right { height: 48svh; order: -1; }
   .hero-right::before { width: 0; }
   .hero-right::after {
     background:
       linear-gradient(to bottom, var(--black) 0%, transparent 40%, rgba(0,0,0,0.5) 100%);
   }
-  .hero-intro { font-size: 18px; }
+  .hero-intro { font-size: 18px; line-height: 1.7; }
+  .hero-stats { display: none; }
+  .hero-name { font-size: clamp(52px, 13vw, 80px); }
 
   #sobre { grid-template-columns: 1fr; }
   .about-photo { min-height: 60vw; }
   .about-photo::after { display: none; }
   .about-content { padding: 60px 28px; }
   .about-grid { grid-template-columns: 1fr; gap: 36px; }
-  .about-facts { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 28px; flex-direction: row; flex-wrap: wrap; gap: 20px; }
+  .about-facts { border-top: 1px solid var(--border); padding-top: 28px; flex-direction: row; flex-wrap: wrap; gap: 20px; }
   .about-fact { min-width: 140px; }
 
   #carreira { padding: 80px 28px; }
@@ -1453,8 +1525,8 @@ footer {
   .work-item { grid-template-columns: 40px 1fr 40px; gap: 16px; }
   .work-cat, .work-year { display: none; }
 
-  #statement { padding: 80px 28px; }
-  #statement::before { font-size: 120px; top: 20px; left: 16px; }
+  #statement { padding: 80px 28px; background: none; }
+  #statement::before { font-size: 140px; top: 20px; left: 16px; }
 
   #dppp { grid-template-columns: 1fr; }
   .dppp-content { padding: 60px 28px; }
@@ -1473,18 +1545,22 @@ footer {
   .cm-6 { grid-column: 2; grid-row: 3; }
   .cycling-quote { padding: 60px 28px; }
 
-  #stats { grid-template-columns: 1fr; padding: 60px 28px; gap: 0; }
+  #stats { grid-template-columns: 1fr; padding: 64px 28px; gap: 0; }
+  #stats::before { left: 28px; right: auto; }
+  #stats.lines-drawn::before { width: calc(100% - 56px); }
   .stat-item {
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.07);
-    padding: 36px 0 !important;
+    padding: 40px 0 !important;
   }
   .stat-item:last-child { border-bottom: none; }
 
   #contato { padding: 80px 28px 60px; }
+  #contato::before { left: 28px; }
   .contato-grid { grid-template-columns: 1fr; gap: 64px; }
 
-  footer { padding: 24px 28px; flex-direction: column; gap: 10px; text-align: center; }
+  footer { padding: 28px 28px; flex-direction: column; gap: 14px; text-align: center; }
+  .footer-links { gap: 20px; }
 
   #photoViewerClose {
     top: 20px; right: 20px;
@@ -1503,6 +1579,29 @@ footer {
   footer { padding: 20px; }
 }
 
+.stat-plus {
+  font-size: 0.55em;
+  vertical-align: super;
+  line-height: 1;
+}
+
+/* ── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  .gsap-hidden,
+  .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint, .hero-stats {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #stats::before, #contato::before {
+    width: calc(100% - 120px);
+    transition: none;
+  }
+  #contato::before { width: 72px; }
+}
 </style>
 </head>
 <body>
@@ -1886,22 +1985,22 @@ footer {
 <!-- ── Stats ─────────────────────────────────────────────── -->
 <section id="stats">
   <div class="stat-item">
-    <div class="stat-value gsap-hidden">2</div>
+    <div class="stat-value gsap-hidden"><span class="count-num" data-count="2">0</span></div>
     <div class="stat-label gsap-hidden">Marcas fundadas<br>do zero</div>
   </div>
   <div class="stat-item">
-    <div class="stat-value accent gsap-hidden">3</div>
+    <div class="stat-value accent gsap-hidden"><span class="count-num" data-count="3">0</span></div>
     <div class="stat-label gsap-hidden">Idiomas falados<br>PT-BR · EN · ES</div>
   </div>
   <div class="stat-item">
-    <div class="stat-value gsap-hidden">15<span style="font-size:0.55em;vertical-align:super;line-height:1">+</span></div>
+    <div class="stat-value gsap-hidden"><span class="count-num" data-count="15">0</span><span class="stat-plus">+</span></div>
     <div class="stat-label gsap-hidden">Anos construindo<br>em tecnologia</div>
   </div>
 </section>
 
 <!-- ── Contato ───────────────────────────────────────────── -->
 <section id="contato">
-  <h2 class="contato-heading gsap-hidden">
+  <h2 class="contato-heading">
     Vamos<br>
     <em>construir</em><br>
     juntos.
@@ -1978,6 +2077,11 @@ footer {
 <!-- ── Footer ────────────────────────────────────────────── -->
 <footer>
   <span class="footer-copy">© <span id="footerYear">2025</span> Jorge Bernardo</span>
+  <div class="footer-links">
+    <a href="blog/" class="footer-link">Blog</a>
+    <a href="https://www.linkedin.com/in/jorge-bernardo/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+    <a href="#contato" class="footer-link">Contato</a>
+  </div>
   <span class="footer-tagline">Estética encontra Estratégia.</span>
 </footer>
 
@@ -2025,10 +2129,20 @@ if (isPreview) {
   document.querySelectorAll('img').forEach(img => {
     img.style.cssText += 'opacity:1!important;transform:none!important';
   });
-  // Show counter target values immediately
-  document.querySelectorAll('[data-count]').forEach(el => {
-    el.textContent = el.dataset.count;
-  });
+  document.querySelectorAll('[data-count]').forEach(el => { el.textContent = el.dataset.count; });
+  document.querySelector('#stats')?.classList.add('lines-drawn');
+  document.querySelector('#contato')?.classList.add('lines-drawn');
+}
+
+/* ── Reduced motion: reveal everything immediately ─────── */
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (prefersReducedMotion && !isPreview) {
+  document.querySelectorAll(
+    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint, .hero-stats, .contato-heading'
+  ).forEach(el => { el.style.cssText += 'opacity:1!important;transform:none!important'; });
+  document.querySelectorAll('[data-count]').forEach(el => { el.textContent = el.dataset.count; });
+  document.querySelector('#stats')?.classList.add('lines-drawn');
+  document.querySelector('#contato')?.classList.add('lines-drawn');
 }
 
 /* ── Custom cursor ─────────────────────────────────────── */
@@ -2082,6 +2196,7 @@ hamburger.addEventListener('click', () => {
 });
 
 /* ── Hero entrance animation ───────────────────────────── */
+if (!prefersReducedMotion) {
 const heroTl = gsap.timeline({ delay: 0.15 });
 heroTl
   .fromTo(nav,
@@ -2108,6 +2223,10 @@ heroTl
   .fromTo('.hero-stats',
     { y: 20, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' }, 1.4);
+} /* end !prefersReducedMotion (hero) */
+
+/* ── All scroll-driven animations ─────────────────────── */
+if (!prefersReducedMotion) {
 
 /* ── Hero parallax ─────────────────────────────────────── */
 gsap.to('.hero-right img', {
@@ -2180,14 +2299,26 @@ gsap.utils.toArray('#dppp img').forEach((img, i) => {
     });
 });
 
-/* ── Stat values punch-in ───────────────────────────────── */
+/* ── Stat values punch-in + counter ─────────────────────── */
 gsap.utils.toArray('#stats .stat-value').forEach((el, i) => {
   gsap.fromTo(el,
-    { y: 24, opacity: 0, scale: 0.9 },
-    { y: 0, opacity: 1, scale: 1, duration: 0.75, ease: 'back.out(1.5)',
+    { y: 24, opacity: 0, scale: 0.92 },
+    { y: 0, opacity: 1, scale: 1, duration: 0.75, ease: 'power3.out',
       scrollTrigger: { trigger: '#stats', start: 'top 80%', once: true },
       delay: i * 0.12,
     });
+});
+gsap.utils.toArray('.count-num').forEach((el, i) => {
+  const target = parseInt(el.dataset.count, 10);
+  const obj = { val: 0 };
+  gsap.to(obj, {
+    val: target,
+    duration: 1.4,
+    ease: 'power2.out',
+    delay: 0.2 + i * 0.12,
+    scrollTrigger: { trigger: '#stats', start: 'top 80%', once: true },
+    onUpdate() { el.textContent = Math.round(obj.val); },
+  });
 });
 
 /* ── Stats section reveal ───────────────────────────────── */
@@ -2234,6 +2365,31 @@ gsap.utils.toArray('.cycling-mosaic-item img').forEach(img => {
     scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: 1 },
   });
 });
+
+/* ── Accent line draw — stats ───────────────────────────── */
+ScrollTrigger.create({
+  trigger: '#stats',
+  start: 'top 85%',
+  once: true,
+  onEnter: () => document.getElementById('stats').classList.add('lines-drawn'),
+});
+
+/* ── Accent line draw — contato ─────────────────────────── */
+ScrollTrigger.create({
+  trigger: '#contato',
+  start: 'top 85%',
+  once: true,
+  onEnter: () => document.getElementById('contato').classList.add('lines-drawn'),
+});
+
+/* ── Contact heading dramatic entrance ──────────────────── */
+gsap.fromTo('.contato-heading',
+  { y: 80, opacity: 0 },
+  { y: 0, opacity: 1, duration: 1.3, ease: 'power4.out',
+    scrollTrigger: { trigger: '#contato', start: 'top 78%', once: true },
+  });
+
+} /* end !prefersReducedMotion (scroll animations) */
 
 /* ── Nav active section highlight ───────────────────────── */
 const sections = ['sobre','carreira','projetos','contato'];
