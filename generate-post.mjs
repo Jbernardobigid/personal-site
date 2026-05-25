@@ -31,6 +31,11 @@ const ROBOTS     = path.join(__dirname, 'robots.txt');
 // When you get a custom domain, update the secret value — everything regenerates automatically.
 const SITE_URL = (process.env.SITE_URL || 'https://personal-site-three-smoky.vercel.app').replace(/\/$/, '');
 
+function sanitizeEmDashes(text) {
+  if (typeof text !== 'string') return text;
+  return text.replace(/ — /g, ', ').replace(/— /g, ', ').replace(/ —/g, ',').replace(/—/g, ',');
+}
+
 const PILLARS = [
   {
     id: 'data-security',
@@ -483,7 +488,9 @@ Requirements:
   }
   const parsed = toolUse.input;
 
-  const { title, excerpt, content } = parsed;
+  const title   = sanitizeEmDashes(parsed.title);
+  const excerpt = sanitizeEmDashes(parsed.excerpt);
+  const content = sanitizeEmDashes(parsed.content);
   const date = new Date();
   const readTime = estimateReadTime(content);
   const slug = slugify(title);
