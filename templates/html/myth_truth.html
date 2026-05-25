@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #1C3A28;
+      padding: 64px 72px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 58px;
+      line-height: 1.1;
+      color: #ffffff;
+      margin-bottom: 36px;
+      letter-spacing: -0.5px;
+    }
+    .boxes {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+    }
+    .box {
+      flex: 1;
+      border-radius: 6px;
+      padding: 28px 32px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .myth-box {
+      background: rgba(180,30,30,0.18);
+      border-left: 4px solid #C0392B;
+    }
+    .truth-box {
+      background: rgba(255,255,255,0.08);
+      border-left: 4px solid #C8A96E;
+    }
+    .box-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .box-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .myth-icon {
+      background: #C0392B;
+      color: #ffffff;
+    }
+    .truth-icon {
+      background: #C8A96E;
+      color: #1C3A28;
+    }
+    .box-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .myth-box .box-label { color: #E74C3C; }
+    .truth-box .box-label { color: #C8A96E; }
+    .box-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.9);
+    }
+    .footer {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .handle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="label">Verdade ou Mito?</div>
+    <div class="section-title">Mitos &amp;<br>Verdades</div>
+    <div class="boxes">
+      <div class="box myth-box">
+        <div class="box-header">
+          <div class="box-icon myth-icon">✕</div>
+          <div class="box-label">Mito</div>
+        </div>
+        <div class="box-text">{{MYTH}}</div>
+      </div>
+      <div class="box truth-box">
+        <div class="box-header">
+          <div class="box-icon truth-icon">✓</div>
+          <div class="box-label">Verdade</div>
+        </div>
+        <div class="box-text">{{TRUTH}}</div>
+      </div>
+    </div>
+    <div class="footer">
+      <span class="handle">@jotabernardO</span>
+      <span class="handle">jotabernardo.com</span>
+    </div>
+  </div>
+</body>
+</html>

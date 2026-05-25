@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bg-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      filter: brightness(0.68) saturate(0.85);
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(10,20,40,0.3) 0%,
+        rgba(10,20,40,0.55) 55%,
+        rgba(10,20,40,0.8) 100%);
+    }
+    .content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 80px;
+      gap: 48px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 68px;
+      line-height: 1.12;
+      color: #ffffff;
+      text-align: center;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.5);
+      letter-spacing: -0.5px;
+    }
+    .tags-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      max-width: 860px;
+    }
+    .item {
+      display: contents;
+    }
+    .item-prefix { display: none; }
+    .item-text {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      border: 1.5px solid rgba(200,169,110,0.7);
+      border-radius: 40px;
+      padding: 12px 28px;
+      background: rgba(30,43,74,0.45);
+      backdrop-filter: blur(4px);
+    }
+    .ticker-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 48px;
+      background: #14203A;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .ticker-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+      white-space: nowrap;
+      padding: 0 24px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <img class="bg-photo" src="{{PHOTO_URL}}" alt="">
+    <div class="overlay"></div>
+    <div class="content">
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="tags-grid">{{ITEMS_HTML}}</div>
+    </div>
+    <div class="ticker-bar">
+      <div class="ticker-text">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+    </div>
+  </div>
+</body>
+</html>

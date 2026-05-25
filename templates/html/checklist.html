@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #1A1C2E;
+    }
+    .card {
+      position: absolute;
+      top: 60px;
+      left: 72px;
+      right: 72px;
+      bottom: 60px;
+      background: #EDE5D8;
+      border-radius: 6px;
+      padding: 52px 60px 44px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.4);
+      margin-bottom: 14px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 54px;
+      line-height: 1.12;
+      color: #1E2B4A;
+      margin-bottom: 30px;
+      letter-spacing: -0.5px;
+    }
+    .divider {
+      width: 36px;
+      height: 2px;
+      background: #C8A96E;
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+    .items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(30,43,74,0.1);
+    }
+    .item-prefix {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1C3A28;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .item-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      line-height: 1.4;
+      color: #2C1A0E;
+      margin: 0;
+    }
+    .footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .handle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.35);
+    }
+    .accent-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #C8A96E;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="card">
+      <div class="label">Checklist</div>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="divider"></div>
+      <div class="items-container">{{ITEMS_HTML}}</div>
+      <div class="footer">
+        <span class="handle">@jotabernardO</span>
+        <div class="accent-dot"></div>
+        <span class="handle">jotabernardo.com</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

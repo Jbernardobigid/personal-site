@@ -1,8 +1,13 @@
 temporary screenshots/
 node_modules/
+.env
+carousels/
+carousel-meta.json
+carousel-usage.json
 *.mp4
 brand_assets/
 mohamedshehata.net_.png
 precificacao.md
 .claude/
 post-meta.json
+post-caption.txt

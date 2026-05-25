@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #1E2B4A;
+    }
+    .wm-wrap {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      transform: rotate(-45deg);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .wm-row {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.045);
+      white-space: nowrap;
+      line-height: 2.8;
+    }
+    .accent-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #C8A96E;
+    }
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -54%);
+      width: 860px;
+      text-align: center;
+    }
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: #C8A96E;
+      margin: 0 auto 48px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 72px;
+      line-height: 1.18;
+      color: #ffffff;
+      margin-bottom: 36px;
+      letter-spacing: -0.5px;
+    }
+    .body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.65);
+      font-style: italic;
+    }
+    .footer-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 54px;
+      background: #14203A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 52px;
+    }
+    .footer-bar span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+    }
+    .footer-bar .handle {
+      color: #C8A96E;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="wm-wrap">
+      <div class="wm-row">{{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}}</div>
+      <div class="wm-row">{{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}}</div>
+      <div class="wm-row">{{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}}</div>
+      <div class="wm-row">{{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}}</div>
+      <div class="wm-row">{{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}}</div>
+      <div class="wm-row">{{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}}</div>
+      <div class="wm-row">{{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}} · {{HEADLINE}}</div>
+    </div>
+    <div class="accent-line"></div>
+    <div class="content">
+      <div class="divider"></div>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="body">{{BODY}}</div>
+    </div>
+    <div class="footer-bar">
+      <span>Afeto &amp; Liderança</span>
+      <span class="handle">@jotabernard0</span>
+      <span>Ancestralidade &amp; Futuro</span>
+    </div>
+  </div>
+</body>
+</html>

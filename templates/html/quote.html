@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600;1,700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #1E2B4A;
+    }
+    .wm-wrap {
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      transform: rotate(-45deg);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .wm-row {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.038);
+      white-space: nowrap;
+      line-height: 3;
+    }
+    .accent-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #C8A96E;
+    }
+    .label {
+      position: absolute;
+      top: 52px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 820px;
+      text-align: center;
+    }
+    .open-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 96px;
+      line-height: 0.5;
+      color: #C8A96E;
+      display: block;
+      margin-bottom: 24px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 64px;
+      line-height: 1.2;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: #C8A96E;
+      margin: 40px auto 0;
+    }
+    .handle {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="wm-wrap">
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
+    </div>
+    <div class="accent-top"></div>
+    <div class="label">Jorge Bernardo</div>
+    <div class="content">
+      <span class="open-quote">"</span>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="divider"></div>
+    </div>
+    <div class="handle">@jotabernardO</div>
+  </div>
+</body>
+</html>

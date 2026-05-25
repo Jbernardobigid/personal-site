@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #1C3A28;
+      padding: 64px 72px 56px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 14px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 58px;
+      line-height: 1.12;
+      color: #ffffff;
+      margin-bottom: 36px;
+      letter-spacing: -0.5px;
+    }
+    .items-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+    }
+    .item {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .item-prefix {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 36px;
+      color: #C8A96E;
+      line-height: 1;
+    }
+    .item-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.85);
+      margin: 0;
+    }
+    .footer {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .handle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .accent-line {
+      width: 36px;
+      height: 1.5px;
+      background: #C8A96E;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="label">Guia</div>
+    <div class="headline">{{HEADLINE}}</div>
+    <div class="items-container">{{ITEMS_HTML}}</div>
+    <div class="footer">
+      <span class="handle">@jotabernardO</span>
+      <div class="accent-line"></div>
+      <span class="handle">jotabernardo.com</span>
+    </div>
+  </div>
+</body>
+</html>

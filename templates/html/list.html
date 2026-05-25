@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #F0EAE0;
+      padding: 68px 80px 60px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-style: italic;
+      font-size: 62px;
+      line-height: 1.1;
+      color: #1E2B4A;
+      margin-bottom: 36px;
+      letter-spacing: -0.5px;
+      text-align: center;
+    }
+    .divider {
+      width: 44px;
+      height: 2px;
+      background: #C8A96E;
+      margin: 0 auto 32px;
+      flex-shrink: 0;
+    }
+    .items-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 40px;
+      flex: 1;
+    }
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(30,43,74,0.1);
+    }
+    .item-prefix {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: #C8A96E;
+      line-height: 1.1;
+      flex-shrink: 0;
+      min-width: 28px;
+    }
+    .item-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      line-height: 1.45;
+      color: #2C1A0E;
+      margin: 0;
+    }
+    .footer {
+      margin-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .handle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.35);
+    }
+    .accent-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #C8A96E;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="headline">{{HEADLINE}}</div>
+    <div class="divider"></div>
+    <div class="items-container">{{ITEMS_HTML}}</div>
+    <div class="footer">
+      <span class="handle">@jotabernardO</span>
+      <div class="accent-dot"></div>
+      <span class="handle">jotabernardo.com</span>
+    </div>
+  </div>
+</body>
+</html>

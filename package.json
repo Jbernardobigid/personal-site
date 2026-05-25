@@ -6,13 +6,19 @@
     "serve": "node serve.mjs",
     "screenshot": "node screenshot.mjs",
     "blog:generate": "node generate-post.mjs",
-    "blog:dry-run": "node generate-post.mjs --dry-run"
+    "blog:dry-run": "node generate-post.mjs --dry-run",
+    "carousel:analyze": "node analyze-templates.mjs",
+    "carousel:generate": "node generate-carousel.mjs",
+    "templates:generate": "node agent-templates.mjs",
+    "templates:force": "node agent-templates.mjs --force"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@google/generative-ai": "^0.24.1",
     "@vercel/speed-insights": "^2.0.0",
     "openai": "^6.39.0",
-    "puppeteer-core": "^25.0.4"
+    "puppeteer-core": "^25.0.4",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "jimp": "^1.6.1"
