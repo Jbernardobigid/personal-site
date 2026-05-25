@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #F5F0E8;
+      display: flex;
+    }
+    .left-col {
+      width: 560px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 52px 80px 72px;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+    }
+    .label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(28,58,40,0.45);
+      margin-bottom: 20px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 68px;
+      line-height: 1.08;
+      color: #1C3A28;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+    }
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: #C8A96E;
+      margin-bottom: 24px;
+    }
+    .body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      line-height: 1.65;
+      color: #4A3C30;
+    }
+    .handle {
+      margin-top: 36px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(28,58,40,0.32);
+    }
+    .right-col {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      padding: 60px 60px 60px 0;
+      box-sizing: border-box;
+    }
+    .arch-frame {
+      width: 100%;
+      height: 820px;
+      border-radius: 200px 200px 0 0;
+      overflow: hidden;
+      box-shadow: -8px 12px 40px rgba(0,0,0,0.18);
+    }
+    .arch-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="left-col">
+      <div class="label">Jorge Bernardo</div>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="divider"></div>
+      <div class="body">{{BODY}}</div>
+      <div class="handle">@jotabernardO</div>
+    </div>
+    <div class="right-col">
+      <div class="arch-frame">
+        <img src="{{PHOTO_URL}}" alt="Jorge Bernardo">
+      </div>
+    </div>
+  </div>
+</body>
+</html>

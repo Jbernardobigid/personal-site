@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #E8E4DC;
+    }
+    .accent-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #1E2B4A;
+    }
+    .inner {
+      position: absolute;
+      top: 3px; left: 0; right: 0; bottom: 0;
+      padding: 68px 80px 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .handle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.35);
+      margin-bottom: 16px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-style: italic;
+      font-size: 72px;
+      line-height: 1.1;
+      color: #1E2B4A;
+      margin-bottom: 28px;
+      letter-spacing: -1px;
+    }
+    .divider {
+      width: 44px;
+      height: 2px;
+      background: #C8A96E;
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+    .body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      line-height: 1.6;
+      color: rgba(30,43,74,0.65);
+      margin-bottom: 36px;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #1E2B4A;
+      border-radius: 4px;
+      padding: 14px 28px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #EDE5D8;
+      width: fit-content;
+      margin-bottom: auto;
+    }
+    .bottom-band {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: #1E2B4A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 80px;
+      box-sizing: border-box;
+    }
+    .bottom-band .btag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+    }
+    .bottom-band .btag.center {
+      color: #C8A96E;
+    }
+    .bottom-band .bio-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-style: italic;
+      color: rgba(255,255,255,0.55);
+    }
+    .bottom-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .bottom-divider {
+      width: 36px;
+      height: 1.5px;
+      background: #C8A96E;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="accent-top"></div>
+    <div class="inner">
+      <div class="handle">@jotabernardO</div>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="divider"></div>
+      <div class="body">{{BODY}}</div>
+      <div class="cta-btn">Link na bio ↗</div>
+    </div>
+    <div class="bottom-band">
+      <span class="btag">Afeto &amp; Liderança</span>
+      <div class="bottom-inner">
+        <div class="bottom-divider"></div>
+        <span class="btag center">@jotabernard0</span>
+        <div class="bottom-divider"></div>
+      </div>
+      <span class="btag">Ancestralidade &amp; Futuro</span>
+    </div>
+  </div>
+</body>
+</html>

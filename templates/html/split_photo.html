@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #ECEAE4;
+    }
+    .photo-zone {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 620px;
+      overflow: hidden;
+    }
+    .photo-zone img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      filter: brightness(0.80) saturate(0.92);
+    }
+    .photo-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to bottom, transparent, rgba(10,15,30,0.55));
+    }
+    .headline {
+      position: absolute;
+      bottom: 44px;
+      left: 52px;
+      right: 320px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 60px;
+      line-height: 1.1;
+      color: #ffffff;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.5);
+      letter-spacing: -0.5px;
+    }
+    .ticker {
+      position: absolute;
+      top: 620px;
+      left: 0; right: 0;
+      height: 44px;
+      background: #1E2B4A;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .ticker-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #C8A96E;
+      white-space: nowrap;
+      padding: 0 28px;
+    }
+    .body-zone {
+      position: absolute;
+      top: 664px;
+      left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 88px;
+      box-sizing: border-box;
+    }
+    .body-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      line-height: 1.6;
+      color: #2C2C2C;
+      text-align: center;
+    }
+    .handle {
+      position: absolute;
+      bottom: 16px;
+      right: 44px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.28);
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="photo-zone">
+      <img src="{{PHOTO_URL}}" alt="">
+      <div class="photo-overlay"></div>
+    </div>
+    <div class="headline">{{HEADLINE}}</div>
+    <div class="ticker">
+      <div class="ticker-text">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+    </div>
+    <div class="body-zone">
+      <div class="body-text">{{BODY}}</div>
+    </div>
+    <div class="handle">@jotabernardO</div>
+  </div>
+</body>
+</html>

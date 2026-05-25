@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #1E2B4A;
+    }
+    .photo-zone {
+      position: absolute;
+      top: 0; right: 0;
+      width: 460px; bottom: 48px;
+      overflow: hidden;
+    }
+    .photo-zone img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.78) saturate(0.9);
+    }
+    .photo-fade {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 140px;
+      background: linear-gradient(to right, #1E2B4A 0%, transparent 100%);
+    }
+    .text-zone {
+      position: absolute;
+      top: 0; left: 0;
+      width: 640px; bottom: 48px;
+      padding: 64px 52px 40px 64px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .label {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: #C8A96E;
+      margin-bottom: 10px;
+    }
+    .headline {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 34px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.3px;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 40px;
+    }
+    .items-list { display: flex; flex-direction: column; gap: 18px; }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .item-prefix {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(200,169,110,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #C8A96E;
+      letter-spacing: 0;
+    }
+    .item-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.82);
+    }
+    .ticker-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 48px;
+      background: #14203A;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .ticker-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      white-space: nowrap;
+      padding: 0 24px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="photo-zone">
+      <img src="{{PHOTO_URL}}" alt="">
+      <div class="photo-fade"></div>
+    </div>
+    <div class="text-zone">
+      <div class="label">Checklist</div>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="items-list">{{ITEMS_HTML}}</div>
+    </div>
+    <div class="ticker-bar">
+      <div class="ticker-text">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+    </div>
+  </div>
+</body>
+</html>

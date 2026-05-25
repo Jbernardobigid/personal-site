@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #E8E4DC;
+    }
+    .accent-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #1C3A28;
+    }
+    .inner {
+      position: absolute;
+      top: 3px; left: 0; right: 0; bottom: 0;
+      padding: 54px 72px 52px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(28,58,40,0.5);
+    }
+    .title-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(28,58,40,0.2);
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 56px;
+      line-height: 1.1;
+      color: #1C3A28;
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
+    }
+    .boxes {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex: 1;
+    }
+    .box {
+      flex: 1;
+      border-radius: 6px;
+      padding: 26px 30px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .q-box {
+      background: #1C3A28;
+    }
+    .r-box {
+      background: rgba(28,58,40,0.08);
+      border: 1px solid rgba(28,58,40,0.15);
+    }
+    .box-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #C8A96E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: #1C3A28;
+      flex-shrink: 0;
+    }
+    .q-box .box-badge {
+      background: #C8A96E;
+    }
+    .r-box .box-badge {
+      background: #1C3A28;
+      color: #ffffff;
+    }
+    .box-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .box-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .q-box .box-label { color: rgba(255,255,255,0.5); }
+    .r-box .box-label { color: rgba(28,58,40,0.5); }
+    .box-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      line-height: 1.5;
+    }
+    .q-box .box-text { color: rgba(255,255,255,0.92); }
+    .r-box .box-text { color: #1C3A28; }
+    .footer {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .handle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(28,58,40,0.35);
+    }
+    .accent-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #C8A96E;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="accent-top"></div>
+    <div class="inner">
+      <div class="header">
+        <div class="section-title">Perguntas &amp; Respostas</div>
+        <div class="title-line"></div>
+      </div>
+      <div class="headline">Perguntas &amp;<br>Respostas</div>
+      <div class="boxes">
+        <div class="box q-box">
+          <div class="box-header">
+            <div class="box-badge">P</div>
+            <div class="box-label">Pergunta</div>
+          </div>
+          <div class="box-text">{{QUESTION}}</div>
+        </div>
+        <div class="box r-box">
+          <div class="box-header">
+            <div class="box-badge">R</div>
+            <div class="box-label">Resposta</div>
+          </div>
+          <div class="box-text">{{ANSWER}}</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="handle">@jotabernardO</span>
+        <div class="accent-dot"></div>
+        <span class="handle">jotabernardo.com</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

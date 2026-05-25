@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bg-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      filter: brightness(0.65) saturate(0.8);
+    }
+    .bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,30,50,0.25);
+    }
+    .polaroid {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      background: #F8F4EE;
+      border-radius: 3px;
+      box-shadow: 0 16px 56px rgba(0,0,0,0.48), 0 3px 10px rgba(0,0,0,0.22);
+      overflow: hidden;
+    }
+    .polaroid-photo {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+    }
+    .polaroid-text {
+      padding: 28px 36px 36px;
+      text-align: center;
+    }
+    .polaroid-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      line-height: 1.65;
+      color: #5A4A3A;
+      margin-bottom: 18px;
+    }
+    .polaroid-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 30px;
+      color: #8B5E3C;
+      letter-spacing: 0.3px;
+    }
+    .handle {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <img class="bg-photo" src="{{PHOTO_URL}}" alt="">
+    <div class="bg-overlay"></div>
+    <div class="polaroid">
+      <img class="polaroid-photo" src="{{PHOTO_URL}}" alt="Jorge Bernardo">
+      <div class="polaroid-text">
+        <div class="polaroid-body">{{BODY}}</div>
+        <div class="polaroid-title">{{HEADLINE}}</div>
+      </div>
+    </div>
+    <div class="handle">@jotabernardO</div>
+  </div>
+</body>
+</html>

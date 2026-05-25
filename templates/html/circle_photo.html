@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #F4F0E8;
+    }
+    .circle-frame {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 10px 42px rgba(0,0,0,0.2);
+      border: 6px solid #F4F0E8;
+    }
+    .circle-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .badge {
+      position: absolute;
+      top: 78px;
+      right: 168px;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(30,43,74,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .badge-inner {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.4);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .text-zone {
+      position: absolute;
+      top: 600px;
+      left: 0; right: 0;
+      text-align: center;
+      padding: 0 80px;
+    }
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: #C8A96E;
+      margin: 0 auto 28px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 56px;
+      line-height: 1.15;
+      color: #1E2B4A;
+      letter-spacing: -0.3px;
+      margin-bottom: 20px;
+    }
+    .body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      line-height: 1.65;
+      color: #5A4A3A;
+    }
+    .handle {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.28);
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="circle-frame">
+      <img src="{{PHOTO_URL}}" alt="Jorge Bernardo">
+    </div>
+    <div class="badge">
+      <div class="badge-inner">Jorge<br>Bernardo</div>
+    </div>
+    <div class="text-zone">
+      <div class="divider"></div>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="body">{{BODY}}</div>
+    </div>
+    <div class="handle">@jotabernardO</div>
+  </div>
+</body>
+</html>

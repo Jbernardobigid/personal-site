@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #F0EAE0;
+    }
+    .top-text {
+      position: absolute;
+      top: 68px;
+      left: 0; right: 0;
+      text-align: center;
+      padding: 0 80px;
+    }
+    .top-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 26px;
+      color: #8B5E3C;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .top-headline {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #1E2B4A;
+      line-height: 1.2;
+    }
+    .arc-wrap {
+      position: absolute;
+      top: 240px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 560px;
+      height: 2px;
+      border-top: 1.5px solid rgba(30,43,74,0.18);
+      border-radius: 50%;
+    }
+    .photo-circle {
+      position: absolute;
+      top: 226px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #F0EAE0;
+      box-shadow: 0 8px 36px rgba(0,0,0,0.18);
+    }
+    .photo-circle img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .side-label-left {
+      position: absolute;
+      top: 370px;
+      left: 80px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.35);
+    }
+    .side-label-right {
+      position: absolute;
+      top: 370px;
+      right: 80px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.35);
+    }
+    .body-zone {
+      position: absolute;
+      top: 590px;
+      left: 0; right: 0;
+      padding: 0 100px;
+      text-align: center;
+    }
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: #C8A96E;
+      margin: 0 auto 28px;
+    }
+    .body-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      line-height: 1.65;
+      color: #3A3028;
+    }
+    .handle {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(30,43,74,0.28);
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="top-text">
+      <span class="top-label">Reflexão</span>
+      <div class="top-headline">{{HEADLINE}}</div>
+    </div>
+    <div class="arc-wrap"></div>
+    <div class="photo-circle">
+      <img src="{{PHOTO_URL}}" alt="Jorge Bernardo">
+    </div>
+    <div class="side-label-left">Ciclismo</div>
+    <div class="side-label-right">Liderança</div>
+    <div class="body-zone">
+      <div class="divider"></div>
+      <div class="body-text">{{BODY}}</div>
+    </div>
+    <div class="handle">@jotabernardO</div>
+  </div>
+</body>
+</html>

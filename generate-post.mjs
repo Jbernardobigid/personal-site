@@ -29,7 +29,7 @@ const ROBOTS     = path.join(__dirname, 'robots.txt');
 
 // Set SITE_URL as a GitHub Actions secret for the live URL.
 // When you get a custom domain, update the secret value — everything regenerates automatically.
-const SITE_URL = (process.env.SITE_URL || 'https://personal-site-three-smoky.vercel.app').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://jorgebernardo.tech').replace(/\/$/, '');
 
 function sanitizeEmDashes(text) {
   if (typeof text !== 'string') return text;
