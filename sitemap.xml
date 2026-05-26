@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://personal-site-three-smoky.vercel.app/</loc>
+    <loc>https://jorgebernardo.tech/</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://jorgebernardo.tech/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jorgebernardo.tech/"/>
   </url>
   <url>
-    <loc>https://personal-site-three-smoky.vercel.app/blog/</loc>
+    <loc>https://jorgebernardo.tech/blog/</loc>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jorgebernardo.tech/blog/posts/2026-05-22-o-dado-que-voce-ignora-hoje-pode-ser-o-processo-que-te-destr.html</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jorgebernardo.tech/blog/posts/2026-05-23-a-feira-preta-me-ensinou-o-que-nenhum-mba-conseguiu.html</loc>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jorgebernardo.tech/blog/posts/2026-05-25-pedalar-enquanto-negro-o-ato-politico-que-ninguem-me-contou.html</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jorgebernardo.tech/blog/posts/2026-05-25-uma-marca-nao-se-explica-ela-se-reconhece.html</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
