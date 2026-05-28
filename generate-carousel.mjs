@@ -70,14 +70,19 @@ const ITEM_TYPES = new Set([
 ]);
 
 const PILLAR_HASHTAGS = {
-  'data-security':    ['#SegurançaDeDados', '#PrivacidadeDeDados', '#LGPD', '#GovernançaDeIA', '#BigID', '#PrivacyByDesign', '#TechBR'],
+  'data-security':    ['#SegurançaDeDados', '#PrivacidadeDeDados', '#LGPD', '#GovernançaDeIA', '#DataPrivacy', '#PrivacyByDesign', '#TechBR'],
   'entrepreneurship': ['#EmpreendedorismoNegro', '#FeiraPreta', '#EmpreendeContaCom', '#NegociosAfrobrasileiros', '#BlackBusiness', '#JorgeBernardo'],
   'cycling':          ['#DePretoPraPreto', '#CiclismoNegro', '#TeamAfricaRising', '#CiclismoSP', '#BlackCycling', '#PedalaNegro'],
   'brand':            ['#MarcaComPropósito', '#IdentidadeVisual', '#CulturalBranding', '#StrategyMeetAesthetics', '#BrandBuilding'],
-  'wellness':         ['#Wellness', '#AfterALL', '#MindsetDeAtleta', '#TechSaúde', '#PerformanceHumana'],
+  'wellness':         ['#Wellness', '#MindsetDeAtleta', '#TechSaúde', '#PerformanceHumana'],
 };
 
 /* ── Utilities ─────────────────────────────────────────────── */
+
+function sanitizeEmDashes(text) {
+  if (typeof text !== 'string') return text;
+  return text.replace(/ — /g, ', ').replace(/— /g, ', ').replace(/ —/g, ',').replace(/—/g, ',');
+}
 
 function slugify(text) {
   return text
@@ -131,7 +136,20 @@ function resolvePhoto() {
 
 /* ── Blog post reader ──────────────────────────────────────── */
 
-function readLatestPost() {
+function readLatestPost(explicitFile) {
+  if (explicitFile) {
+    const filePath = path.isAbsolute(explicitFile)
+      ? explicitFile
+      : path.join(__dirname, explicitFile);
+    const html = fs.readFileSync(filePath, 'utf8');
+    return {
+      title: (html.match(/<title>([^<]+)<\/title>/) ?? [])[1]?.replace(' — Jorge Bernardo', '') ?? 'Post',
+      excerpt: (html.match(/<meta name="description" content="([^"]+)"/) ?? [])[1] ?? '',
+      pillarId: (html.match(/data-pillar="([^"]+)"/) ?? [])[1] ?? 'cycling',
+      plainText: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+    };
+  }
+
   const metaPath = path.join(__dirname, 'post-meta.json');
   if (fs.existsSync(metaPath)) {
     const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
@@ -161,6 +179,10 @@ function readLatestPost() {
 /* ── Claude: decide format + extract content ──────────────── */
 
 async function extractPostStructure(client, post) {
+  const contentBlock = post.excerpt
+    ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
+    : `TOPIC IDEA:\n${post.title}`;
+
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 2500,
@@ -168,10 +190,7 @@ async function extractPostStructure(client, post) {
       role: 'user',
       content: `You are a social media manager for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
 
-BLOG POST:
-Title: ${post.title}
-Excerpt: ${post.excerpt}
-Content: ${post.plainText.substring(0, 3000)}
+${contentBlock}
 
 Decide the best Instagram post format, then extract the content.
 
@@ -216,7 +235,8 @@ RULES:
 - For carousels: first slide must be hook, last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")
 - For carousels: do not repeat the same contentType more than twice
 - For tags: items should be 6 short keyword phrases (2-4 words each)
-- Return ONLY valid JSON, no markdown fences, no explanation`,
+- Return ONLY valid JSON, no markdown fences, no explanation
+- Do NOT use brand names like "afterALL" or "AfterALL" in slide text — refer to it as "a marca" instead`,
     }],
   });
 
@@ -244,21 +264,32 @@ async function generateCaption(client, post, format, hashtags) {
       content: `Write an Instagram caption in Brazilian Portuguese for this post by Jorge Bernardo.
 ${formatHint}
 
-Post title: ${post.title}
-Post excerpt: ${post.excerpt}
+${post.excerpt ? `Post title: ${post.title}\nPost excerpt: ${post.excerpt}` : `Topic: ${post.title}`}
+
+Jorge's voice:
+- First person ("Aprendi que...", "Acredito que...", "Na minha experiência...")
+- Conversational but substantive — like a smart friend writing, not a LinkedIn post
+- Mix personal experience with broader insight
+- Short paragraphs (2-3 sentences max)
 
 Rules:
 - 280-400 characters (not counting hashtags)
-- Conversational, first-person, not formal
-- Start with a hook — a question or bold statement
+- Start with a hook — a question or bold statement (NOT a broad generic claim)
 - For carousel: add "Salva esse post 📌" somewhere
 - End with "Link na bio ↗" on its own line
 - Do NOT include hashtags in the body
-- Return ONLY the caption text, nothing else`,
+- Return ONLY the caption text, nothing else
+
+NEVER use:
+- Em dash (—) anywhere. Use a comma or split into two sentences instead.
+- Transition fillers: "Além disso", "Portanto", "Vale ressaltar", "Em suma", "Nesse contexto", "No entanto"
+- Openers like "O fato é que", "É fundamental que", "É importante destacar"
+- LinkedIn-style motivational phrases
+- Brand names like "afterALL" or "AfterALL" — refer to it as "a marca" instead`,
     }],
   });
 
-  return response.content[0].text.trim();
+  return sanitizeEmDashes(response.content[0].text.trim());
 }
 
 /* ── Content injection ─────────────────────────────────────── */
@@ -280,7 +311,15 @@ function buildItemsHtml(items, contentType) {
 }
 
 function injectContent(templateHtml, slide, photoAbsPath) {
-  const { contentType, headline, body, items, steps, myth, truth, question, answer } = slide;
+  const contentType = slide.contentType;
+  const headline  = sanitizeEmDashes(slide.headline);
+  const body      = sanitizeEmDashes(slide.body);
+  const items     = (slide.items ?? []).map(sanitizeEmDashes);
+  const steps     = (slide.steps ?? []).map(sanitizeEmDashes);
+  const myth      = sanitizeEmDashes(slide.myth);
+  const truth     = sanitizeEmDashes(slide.truth);
+  const question  = sanitizeEmDashes(slide.question);
+  const answer    = sanitizeEmDashes(slide.answer);
   let html = templateHtml;
 
   html = html.replace(/\{\{HEADLINE\}\}/g, escapeHtml(headline ?? ''));
@@ -338,10 +377,25 @@ async function main() {
 
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  console.log('Reading blog post...');
-  const post = readLatestPost();
-  console.log(`  Title: ${post.title}`);
-  console.log(`  Pillar: ${post.pillarId}`);
+  const args = process.argv.slice(2);
+  const topicIdx = args.indexOf('--topic');
+  const pillarIdx = args.indexOf('--pillar');
+  const topicArg  = topicIdx  !== -1 ? args[topicIdx  + 1] : null;
+  const pillarArg = pillarIdx !== -1 ? args[pillarIdx + 1] : null;
+
+  let post;
+  if (topicArg) {
+    const pillarId = pillarArg && PILLAR_HASHTAGS[pillarArg] ? pillarArg : 'cycling';
+    post = { title: topicArg, excerpt: '', pillarId, plainText: topicArg };
+    console.log(`Topic:  ${topicArg}`);
+    console.log(`Pillar: ${pillarId}`);
+  } else {
+    const fileArg = args.find(a => a.endsWith('.html'));
+    console.log('Reading blog post...');
+    post = readLatestPost(fileArg);
+    console.log(`  Title: ${post.title}`);
+    console.log(`  Pillar: ${post.pillarId}`);
+  }
 
   console.log('Deciding format and extracting content with Claude...');
   const { format, slides } = await extractPostStructure(client, post);
