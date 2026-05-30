@@ -11,3 +11,7 @@ precificacao.md
 .claude/
 post-meta.json
 post-caption.txt
+
+# Harness / tooling noise
+.agents/
+skills-lock.json
