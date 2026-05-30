@@ -117,18 +117,41 @@ function saveUsage(used) {
   fs.writeFileSync(USAGE_PATH, JSON.stringify({ recentTemplates: updated, lastRun: isoDate() }, null, 2), 'utf8');
 }
 
-/* ── Photo resolver (random pick for variety) ──────────────── */
+/* ── Photo inventory ───────────────────────────────────────── */
 
-function resolvePhoto() {
+function loadInventory() {
+  const invPath = path.join(__dirname, 'brand_assets', 'Fotos', 'INVENTORY.md');
+  if (!fs.existsSync(invPath)) return '';
+  return fs.readFileSync(invPath, 'utf8');
+}
+
+/* ── Photo resolver (inventory-aware, env override, random fallback) ── */
+
+function resolvePhoto(preferredName) {
   const photoDir = path.join(__dirname, 'brand_assets', 'Fotos');
   if (!fs.existsSync(photoDir)) return null;
 
-  const envPhoto = process.env.JORGE_CAROUSEL_PHOTO;
-  if (envPhoto) {
-    const candidate = path.join(photoDir, envPhoto);
-    if (fs.existsSync(candidate)) return candidate;
-  }
+  // Resolve a name that may be a bare basename ("DSC00412") or full filename.
+  const tryName = (raw) => {
+    if (!raw || typeof raw !== 'string') return null;
+    const name = path.basename(raw.trim()).replace(/[^A-Za-z0-9_.-]/g, '');
+    if (!name) return null;
+    const direct = path.join(photoDir, name);
+    if (fs.existsSync(direct)) return direct;
+    const withJpg = path.join(photoDir, `${name}.jpg`);
+    if (fs.existsSync(withJpg)) return withJpg;
+    return null;
+  };
 
+  // 1. Explicit env override always wins
+  const envHit = tryName(process.env.JORGE_CAROUSEL_PHOTO);
+  if (envHit) return envHit;
+
+  // 2. Inventory-recommended photo (chosen by Claude from INVENTORY.md)
+  const prefHit = tryName(preferredName);
+  if (prefHit) return prefHit;
+
+  // 3. Random fallback for variety
   const jpgs = fs.readdirSync(photoDir).filter(f => /\.(jpg|jpeg|png)$/i.test(f));
   if (jpgs.length === 0) return null;
   return path.join(photoDir, jpgs[Math.floor(Math.random() * jpgs.length)]);
@@ -178,10 +201,14 @@ function readLatestPost(explicitFile) {
 
 /* ── Claude: decide format + extract content ──────────────── */
 
-async function extractPostStructure(client, post) {
+async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '' } = {}) {
   const contentBlock = post.excerpt
     ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
     : `TOPIC IDEA:\n${post.title}`;
+
+  const ctaInstruction = hasBlogPost
+    ? '- For carousels: first slide must be hook, last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")'
+    : '- For carousels: first slide must be hook, last must be cta (headline = "Salva pra não perder", body = "E compartilha com quem precisa ver"). This post is NOT a blog post, so NEVER write "Link na bio" or "Leia o post" anywhere in the slides.';
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -215,7 +242,18 @@ rotated_text: Typography-forward, experimental layout
 profile_quote: Personal brand moment, circular photo + reflection
 tags: Keyword/concept cloud — headline + 6 short concept tags (uses items array)
 
-Return JSON: { "format": "carousel" | "single", "slides": [ ... ] }
+Return JSON: { "format": "carousel" | "single", "photo": "<filename>", "slides": [ ... ] }
+
+PHOTO SELECTION:
+Choose ONE photo for this post from the inventory below and return its exact filename in the top-level "photo" field (extension optional, e.g. "DSC00412" or "DSC00412.jpg").
+- Cycling / endurance / sport / wellness topics, use the DSC cycling-action shots.
+- Lifestyle / brand / business / entrepreneurship / data-security topics, use the 7B7A Madrid editorial shots.
+- Community / event / culture topics, use the 20221203 event portraits.
+- Activism / resistance themes, use the yellow fist-raised frames.
+- When unsure, pick a clean editorial portrait. Prefer the listed "hero frames".
+
+PHOTO INVENTORY:
+${inventoryText || '(inventory unavailable — return "photo": "")'}
 
 Each slide object:
 - slideNum (1-based)
@@ -232,7 +270,7 @@ Each slide object:
 RULES:
 - Write ALL text in Brazilian Portuguese
 - Keep text SHORT — Instagram is scanned, not read
-- For carousels: first slide must be hook, last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")
+${ctaInstruction}
 - For carousels: do not repeat the same contentType more than twice
 - For tags: items should be 6 short keyword phrases (2-4 words each)
 - Return ONLY valid JSON, no markdown fences, no explanation
@@ -246,15 +284,22 @@ RULES:
   if (start === -1 || end === -1) throw new Error('Claude did not return valid JSON');
   const parsed = JSON.parse(raw.slice(start, end + 1));
   if (!parsed.format || !Array.isArray(parsed.slides)) throw new Error('Unexpected JSON structure from Claude');
-  return parsed;
+  return { ...parsed, photo: typeof parsed.photo === 'string' ? parsed.photo : '' };
 }
 
 /* ── Claude: generate caption ──────────────────────────────── */
 
-async function generateCaption(client, post, format, hashtags) {
+async function generateCaption(client, post, format, hashtags, hasBlogPost = true) {
   const formatHint = format === 'single'
     ? 'This is a single image post.'
     : 'This is a carousel (swipe) post.';
+
+  const saveRule = (format === 'carousel' && hasBlogPost)
+    ? '- For carousel: add "Salva esse post 📌" somewhere\n'
+    : '';
+  const endingRule = hasBlogPost
+    ? '- End with "Link na bio ↗" on its own line'
+    : '- This post is NOT a blog post: do NOT write "Link na bio" or mention reading a post anywhere. End with a short engagement line on its own line, e.g. "Salva esse post 📌" or "Compartilha com quem precisa ver isso"';
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -275,8 +320,7 @@ Jorge's voice:
 Rules:
 - 280-400 characters (not counting hashtags)
 - Start with a hook — a question or bold statement (NOT a broad generic claim)
-- For carousel: add "Salva esse post 📌" somewhere
-- End with "Link na bio ↗" on its own line
+${saveRule}${endingRule}
 - Do NOT include hashtags in the body
 - Return ONLY the caption text, nothing else
 
@@ -310,7 +354,15 @@ function buildItemsHtml(items, contentType) {
   }).join('\n');
 }
 
-function injectContent(templateHtml, slide, photoAbsPath) {
+// Blog-referencing CTA labels baked into some templates (not {{placeholders}}),
+// swapped to engagement labels when the post is standalone (not from the blog).
+const STANDALONE_CTA_SWAPS = [
+  [/Link na bio ↗/g, 'Salva esse post ↗'],
+  [/Leia o post completo/g, 'Salva esse post'],
+  [/Leia o post ↗/g, 'Salva esse post ↗'],
+];
+
+function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true) {
   const contentType = slide.contentType;
   const headline  = sanitizeEmDashes(slide.headline);
   const body      = sanitizeEmDashes(slide.body);
@@ -336,6 +388,14 @@ function injectContent(templateHtml, slide, photoAbsPath) {
 
   if (photoAbsPath) {
     html = html.replace(/\{\{PHOTO_URL\}\}/g, toFileUrl(photoAbsPath));
+  }
+
+  // Standalone posts must not reference the blog/bio anywhere, including
+  // hardcoded button labels in the templates.
+  if (!hasBlogPost) {
+    for (const [pattern, replacement] of STANDALONE_CTA_SWAPS) {
+      html = html.replace(pattern, replacement);
+    }
   }
 
   return html;
@@ -383,27 +443,38 @@ async function main() {
   const topicArg  = topicIdx  !== -1 ? args[topicIdx  + 1] : null;
   const pillarArg = pillarIdx !== -1 ? args[pillarIdx + 1] : null;
 
+  // Whether the post links back to the blog ("Link na bio" CTA) or is standalone.
+  // Defaults: --topic runs are standalone; reading a blog file is blog-linked.
+  // Override either way with --blog or --standalone (--no-blog alias).
+  const forceStandalone = args.includes('--standalone') || args.includes('--no-blog');
+  const forceBlog = args.includes('--blog');
+
   let post;
+  let hasBlogPost;
   if (topicArg) {
     const pillarId = pillarArg && PILLAR_HASHTAGS[pillarArg] ? pillarArg : 'cycling';
     post = { title: topicArg, excerpt: '', pillarId, plainText: topicArg };
+    hasBlogPost = forceBlog;                            // ad-hoc topic: standalone unless --blog
     console.log(`Topic:  ${topicArg}`);
     console.log(`Pillar: ${pillarId}`);
   } else {
     const fileArg = args.find(a => a.endsWith('.html'));
     console.log('Reading blog post...');
     post = readLatestPost(fileArg);
+    hasBlogPost = forceBlog ? true : !forceStandalone;  // blog file: blog-linked unless --standalone
     console.log(`  Title: ${post.title}`);
     console.log(`  Pillar: ${post.pillarId}`);
   }
+  console.log(`  Source: ${hasBlogPost ? 'blog post (Link na bio CTA)' : 'standalone (no bio link)'}`);
 
   console.log('Deciding format and extracting content with Claude...');
-  const { format, slides } = await extractPostStructure(client, post);
+  const inventoryText = loadInventory();
+  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText });
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
 
-  const photoPath = resolvePhoto();
-  if (photoPath) console.log(`  Photo: ${path.basename(photoPath)}`);
+  const photoPath = resolvePhoto(photo);
+  if (photoPath) console.log(`  Photo: ${path.basename(photoPath)}${photo ? ` (recommended: ${photo})` : ' (random fallback)'}`);
   else console.warn('  Warning: No photos found in brand_assets/Fotos/');
 
   const date = isoDate();
@@ -425,7 +496,7 @@ async function main() {
     }
 
     const templateHtml = fs.readFileSync(templatePath, 'utf8');
-    const injected = injectContent(templateHtml, slide, photoPath);
+    const injected = injectContent(templateHtml, slide, photoPath, hasBlogPost);
     const slidePath = path.join(outDir, `slide-0${i + 1}.html`);
     fs.writeFileSync(slidePath, injected, 'utf8');
     slideHtmlPaths.push(slidePath);
@@ -443,7 +514,7 @@ async function main() {
   // Generate caption
   console.log('Generating caption...');
   const hashtags = PILLAR_HASHTAGS[post.pillarId] ?? PILLAR_HASHTAGS['cycling'];
-  const captionBody = await generateCaption(client, post, format, hashtags);
+  const captionBody = await generateCaption(client, post, format, hashtags, hasBlogPost);
   const fullCaption = `${captionBody}\n\n${hashtags.join(' ')}`;
 
   // Write caption.txt into output folder AND project root for easy access
@@ -451,6 +522,8 @@ async function main() {
     `POST FORMAT: ${format.toUpperCase()} (${slides.length} slide${slides.length > 1 ? 's' : ''})`,
     `DATE: ${date}`,
     `PILLAR: ${post.pillarId}`,
+    `FROM BLOG: ${hasBlogPost ? 'yes' : 'no'}`,
+    `PHOTO: ${photoPath ? path.basename(photoPath) : 'none'}`,
     '',
     '─────────────────────────────────',
     fullCaption,
@@ -465,7 +538,7 @@ async function main() {
   // Keep carousel-meta.json for backward compatibility
   fs.writeFileSync(
     path.join(__dirname, 'carousel-meta.json'),
-    JSON.stringify({ date, slug, format, pillar: post.pillarId, caption: fullCaption, hashtags, contentTypes: usedTypes, slides: pngs.map(p => p.replace(/\\/g, '/')) }, null, 2),
+    JSON.stringify({ date, slug, format, pillar: post.pillarId, fromBlog: hasBlogPost, photo: photoPath ? path.basename(photoPath) : null, caption: fullCaption, hashtags, contentTypes: usedTypes, slides: pngs.map(p => p.replace(/\\/g, '/')) }, null, 2),
     'utf8'
   );
 
