@@ -1305,7 +1305,81 @@ nav.scrolled {
   border-radius: 1px;
 }
 .form-submit:hover { background: var(--terra-light); gap: 18px; }
-.form-submit:disabled { opacity: 0.5; }
+.form-submit:disabled { opacity: 0.5; cursor: default; }
+/* ── Newsletter ─────────────────────────────────────────── */
+#newsletter {
+  position: relative;
+  padding: 96px 60px 104px;
+  border-top: 1px solid var(--border);
+  background:
+    radial-gradient(120% 140% at 10% 0%, rgba(160,113,79,0.14) 0%, transparent 55%),
+    radial-gradient(90% 120% at 100% 100%, rgba(39,63,41,0.18) 0%, transparent 60%),
+    var(--black);
+  overflow: hidden;
+}
+#newsletter::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 60px;
+  width: 72px; height: 2px;
+  background: var(--terra-light);
+}
+.nl-inner { position: relative; z-index: 1; max-width: 760px; }
+.nl-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terra-light);
+  margin-bottom: 26px;
+}
+.nl-heading {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 84px);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: var(--white);
+  margin-bottom: 26px;
+}
+.nl-heading em {
+  font-weight: 300;
+  font-style: italic;
+  color: var(--terra-light);
+}
+.nl-note {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ash);
+  max-width: 540px;
+  margin-bottom: 44px;
+}
+.nl-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 28px;
+}
+.nl-field { flex: 1 1 320px; min-width: 0; }
+.nl-form .form-submit { margin-top: 0; flex-shrink: 0; }
+.nl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.nl-status {
+  flex-basis: 100%;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  min-height: 1em;
+  margin: 0;
+}
+.nl-status.is-success { color: var(--terra-light); }
+.nl-status.is-error { color: #c0392b; }
+@media (max-width: 768px) {
+  #newsletter { padding: 72px 24px 80px; }
+  #newsletter::before { left: 24px; }
+  .nl-field { flex: 1 1 100%; }
+  .nl-form .form-submit { width: 100%; justify-content: center; }
+}
 /* Contact side */
 .contato-side { display: flex; flex-direction: column; gap: 40px; }
 .contato-link-block { display: flex; flex-direction: column; gap: 8px; }
@@ -1684,6 +1758,7 @@ footer {
   <a href="#projetos" onclick="closeDrawer()">Projetos</a>
   <a href="#ciclismo" onclick="closeDrawer()">Ciclismo</a>
   <a href="blog/" onclick="closeDrawer()">Blog</a>
+  <a href="#newsletter" onclick="closeDrawer()">Newsletter</a>
   <a href="#contato" onclick="closeDrawer()">Contato</a>
   <div class="drawer-lang" id="drawerLangSwitcher">
     <button class="ls-btn active" data-lang="pt" aria-label="Português">PT</button>
@@ -2065,6 +2140,33 @@ footer {
   </div>
 </section>
 
+<!-- ── Newsletter ────────────────────────────────────────── -->
+<section id="newsletter">
+  <div class="nl-inner">
+    <div class="nl-eyebrow gsap-hidden">Newsletter · do blog ao seu email</div>
+    <h2 class="nl-heading gsap-hidden">Ideias que não<br><em>cabem</em> num post.</h2>
+    <p class="nl-note gsap-hidden">
+      Ensaios sobre dados, identidade negra, ciclismo e estratégia — escritos por mim,
+      direto do blog para a sua caixa de entrada. Sem ruído, sem spam. Cancele quando quiser.
+    </p>
+    <form id="newsletter-form" class="nl-form gsap-hidden" novalidate>
+      <div class="nl-field">
+        <label class="form-label" for="nl-email">Seu email</label>
+        <input class="form-input" type="email" id="nl-email" name="email"
+               placeholder="seu@email.com" required autocomplete="email">
+      </div>
+      <!-- Honeypot: hidden from humans, catches bots -->
+      <div class="nl-hp" aria-hidden="true">
+        <label>Deixe em branco
+          <input type="text" name="company" tabindex="-1" autocomplete="off">
+        </label>
+      </div>
+      <button type="submit" class="form-submit" id="nl-submit">Assinar <span>→</span></button>
+      <p class="nl-status" id="nl-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
 <!-- ── Contato ───────────────────────────────────────────── -->
 <section id="contato">
   <h2 class="contato-heading">
@@ -2164,6 +2266,61 @@ footer {
   formspree('initForm', { formElement: '#contact-form', formId: 'xzdwegoy' });
 </script>
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+<!-- ── Newsletter signup → /api/subscribe → Resend ───────── -->
+<script>
+(function () {
+  var form = document.getElementById('newsletter-form');
+  if (!form) return;
+  var statusEl = document.getElementById('nl-status');
+  var btn = document.getElementById('nl-submit');
+  var input = document.getElementById('nl-email');
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setStatus(msg, kind) {
+    statusEl.textContent = msg;
+    statusEl.classList.remove('is-success', 'is-error');
+    if (kind) statusEl.classList.add('is-' + kind);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    // Honeypot — bots fill the hidden "company" field; humans never see it.
+    if (form.company && form.company.value.trim() !== '') {
+      setStatus('Pronto, você está na lista.', 'success');
+      form.reset();
+      return;
+    }
+    var email = (input.value || '').trim();
+    if (!EMAIL_RE.test(email)) {
+      setStatus('Digite um email válido.', 'error');
+      input.focus();
+      return;
+    }
+    btn.disabled = true;
+    setStatus('Enviando…', null);
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, company: '' })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (res.ok && res.d && res.d.ok) {
+          setStatus(res.d.already ? 'Você já está na lista. Obrigado!' : 'Pronto! Você está na lista. 🖤', 'success');
+          form.reset();
+        } else {
+          setStatus((res.d && res.d.error) || 'Não foi possível inscrever agora.', 'error');
+          btn.disabled = false;
+        }
+      })
+      .catch(function () {
+        setStatus('Erro de conexão. Tente de novo.', 'error');
+        btn.disabled = false;
+      });
+  });
+})();
+</script>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
