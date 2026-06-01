@@ -106,15 +106,39 @@ function escapeHtml(str) {
   return (str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// Recent-post history: retained on disk and summarized into the structure prompt
+// so the generator actively varies format, length, and template mix over time.
+const HISTORY_LIMIT = 8;         // posts kept in carousel-usage.json
+const HISTORY_PROMPT_COUNT = 5;  // posts summarized into the Claude prompt
+
 function loadUsage() {
-  if (!fs.existsSync(USAGE_PATH)) return { recentTemplates: [] };
-  return JSON.parse(fs.readFileSync(USAGE_PATH, 'utf8'));
+  if (!fs.existsSync(USAGE_PATH)) return { posts: [] };
+  try {
+    const data = JSON.parse(fs.readFileSync(USAGE_PATH, 'utf8'));
+    // New schema: { posts: [{ date, title, format, slideCount, templates }] }.
+    // Legacy schema only had a flat { recentTemplates } with no per-post format
+    // or length, which can't be recovered — start the history fresh from there.
+    return Array.isArray(data.posts) ? data : { posts: [] };
+  } catch {
+    return { posts: [] };
+  }
 }
 
-function saveUsage(used) {
-  const existing = loadUsage();
-  const updated = [...existing.recentTemplates, ...used].slice(-35);
-  fs.writeFileSync(USAGE_PATH, JSON.stringify({ recentTemplates: updated, lastRun: isoDate() }, null, 2), 'utf8');
+function saveUsage(record) {
+  const { posts } = loadUsage();
+  const updated = [...posts, record].slice(-HISTORY_LIMIT);
+  fs.writeFileSync(USAGE_PATH, JSON.stringify({ lastRun: isoDate(), posts: updated }, null, 2), 'utf8');
+}
+
+// Human-readable recap of recent posts, most recent first, for the prompt.
+function buildHistorySummary(posts, count = HISTORY_PROMPT_COUNT) {
+  const recent = posts.slice(-count).reverse();
+  if (recent.length === 0) return '(no recent posts on record — clean slate, choose freely)';
+  return recent.map((p, i) => {
+    const seq = (p.templates ?? []).join(' → ') || '(unknown)';
+    const label = i === 0 ? 'Most recent' : `${i + 1} posts ago`;
+    return `- ${label}: ${p.format}, ${p.slideCount} slide(s) [${seq}]`;
+  }).join('\n');
 }
 
 /* ── Photo inventory ───────────────────────────────────────── */
@@ -201,7 +225,7 @@ function readLatestPost(explicitFile) {
 
 /* ── Claude: decide format + extract content ──────────────── */
 
-async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '' } = {}) {
+async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '', historySummary = '' } = {}) {
   const contentBlock = post.excerpt
     ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
     : `TOPIC IDEA:\n${post.title}`;
@@ -219,11 +243,19 @@ async function extractPostStructure(client, post, { hasBlogPost = true, inventor
 
 ${contentBlock}
 
-Decide the best Instagram post format, then extract the content.
+Decide the best Instagram post format FOR THIS SPECIFIC POST, then extract the content.
 
-FORMAT RULES:
-- "carousel" (3-7 slides): For educational, sequential content — guides, tip lists, myth-busting, Q&A, step-by-step processes. Maximum saves and shares.
-- "single" (1 slide): For powerful quotes, personal reflections, photo stories, brand moments. Higher reach, simpler message.
+RECENT POSTS (most recent first) — vary from these so the feed never looks repetitive:
+${historySummary}
+
+FORMAT RULES — let the content decide, never default to one fixed shape:
+- "single" (1 slide): best when the post's power is one sharp idea, quote, reflection, or striking image. Use a SINGLE content type below. These are currently underused — reach for them whenever the content can carry a single frame.
+- "carousel" (3-10 slides): best for educational or sequential content — guides, tip lists, myth-busting, Q&A, step-by-step. SIZE IT TO THE SUBSTANCE: 3-5 slides for a punchy or quick idea, 6-8 for a normal teaching post, 8-10 only for a genuinely deep guide. Do NOT pad to a fixed slide count.
+
+VARIETY RULES (important):
+- Do NOT repeat the most recent post's format, slide count, or opening template sequence shown above.
+- If the last 1-2 posts were carousels, strongly prefer a single-image post now whenever the content allows it.
+- Favor content types and layouts that do NOT appear in the recent list above.
 
 CAROUSEL content types (use for multi-slide):
 hook (slide 1, always) · tip · numbered_tip · guide · list · checklist · checklist_dark · numbered_checklist · myth_truth · qa · photo_reflection · cta (last slide, always)
@@ -469,7 +501,10 @@ async function main() {
 
   console.log('Deciding format and extracting content with Claude...');
   const inventoryText = loadInventory();
-  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText });
+  const historySummary = buildHistorySummary(loadUsage().posts);
+  console.log('  Recent history (avoiding repeats):');
+  console.log(historySummary.split('\n').map(l => `    ${l}`).join('\n'));
+  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary });
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
 
@@ -481,6 +516,15 @@ async function main() {
   const slug = slugify(post.title);
   const outDir = path.join(__dirname, 'carousels', `${date}-${slug}`);
   fs.mkdirSync(outDir, { recursive: true });
+
+  // Clear stale slides from a previous run of the same post, so switching to a
+  // shorter format (e.g. 7-slide carousel → 1-slide single) never leaves
+  // orphaned slide-NN.png files behind.
+  for (const f of fs.readdirSync(outDir)) {
+    if (/^slide-\d+\.(png|html)$/i.test(f)) {
+      try { fs.unlinkSync(path.join(outDir, f)); } catch (_) {}
+    }
+  }
 
   // Write and screenshot slides
   const slideHtmlPaths = [];
@@ -542,7 +586,7 @@ async function main() {
     'utf8'
   );
 
-  saveUsage(usedTypes);
+  saveUsage({ date, title: post.title, format, slideCount: slides.length, templates: usedTypes });
 
   console.log(`\nDone! ${slides.length} slide${slides.length > 1 ? 's' : ''} → carousels/${date}-${slug}/`);
   console.log('Caption → post-caption.txt (also inside the output folder)');
