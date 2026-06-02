@@ -30,13 +30,23 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Validate pillar input
+        if: ${{ github.event.inputs.pillar != '' }}
+        run: |
+          PILLAR="${{ github.event.inputs.pillar }}"
+          ALLOWED="data-security entrepreneurship cycling brand wellness"
+          if ! echo "$ALLOWED" | grep -qw "$PILLAR"; then
+            echo "Invalid pillar value: $PILLAR" >&2; exit 1
+          fi
+
       - name: Generate blog post
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PILLAR: ${{ github.event.inputs.pillar }}
         run: |
-          if [ -n "${{ github.event.inputs.pillar }}" ]; then
-            node generate-post.mjs --pillar "${{ github.event.inputs.pillar }}"
+          if [ -n "$PILLAR" ]; then
+            node generate-post.mjs --pillar "$PILLAR"
           else
             node generate-post.mjs
           fi

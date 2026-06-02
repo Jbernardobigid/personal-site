@@ -3,8 +3,22 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const ROOT = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)));
 const PORT = 3000;
+
+const BLOCKED_PATHS = [
+  path.join(ROOT, '.env'),
+  path.join(ROOT, 'post-meta.json'),
+  path.join(ROOT, 'carousel-meta.json'),
+  path.join(ROOT, 'post-caption.txt'),
+  path.join(ROOT, 'temp'),
+];
+
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+};
 
 const MIME = {
   '.html': 'text/html',
@@ -28,20 +42,41 @@ const MIME = {
 http.createServer((req, res) => {
   let urlPath = req.url.split('?')[0];
   if (urlPath === '/') urlPath = '/index.html';
-  // Resolve trailing-slash directories to their index.html
   if (urlPath.endsWith('/')) urlPath += 'index.html';
 
-  const filePath = path.join(ROOT, urlPath);
+  const filePath = path.resolve(ROOT, '.' + urlPath);
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      res.writeHead(404);
-      res.end('Not found');
+  // Guard: resolved path must stay inside ROOT
+  if (!filePath.startsWith(ROOT + path.sep) && filePath !== ROOT) {
+    res.writeHead(403, SECURITY_HEADERS);
+    res.end('Forbidden');
+    return;
+  }
+
+  // Block pipeline artifacts and server-side scripts
+  const isBlocked = BLOCKED_PATHS.some(b => filePath === b || filePath.startsWith(b + path.sep));
+  const ext = path.extname(filePath).toLowerCase();
+  if (isBlocked || ext === '.mjs' || ext === '.env') {
+    res.writeHead(403, SECURITY_HEADERS);
+    res.end('Forbidden');
+    return;
+  }
+
+  fs.stat(filePath, (statErr, stat) => {
+    if (statErr || stat.isDirectory()) {
+      res.writeHead(statErr ? 404 : 403, SECURITY_HEADERS);
+      res.end(statErr ? 'Not found' : 'Forbidden');
       return;
     }
-    const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
-    res.end(data);
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        res.writeHead(404, SECURITY_HEADERS);
+        res.end('Not found');
+        return;
+      }
+      res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': MIME[ext] || 'application/octet-stream' });
+      res.end(data);
+    });
   });
 }).listen(PORT, () => {
   console.log(`Serving ${ROOT} at http://localhost:${PORT}`);
