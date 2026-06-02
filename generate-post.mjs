@@ -154,29 +154,6 @@ function escapeJson(str) {
   return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-// Strip script/iframe/event-handler injections from AI-generated HTML.
-// The Claude tool schema limits tags to p/h2/h3/strong/em/blockquote/ul/li,
-// but we defensively strip anything dangerous before writing to disk.
-function sanitizeContent(html) {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
-    .replace(/<object[\s\S]*?<\/object>/gi, '')
-    .replace(/<embed[^>]*>/gi, '')
-    .replace(/\s+on\w+\s*=\s*["'][^"']*["']/gi, '')
-    .replace(/\s+on\w+\s*=\s*[^\s>]*/gi, '')
-    .replace(/javascript\s*:/gi, '');
-}
-
 /* ── Post HTML builder ───────────────────────────────────── */
 
 function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl }) {
@@ -216,7 +193,7 @@ function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filena
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(title)} — Jorge Bernardo</title>
+<title>${title} — Jorge Bernardo</title>
 <meta name="description" content="${escapeJson(excerpt)}">
 <link rel="canonical" href="${postUrl}">
 <meta property="og:type" content="article">
@@ -307,8 +284,8 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
 
 <header class="post-header">
   <div class="post-header-inner">
-    <div class="post-pillar" data-pillar="${escapeHtml(pillar.id)}">${escapeHtml(pillar.label)}</div>
-    <h1 class="post-title">${escapeHtml(title)}</h1>
+    <div class="post-pillar" data-pillar="${pillar.id}">${pillar.label}</div>
+    <h1 class="post-title">${title}</h1>
     <div class="post-byline">
       <span>Jorge Bernardo</span>
       <time datetime="${iso}">${formattedDate}</time>
@@ -318,7 +295,7 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
 </header>
 
 <article class="post-body" itemscope itemtype="https://schema.org/BlogPosting">
-${sanitizeContent(content)}
+${content}
 </article>
 
 <div class="post-footer">
