@@ -128,6 +128,16 @@ async function main() {
   const { title, excerpt, pillarId, postUrl, imagePath } = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
   console.log(`Posting to LinkedIn: "${title}"`);
 
+  // Validate imagePath stays within the expected images directory to prevent
+  // an attacker-tampered post-meta.json from reading arbitrary files.
+  const IMAGES_DIR = path.resolve(__dirname, 'blog', 'posts', 'images');
+  if (imagePath) {
+    const resolvedImage = path.resolve(imagePath);
+    if (!resolvedImage.startsWith(IMAGES_DIR + path.sep)) {
+      throw new Error(`imagePath outside allowed directory: ${imagePath}`);
+    }
+  }
+
   const personUrn   = await getMemberUrn();
   console.log('Member URN resolved.');
 
