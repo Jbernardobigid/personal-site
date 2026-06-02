@@ -158,7 +158,11 @@ function resolvePhoto(preferredName) {
   // Resolve a name that may be a bare basename ("DSC00412") or full filename.
   const tryName = (raw) => {
     if (!raw || typeof raw !== 'string') return null;
-    const name = path.basename(raw.trim()).replace(/[^A-Za-z0-9_.-]/g, '');
+    const basename = path.basename(raw.trim());
+    const ext = path.extname(basename).toLowerCase();
+    const safeExt = ['.jpg', '.jpeg', '.png', '.webp'].includes(ext) ? ext : '';
+    const stem = path.basename(basename, ext).replace(/[^A-Za-z0-9_-]/g, '');
+    const name = stem + safeExt;
     if (!name) return null;
     const direct = path.join(photoDir, name);
     if (fs.existsSync(direct)) return direct;
