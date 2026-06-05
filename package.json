@@ -6,7 +6,9 @@
     "serve": "node serve.mjs",
     "screenshot": "node screenshot.mjs",
     "blog:generate": "node generate-post.mjs",
+    "blog:generate:live": "node generate-post.mjs --with-signals",
     "blog:dry-run": "node generate-post.mjs --dry-run",
+    "signals:fetch": "node fetch-signals.mjs",
     "carousel:analyze": "node analyze-templates.mjs",
     "carousel:generate": "node generate-carousel.mjs",
     "templates:generate": "node agent-templates.mjs",
@@ -18,6 +20,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "openai": "^6.39.0",
     "puppeteer-core": "^25.0.4",
+    "rss-parser": "^3.13.0",
     "sharp": "^0.34.5"
   },
   "devDependencies": {

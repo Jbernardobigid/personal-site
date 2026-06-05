@@ -1,0 +1,66 @@
+{
+  "_comment": "Signal sources for the content pipeline. Press feeds are curated Afro-Brazilian/Brazilian outlets (items tagged to a pillar by keyword match). Google News RSS queries are pillar-scoped and turned into news.google.com/rss/search feeds by signals.mjs (keyless, no manual setup). Edit freely — failed/empty feeds are skipped gracefully.",
+  "googleNews": {
+    "ptTemplate": "https://news.google.com/rss/search?q={q}&hl=pt-BR&gl=BR&ceid=BR:pt-419",
+    "enTemplate": "https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en",
+    "freshness": "when:14d"
+  },
+  "_pressNote": "Alma Preta (almapreta.com.br/feed) is intentionally omitted — it sits behind Cloudflare bot protection that serves an HTML challenge to programmatic clients. Its articles still surface via the Google News queries below.",
+  "pressFeeds": [
+    { "name": "Geledés", "url": "https://www.geledes.org.br/feed/", "tier": 1 },
+    { "name": "Mundo Negro", "url": "https://mundonegro.inf.br/feed/", "tier": 1 },
+    { "name": "Revista Raça", "url": "https://revistaraca.com.br/feed/", "tier": 1 },
+    { "name": "Notícia Preta", "url": "https://noticiapreta.com.br/feed/", "tier": 1 }
+  ],
+  "pillars": {
+    "black-identity": {
+      "keywords": ["identidade negra", "representatividade", "negritude", "consciência negra", "racismo", "branquitude", "antirracismo", "população negra"],
+      "googleNews": {
+        "pt": "\"identidade negra\" OR \"representatividade negra\" OR negritude OR \"consciência negra\"",
+        "en": "\"Black identity\" OR \"racial representation\" OR \"Black excellence\" Brazil"
+      }
+    },
+    "cycling": {
+      "keywords": ["ciclismo", "ciclista", "bike", "bicicleta", "mobilidade urbana", "racismo no esporte", "pedal"],
+      "googleNews": {
+        "pt": "\"ciclismo urbano\" OR \"ciclistas negros\" OR \"ciclismo negro\"",
+        "en": "\"Black cyclists\" OR \"cycling diversity\" OR \"cycling activism\""
+      }
+    },
+    "technology": {
+      "keywords": ["inteligência artificial", "ia", "lgpd", "segurança de dados", "privacidade", "dados", "governança", "inovação", "tecnologia"],
+      "googleNews": {
+        "pt": "\"inteligência artificial\" OR \"segurança de dados\" OR LGPD OR \"governança de IA\"",
+        "en": "\"AI governance\" OR \"data privacy\" OR \"diversity in tech\""
+      }
+    },
+    "entrepreneurship": {
+      "keywords": ["empreendedorismo", "empreendedor", "negócios", "startup", "founder", "economia", "afrobrasileiros"],
+      "googleNews": {
+        "pt": "\"empreendedorismo negro\" OR \"negócios afrobrasileiros\" OR \"startups negras\"",
+        "en": "\"Black entrepreneurship\" OR \"Black founders\" Brazil"
+      }
+    },
+    "fatherhood": {
+      "keywords": ["paternidade", "pai", "filho", "família", "licença paternidade", "parentalidade"],
+      "googleNews": {
+        "pt": "paternidade OR \"paternidade negra\" OR \"pai presente\" OR \"paternidade ativa\"",
+        "en": "\"involved fatherhood\" OR \"active fatherhood\" OR \"fatherhood study\""
+      }
+    },
+    "learning": {
+      "keywords": ["educação", "aprendizado", "aprendizagem", "ensino", "capacitação", "requalificação", "formação"],
+      "googleNews": {
+        "pt": "\"educação antirracista\" OR \"aprendizagem contínua\" OR \"requalificação profissional\"",
+        "en": "\"lifelong learning\" OR \"upskilling\" OR \"adult learning\""
+      }
+    },
+    "career-growth": {
+      "keywords": ["carreira", "mercado de trabalho", "profissional", "etarismo", "liderança", "reinvenção"],
+      "googleNews": {
+        "pt": "\"reinvenção profissional\" OR \"transição de carreira\" OR etarismo",
+        "en": "\"career change after 40\" OR \"ageism workplace\" OR \"career reinvention\""
+      }
+    }
+  }
+}
