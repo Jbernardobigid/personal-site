@@ -4,6 +4,8 @@ node_modules/
 carousels/
 carousel-meta.json
 carousel-usage.json
+carousel-prepared.json
+signals/
 *.mp4
 brand_assets/
 mohamedshehata.net_.png

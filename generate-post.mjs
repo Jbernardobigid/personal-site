@@ -6,23 +6,29 @@
  *
  * Usage:
  *   node generate-post.mjs
+ *   node generate-post.mjs --with-signals        (ground the post in a real recent news signal + research)
  *   node generate-post.mjs --pillar cycling      (force specific pillar)
  *   node generate-post.mjs --dry-run             (generate but don't write files)
  *
  * Requires: ANTHROPIC_API_KEY environment variable
- * Optional: SITE_URL environment variable (defaults to placeholder — set in GitHub secrets)
+ * Optional: OPENAI_API_KEY (OG image + research synthesis), TAVILY_API_KEY (--with-signals research),
+ *           SITE_URL environment variable (defaults to placeholder — set in GitHub secrets)
  */
 
+import './load-env.mjs';
 import Anthropic from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { generatePostImage } from './generate-image.mjs';
+import { selectSignal, recordUsedSignal } from './signals.mjs';
+import { researchTopic } from './research.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BLOG_DIR   = path.join(__dirname, 'blog');
-const POSTS_DIR  = path.join(BLOG_DIR, 'posts');
-const IMAGES_DIR = path.join(POSTS_DIR, 'images');
+const BLOG_DIR    = path.join(__dirname, 'blog');
+const POSTS_DIR   = path.join(BLOG_DIR, 'posts');
+const IMAGES_DIR  = path.join(POSTS_DIR, 'images');
+const RESEARCH_DIR = path.join(POSTS_DIR, 'research');
 const INDEX_FILE = path.join(BLOG_DIR, 'index.html');
 const SITEMAP    = path.join(__dirname, 'sitemap.xml');
 const ROBOTS     = path.join(__dirname, 'robots.txt');
@@ -414,6 +420,7 @@ Sitemap: ${SITE_URL}/sitemap.xml
 async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
+  const withSignals = args.includes('--with-signals');
   const forcePillar = args.includes('--pillar') ? args[args.indexOf('--pillar') + 1] : null;
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -422,14 +429,69 @@ async function main() {
     process.exit(1);
   }
 
-  const pillar = forcePillar
-    ? PILLARS.find(p => p.id === forcePillar) || getNextPillar()
-    : getNextPillar();
+  const resolvePillar = () =>
+    forcePillar ? (PILLARS.find(p => p.id === forcePillar) || getNextPillar()) : getNextPillar();
+
+  // Signal-led selection (with balance guardrail) when --with-signals is set: a real,
+  // recent, safety-checked news signal sets the pillar/angle and seeds upstream research.
+  // No safe signal → fall back to evergreen rotation (today's behavior).
+  let pillar, signal = null, research = null;
+  if (withSignals) {
+    // Any failure in the signal/research phase must NOT kill the cron (the blog
+    // auto-publishes) — fall back to evergreen rotation instead.
+    try {
+      console.log('Signal mode: scanning press + Google News for a fresh, on-brand signal...');
+      const sel = await selectSignal({ forcePillar });
+      signal = sel.signal;
+      if (signal) {
+        pillar = PILLARS.find(p => p.id === signal.pillar) || resolvePillar();
+        console.log(`Signal [${pillar.id}]: ${signal.title} — ${signal.source}`);
+        const query = `${signal.title} ${signal.source} Brasil`.trim();
+        console.log('Researching the signal (Tavily + synthesis)...');
+        const r = await researchTopic(query);
+        if (r.success) {
+          research = r.data;
+          console.log(`Research: ${research.stats.length} stat(s), ${research.sources.length} source(s).`);
+        } else {
+          console.warn(`Research failed (${r.error}) — grounding on the signal headline only.`);
+        }
+      } else {
+        console.log('No safe, on-brand signal found — falling back to evergreen rotation.');
+      }
+    } catch (e) {
+      console.warn(`Signal mode error (${e.message}) — falling back to evergreen rotation.`);
+      signal = null; research = null;
+    }
+    if (!pillar) pillar = resolvePillar();
+  } else {
+    pillar = resolvePillar();
+  }
 
   console.log(`Generating post for pillar: ${pillar.label}`);
   console.log(`Site URL: ${SITE_URL}`);
 
   const client = new Anthropic({ apiKey });
+
+  // Grounding blocks injected only when a signal/research is present (--with-signals).
+  const groundingSystemNote = (signal || research) ? `
+
+GROUNDING IN REAL EVENTS (mandatory when provided):
+- When a current-events item is provided, the anecdote lede or the nut graf must connect to that real, recent event. Do not invent details beyond what is given.
+- When researched data is provided, weave one or two of those real figures into the post and make clear where each came from. NEVER invent statistics or cite numbers not present in the provided data.` : '';
+
+  const signalBlock = signal ? `
+
+ATUALIDADE — ponto de partida real e recente (ancore o lede ou o nut graf neste acontecimento; não invente detalhes além do que está aqui):
+- Manchete: ${signal.title}
+- Fonte: ${signal.source}${signal.date ? ` (${signal.date.slice(0, 10)})` : ''}${signal.summary ? `\n- Resumo: ${signal.summary}` : ''}` : '';
+
+  const researchBlock = (research && (research.stats?.length || research.insights?.length)) ? `
+
+DADOS PESQUISADOS (use APENAS estes números/fatos, sempre deixando claro de onde vieram; NUNCA invente dados):
+${(research.stats || []).map(s => `- ${s.value}: ${s.context} (${s.source})`).join('\n')}${(research.insights || []).length ? `\nContexto:\n${research.insights.slice(0, 4).map(i => `- ${i}`).join('\n')}` : ''}${(research.sources || []).length ? `\nFontes: ${research.sources.slice(0, 6).join(', ')}` : ''}` : '';
+
+  const groundingRequirements = (signal || research) ? `
+- Fundamente a abertura no acontecimento atual acima, sem inventar detalhes${researchBlock ? '\n- Teça 1 ou 2 dos dados pesquisados no texto, sempre citando a fonte; nunca invente números' : ''}` : '';
 
   const systemPrompt = `You are a ghostwriter creating blog posts for Jorge Bernardo. Write in first person, in Brazilian Portuguese, in Jorge's authentic voice — thoughtful, direct, culturally grounded, never corporate.
 
@@ -466,9 +528,9 @@ NEVER use the following — they are AI tells that break authenticity:
 - Openers like "O fato é que", "Isso significa que", "É fundamental que", "É essencial que"
 - Lists that always have exactly 3 bullets — use 2, 4, or skip the list entirely if prose flows better
 - A concluding paragraph that summarizes what the post just said
-- Any phrase that sounds like a LinkedIn caption or a motivational slide`;
+- Any phrase that sounds like a LinkedIn caption or a motivational slide${groundingSystemNote}`;
 
-  const userPrompt = `Write a blog post on the topic pillar: "${pillar.label}" — ${pillar.description}
+  const userPrompt = `Write a blog post on the topic pillar: "${pillar.label}" — ${pillar.description}${signalBlock}${researchBlock}
 
 Requirements:
 - Title: compelling, specific, not generic (in Portuguese)
@@ -484,7 +546,7 @@ Requirements:
 - No em dashes (—) anywhere in the text
 - No AI filler transitions (Além disso, Vale ressaltar, Em suma, etc.)
 - Close by returning to the opening moment or landing on a quiet image — never summarize
-- Sentence rhythm should feel uneven and human — not every paragraph the same length`;
+- Sentence rhythm should feel uneven and human — not every paragraph the same length${groundingRequirements}`;
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -539,6 +601,11 @@ Requirements:
     console.log(filename);
     console.log('\n--- DRY RUN: Canonical URL ---');
     console.log(`${SITE_URL}/blog/posts/${filename}`);
+    if (signal) {
+      console.log('\n--- DRY RUN: Grounded on signal ---');
+      console.log(`[${pillar.id}] ${signal.title} — ${signal.source}`);
+      if (research) console.log(`Research: ${research.stats.length} stat(s), ${research.sources.length} source(s)`);
+    }
     console.log('\nDry run complete. No files written.');
     return;
   }
@@ -563,6 +630,24 @@ Requirements:
     JSON.stringify({ title, excerpt, pillarId: pillar.id, postUrl: `${SITE_URL}/blog/posts/${filename}`, imagePath: savedImagePath }, null, 2),
     'utf8'
   );
+
+  // Commit-able research artifact (non-ignored path) so the newsletter reuses the
+  // SAME cited data instead of running its own Tavily pass. Shape matches
+  // research_topic.py + the chosen signal's metadata.
+  if (withSignals && signal) {
+    fs.mkdirSync(RESEARCH_DIR, { recursive: true });
+    const researchOut = {
+      ...(research || { insights: [], stats: [], quotes: [], time_series: [], summary: '', sources: [] }),
+      slug,
+      pillar: pillar.id,
+      post_url: `${SITE_URL}/blog/posts/${filename}`,
+      signal: { title: signal.title, source: signal.source, url: signal.url, date: signal.date }
+    };
+    fs.writeFileSync(path.join(RESEARCH_DIR, `${slug}.json`), JSON.stringify(researchOut, null, 2), 'utf8');
+    console.log(`Research saved: blog/posts/research/${slug}.json`);
+    recordUsedSignal(signal);
+    console.log('Signal recorded in used-signals ledger.');
+  }
 
   updateBlogIndex(listItem);
   console.log('Blog index updated.');
