@@ -21,11 +21,13 @@ const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN;
 if (!LINKEDIN_ACCESS_TOKEN) { console.error('Error: LINKEDIN_ACCESS_TOKEN is not set.'); process.exit(1); }
 
 const HASHTAGS = {
-  'data-security':    '#SegurançaDeDados #Privacidade #LGPD #GovernançaDeDados #IA',
-  'entrepreneurship': '#Empreendedorismo #NegóciosPretros #ImpactoSocial #FeiraPreta',
+  'black-identity':   '#IdentidadeNegra #OrgulhoNegro #Representatividade #BlackExcellence',
   'cycling':          '#Ciclismo #DePretoPraPreto #CiclistaNegro #Bicicleta',
-  'brand':            '#Marca #Branding #Design #Estratégia #IdentidadeDeMarca',
-  'wellness':         '#Wellness #Desempenho #SaúdeMental #Atleta #afterALL'
+  'technology':       '#Tecnologia #IA #SegurançaDeDados #GovernançaDeIA #Inovação',
+  'entrepreneurship': '#Empreendedorismo #NegóciosPretos #ImpactoSocial #FeiraPreta',
+  'fatherhood':       '#Paternidade #PaiPresente #Família #Legado',
+  'learning':         '#Aprendizado #EducaçãoContinuada #Crescimento #Educação',
+  'career-growth':    '#Carreira #CrescimentoProfissional #Reinvenção #Desenvolvimento'
 };
 
 async function getImageBuffer(imagePath, pillarId) {

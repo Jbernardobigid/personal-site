@@ -70,11 +70,13 @@ const ITEM_TYPES = new Set([
 ]);
 
 const PILLAR_HASHTAGS = {
-  'data-security':    ['#SegurançaDeDados', '#PrivacidadeDeDados', '#LGPD', '#GovernançaDeIA', '#DataPrivacy', '#PrivacyByDesign', '#TechBR'],
-  'entrepreneurship': ['#EmpreendedorismoNegro', '#FeiraPreta', '#EmpreendeContaCom', '#NegociosAfrobrasileiros', '#BlackBusiness', '#JorgeBernardo'],
+  'black-identity':   ['#IdentidadeNegra', '#OrgulhoNegro', '#NegrosNaTech', '#RepresentatividadeImporta', '#BlackExcellence', '#JorgeBernardo'],
   'cycling':          ['#DePretoPraPreto', '#CiclismoNegro', '#TeamAfricaRising', '#CiclismoSP', '#BlackCycling', '#PedalaNegro'],
-  'brand':            ['#MarcaComPropósito', '#IdentidadeVisual', '#CulturalBranding', '#StrategyMeetAesthetics', '#BrandBuilding'],
-  'wellness':         ['#Wellness', '#MindsetDeAtleta', '#TechSaúde', '#PerformanceHumana'],
+  'technology':       ['#Tecnologia', '#IA', '#SegurançaDeDados', '#PrivacidadeDeDados', '#GovernançaDeIA', '#TechBR', '#InovaçãoTech'],
+  'entrepreneurship': ['#EmpreendedorismoNegro', '#FeiraPreta', '#EmpreendeContaCom', '#NegociosAfrobrasileiros', '#BlackBusiness', '#JorgeBernardo'],
+  'fatherhood':       ['#Paternidade', '#PaiPresente', '#PaternidadeNegra', '#FamíliaECarreira', '#Legado'],
+  'learning':         ['#Aprendizado', '#EducaçãoContinuada', '#MindsetDeCrescimento', '#NuncaPararDeAprender', '#Educação'],
+  'career-growth':    ['#Carreira', '#CrescimentoProfissional', '#CarreiraAposOs40', '#Reinvenção', '#DesenvolvimentoDeCarreira', '#JorgeBernardo'],
 };
 
 /* ── Utilities ─────────────────────────────────────────────── */
@@ -229,10 +231,20 @@ function readLatestPost(explicitFile) {
 
 /* ── Claude: decide format + extract content ──────────────── */
 
-async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '', historySummary = '' } = {}) {
+async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '', historySummary = '', forcedFormat = null } = {}) {
   const contentBlock = post.excerpt
     ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
     : `TOPIC IDEA:\n${post.title}`;
+
+  // Optional explicit format override (--format carousel|single). When set, the
+  // model still extracts the content but is told which shape to produce, instead
+  // of deciding on its own. Used when the source material clearly warrants one
+  // shape (e.g. data-rich research that needs multiple slides to showcase).
+  const formatDirective = forcedFormat === 'carousel'
+    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" with 6-8 slides. Build the carousel around the strongest material — lead the data points with myth_truth / numbered_tip / qa slides, and give cited numbers and quotes their own slides. Ignore any variety rule that would push you toward a single slide.'
+    : forcedFormat === 'single'
+    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "single" with exactly 1 slide, using one SINGLE content type.'
+    : '';
 
   const ctaInstruction = hasBlogPost
     ? '- For carousels: first slide must be hook, last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")'
@@ -245,7 +257,7 @@ async function extractPostStructure(client, post, { hasBlogPost = true, inventor
       role: 'user',
       content: `You are a social media manager for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
 
-${contentBlock}
+${contentBlock}${formatDirective}
 
 Decide the best Instagram post format FOR THIS SPECIFIC POST, then extract the content.
 
@@ -282,9 +294,9 @@ Return JSON: { "format": "carousel" | "single", "photo": "<filename>", "slides":
 
 PHOTO SELECTION:
 Choose ONE photo for this post from the inventory below and return its exact filename in the top-level "photo" field (extension optional, e.g. "DSC00412" or "DSC00412.jpg").
-- Cycling / endurance / sport / wellness topics, use the DSC cycling-action shots.
-- Lifestyle / brand / business / entrepreneurship / data-security topics, use the 7B7A Madrid editorial shots.
-- Community / event / culture topics, use the 20221203 event portraits.
+- Cycling / endurance / sport topics, use the DSC cycling-action shots.
+- Identity / lifestyle / technology / entrepreneurship / career topics, use the 7B7A Madrid editorial shots.
+- Community / family / event / culture topics, use the 20221203 event portraits.
 - Activism / resistance themes, use the yellow fist-raised frames.
 - When unsure, pick a clean editorial portrait. Prefer the listed "hero frames".
 
@@ -476,8 +488,11 @@ async function main() {
   const args = process.argv.slice(2);
   const topicIdx = args.indexOf('--topic');
   const pillarIdx = args.indexOf('--pillar');
+  const formatIdx = args.indexOf('--format');
   const topicArg  = topicIdx  !== -1 ? args[topicIdx  + 1] : null;
   const pillarArg = pillarIdx !== -1 ? args[pillarIdx + 1] : null;
+  const formatArg = formatIdx !== -1 ? args[formatIdx + 1] : null;
+  const forcedFormat = ['carousel', 'single'].includes(formatArg) ? formatArg : null;
 
   // Whether the post links back to the blog ("Link na bio" CTA) or is standalone.
   // Defaults: --topic runs are standalone; reading a blog file is blog-linked.
@@ -508,7 +523,8 @@ async function main() {
   const historySummary = buildHistorySummary(loadUsage().posts);
   console.log('  Recent history (avoiding repeats):');
   console.log(historySummary.split('\n').map(l => `    ${l}`).join('\n'));
-  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary });
+  if (forcedFormat) console.log(`  Format override: ${forcedFormat}`);
+  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary, forcedFormat });
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
 
