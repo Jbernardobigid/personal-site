@@ -1,7 +1,7 @@
 /**
  * generate-post.mjs
  * Generates a blog post for Jorge Bernardo's site using the Claude API.
- * Rotates through 5 topic pillars, writes the post HTML, updates blog/index.html,
+ * Rotates through 7 topic pillars, writes the post HTML, updates blog/index.html,
  * regenerates sitemap.xml, and regenerates robots.txt.
  *
  * Usage:
@@ -38,29 +38,39 @@ function sanitizeEmDashes(text) {
 
 const PILLARS = [
   {
-    id: 'data-security',
-    label: 'Segurança de Dados',
-    description: 'Data security, AI governance, privacy engineering, LGPD/GDPR compliance, enterprise data protection trends, BigID use cases, privacy-by-design'
-  },
-  {
-    id: 'entrepreneurship',
-    label: 'Empreendedorismo',
-    description: 'Black entrepreneurship in Brazil, Afro-Brazilian business, racial equity in business, Feira Preta, community-driven ventures, building ventures with cultural identity'
+    id: 'black-identity',
+    label: 'Identidade Negra',
+    description: 'Black identity and the Afro-Brazilian experience, Black beauty and excellence, representation and ancestry, belonging, navigating predominantly white professional spaces as a Black man, identity as a source of strength and purpose'
   },
   {
     id: 'cycling',
     label: 'Ciclismo',
-    description: 'Cycling as identity and activism, Black cyclists in Brazil, diversity in cycling culture, DePretoPraPreto mission, Team Africa Rising, urban cycling, sport as political act'
+    description: 'Cycling as identity and activism, Black cyclists in Brazil, diversity in cycling culture, DePretoPraPreto mission, Team Africa Rising, urban cycling, endurance and discipline, sport as political act'
   },
   {
-    id: 'brand',
-    label: 'Marcas',
-    description: 'Building brands with meaning, aesthetics meets strategy, brand identity, purpose-driven design, cultural branding, how design serves community'
+    id: 'technology',
+    label: 'Tecnologia',
+    description: 'Technology and its human impact, AI and data security, privacy engineering, AI governance, how technology reshapes work and society, BigID use cases, staying current with emerging tech, tech applied to human performance'
   },
   {
-    id: 'wellness',
-    label: 'Wellness',
-    description: 'Wellness and performance technology, afterALL platform, athlete mindset, disciplina, mental health and sport, tech applied to human performance'
+    id: 'entrepreneurship',
+    label: 'Empreendedorismo',
+    description: 'Black entrepreneurship in Brazil, Afro-Brazilian business, racial equity in business, Feira Preta, building ventures with cultural identity (DePretoPraPreto, afterALL), community-driven ventures, purpose-driven business'
+  },
+  {
+    id: 'fatherhood',
+    label: 'Paternidade',
+    description: 'Fatherhood and raising children with intention, passing on identity and values, being present, balancing family and career, what fatherhood teaches about leadership and patience, legacy and the next generation'
+  },
+  {
+    id: 'learning',
+    label: 'Aprendizado',
+    description: 'Lifelong learning and education, the discipline of studying while working (MBA at FGV, privacy postgrad at IDESP, AI/ML at MIT/Infnet), curiosity as a habit, teaching and learning as a technical trainer, a growth mindset, reinventing your skill set'
+  },
+  {
+    id: 'career-growth',
+    label: 'Carreira após os 40',
+    description: 'Career growth after 40, reinvention in midlife, building a meaningful career on your own terms, 15+ years in tech and what it taught, the advantages of experience, ambition with balance, mentorship, defining success beyond titles'
   }
 ];
 
