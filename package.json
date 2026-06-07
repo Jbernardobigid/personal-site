@@ -11,6 +11,8 @@
     "signals:fetch": "node fetch-signals.mjs",
     "carousel:analyze": "node analyze-templates.mjs",
     "carousel:generate": "node generate-carousel.mjs",
+    "video:generate": "node generate-video.mjs",
+    "video:prepare": "node prepare-video.mjs",
     "templates:generate": "node agent-templates.mjs",
     "templates:force": "node agent-templates.mjs --force"
   },
