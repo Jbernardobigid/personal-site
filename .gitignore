@@ -5,6 +5,8 @@ carousels/
 carousel-meta.json
 carousel-usage.json
 carousel-prepared.json
+videos/
+video-prepared.json
 signals/
 *.mp4
 brand_assets/
@@ -17,3 +19,4 @@ post-caption.txt
 # Harness / tooling noise
 .agents/
 skills-lock.json
+assets/music/

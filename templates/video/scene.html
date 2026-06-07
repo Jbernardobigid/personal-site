@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Transparent 1080x1920 kinetic-text scene. Rendered to a TRANSPARENT PNG
+       (Puppeteer omitBackground) and composited over the ffmpeg background; the
+       fade-in + drift motion is applied by ffmpeg, so this is a static layout. */
+    html, body { margin: 0; padding: 0; background: transparent; }
+    #scene {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+    .content {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 920px;
+      text-align: center;
+    }
+    .label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      color: #C8A96E;
+      margin-bottom: 34px;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+    }
+    .divider {
+      width: 64px;
+      height: 3px;
+      background: #C8A96E;
+      margin: 0 auto 46px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.4);
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 92px;
+      line-height: 1.14;
+      letter-spacing: -1px;
+      color: #ffffff;
+      text-shadow: 0 6px 40px rgba(0,0,0,0.62), 0 1px 3px rgba(0,0,0,0.55);
+    }
+    .handle {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    }
+    /* Render layers separately (kept in identical positions via visibility) so each
+       can be revealed at a different time by the ffmpeg compositor. {{ONLY}} = body class. */
+    body.only-intro .headline { visibility: hidden; }
+    body.only-headline .label,
+    body.only-headline .divider,
+    body.only-headline .handle { visibility: hidden; }
+  </style>
+</head>
+<body class="{{ONLY}}">
+  <div id="scene">
+    <div class="handle">@jotabernard0</div>
+    <div class="content">
+      <div class="label">{{LABEL}}</div>
+      <div class="divider"></div>
+      <div class="headline">{{HEADLINE}}</div>
+    </div>
+  </div>
+</body>
+</html>
