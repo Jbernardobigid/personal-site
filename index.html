@@ -117,7 +117,7 @@
 
 /* ── Reset ─────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; overflow-x: clip; }
 
 /* ── Variables ──────────────────────────────────────────── */
 :root {
@@ -142,6 +142,7 @@ body {
   color: var(--white);
   font-family: var(--font-body);
   overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 @media (hover: hover) and (pointer: fine) {
