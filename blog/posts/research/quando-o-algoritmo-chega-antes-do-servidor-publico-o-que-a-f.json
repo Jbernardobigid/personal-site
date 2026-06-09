@@ -1,0 +1,34 @@
+{
+  "topic": "Fila do INSS cai de 1,9 milhão para 765 mil pedidos atrasados; governo quer zerar estoque até setembro Notícia Preta Brasil",
+  "slug": "quando-o-algoritmo-chega-antes-do-servidor-publico-o-que-a-f",
+  "generated_at": "2026-06-09T11:53:22.749Z",
+  "sources": [],
+  "insights": [
+    "The backlog of INSS requests has significantly decreased from 1.9 million to 765,000.",
+    "The Brazilian government aims to eliminate the remaining backlog by September.",
+    "This reduction in backlog is part of a broader effort to improve the efficiency of the INSS system."
+  ],
+  "stats": [
+    {
+      "value": "60.26%",
+      "context": "percentage decrease in the backlog of INSS requests",
+      "source": "Notícia Preta Brasil"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "The government is committed to zeroing the stock of pending requests.",
+      "attribution": "Notícia Preta Brasil"
+    }
+  ],
+  "time_series": [],
+  "summary": "The Brazilian government has made significant progress in reducing the backlog of INSS requests, cutting it down from 1.9 million to 765,000. With a target to eliminate the remaining requests by September, this initiative reflects a commitment to enhancing the efficiency of social security services.",
+  "pillar": "technology",
+  "post_url": "https://jorgebernardo.tech/blog/posts/2026-06-09-quando-o-algoritmo-chega-antes-do-servidor-publico-o-que-a-f.html",
+  "signal": {
+    "title": "Fila do INSS cai de 1,9 milhão para 765 mil pedidos atrasados; governo quer zerar estoque até setembro",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/fila-do-inss-cai-de-19-milhao-para-765-mil-pedidos-atrasados-governo-quer-zerar-estoque-ate-setembro/?utm_source=rss&utm_medium=rss&utm_campaign=fila-do-inss-cai-de-19-milhao-para-765-mil-pedidos-atrasados-governo-quer-zerar-estoque-ate-setembro",
+    "date": "2026-06-09T11:30:00.000Z"
+  }
+}
