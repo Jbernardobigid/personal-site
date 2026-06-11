@@ -18,7 +18,7 @@
 import './load-env.mjs';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // graph.facebook.com = Facebook-login flavor (Page-linked); graph.instagram.com = Instagram-login flavor
@@ -34,7 +34,7 @@ const MAX_CAROUSEL_SLIDES = 10;
 
 /* ── Graph API helpers ─────────────────────────────────────── */
 
-function requireEnv() {
+export function requireEnv() {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN;
   const igUserId = process.env.INSTAGRAM_USER_ID;
   if (!token || !igUserId) {
@@ -45,7 +45,7 @@ function requireEnv() {
   return { token, igUserId };
 }
 
-async function graphCall(method, apiPath, params) {
+export async function graphCall(method, apiPath, params) {
   const url = new URL(`${GRAPH}${apiPath}`);
   const init = { method };
   if (method === 'GET') {
@@ -91,7 +91,7 @@ async function cmdCheck() {
 
 /* ── stage ─────────────────────────────────────────────────── */
 
-function cmdStage(carouselDir) {
+export function cmdStage(carouselDir) {
   const srcDir = path.isAbsolute(carouselDir) ? carouselDir : path.join(__dirname, carouselDir);
   if (!fs.existsSync(srcDir)) {
     console.error(`Carousel folder not found: ${srcDir}`);
@@ -119,7 +119,7 @@ function cmdStage(carouselDir) {
 
 /* ── publish: carousel / single image ──────────────────────── */
 
-function readCaption(dir, captionFileArg) {
+export function readCaption(dir, captionFileArg) {
   const captionPath = captionFileArg
     ? (path.isAbsolute(captionFileArg) ? captionFileArg : path.join(__dirname, captionFileArg))
     : path.join(dir, 'caption.txt');
@@ -135,7 +135,7 @@ function readCaption(dir, captionFileArg) {
   return raw.trim();
 }
 
-async function cmdPublishCarousel(id, { dryRun, captionFile }) {
+export async function cmdPublishCarousel(id, { dryRun, captionFile } = {}) {
   const { token, igUserId } = requireEnv();
   if (!SITE_URL) {
     console.error('SITE_URL missing from .env — needed to build public media URLs.');
@@ -314,7 +314,10 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(`\nFailed: ${err.message}`);
-  process.exit(1);
-});
+const isCli = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isCli) {
+  main().catch((err) => {
+    console.error(`\nFailed: ${err.message}`);
+    process.exit(1);
+  });
+}

@@ -15,6 +15,8 @@ precificacao.md
 .claude/
 post-meta.json
 post-caption.txt
+ig-queue-state.json
+metrics-history.json
 
 # Harness / tooling noise
 .agents/
