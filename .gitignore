@@ -17,6 +17,8 @@ post-meta.json
 post-caption.txt
 ig-queue-state.json
 metrics-history.json
+ig-audit-report.json
+ig-audit-report.md
 
 # Harness / tooling noise
 .agents/
