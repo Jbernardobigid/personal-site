@@ -14,7 +14,10 @@
     "video:generate": "node generate-video.mjs",
     "video:prepare": "node prepare-video.mjs",
     "templates:generate": "node agent-templates.mjs",
-    "templates:force": "node agent-templates.mjs --force"
+    "templates:force": "node agent-templates.mjs --force",
+    "ig:check": "node post-to-instagram.mjs check",
+    "ig:stage": "node post-to-instagram.mjs stage",
+    "ig:publish": "node post-to-instagram.mjs publish-carousel"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
