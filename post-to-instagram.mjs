@@ -21,7 +21,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const GRAPH = 'https://graph.facebook.com/v23.0';
+// graph.facebook.com = Facebook-login flavor (Page-linked); graph.instagram.com = Instagram-login flavor
+const API_BASE = (process.env.INSTAGRAM_API_BASE || 'https://graph.facebook.com').replace(/\/$/, '');
+const GRAPH = `${API_BASE}/v23.0`;
+const IS_IG_LOGIN = API_BASE.includes('graph.instagram.com');
 const SOCIAL_DIR = path.join(__dirname, 'social');
 const SITE_URL = (process.env.SITE_URL || '').replace(/\/$/, '');
 
@@ -71,12 +74,18 @@ async function assertUrlReachable(url) {
 
 async function cmdCheck() {
   const { token, igUserId } = requireEnv();
-  const profile = await graphCall('GET', `/${igUserId}`, {
-    fields: 'username,name,followers_count,media_count',
-    access_token: token,
-  });
-  console.log(`Connected as @${profile.username} (${profile.name || 'no display name'})`);
+  // Instagram-login tokens introspect via /me; Facebook-login tokens via the IG user node
+  const apiPath = IS_IG_LOGIN ? '/me' : `/${igUserId}`;
+  const fields = IS_IG_LOGIN
+    ? 'user_id,username,account_type,followers_count,media_count'
+    : 'username,name,followers_count,media_count';
+  const profile = await graphCall('GET', apiPath, { fields, access_token: token });
+  console.log(`Connected as @${profile.username}${profile.account_type ? ` (${profile.account_type})` : ''}`);
   console.log(`Followers: ${profile.followers_count} · Posts: ${profile.media_count}`);
+  if (IS_IG_LOGIN && String(profile.user_id) !== String(igUserId)) {
+    console.warn(`Warning: token belongs to IG user ${profile.user_id}, but INSTAGRAM_USER_ID=${igUserId}. Update .env.`);
+    return;
+  }
   console.log('Token and account ID are valid.');
 }
 
@@ -118,7 +127,12 @@ function readCaption(dir, captionFileArg) {
     console.error(`Caption file not found: ${captionPath}`);
     process.exit(1);
   }
-  return fs.readFileSync(captionPath, 'utf8').trim();
+  const raw = fs.readFileSync(captionPath, 'utf8');
+  // generate-carousel.mjs wraps the actual caption between ───── divider lines,
+  // with a metadata header above and a SLIDES footer below — publish only the middle.
+  const parts = raw.split(/^─{5,}\s*$/m);
+  if (parts.length >= 3) return parts[1].trim();
+  return raw.trim();
 }
 
 async function cmdPublishCarousel(id, { dryRun, captionFile }) {

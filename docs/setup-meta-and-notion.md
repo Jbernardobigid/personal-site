@@ -24,52 +24,52 @@ You're creating: a developer app, then a long-lived access token.
 3. You do NOT need App Review or Live mode: publishing to your own account works in
    Development mode because you are an admin of the app.
 
-### A3. Get a short-lived token (Graph API Explorer)
+### A3. Add your IG account as Instagram Tester (dev-mode requirement)
 
-1. Go to https://developers.facebook.com/tools/explorer/
-2. Top right: select your new app under **Meta App**.
-3. **User or Page** → User Token.
-4. **Permissions** — add all of these:
-   - `instagram_basic`
-   - `instagram_content_publish`
-   - `instagram_manage_insights`
-   - `pages_show_list`
-   - `pages_read_engagement`
-   - `business_management`
-5. Click **Generate Access Token** → approve the popup (select your Page + IG account when asked).
-6. Copy the token (long string starting with `EAA...`).
+1. App dashboard → **App roles → Roles** → **Add People** → role **Instagram Tester** → your IG username.
+2. Accept the invite from the Instagram side: instagram.com (web) → **Settings → Apps and
+   websites → Tester invites** → Accept.
+   - Tip: do this in an **Incognito window** logged into ONLY the correct IG account —
+     stale sessions for old/disabled accounts silently break the OAuth flow.
 
-### A4. Exchange it and discover your IG user ID (automated)
+### A4. Generate the token (Instagram-login flavor — the path that works)
 
-You also need the **App ID** and **App Secret**: app dashboard → **App settings → Basic**.
+> Note: the "API setup with Facebook login" / Graph API Explorer route kept granting
+> tokens without the `pages_*` permissions (the newer consent flow drops them), so
+> `/me/accounts` came back empty. The Instagram-login flavor below needs no Page at all.
+> Done 2026-06-11: connected as @jotabernard0.
 
-Run the helper (it exchanges the token for a 60-day one and finds your IG user ID):
-
-```
-node setup-instagram-token.mjs --app-id <APP_ID> --app-secret <APP_SECRET> --token <SHORT_LIVED_TOKEN>
-```
-
-It prints the exact `.env` lines. Paste them into `.env`:
+1. App dashboard → **Instagram → API setup with Instagram business login**.
+2. Section **"1. Generate access tokens"** → your account (added in A3) → **Generate token**
+   → authorize in the popup → copy the token (starts with `IGAA...`, already long-lived).
+3. Same page, top: click **Show** next to **Instagram app secret** → copy it.
+4. Run:
 
 ```
-INSTAGRAM_ACCESS_TOKEN="EAA..."   # long-lived, ~60 days
-INSTAGRAM_USER_ID="1784..."       # numeric IG business account id
-META_APP_ID="..."                 # needed for token refresh
-META_APP_SECRET="..."             # needed for token refresh
+node setup-instagram-token.mjs --ig-login --token <TOKEN> --ig-app-secret <INSTAGRAM_APP_SECRET>
+```
+
+It prints the `.env` lines. Paste them in:
+
+```
+INSTAGRAM_ACCESS_TOKEN="IGAA..."                     # long-lived, ~60 days
+INSTAGRAM_USER_ID="1784..."                          # numeric IG account id
+INSTAGRAM_API_BASE="https://graph.instagram.com"     # selects the Instagram-login flavor
+INSTAGRAM_APP_SECRET="..."                           # for token refresh
 ```
 
 ### A5. Verify
 
 ```
-node post-to-instagram.mjs check
+npm run ig:check
 ```
 
-Should print your IG username and account info. If it does, Part A is done.
+Should print your IG username, follower and post counts. If it does, Part A is done.
 
-> Token lifecycle: the long-lived token lasts ~60 days. The n8n refresh workflow
-> (built separately) re-exchanges it every ~45 days using META_APP_ID/SECRET and
-> emails an alert if refresh fails. Until that workflow exists, re-run A3+A4 if
-> publishing starts failing with auth errors.
+> Token lifecycle: lasts ~60 days; refresh any time after it's 24h old via
+> `GET https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=<token>`
+> (no app secret needed). The n8n refresh workflow calls this every ~45 days and
+> emails an alert on failure. Until it exists, re-run A4 if auth errors appear.
 
 ---
 
