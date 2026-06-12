@@ -29,7 +29,7 @@ import OpenAI from 'openai';
 import puppeteer from 'puppeteer-core';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CHROME = 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
+const CHROME = process.env.CHROME_PATH || 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
 const SCENE_TEMPLATE = path.join(__dirname, 'templates', 'video', 'scene.html');
 const VIDEOS_DIR = path.join(__dirname, 'videos');
 const POSTS_DIR = path.join(__dirname, 'blog', 'posts');

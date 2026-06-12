@@ -16,7 +16,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CHROME = 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
+const CHROME = process.env.CHROME_PATH || 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
 const HTML_TEMPLATES_DIR = path.join(__dirname, 'templates', 'html');
 const USAGE_PATH = path.join(__dirname, 'carousel-usage.json');
 const POSTS_DIR = path.join(__dirname, 'blog', 'posts');

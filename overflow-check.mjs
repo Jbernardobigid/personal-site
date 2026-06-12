@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer-core';
 
-const CHROME = 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
+const CHROME = process.env.CHROME_PATH || 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
 const url = process.argv[2] || 'http://localhost:3000';
 const width = parseInt(process.argv[3] || '375', 10);
 
