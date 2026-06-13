@@ -143,6 +143,20 @@ function buildHistorySummary(posts, count = HISTORY_PROMPT_COUNT) {
   }).join('\n');
 }
 
+// Anti-streak guard: the structure prompt carries a standing "singles are underused,
+// reach for them" nudge with no symmetric counter-pressure, so the model can collapse
+// the feed into an endless run of one format (it did: 7 singles in a row, 06-05→06-13).
+// This enforces alternation deterministically — if the last STREAK_LIMIT posts all share
+// a format, force the opposite next — instead of relying on the prompt to self-correct.
+const STREAK_LIMIT = 2;  // max consecutive posts of the same format before forcing a switch
+function streakForcedFormat(posts) {
+  if (posts.length < STREAK_LIMIT) return null;
+  const recent = posts.slice(-STREAK_LIMIT).map(p => p.format);
+  const allSame = recent.every(f => f === recent[0]);
+  if (!allSame) return null;
+  return recent[0] === 'single' ? 'carousel' : 'single';
+}
+
 /* ── Photo inventory ───────────────────────────────────────── */
 
 function loadInventory() {
@@ -492,7 +506,7 @@ async function main() {
   const topicArg  = topicIdx  !== -1 ? args[topicIdx  + 1] : null;
   const pillarArg = pillarIdx !== -1 ? args[pillarIdx + 1] : null;
   const formatArg = formatIdx !== -1 ? args[formatIdx + 1] : null;
-  const forcedFormat = ['carousel', 'single'].includes(formatArg) ? formatArg : null;
+  const explicitFormat = ['carousel', 'single'].includes(formatArg) ? formatArg : null;
 
   // Whether the post links back to the blog ("Link na bio" CTA) or is standalone.
   // Defaults: --topic runs are standalone; reading a blog file is blog-linked.
@@ -520,10 +534,16 @@ async function main() {
 
   console.log('Deciding format and extracting content with Claude...');
   const inventoryText = loadInventory();
-  const historySummary = buildHistorySummary(loadUsage().posts);
+  const usagePosts = loadUsage().posts;
+  const historySummary = buildHistorySummary(usagePosts);
+  // Explicit --format wins; otherwise break a same-format streak automatically.
+  const forcedFormat = explicitFormat ?? streakForcedFormat(usagePosts);
   console.log('  Recent history (avoiding repeats):');
   console.log(historySummary.split('\n').map(l => `    ${l}`).join('\n'));
-  if (forcedFormat) console.log(`  Format override: ${forcedFormat}`);
+  if (forcedFormat) {
+    const why = explicitFormat ? '--format flag' : `anti-streak (last ${STREAK_LIMIT} were same format)`;
+    console.log(`  Format override: ${forcedFormat} (${why})`);
+  }
   const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary, forcedFormat });
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
