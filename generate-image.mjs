@@ -6,13 +6,16 @@
 
 import OpenAI from 'openai';
 
+// INVARIANT: any human depicted in a generated image must be a Black Brazilian person.
+// Image models default to white subjects when ethnicity is unspecified, so every
+// people-bearing prompt states it explicitly. ('technology' intentionally has no people.)
 export const IMAGE_PROMPTS = {
   'black-identity':   'Editorial portrait photograph, proud Black Brazilian man in a confident contemplative pose, warm amber and terra cotta lighting, rich skin tones beautifully lit, sophisticated dark background, sense of dignity strength and ancestry, no text, cinematic magazine cover quality',
   'cycling':          'Editorial sports photograph, Black cyclist riding powerfully through urban streets at dawn, motion blur on background with subject sharp, warm amber sunrise light, determination and grace, no text, cinematic sports magazine quality',
   'technology':       'Editorial abstract photograph, glowing AI neural networks and encrypted data streams floating in deep dark space, deep amber and indigo tones, cinematic dramatic lighting, ultra-sharp, professional tech magazine aesthetic, no text, no people, no letters',
   'entrepreneurship': 'Editorial photograph, confident Black Brazilian professional in modern urban setting, warm golden hour light casting long shadows, São Paulo contemporary architecture in background, sophisticated and purposeful composition, no text, cinematic quality',
   'fatherhood':       'Editorial photograph, Black Brazilian father and child sharing a warm tender moment, soft golden hour light, intimate and genuine, blurred warm background, sense of legacy and love, no text, cinematic quality',
-  'learning':         'Editorial photograph, focused person surrounded by books and a laptop in a warm-lit modern study at night, single amber desk lamp glow, sense of discipline and curiosity, sophisticated composition, no text, cinematic quality',
+  'learning':         'Editorial photograph, focused Black Brazilian man surrounded by books and a laptop in a warm-lit modern study at night, single amber desk lamp glow, sense of discipline and curiosity, sophisticated composition, no text, cinematic quality',
   'career-growth':    'Editorial photograph, confident Black Brazilian professional in his forties standing in modern São Paulo architecture, warm golden hour light, long shadows, sense of accomplishment and purpose, sophisticated composition, no text, cinematic quality'
 };
 

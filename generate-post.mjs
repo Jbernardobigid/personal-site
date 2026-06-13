@@ -51,17 +51,17 @@ const PILLARS = [
   {
     id: 'cycling',
     label: 'Ciclismo',
-    description: 'Cycling as identity and activism, Black cyclists in Brazil, diversity in cycling culture, DePretoPraPreto mission, Team Africa Rising, urban cycling, endurance and discipline, sport as political act'
+    description: 'Cycling as identity and activism, Black cyclists in Brazil, diversity in cycling culture, urban cycling, endurance and discipline, sport as political act'
   },
   {
     id: 'technology',
     label: 'Tecnologia',
-    description: 'Technology and its human impact, AI and data security, privacy engineering, AI governance, how technology reshapes work and society, BigID use cases, staying current with emerging tech, tech applied to human performance'
+    description: 'Technology and its human impact, AI and data security, privacy engineering, AI governance, how technology reshapes work and society, staying current with emerging tech, tech applied to human performance'
   },
   {
     id: 'entrepreneurship',
     label: 'Empreendedorismo',
-    description: 'Black entrepreneurship in Brazil, Afro-Brazilian business, racial equity in business, Feira Preta, building ventures with cultural identity (DePretoPraPreto, afterALL), community-driven ventures, purpose-driven business'
+    description: 'Black entrepreneurship in Brazil, Afro-Brazilian business, racial equity in business, building ventures with cultural identity, community-driven ventures, purpose-driven business'
   },
   {
     id: 'fatherhood',
@@ -71,41 +71,26 @@ const PILLARS = [
   {
     id: 'learning',
     label: 'Aprendizado',
-    description: 'Lifelong learning and education, the discipline of studying while working (MBA at FGV, privacy postgrad at IDESP, AI/ML at MIT/Infnet), curiosity as a habit, teaching and learning as a technical trainer, a growth mindset, reinventing your skill set'
+    description: 'Lifelong learning and education, the discipline of studying while working, curiosity as a habit, teaching and learning, a growth mindset, reinventing your skill set'
   },
   {
     id: 'career-growth',
     label: 'Carreira após os 40',
-    description: 'Career growth after 40, reinvention in midlife, building a meaningful career on your own terms, 15+ years in tech and what it taught, the advantages of experience, ambition with balance, mentorship, defining success beyond titles'
+    description: 'Career growth after 40, reinvention in midlife, building a meaningful career on your own terms, what years of experience teach, the advantages of experience, ambition with balance, mentorship, defining success beyond titles'
   }
 ];
 
 const JORGE_CONTEXT = `
-Jorge Bernardo is a Brazilian professional with a rare dual identity:
-
-PROFESSIONAL CAREER (15+ years):
-- Sr. Technical Trainer at BigID (2024–present): designs and leads global learning experiences in data security and AI governance for engineers, architects, and privacy professionals across LATAM, North America, Europe, and APAC.
-- Senior Delivery Services Engineer at BigID (2021–2024): led technical implementations for enterprise clients globally.
-- Client Solutions Manager & Senior Cyber Engineer, LATAM at Forcepoint (2018–2021): SME in pre-sales for cybersecurity solutions across Latin America.
-- DLP Technical Account Manager → Principal TAM at Symantec (2010–2018): 8 years protecting enterprise data at scale.
-
-ENTREPRENEURIAL VENTURES:
-- Founder, DePretoPraPreto (2022–present): Afro-Brazilian cycling brand — jerseys, identity, movement. Built on the conviction that Black beauty, excellence, and cycling have always walked together.
-- Founder, afterALL: wellness technology platform.
-- Presence at Feira Preta, Brazil's largest Black culture festival.
-
-EDUCATION:
-- MBA, FGV (2022–2024)
-- Postgraduate in Privacy, IDESP (2024–2025)
-- AI/ML, MIT / Instituto Infnet (2025–2026)
-- Certifications: Symantec DLP, BigID Master Operator, ITIL V3
-
 IDENTITY & VOICE:
 - Black Brazilian man. Cyclist. Builder. Activist.
 - Speaks Portuguese, English, and Spanish.
 - Believes aesthetics and strategy are inseparable.
 - Personal brand tagline: "Quando a estética encontra a estratégia, as pessoas não conseguem deixar de notar."
 - Writes in Brazilian Portuguese.
+
+BACKGROUND (context only, NOT subject matter):
+- Works in data security and AI governance; has 15+ years in enterprise tech; founded an Afro-Brazilian cycling project; studies AI/ML; is a father.
+- This résumé is background for tone and perspective only. Do NOT name his employers or ventures, recite his job history, or make the post about his career or companies unless one fact is truly essential to the point being made. Most posts should not mention any of it.
 `;
 
 /* ── Pillar rotation ─────────────────────────────────────── */
@@ -497,12 +482,18 @@ ${(research.stats || []).map(s => `- ${s.value}: ${s.context} (${s.source})`).jo
 
 ${JORGE_CONTEXT}
 
+CENTER THE READER AND THE IDEA, NOT THE AUTHOR:
+- The post is about a topic, an idea, and what it means for the reader, not a biography of Jorge.
+- Personal experience is occasional seasoning, used only when it sharpens the point, never the subject.
+- Most posts should not mention Jorge's employers or ventures at all. Name one only when genuinely essential to the argument, never as the subject and never as a credential flex.
+- Aim for output that reads as Jorge's perspective on the world, not Jorge talking about himself.
+
 Writing style:
-- First person ("Aprendi que...", "Acredito que...", "Na minha experiência...")
+- First person voice, but pointed outward ("Acredito que...", "O que me chama atenção é...", "Vale olhar para...") — first person serves the idea, it is not the topic
 - Conversational but substantive — like a smart friend writing, not a LinkedIn post
-- Mix personal experience with broader insight
+- Lead with the idea; bring in personal experience only when it makes the point land harder
 - No hollow motivational phrases or corporate jargon
-- Use concrete examples from Jorge's actual experience when relevant
+- Use concrete examples, data, and real-world cases — drawn from the wider world, news, or other people, not primarily Jorge's own life
 - Paragraphs are short (2-4 sentences max)
 - End with something that opens a question or invites reflection, not a call-to-action
 - Vary sentence length deliberately — short punchy sentences next to longer ones
@@ -510,7 +501,7 @@ Writing style:
 
 JOURNALISM TECHNIQUES — apply these rigorously:
 
-Anecdote lede: The first paragraph must open with a specific scene, moment, or detail from Jorge's life — not a broad statement about the world. "Era 5h da manhã quando saí de casa de bike..." not "O ciclismo tem muito a nos ensinar sobre disciplina."
+Concrete lede: The first paragraph must open with a specific scene, moment, detail, or fact — not a broad statement. It can come from the wider world, a news event, someone else's story, a number, or occasionally from Jorge's own life. Do not make every post open with autobiography. "Em 2023, 8 em cada 10 ciclistas mortos no trânsito de São Paulo eram entregadores..." works as well as a personal scene; what matters is the specificity, not that it is about Jorge.
 
 Nut graf: The second paragraph must make the stakes clear — what this is really about and why it matters right now. Pay off the lede before going deeper.
 
@@ -520,7 +511,7 @@ One idea per paragraph: Each paragraph carries exactly one idea. When a new idea
 
 Cut adverbs: No adverbs. Find the verb that already contains the intensity. "Disparou" not "correu rapidamente." "Afirmou" not "disse claramente."
 
-WSJ close: If the post opens with a personal moment, return to it at the end with new meaning. The final paragraph must not summarize — it should land on a specific image, a quiet observation, or an open question. The last line cannot echo the title or the first paragraph.
+WSJ close: If the post opens with a scene or image, return to it at the end with new meaning. The final paragraph must not summarize — it should land on a specific image, a quiet observation, or an open question. The last line cannot echo the title or the first paragraph.
 
 NEVER use the following — they are AI tells that break authenticity:
 - Em dash (—) as a clause separator. Use a comma, rewrite the sentence, or break it in two.
@@ -538,8 +529,8 @@ Requirements:
 - Structure: flowing prose with 2-3 H2 subheadings
 - Include at least one blockquote that captures a key insight
 - First paragraph must be a strong hook that draws the reader in immediately
-- The post should feel authentic to Jorge's dual identity as a data/tech professional AND an entrepreneur/activist/cyclist
-- Open with a specific anecdote or scene, not a broad claim
+- The post is about the topic and what it means for the reader — grounded in Jorge's perspective, but NOT a biography of his career; do not name his employers or ventures unless one fact is truly essential
+- Open with a specific anecdote, scene, or fact (from the wider world or, occasionally, Jorge's life), not a broad claim
 - Second paragraph pays off the lede — states what this is really about
 - One idea per paragraph, no exceptions
 - No adverbs — rewrite with a stronger verb instead
