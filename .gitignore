@@ -15,6 +15,7 @@ precificacao.md
 .claude/
 post-meta.json
 post-caption.txt
+newsletter-queue-state.json
 ig-queue-state.json
 metrics-history.json
 ig-audit-report.json
