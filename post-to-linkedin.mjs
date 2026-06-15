@@ -20,6 +20,12 @@ const LINKEDIN_ACCESS_TOKEN = process.env.LINKEDIN_ACCESS_TOKEN;
 
 if (!LINKEDIN_ACCESS_TOKEN) { console.error('Error: LINKEDIN_ACCESS_TOKEN is not set.'); process.exit(1); }
 
+// Owned-list funnel: the feed post keeps its single "read the article" CTA;
+// the newsletter ask rides along as the first comment so it doesn't cannibalize click-through.
+// Public subscribe link is the brand domain, NOT the SITE_URL preview the pipeline may use.
+const NEWSLETTER_URL = (process.env.NEWSLETTER_URL || 'https://jorgebernardo.tech/#newsletter');
+const NEWSLETTER_CTA = `📩 Gostou? Assine A Interseção e receba os próximos artigos direto no seu email, sem algoritmo no meio: ${NEWSLETTER_URL}`;
+
 const HASHTAGS = {
   'black-identity':   '#IdentidadeNegra #OrgulhoNegro #Representatividade #BlackExcellence',
   'cycling':          '#Ciclismo #DePretoPraPreto #CiclistaNegro #Bicicleta',
@@ -118,6 +124,30 @@ async function createPost({ personUrn, assetUrn, title, excerpt, pillarId, postU
   if (!res.ok) throw new Error(`Create post failed: ${res.status} ${await res.text()}`);
   const data = await res.json();
   console.log(`LinkedIn post published: ${data.id}`);
+  return data.id; // post URN, e.g. urn:li:share:... or urn:li:ugcPost:...
+}
+
+// Posts the newsletter CTA as the first comment on the just-published share.
+// Best-effort: the post already succeeded, so a comment failure must not fail the run.
+async function postNewsletterComment(personUrn, postUrn) {
+  const res = await fetch(`https://api.linkedin.com/v2/socialActions/${encodeURIComponent(postUrn)}/comments`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${LINKEDIN_ACCESS_TOKEN}`,
+      'Content-Type': 'application/json',
+      'X-Restli-Protocol-Version': '2.0.0'
+    },
+    body: JSON.stringify({
+      actor: personUrn,
+      object: postUrn,
+      message: { text: NEWSLETTER_CTA }
+    })
+  });
+  if (!res.ok) {
+    console.warn(`Newsletter CTA comment failed (post still published): ${res.status} ${await res.text()}`);
+    return;
+  }
+  console.log('Newsletter CTA posted as first comment.');
 }
 
 async function main() {
@@ -141,7 +171,8 @@ async function main() {
   const imageBuffer = await getImageBuffer(imagePath, pillarId);
   const { uploadUrl, assetUrn } = await registerUpload(personUrn);
   await uploadImage(uploadUrl, imageBuffer);
-  await createPost({ personUrn, assetUrn, title, excerpt, pillarId, postUrl });
+  const postUrn = await createPost({ personUrn, assetUrn, title, excerpt, pillarId, postUrl });
+  await postNewsletterComment(personUrn, postUrn);
 
   fs.unlinkSync(metaPath);
   console.log('Done.');

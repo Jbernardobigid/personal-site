@@ -20,6 +20,9 @@ metrics-history.json
 ig-audit-report.json
 ig-audit-report.md
 
+# LinkedIn newsletter paste-staging (regenerable from blog posts) + launch copy
+linkedin-newsletter/
+
 # Harness / tooling noise
 .agents/
 skills-lock.json
