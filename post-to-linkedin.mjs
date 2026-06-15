@@ -23,7 +23,7 @@ if (!LINKEDIN_ACCESS_TOKEN) { console.error('Error: LINKEDIN_ACCESS_TOKEN is not
 // Owned-list funnel: the feed post keeps its single "read the article" CTA;
 // the newsletter ask rides along as the first comment so it doesn't cannibalize click-through.
 // Public subscribe link is the brand domain, NOT the SITE_URL preview the pipeline may use.
-const NEWSLETTER_URL = (process.env.NEWSLETTER_URL || 'https://jorgebernardo.tech/#newsletter');
+const NEWSLETTER_URL = (process.env.NEWSLETTER_URL || 'https://www.jorgebernardo.tech/#newsletter');
 const NEWSLETTER_CTA = `📩 Gostou? Assine A Interseção e receba os próximos artigos direto no seu email, sem algoritmo no meio: ${NEWSLETTER_URL}`;
 
 const HASHTAGS = {

@@ -18,8 +18,8 @@
  *   node generate-linkedin-issue.mjs --email         # also email the issue
  *
  * Env:
- *   PUBLIC_SITE_URL         — brand origin for the canonical link (defaults to https://jorgebernardo.tech)
- *   NEWSLETTER_URL          — subscribe link (defaults to jorgebernardo.tech/#newsletter)
+ *   PUBLIC_SITE_URL         — brand origin for the canonical link (defaults to https://www.jorgebernardo.tech)
+ *   NEWSLETTER_URL          — subscribe link (defaults to www.jorgebernardo.tech/#newsletter)
  *   RESEND_API_KEY          — required for --email
  *   NEWSLETTER_FROM         — From header (defaults to Jorge Bernardo <newsletter@jorgebernardo.tech>)
  *   CAROUSEL_NOTIFY_EMAIL   — recipient (defaults to jorge.mbernardo@gmail.com)
@@ -34,10 +34,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const NEWSLETTER_NAME = 'A Interseção';
 // Public subscribe link is a brand/marketing URL — always the live domain, never the
 // Vercel preview that SITE_URL may point at. Overridable, but defaults to the brand domain.
-const NEWSLETTER_URL = (process.env.NEWSLETTER_URL || 'https://jorgebernardo.tech/#newsletter');
-// Public brand origin for the "publicado originalmente em" canonical link. Independent of
-// SITE_URL, which on the VPS points at the Vercel preview (wrong for a public-facing link).
-const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://jorgebernardo.tech').replace(/\/$/, '');
+const NEWSLETTER_URL = (process.env.NEWSLETTER_URL || 'https://www.jorgebernardo.tech/#newsletter');
+// Public brand origin for the "publicado originalmente em" canonical link. www is the
+// non-redirecting host (apex 307s to www). Independent of SITE_URL by design.
+const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://www.jorgebernardo.tech').replace(/\/$/, '');
 const POSTS_DIR = path.join(__dirname, 'blog', 'posts');
 const OUT_DIR   = path.join(__dirname, 'linkedin-newsletter');
 

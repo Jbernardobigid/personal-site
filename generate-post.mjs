@@ -33,9 +33,9 @@ const INDEX_FILE = path.join(BLOG_DIR, 'index.html');
 const SITEMAP    = path.join(__dirname, 'sitemap.xml');
 const ROBOTS     = path.join(__dirname, 'robots.txt');
 
-// Set SITE_URL as a GitHub Actions secret for the live URL.
-// When you get a custom domain, update the secret value — everything regenerates automatically.
-const SITE_URL = (process.env.SITE_URL || 'https://jorgebernardo.tech').replace(/\/$/, '');
+// Live canonical host is www (apex jorgebernardo.tech 307-redirects to www). Override with
+// a SITE_URL env/secret if the primary domain changes; default targets the non-redirecting host.
+const SITE_URL = (process.env.SITE_URL || 'https://www.jorgebernardo.tech').replace(/\/$/, '');
 
 function sanitizeEmDashes(text) {
   if (typeof text !== 'string') return text;
