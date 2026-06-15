@@ -8,12 +8,21 @@
  * and blockquotes carry over. Each issue funnels readers to the OWNED email
  * list (Resend) via a subscribe CTA, with a canonical link back to the site.
  *
+ * With --email it also emails the rendered issue (inline preview + .html
+ * attachment) via Resend, so you can build it from anywhere (e.g. an n8n
+ * webhook on the VPS) and just paste from your inbox.
+ *
  * Usage:
  *   node generate-linkedin-issue.mjs                 # uses post-meta.json, else newest post
  *   node generate-linkedin-issue.mjs <path-to-post>  # specific blog/posts/*.html
+ *   node generate-linkedin-issue.mjs --email         # also email the issue
  *
  * Env:
- *   SITE_URL — public site origin (defaults to https://jorgebernardo.tech)
+ *   SITE_URL                — public site origin (defaults to https://jorgebernardo.tech)
+ *   NEWSLETTER_URL          — subscribe link (defaults to jorgebernardo.tech/#newsletter)
+ *   RESEND_API_KEY          — required for --email
+ *   NEWSLETTER_FROM         — From header (defaults to Jorge Bernardo <newsletter@jorgebernardo.tech>)
+ *   CAROUSEL_NOTIFY_EMAIL   — recipient (defaults to jorge.mbernardo@gmail.com)
  */
 
 import './load-env.mjs';
@@ -30,11 +39,20 @@ const NEWSLETTER_URL = (process.env.NEWSLETTER_URL || 'https://jorgebernardo.tec
 const POSTS_DIR = path.join(__dirname, 'blog', 'posts');
 const OUT_DIR   = path.join(__dirname, 'linkedin-newsletter');
 
-function fail(msg) { console.error(`Error: ${msg}`); process.exit(1); }
+// Email delivery (mirrors prepare-video.mjs).
+const NOTIFY_EMAIL = process.env.CAROUSEL_NOTIFY_EMAIL || 'jorge.mbernardo@gmail.com';
+const FROM_EMAIL   = process.env.NEWSLETTER_FROM || 'Jorge Bernardo <newsletter@jorgebernardo.tech>';
+
+const SUBTITLE = 'tecnologia, identidade e reinvenção';
+
+function fail(msg) {
+  // Machine-readable so an n8n SSH node sees a clean failure line.
+  console.log(JSON.stringify({ success: false, error: msg }));
+  process.exit(1);
+}
 
 /** Resolve which blog post to turn into an issue. */
-function resolveSourcePost() {
-  const argPath = process.argv[2];
+function resolveSourcePost(argPath) {
   if (argPath) {
     const abs = path.resolve(argPath);
     if (!abs.startsWith(POSTS_DIR + path.sep)) fail(`post must live under ${POSTS_DIR}`);
@@ -73,32 +91,18 @@ function decodeEntities(s) {
 /** Strip tags for plain-text fields (title/excerpt) only. */
 function stripTags(s) { return decodeEntities(s.replace(/<[^>]+>/g, '')).trim(); }
 
-function buildIssue({ postPath, meta }) {
-  const html = fs.readFileSync(postPath, 'utf8');
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                  .replace(/"/g, '&quot;');
+}
 
-  const title   = meta?.title   || stripTags(extract(html, /<h1 class="post-title">([\s\S]*?)<\/h1>/, 'title'));
-  const excerpt = meta?.excerpt || stripTags(
-    (html.match(/<meta name="description" content="([^"]*)"/) ||
-     html.match(/<meta property="og:description" content="([^"]*)"/) || [, ''])[1]
-  );
-  const pillar  = (html.match(/<div class="post-pillar"[^>]*>([\s\S]*?)<\/div>/) || [, ''])[1].trim();
-  const bodyInner = extract(html, /<article class="post-body"[^>]*>([\s\S]*?)<\/article>/, 'article body');
-
-  const canonicalUrl = meta?.postUrl || `${SITE_URL}/blog/posts/${path.basename(postPath)}`;
-  const subscribeUrl = NEWSLETTER_URL;
-
-  // Self-contained, minimally styled so the rendered text pastes cleanly into
-  // LinkedIn's editor. Brand colors kept subtle; LinkedIn strips most CSS anyway.
-  const issueHtml = `<!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8">
-<title>LinkedIn issue · ${escapeHtml(title)}</title>
-<style>
+const STYLE = `<style>
   body { max-width: 680px; margin: 40px auto; padding: 0 20px;
          font: 17px/1.7 Georgia, 'Times New Roman', serif; color: #1e1a14; }
-  .copy-hint { font: 13px/1.5 -apple-system, system-ui, sans-serif; color: #5e412d;
-               background: #f3ede6; border: 1px solid #d9d9d9; border-radius: 8px;
-               padding: 12px 16px; margin-bottom: 32px;
-               -webkit-user-select: none; user-select: none; }
+  .banner { font: 13px/1.5 -apple-system, system-ui, sans-serif; color: #5e412d;
+            background: #f3ede6; border: 1px solid #d9d9d9; border-radius: 8px;
+            padding: 12px 16px; margin-bottom: 32px;
+            -webkit-user-select: none; user-select: none; }
   .masthead { font: 600 14px/1 'DM Mono', ui-monospace, monospace; letter-spacing: .14em;
               text-transform: uppercase; color: #5e412d; padding-bottom: 16px;
               border-bottom: 1px solid #d9d9d9; margin-bottom: 24px; }
@@ -114,11 +118,27 @@ function buildIssue({ postPath, meta }) {
          font: 16px/1.6 -apple-system, system-ui, sans-serif; }
   .cta a { color: #1c314a; font-weight: 600; }
   .source { font: 14px/1.6 -apple-system, system-ui, sans-serif; color: #6b6357; margin-top: 24px; }
-</style></head>
-<body>
-  <div class="copy-hint">Selecione tudo (Ctrl/Cmd+A), copie e cole no editor de artigo da newsletter do LinkedIn. Esta caixa não é copiada se você selecionar a partir do título.</div>
+</style>`;
 
-  <div class="masthead">${escapeHtml(NEWSLETTER_NAME)} · tecnologia, identidade e reinvenção</div>
+const BROWSER_BANNER = `<div class="banner">Selecione tudo (Ctrl/Cmd+A), copie e cole no editor de artigo da newsletter do LinkedIn. Esta caixa não é copiada se você selecionar a partir do título.</div>`;
+const EMAIL_BANNER = `<div class="banner">📩 <strong>A Interseção</strong> — para colar no LinkedIn com a formatação intacta, abra o anexo <code>.html</code> no navegador, selecione tudo e copie. A prévia abaixo é só para conferência.</div>`;
+
+/** Extract the reusable issue content (everything that should be pasted). */
+function buildIssue({ postPath, meta }) {
+  const html = fs.readFileSync(postPath, 'utf8');
+
+  const title   = meta?.title   || stripTags(extract(html, /<h1 class="post-title">([\s\S]*?)<\/h1>/, 'title'));
+  const excerpt = meta?.excerpt || stripTags(
+    (html.match(/<meta name="description" content="([^"]*)"/) ||
+     html.match(/<meta property="og:description" content="([^"]*)"/) || [, ''])[1]
+  );
+  const pillar  = (html.match(/<div class="post-pillar"[^>]*>([\s\S]*?)<\/div>/) || [, ''])[1].trim();
+  const bodyInner = extract(html, /<article class="post-body"[^>]*>([\s\S]*?)<\/article>/, 'article body');
+
+  const canonicalUrl = meta?.postUrl || `${SITE_URL}/blog/posts/${path.basename(postPath)}`;
+
+  const content = `
+  <div class="masthead">${escapeHtml(NEWSLETTER_NAME)} · ${SUBTITLE}</div>
   ${pillar ? `<div class="eyebrow">${escapeHtml(pillar)}</div>` : ''}
   <h1>${escapeHtml(title)}</h1>
   ${excerpt ? `<p class="lead">${escapeHtml(excerpt)}</p>` : ''}
@@ -127,30 +147,60 @@ function buildIssue({ postPath, meta }) {
 
   <div class="cta">
     <p><strong>Recebeu A Interseção pelo LinkedIn?</strong> Os próximos artigos chegam primeiro no email — sem algoritmo no meio, sem ruído.</p>
-    <p>👉 <a href="${subscribeUrl}">Assine em jorgebernardo.tech</a></p>
+    <p>👉 <a href="${NEWSLETTER_URL}">Assine em jorgebernardo.tech</a></p>
   </div>
-  <p class="source">Publicado originalmente em <a href="${canonicalUrl}">${canonicalUrl}</a></p>
+  <p class="source">Publicado originalmente em <a href="${canonicalUrl}">${canonicalUrl}</a></p>`;
+
+  return { title, content, sourceName: path.basename(postPath) };
+}
+
+function wrapDoc(title, banner, content) {
+  return `<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>${escapeHtml(NEWSLETTER_NAME)} · ${escapeHtml(title)}</title>
+${STYLE}</head>
+<body>
+  ${banner}
+${content}
 </body></html>`;
-
-  return { title, issueHtml, sourceName: path.basename(postPath) };
 }
 
-function escapeHtml(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                  .replace(/"/g, '&quot;');
+async function sendEmail(subject, html, attachment) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) fail('RESEND_API_KEY not set (required for --email)');
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: FROM_EMAIL, to: [NOTIFY_EMAIL], subject, html, attachments: [attachment] })
+  });
+  if (!res.ok) fail(`Resend failed (HTTP ${res.status}): ${(await res.text()).slice(0, 300)}`);
+  return (await res.json()).id;
 }
 
-function main() {
-  const source = resolveSourcePost();
-  const { title, issueHtml, sourceName } = buildIssue(source);
+async function main() {
+  const args = process.argv.slice(2);
+  const doEmail = args.includes('--email');
+  const positional = args.find(a => !a.startsWith('--'));
+
+  const source = resolveSourcePost(positional);
+  const { title, content, sourceName } = buildIssue(source);
 
   if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
-  const outPath = path.join(OUT_DIR, sourceName.replace(/\.html$/, '') + '-linkedin.html');
-  fs.writeFileSync(outPath, issueHtml, 'utf8');
+  const fileName = sourceName.replace(/\.html$/, '') + '-linkedin.html';
+  const outPath = path.join(OUT_DIR, fileName);
+  const browserHtml = wrapDoc(title, BROWSER_BANNER, content);
+  fs.writeFileSync(outPath, browserHtml, 'utf8');
 
-  console.log(`LinkedIn newsletter issue ready:\n  "${title}"\n  → ${outPath}\n`);
-  console.log('Next: open that file in a browser, select all, copy, and paste into');
-  console.log('LinkedIn → Write article → your newsletter. Formatting carries over.');
+  let emailId = null;
+  if (doEmail) {
+    const emailHtml = wrapDoc(title, EMAIL_BANNER, content);
+    const attachment = { filename: fileName, content: Buffer.from(browserHtml, 'utf8').toString('base64') };
+    emailId = await sendEmail(`📩 A Interseção — pronto para postar: ${title}`, emailHtml, attachment);
+  }
+
+  // Human log to stderr, machine status to stdout (clean for n8n).
+  console.error(`LinkedIn issue ready: "${title}" → ${outPath}${emailId ? ` | emailed (${emailId})` : ''}`);
+  console.log(JSON.stringify({ success: true, title, file: outPath, emailed: doEmail, emailId }));
 }
 
-main();
+main().catch(err => fail(err?.message || String(err)));
