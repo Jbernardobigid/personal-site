@@ -18,7 +18,7 @@
  *   node generate-linkedin-issue.mjs --email         # also email the issue
  *
  * Env:
- *   SITE_URL                — public site origin (defaults to https://jorgebernardo.tech)
+ *   PUBLIC_SITE_URL         — brand origin for the canonical link (defaults to https://jorgebernardo.tech)
  *   NEWSLETTER_URL          — subscribe link (defaults to jorgebernardo.tech/#newsletter)
  *   RESEND_API_KEY          — required for --email
  *   NEWSLETTER_FROM         — From header (defaults to Jorge Bernardo <newsletter@jorgebernardo.tech>)
@@ -31,11 +31,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SITE_URL  = (process.env.SITE_URL || 'https://jorgebernardo.tech').replace(/\/$/, '');
 const NEWSLETTER_NAME = 'A Interseção';
 // Public subscribe link is a brand/marketing URL — always the live domain, never the
 // Vercel preview that SITE_URL may point at. Overridable, but defaults to the brand domain.
 const NEWSLETTER_URL = (process.env.NEWSLETTER_URL || 'https://jorgebernardo.tech/#newsletter');
+// Public brand origin for the "publicado originalmente em" canonical link. Independent of
+// SITE_URL, which on the VPS points at the Vercel preview (wrong for a public-facing link).
+const PUBLIC_SITE_URL = (process.env.PUBLIC_SITE_URL || 'https://jorgebernardo.tech').replace(/\/$/, '');
 const POSTS_DIR = path.join(__dirname, 'blog', 'posts');
 const OUT_DIR   = path.join(__dirname, 'linkedin-newsletter');
 
@@ -135,7 +137,12 @@ function buildIssue({ postPath, meta }) {
   const pillar  = (html.match(/<div class="post-pillar"[^>]*>([\s\S]*?)<\/div>/) || [, ''])[1].trim();
   const bodyInner = extract(html, /<article class="post-body"[^>]*>([\s\S]*?)<\/article>/, 'article body');
 
-  const canonicalUrl = meta?.postUrl || `${SITE_URL}/blog/posts/${path.basename(postPath)}`;
+  // Force the public brand origin; keep the post's path (basename === slug in generate-post.mjs).
+  const slugPath = (() => {
+    if (meta?.postUrl) { try { return new URL(meta.postUrl).pathname; } catch { /* fall through */ } }
+    return `/blog/posts/${path.basename(postPath)}`;
+  })();
+  const canonicalUrl = `${PUBLIC_SITE_URL}${slugPath}`;
 
   const content = `
   <div class="masthead">${escapeHtml(NEWSLETTER_NAME)} · ${SUBTITLE}</div>
