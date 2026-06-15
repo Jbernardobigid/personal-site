@@ -200,6 +200,12 @@ export async function cmdPublishCarousel(id, { dryRun, captionFile } = {}) {
     creationId = container.id;
   }
 
+  // Instagram fetches the remote image(s) asynchronously. Publishing before the
+  // container reaches FINISHED returns "Media ID is not available" — so wait,
+  // exactly as the Reel path does.
+  console.log('Waiting for Instagram to process the container...');
+  await waitForContainerReady(creationId, token);
+
   console.log('Publishing...');
   const published = await graphCall('POST', `/${igUserId}/media_publish`, {
     creation_id: creationId,
