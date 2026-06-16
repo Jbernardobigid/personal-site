@@ -118,13 +118,13 @@ function buildEmail(title, caption, urls) {
 
 async function sendEmail(subject, html) {
   const key = process.env.RESEND_API_KEY;
-  if (!key) fail('RESEND_API_KEY not set');
+  if (!key) throw new Error('RESEND_API_KEY not set');
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: FROM_EMAIL, to: [NOTIFY_EMAIL], subject, html })
   });
-  if (!res.ok) fail(`Resend send failed (HTTP ${res.status})`, (await res.text()).slice(0, 300));
+  if (!res.ok) throw new Error(`Resend send failed (HTTP ${res.status}): ${(await res.text()).slice(0, 300)}`);
   const data = await res.json();
   return data.id;
 }
@@ -153,19 +153,28 @@ async function main() {
   const html = buildEmail(post.title, meta.caption, urls);
 
   let emailId = null;
+  let emailError = null;
   if (dryRun) {
     console.log('\n--- DRY RUN: email NOT sent ---');
     console.log(`To: ${NOTIFY_EMAIL} | Subject: ${subject}`);
     console.log(`Blob URLs:\n${urls.join('\n')}`);
   } else {
-    emailId = await sendEmail(subject, html);
+    // The carousel is built and the slides are uploaded — the expensive,
+    // meaningful work is done. Record it NOW so a transient email failure can't
+    // make the 8h schedule re-prepare (and re-queue) this same post forever.
     markPrepared(post.stem);
-    console.log(`Email sent (${emailId}); marked prepared.`);
+    try {
+      emailId = await sendEmail(subject, html);
+      console.log(`Email sent (${emailId}); marked prepared.`);
+    } catch (err) {
+      emailError = String(err?.message || err);
+      console.warn(`Marked prepared, but email send failed (non-fatal): ${emailError}`);
+    }
   }
 
   console.log(JSON.stringify({
     success: true, dryRun, stem: post.stem, title: post.title,
-    slides: urls.length, blobUrls: urls, emailId
+    slides: urls.length, blobUrls: urls, emailId, emailError
   }));
 }
 

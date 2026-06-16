@@ -100,6 +100,14 @@ function isoDate() {
   return new Date().toISOString().split('T')[0];
 }
 
+// Pull the YYYY-MM-DD prefix off a post filename so the carousel folder is
+// keyed to the POST's date, not the (re-)build date. Stable id = idempotent
+// re-runs (no date-shifted duplicate folders/Notion cards).
+function dateFromFilename(name) {
+  const m = /(\d{4}-\d{2}-\d{2})/.exec(name || '');
+  return m ? m[1] : null;
+}
+
 function toFileUrl(absPath) {
   return 'file:///' + absPath.replace(/\\/g, '/').replace(/^\//, '');
 }
@@ -214,6 +222,7 @@ function readLatestPost(explicitFile) {
       excerpt: (html.match(/<meta name="description" content="([^"]+)"/) ?? [])[1] ?? '',
       pillarId: (html.match(/data-pillar="([^"]+)"/) ?? [])[1] ?? 'cycling',
       plainText: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+      sourceDate: dateFromFilename(path.basename(filePath)),
     };
   }
 
@@ -227,7 +236,7 @@ function readLatestPost(explicitFile) {
     const plainText = htmlFile
       ? fs.readFileSync(path.join(POSTS_DIR, htmlFile), 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
       : meta.excerpt;
-    return { ...meta, plainText };
+    return { ...meta, plainText, sourceDate: dateFromFilename(htmlFile) };
   }
 
   const htmlFiles = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.html')).sort().reverse();
@@ -240,6 +249,7 @@ function readLatestPost(explicitFile) {
     excerpt: (html.match(/<meta name="description" content="([^"]+)"/) ?? [])[1] ?? '',
     pillarId: (html.match(/data-pillar="([^"]+)"/) ?? [])[1] ?? 'cycling',
     plainText: html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+    sourceDate: dateFromFilename(latest),
   };
 }
 
@@ -552,7 +562,7 @@ async function main() {
   if (photoPath) console.log(`  Photo: ${path.basename(photoPath)}${photo ? ` (recommended: ${photo})` : ' (random fallback)'}`);
   else console.warn('  Warning: No photos found in brand_assets/Fotos/');
 
-  const date = isoDate();
+  const date = post.sourceDate || isoDate();
   const slug = slugify(post.title);
   const outDir = path.join(__dirname, 'carousels', `${date}-${slug}`);
   fs.mkdirSync(outDir, { recursive: true });
