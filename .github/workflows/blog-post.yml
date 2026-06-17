@@ -1,9 +1,12 @@
 name: Generate Blog Post
 
 on:
-  schedule:
-    # Runs every 2 days at 09:00 UTC
-    - cron: '0 9 */2 * *'
+  # Scheduled generation migrated to VPS n8n on 2026-06-17 ("Blog — Generate post (VPS)",
+  # id oR7emRcppMc59frq, cron 0 9 */2 * * in America/Sao_Paulo = exactly 09:00 BRT).
+  # Reason: GitHub Actions scheduled crons are queued best-effort and drifted 2-6h late.
+  # The schedule trigger below is intentionally removed so the two pipelines don't
+  # double-post. workflow_dispatch is kept as a manual break-glass fallback (the VPS
+  # path is now the source of truth — see infra/vps/create-workflows.mjs).
   workflow_dispatch:
     inputs:
       pillar:
