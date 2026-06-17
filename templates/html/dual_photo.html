@@ -70,9 +70,9 @@
     }
     .body-text {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.90);
+      font-size: 35px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.92);
       text-shadow: 0 1px 8px rgba(0,0,0,0.5);
     }
     .handle {
@@ -80,11 +80,21 @@
       bottom: 18px;
       right: 44px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.32);
+      color: rgba(255,255,255,0.42);
+      z-index: 6;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.10;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
   </style>
 </head>
@@ -98,6 +108,7 @@
       <div class="body-text">{{BODY}}</div>
     </div>
     <div class="handle">@jotabernardO</div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

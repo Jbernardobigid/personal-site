@@ -10,7 +10,19 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #1E2B4A;
+      background:
+        radial-gradient(120% 80% at 20% 4%, rgba(176,122,69,0.18) 0%, rgba(176,122,69,0) 52%),
+        radial-gradient(90% 70% at 6% 100%, rgba(0,0,0,0.36) 0%, rgba(0,0,0,0) 60%),
+        #1c2c4a;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.10;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .photo-zone {
       position: absolute;
@@ -49,17 +61,17 @@
     }
     .label {
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 3.5px;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: rgba(214,170,120,0.85);
       margin-bottom: 20px;
     }
     .divider {
-      width: 40px;
-      height: 2px;
-      background: #C8A96E;
+      width: 56px;
+      height: 3px;
+      background: #d6aa78;
       margin-bottom: 28px;
     }
     .headline {
@@ -134,6 +146,7 @@
     <div class="ticker-bar">
       <div class="ticker-text">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA</div>
     </div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

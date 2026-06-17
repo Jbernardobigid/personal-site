@@ -10,8 +10,20 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #1C3A28;
+      background:
+        radial-gradient(90% 70% at 6% 4%, rgba(176,122,69,0.2) 0%, rgba(176,122,69,0) 56%),
+        radial-gradient(80% 70% at 4% 100%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 60%),
+        #21351f;
       display: flex;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.10;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .left-col {
       width: 520px;
@@ -22,10 +34,11 @@
       padding: 72px 56px 72px 64px;
       box-sizing: border-box;
     }
+    .left-col { position: relative; z-index: 2; }
     .accent {
-      width: 40px;
+      width: 56px;
       height: 3px;
-      background: #C8A96E;
+      background: #d6aa78;
       margin-bottom: 32px;
     }
     .headline {
@@ -40,18 +53,18 @@
     }
     .body {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.88);
+      font-size: 35px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.9);
     }
     .handle {
       margin-top: 40px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(200,169,110,0.55);
+      color: rgba(214,170,120,0.7);
     }
     .right-col {
       flex: 1;
@@ -86,6 +99,7 @@
       <div class="photo-strip"><img src="{{PHOTO_URL}}" alt=""></div>
       <div class="photo-strip"><img src="{{PHOTO_URL}}" alt=""></div>
     </div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

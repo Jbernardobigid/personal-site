@@ -38,7 +38,7 @@ Two things live here — see [README.md](README.md) for the full map:
 
 ## Content Pipelines — rules of engagement
 - **Blog posts are auto-generated** (`generate-post.mjs`, cron in `.github/workflows/blog-post.yml`). Never hand-write or hand-edit a post — fix the generator and regenerate.
-- Carousel templates in `templates/html/` are generated from Canva by `agent-templates.mjs` — regenerate rather than hand-tweaking, unless making a deliberate local fix.
+- Carousel templates in `templates/html/` are **hand-curated and the source of truth** — Canva (`agent-templates.mjs`) was only the original starting point. They carry a deliberate design system (layered gradient backgrounds, SVG grain, editorial inset frame + corner brackets, larger type scale). Edit them by hand; do NOT regenerate from Canva. `agent-templates.mjs` will not overwrite an existing template unless explicitly run with `--overwrite-curated` (which would destroy the curated design).
 - Root JSON state files (`post-meta.json`, `carousel-meta.json`, `*-prepared.json`, `ig-queue-state.json`, `used-signals.json`, `metrics-history.json`) are pipeline ledgers owned by the scripts — don't edit by hand.
 - `social/` is the IG media staging area (must be committed/pushed so Vercel serves public URLs). Folders are deletable after the post is live. Store nothing else there.
 - `.env` holds all secrets and is never committed. GitHub Actions uses repo secrets.

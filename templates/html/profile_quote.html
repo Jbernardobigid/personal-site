@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body, html { margin: 0; padding: 0; }
     #slide {
@@ -10,131 +10,191 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #F0EAE0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 104px 104px 116px;
+      /* Layered depth: warm terracotta glow top-right, cool navy pool bottom-left, over warm cream */
+      background:
+        radial-gradient(116% 78% at 80% 4%, rgba(160,113,79,0.26) 0%, rgba(160,113,79,0) 54%),
+        radial-gradient(96% 72% at 8% 100%, rgba(28,49,74,0.20) 0%, rgba(28,49,74,0) 58%),
+        #ece4d4;
     }
-    .top-text {
+    /* Grain overlay for texture/atmosphere */
+    .grain {
       position: absolute;
-      top: 68px;
-      left: 0; right: 0;
-      text-align: center;
-      padding: 0 80px;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
-    .top-label {
+    /* Editorial inset frame */
+    .frame {
+      position: absolute;
+      inset: 40px;
+      border: 1px solid rgba(28,49,74,0.16);
+      pointer-events: none;
+    }
+    .frame::before, .frame::after {
+      content: '';
+      position: absolute;
+      width: 22px; height: 22px;
+      border-color: #b07a45;
+      border-style: solid;
+    }
+    .frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .stack {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+    .kicker {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 26px;
-      color: #8B5E3C;
-      display: block;
-      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 34px;
+      letter-spacing: 0.5px;
+      color: #9a5f38;
+      margin-bottom: 14px;
     }
-    .top-headline {
+    .headline {
       font-family: 'Montserrat', sans-serif;
-      font-size: 28px;
-      font-weight: 700;
+      font-size: 50px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #1E2B4A;
-      line-height: 1.2;
+      letter-spacing: -0.5px;
+      line-height: 1.06;
+      color: #1b2f48;
+      max-width: 840px;
+      margin-bottom: 44px;
     }
-    .arc-wrap {
-      position: absolute;
-      top: 240px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 560px;
-      height: 2px;
-      border-top: 1.5px solid rgba(30,43,74,0.18);
-      border-radius: 50%;
+    /* Photo row — full width so side labels flank the circle */
+    .photo-row {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 44px;
     }
     .photo-circle {
-      position: absolute;
-      top: 226px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 320px;
-      height: 320px;
+      position: relative;
+      width: 360px;
+      height: 360px;
       border-radius: 50%;
       overflow: hidden;
-      border: 3px solid #F0EAE0;
-      box-shadow: 0 8px 36px rgba(0,0,0,0.18);
+      border: 6px solid #ece4d4;
+      box-shadow:
+        0 0 0 2px rgba(176,122,69,0.55),
+        0 26px 64px -22px rgba(28,49,74,0.55),
+        0 6px 18px rgba(0,0,0,0.16);
     }
     .photo-circle img {
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center top;
+      display: block;
     }
-    .side-label-left {
+    .side-label {
       position: absolute;
-      top: 370px;
-      left: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 9px;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: 3px;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
-      color: rgba(30,43,74,0.35);
+      color: rgba(28,49,74,0.55);
     }
-    .side-label-right {
+    .side-label.left  { left: 4px; }
+    .side-label.right { right: 4px; }
+    .side-label .tick {
+      width: 34px; height: 1.5px;
+      background: #b07a45;
+    }
+    .side-label.right { flex-direction: row-reverse; }
+
+    .quote-zone {
+      position: relative;
+      max-width: 880px;
+    }
+    .quote-mark {
       position: absolute;
-      top: 370px;
-      right: 80px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(30,43,74,0.35);
-    }
-    .body-zone {
-      position: absolute;
-      top: 590px;
-      left: 0; right: 0;
-      padding: 0 100px;
-      text-align: center;
-    }
-    .divider {
-      width: 40px;
-      height: 2px;
-      background: #C8A96E;
-      margin: 0 auto 28px;
-    }
-    .body-text {
+      top: -84px;
+      left: 50%;
+      transform: translateX(-50%);
       font-family: 'Cormorant Garamond', serif;
-      font-size: 34px;
-      line-height: 1.65;
-      color: #3A3028;
+      font-weight: 700;
+      font-size: 172px;
+      line-height: 1;
+      color: rgba(154,95,56,0.20);
+      z-index: -1;
+      pointer-events: none;
+    }
+    .rule {
+      width: 64px;
+      height: 3px;
+      background: #b07a45;
+      margin: 0 auto 26px;
+    }
+    .quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 45px;
+      line-height: 1.4;
+      color: #24201c;
     }
     .handle {
       position: absolute;
-      bottom: 28px;
+      z-index: 2;
+      bottom: 56px;
       left: 0; right: 0;
       text-align: center;
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 3px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(30,43,74,0.28);
+      color: rgba(28,49,74,0.4);
     }
   </style>
 </head>
 <body>
   <div id="slide">
-    <div class="top-text">
-      <span class="top-label">Reflexão</span>
-      <div class="top-headline">{{HEADLINE}}</div>
+    <div class="grain"></div>
+    <div class="frame"></div>
+
+    <div class="stack">
+      <div class="kicker">Reflexão</div>
+      <div class="headline">{{HEADLINE}}</div>
+
+      <div class="photo-row">
+        <span class="side-label left"><span class="tick"></span>Ciclismo</span>
+        <div class="photo-circle">
+          <img src="{{PHOTO_URL}}" alt="Jorge Bernardo">
+        </div>
+        <span class="side-label right"><span class="tick"></span>Liderança</span>
+      </div>
+
+      <div class="quote-zone">
+        <span class="quote-mark">&ldquo;</span>
+        <div class="rule"></div>
+        <div class="quote">{{BODY}}</div>
+      </div>
     </div>
-    <div class="arc-wrap"></div>
-    <div class="photo-circle">
-      <img src="{{PHOTO_URL}}" alt="Jorge Bernardo">
-    </div>
-    <div class="side-label-left">Ciclismo</div>
-    <div class="side-label-right">Liderança</div>
-    <div class="body-zone">
-      <div class="divider"></div>
-      <div class="body-text">{{BODY}}</div>
-    </div>
-    <div class="handle">@jotabernardO</div>
+
+    <div class="handle">@jotabernardo</div>
   </div>
 </body>
 </html>

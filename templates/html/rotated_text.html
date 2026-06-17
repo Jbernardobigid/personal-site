@@ -10,8 +10,20 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #F0EAE0;
+      background:
+        radial-gradient(90% 80% at 4% 4%, rgba(160,113,79,0.22) 0%, rgba(160,113,79,0) 56%),
+        radial-gradient(70% 70% at 2% 100%, rgba(28,49,74,0.14) 0%, rgba(28,49,74,0) 60%),
+        #ece4d4;
       display: flex;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0.07;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .left-col {
       width: 420px;
@@ -24,7 +36,6 @@
     }
     .rotated-wrap {
       transform: rotate(-90deg);
-      white-space: nowrap;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -34,24 +45,32 @@
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 700;
-      font-size: 60px;
+      font-size: 58px;
+      line-height: 1.06;
       color: #1E2B4A;
       letter-spacing: -0.5px;
+      text-align: center;
+      white-space: normal;
+      max-width: 900px;
     }
     .rotated-body {
       font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 600;
       letter-spacing: 3px;
+      line-height: 1.6;
       text-transform: uppercase;
-      color: rgba(30,43,74,0.45);
+      color: #8a5a36;
+      text-align: center;
+      white-space: normal;
+      max-width: 680px;
     }
     .accent-line {
       position: absolute;
       right: 0;
       top: 80px; bottom: 80px;
-      width: 3px;
-      background: #C8A96E;
+      width: 4px;
+      background: #b07a45;
     }
     .right-col {
       flex: 1;
@@ -116,6 +135,7 @@
       </div>
       <div class="handle">@jotabernardO</div>
     </div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

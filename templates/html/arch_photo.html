@@ -10,8 +10,20 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #F5F0E8;
+      background:
+        radial-gradient(90% 70% at 8% 4%, rgba(160,113,79,0.2) 0%, rgba(160,113,79,0) 56%),
+        radial-gradient(80% 70% at 4% 100%, rgba(28,58,40,0.14) 0%, rgba(28,58,40,0) 60%),
+        #ece4d4;
       display: flex;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0.07;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .left-col {
       width: 560px;
@@ -26,11 +38,11 @@
     }
     .label {
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(28,58,40,0.45);
+      color: #8a5a36;
       margin-bottom: 20px;
     }
     .headline {
@@ -38,31 +50,31 @@
       font-style: italic;
       font-weight: 700;
       font-size: 68px;
-      line-height: 1.08;
+      line-height: 1.06;
       color: #1C3A28;
       letter-spacing: -0.5px;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
     .divider {
-      width: 40px;
-      height: 2px;
-      background: #C8A96E;
+      width: 56px;
+      height: 3px;
+      background: #b07a45;
       margin-bottom: 24px;
     }
     .body {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 30px;
-      line-height: 1.65;
-      color: #4A3C30;
+      font-size: 35px;
+      line-height: 1.5;
+      color: #43352a;
     }
     .handle {
       margin-top: 36px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(28,58,40,0.32);
+      color: rgba(28,58,40,0.4);
     }
     .right-col {
       flex: 1;
@@ -99,6 +111,7 @@
         <img src="{{PHOTO_URL}}" alt="Jorge Bernardo">
       </div>
     </div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

@@ -10,7 +10,18 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #E8E4DC;
+      background:
+        radial-gradient(116% 70% at 82% 2%, rgba(176,122,69,0.18) 0%, rgba(176,122,69,0) 56%),
+        #e7e2d8;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0.06;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .accent-top {
       position: absolute;
@@ -137,6 +148,7 @@
       </div>
       <span class="btag">Ancestralidade &amp; Futuro</span>
     </div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

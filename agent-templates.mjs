@@ -9,16 +9,16 @@
  *   4. Save to templates/html/{contentType}.html
  *
  * Usage:
- *   node agent-templates.mjs                   # generate all 10 types (skips cached)
- *   node agent-templates.mjs hook tip cta       # specific types only
- *   node agent-templates.mjs --force            # regenerate even if cached
+ *   node agent-templates.mjs                       # only writes MISSING templates
+ *   node agent-templates.mjs hook tip cta           # specific types only
+ *   node agent-templates.mjs --overwrite-curated    # DANGER: replace existing curated files
  *
- * Requires: ANTHROPIC_API_KEY in .env
- * Requires: Canva MCP authenticated in Claude Code (run once via IDE)
- *
- * NOTE: This script uses the Canva export URLs that were pre-fetched and
- * stored in templates/canva-page-map.json. Re-run with --refresh-exports
- * to fetch fresh signed URLs from Canva (they expire after ~24h).
+ * ⚠️ THE TEMPLATES IN templates/html/ ARE HAND-CURATED — NOT Canva output anymore.
+ * They were redesigned by hand (depth/grain/frame/type system) and are the source
+ * of truth. This generator was the original starting point only. By default it will
+ * NEVER overwrite an existing template — it only fills in a missing one. To force a
+ * regeneration from Canva (and lose the curated design) you must pass the explicit
+ * --overwrite-curated flag. Plain --force will NOT clobber curated files.
  */
 
 import './load-env.mjs';
@@ -255,7 +255,10 @@ async function main() {
   }
 
   const args = process.argv.slice(2);
-  const force = args.includes('--force');
+  // Curated templates are protected. Existing files are only ever replaced when the
+  // operator explicitly opts in with --overwrite-curated. (--force is intentionally
+  // NOT enough — it used to clobber, which would destroy the hand-curated designs.)
+  const overwriteCurated = args.includes('--overwrite-curated');
   const requested = args.filter(a => !a.startsWith('--') && CONTENT_TYPES.includes(a));
   const toProcess = requested.length > 0 ? requested : CONTENT_TYPES;
 
@@ -273,8 +276,8 @@ async function main() {
   for (const contentType of toProcess) {
     const outPath = path.join(OUTPUT_DIR, `${contentType}.html`);
 
-    if (!force && fs.existsSync(outPath)) {
-      console.log(`  SKIP (cached): ${contentType}`);
+    if (fs.existsSync(outPath) && !overwriteCurated) {
+      console.log(`  SKIP (curated, protected): ${contentType} — pass --overwrite-curated to replace`);
       skipped++;
       continue;
     }

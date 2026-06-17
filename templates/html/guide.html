@@ -10,57 +10,96 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #1C3A28;
-      padding: 64px 72px 56px;
+      background:
+        radial-gradient(120% 80% at 82% 2%, rgba(176,122,69,0.20) 0%, rgba(176,122,69,0) 52%),
+        radial-gradient(92% 82% at 6% 100%, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 58%),
+        #21351f;
+      padding: 80px 84px 72px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
     }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.10;
+      z-index: 3;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .frame {
+      position: absolute;
+      inset: 40px;
+      border: 1px solid rgba(255,255,255,0.16);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .frame::before, .frame::after {
+      content: '';
+      position: absolute;
+      width: 22px; height: 22px;
+      border-color: #d6aa78;
+      border-style: solid;
+    }
+    .frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
     .label {
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 3.5px;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
     }
     .headline {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 700;
-      font-size: 58px;
-      line-height: 1.12;
+      font-size: 60px;
+      line-height: 1.1;
       color: #ffffff;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
       letter-spacing: -0.5px;
+      position: relative;
+      z-index: 2;
     }
     .items-container {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 14px;
       flex: 1;
+      position: relative;
+      z-index: 2;
     }
     .item {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px;
-      padding: 22px 24px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-left: 4px solid #d6aa78;
+      border-radius: 0 8px 8px 0;
+      padding: 22px 30px;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 16px 36px -20px rgba(0,0,0,0.5);
     }
     .item-prefix {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 700;
-      font-size: 36px;
-      color: #C8A96E;
+      font-size: 52px;
+      color: #e3c39a;
       line-height: 1;
+      flex-shrink: 0;
+      min-width: 54px;
     }
     .item-text {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 30px;
-      line-height: 1.45;
-      color: rgba(255,255,255,0.85);
+      font-size: 36px;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.9);
       margin: 0;
     }
     .footer {
@@ -68,19 +107,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
+      z-index: 2;
     }
     .handle {
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.42);
     }
     .accent-line {
-      width: 36px;
-      height: 1.5px;
-      background: #C8A96E;
+      width: 48px;
+      height: 3px;
+      background: #d6aa78;
     }
   </style>
 </head>
@@ -94,6 +135,8 @@
       <div class="accent-line"></div>
       <span class="handle">jotabernardo.com</span>
     </div>
+    <div class="frame"></div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

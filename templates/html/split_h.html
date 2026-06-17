@@ -10,8 +10,20 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #EDE8E0;
+      background:
+        radial-gradient(90% 70% at 95% 4%, rgba(160,113,79,0.2) 0%, rgba(160,113,79,0) 56%),
+        radial-gradient(80% 70% at 96% 100%, rgba(28,49,74,0.14) 0%, rgba(28,49,74,0) 60%),
+        #ece4d4;
       display: flex;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0.07;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .photo-col {
       width: 460px;
@@ -57,11 +69,11 @@
     }
     .label {
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: rgba(30,43,74,0.4);
+      color: #8a5a36;
       margin-bottom: 20px;
     }
     .headline {
@@ -69,31 +81,31 @@
       font-style: italic;
       font-weight: 700;
       font-size: 62px;
-      line-height: 1.1;
+      line-height: 1.08;
       color: #1E2B4A;
       letter-spacing: -0.5px;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
     .divider {
-      width: 36px;
-      height: 2px;
-      background: #C8A96E;
+      width: 56px;
+      height: 3px;
+      background: #b07a45;
       margin-bottom: 24px;
     }
     .body {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 30px;
-      line-height: 1.65;
-      color: #4A3C30;
+      font-size: 35px;
+      line-height: 1.5;
+      color: #43352a;
       margin-bottom: 36px;
     }
     .handle {
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(30,43,74,0.32);
+      color: rgba(30,43,74,0.4);
     }
   </style>
 </head>
@@ -112,6 +124,7 @@
       <div class="body">{{BODY}}</div>
       <div class="handle">@jotabernardO</div>
     </div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

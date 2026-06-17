@@ -10,7 +10,19 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #1E2B4A;
+      background:
+        radial-gradient(120% 80% at 80% 4%, rgba(176,122,69,0.2) 0%, rgba(176,122,69,0) 52%),
+        radial-gradient(90% 70% at 8% 100%, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0) 60%),
+        #1c2c4a;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.09;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .wm-wrap {
       position: absolute;
@@ -115,6 +127,7 @@
       <div class="divider"></div>
     </div>
     <div class="handle">@jotabernardO</div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>

@@ -10,11 +10,23 @@
       height: 1080px;
       position: relative;
       overflow: hidden;
-      background: #1C3A28;
+      background:
+        radial-gradient(120% 80% at 82% 2%, rgba(176,122,69,0.18) 0%, rgba(176,122,69,0) 52%),
+        radial-gradient(92% 82% at 6% 100%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 58%),
+        #21351f;
       padding: 64px 72px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.09;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
     .label {
       font-family: 'Montserrat', sans-serif;
@@ -137,6 +149,7 @@
       <span class="handle">@jotabernardO</span>
       <span class="handle">jotabernardo.com</span>
     </div>
+    <div class="grain"></div>
   </div>
 </body>
 </html>
