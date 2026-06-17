@@ -44,8 +44,9 @@ async function resend(method, apiPath, body) {
 async function broadcast(slug, subject, html) {
   const audienceId = process.env.RESEND_AUDIENCE_ID;
   if (!audienceId) throw new Error('RESEND_AUDIENCE_ID not set');
+  const broadcastName = `A Interseção — ${slug}`.slice(0, 70);
   const created = await resend('POST', '/broadcasts', {
-    audience_id: audienceId, from: FROM_EMAIL, subject, html, name: `A Interseção — ${slug}`,
+    audience_id: audienceId, from: FROM_EMAIL, subject, html, name: broadcastName,
   });
   await resend('POST', `/broadcasts/${created.id}/send`, {});
   return created.id;
