@@ -9,6 +9,7 @@
  *   OPENAI_API_KEY        — only needed if no pre-generated image is found
  */
 
+import './load-env.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
