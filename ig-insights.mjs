@@ -138,17 +138,21 @@ async function main() {
   console.log(`Metrics: ${JSON.stringify(entry)}`);
 
   if (dbId) {
-    const properties = {
-      'Week Of': prop.title(`Semana de ${date}`),
-      Date: prop.date(date),
-      Followers: prop.number(ig.followers),
-      'Posts Total': prop.number(ig.posts),
-      'Newsletter Subs': prop.number(newsletterSubs),
-    };
-    if (ig.reach !== null) properties['Reach (7d)'] = prop.number(ig.reach);
-    if (ig.profileViews !== null) properties['Profile Views (7d)'] = prop.number(ig.profileViews);
-    await createPage(dbId, properties);
-    console.log('Notion metrics row created.');
+    try {
+      const properties = {
+        'Week Of': prop.title(`Semana de ${date}`),
+        Date: prop.date(date),
+        Followers: prop.number(ig.followers),
+        'Posts Total': prop.number(ig.posts),
+        'Newsletter Subs': prop.number(newsletterSubs),
+      };
+      if (ig.reach !== null) properties['Reach (7d)'] = prop.number(ig.reach);
+      if (ig.profileViews !== null) properties['Profile Views (7d)'] = prop.number(ig.profileViews);
+      await createPage(dbId, properties);
+      console.log('Notion metrics row created.');
+    } catch (err) {
+      console.error(`Notion metrics row failed (continuing to send digest): ${err.message}`);
+    }
   }
 
   await sendDigest(entry, prev);
