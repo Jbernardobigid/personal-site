@@ -132,3 +132,61 @@ workflow is built — same connection steps).
 
 When both parts are finished, tell Claude "Meta and Notion are set up" — the next build
 steps (n8n IG Build & Queue workflow + first test publish) take it from there.
+
+---
+
+## Part C — Comment-to-DM automation ("comenta CENSO") (~10 min)
+
+For the reply-to-comments.mjs flow: someone comments a trigger keyword on a Reel, the
+account replies with a private DM containing a link. The existing token from Part A only
+has posting scopes — it needs to be re-generated with comment permissions added.
+
+Verified against Meta's current docs (2026-06-22): under Instagram API with Instagram
+Login, a private reply is sent via `POST /<IG_USER_ID>/messages` with a JSON body
+`{ recipient: { comment_id }, message: { text } }` — not the older `private_replies`
+edge some examples online still show. One reply per comment, within 7 days of the
+comment.
+
+### C1. Re-generate the token with comment permissions
+
+1. App dashboard → **Instagram → API setup with Instagram business login**.
+2. Section **"1. Generate access tokens"** → your account → **Generate token**.
+3. In the permissions popup, make sure these are checked, in addition to whatever's
+   already there for posting:
+   - `instagram_business_basic`
+   - `instagram_business_manage_comments`
+4. Authorize, copy the new token (`IGAA...`).
+5. Run the same command as Part A4, with the new token:
+
+```
+node setup-instagram-token.mjs --ig-login --token <TOKEN> --ig-app-secret <INSTAGRAM_APP_SECRET>
+```
+
+6. Update `INSTAGRAM_ACCESS_TOKEN` in `.env` with the value it prints
+   (`INSTAGRAM_USER_ID` and `INSTAGRAM_API_BASE` don't change).
+7. Repeat the same `.env` update on the VPS — this token only helps once n8n's copy
+   matches.
+
+You're an Instagram Tester on this app already (Part A3), so this should work in
+Development Mode without App Review — same as posting does today. If Meta's dashboard
+insists on "Advanced Access" before letting you subscribe, that's only required for
+*other* people's accounts in Live Mode, not your own as a tester; re-check you're using
+the app-owner-logged-in session if it blocks you.
+
+### C2. Subscribe to the `comments` webhook field
+
+1. App dashboard → **Webhooks** (add the product first if it's not listed yet) →
+   **Instagram** → subscribe to the **comments** field.
+2. Meta asks for two things before it lets you subscribe:
+   - **Callback URL** — the n8n webhook URL (I'll give you this once Part 4 of the
+     build is live, something like `https://n8n.jorgebernardo.tech/webhook/ig-comment-reply`).
+   - **Verify Token** — any string you pick yourself. Write it down; it goes in both
+     Meta's dashboard and the n8n workflow.
+3. Click **Verify and Save**. Meta pings the callback URL once and expects it to echo
+   back the challenge — so do this step only after the n8n workflow is confirmed live,
+   not before.
+
+### C3. Confirm the account is public
+
+Comment webhook notifications only fire for a public Instagram professional account.
+If it's already public for posting (it is), nothing to do here.

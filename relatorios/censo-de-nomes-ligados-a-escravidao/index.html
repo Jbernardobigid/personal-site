@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantos negócios brasileiros ainda usam nomes da escravidão? — Censo de Nomes Ligados à Escravidão</title>
+<meta name="description" content="Cruzamos o CNPJ e o Google Places para contar, com critério e ressalvas explícitas, quantos estabelecimentos ativos no Brasil usam nomes historicamente ligados à escravidão.">
+<link rel="canonical" href="https://www.jorgebernardo.tech/relatorios/censo-de-nomes-ligados-a-escravidao/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quantos negócios brasileiros ainda usam nomes da escravidão?">
+<meta property="og:description" content="Cruzamos o CNPJ e o Google Places para contar, com critério e ressalvas explícitas, quantos estabelecimentos ativos no Brasil usam nomes historicamente ligados à escravidão.">
+<meta property="og:url" content="https://www.jorgebernardo.tech/relatorios/censo-de-nomes-ligados-a-escravidao/">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Jorge Bernardo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Quantos negócios brasileiros ainda usam nomes da escravidão?">
+<meta name="twitter:description" content="Cruzamos o CNPJ e o Google Places para contar, com critério e ressalvas explícitas, quantos estabelecimentos ativos no Brasil usam nomes historicamente ligados à escravidão.">
+<link rel="icon" href="../../brand_assets/logo_page_20.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14110d;
+    --bg-elev: #1c1813;
+    --bg-elev-2: #221c15;
+    --paper: #f1e7d6;
+    --paper-dim: #cdc0a4;
+    --muted: #8d8170;
+    --rule: rgba(241,231,214,0.14);
+    --rule-strong: rgba(241,231,214,0.3);
+    --accent: #c1532f;
+    --accent-soft: rgba(193,83,47,0.16);
+    --gold: #c6a02f;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --space-section: clamp(4rem, 3rem + 5vw, 8rem);
+    --measure: 38rem;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight: 600; margin: 0; color: var(--paper); }
+  a{ color: var(--gold); text-decoration-thickness: 1px; }
+  a:hover{ color: var(--accent); }
+
+  .wrap{ max-width: 72rem; margin: 0 auto; padding: 0 clamp(1.25rem, 1rem + 2vw, 3rem); }
+  .measure{ max-width: var(--measure); }
+
+  /* ---------- REPORT NAV ---------- */
+  .report-nav{ position: relative; z-index: 30; padding: 1.25rem clamp(1.25rem, 1rem + 2vw, 3rem) 0; }
+  .report-nav a{
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-decoration: none;
+  }
+  .report-nav a:hover{ color: var(--gold); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: clamp(3.5rem, 3rem + 6vw, 7rem) 0 clamp(2.5rem, 2rem + 3vw, 4rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 20% -10%, rgba(193,83,47,0.18), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 100% 0%, rgba(198,160,47,0.10), transparent 55%),
+      var(--bg);
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .kicker{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: rise 0.7s 0.05s ease-out forwards;
+  }
+  .kicker::before{ content:""; width: 2.25rem; height: 1px; background: var(--gold); display:inline-block; }
+
+  .hero h1{
+    font-size: clamp(2.4rem, 1.9rem + 3.4vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+    opacity: 0;
+    animation: rise 0.8s 0.15s ease-out forwards;
+  }
+  .hero h1 em{
+    font-style: italic;
+    font-weight: 500;
+    color: transparent;
+    background: linear-gradient(95deg, var(--accent), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero-lede{
+    margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+    max-width: 40rem;
+    font-size: clamp(1.08rem, 1rem + 0.3vw, 1.3rem);
+    color: var(--paper-dim);
+    opacity: 0;
+    animation: rise 0.8s 0.3s ease-out forwards;
+  }
+  .hero-lede::first-letter{
+    font-family: var(--font-display);
+    font-size: 3.4em;
+    float: left;
+    line-height: 0.8;
+    padding: 0.05em 0.12em 0 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .hero-meta{
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    opacity: 0;
+    animation: rise 0.8s 0.45s ease-out forwards;
+  }
+
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(14px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- CHAPTER NAV ---------- */
+  .chapters{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg-elev);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(6px);
+  }
+  .chapters .wrap{ display:flex; flex-wrap: wrap; }
+  .chapters a{
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-decoration: none;
+    padding: 0.85rem 1.1rem;
+    border-right: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  .chapters a span{ color: var(--gold); margin-right: 0.5em; }
+  .chapters a:hover{ color: var(--paper); background: var(--bg-elev-2); }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: var(--space-section) 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type{ border-bottom: none; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.9rem;
+  }
+  h2{ font-size: clamp(1.7rem, 1.4rem + 1.5vw, 2.6rem); margin-bottom: 1rem; max-width: 30ch; }
+  .section-intro{ color: var(--paper-dim); max-width: var(--measure); font-size: 1.05rem; }
+
+  .reveal{ opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  /* ---------- STAT GRID ---------- */
+  .stat-grid{
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1.25fr 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 800px){ .stat-grid{ grid-template-columns: 1fr; } }
+
+  .stat-card{
+    background: var(--bg-elev);
+    padding: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+    position: relative;
+  }
+  .stat-card .term{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.45rem;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+  }
+  .bar-row{ margin-bottom: 1.15rem; }
+  .bar-row:last-child{ margin-bottom: 0; }
+  .bar-label{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .bar-label b{
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-style: normal;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--paper);
+    font-weight: 600;
+  }
+  .bar-track{
+    height: 9px;
+    background: var(--bg-elev-2);
+    border-radius: 1px;
+    overflow: hidden;
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 6px);
+  }
+  .bar-fill{ height: 100%; border-radius: 1px; }
+  .bar-fill.cnpj{ background: linear-gradient(90deg, var(--gold), #e0bb44); }
+  .bar-fill.places{ background: linear-gradient(90deg, var(--accent), #d97246); }
+  .stat-card .note{ margin-top: 1.4rem; font-size: 0.86rem; color: var(--muted); border-top: 1px dashed var(--rule); padding-top: 0.9rem; }
+
+  /* ---------- METHOD ---------- */
+  .method-grid{
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+  @media (max-width: 760px){ .method-grid{ grid-template-columns: 1fr; } }
+  .method-card{ border-left: 2px solid var(--rule-strong); padding-left: 1.5rem; }
+  .method-card .num{ font-family: var(--font-mono); color: var(--accent); font-size: 0.8rem; letter-spacing: 0.1em; }
+  .method-card h3{ font-size: 1.25rem; margin: 0.5rem 0 0.6rem; }
+  .method-card p{ color: var(--paper-dim); font-size: 0.96rem; }
+
+  .callout{
+    margin-top: 3rem;
+    background: var(--accent-soft);
+    border: 1px solid rgba(193,83,47,0.35);
+    border-radius: 2px;
+    padding: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  }
+  .callout .eyebrow{ color: var(--accent); }
+  .callout p{ color: var(--paper); font-size: 1rem; }
+  .callout p + p{ margin-top: 0.85rem; }
+  .callout .tally{
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    margin: 1.1rem 0;
+    color: var(--paper-dim);
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .callout .tally b{ color: var(--paper); font-size: 1.3rem; display:block; font-family: var(--font-display); }
+  .callout .tally span{ display:block; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+  .callout .tally del{ color: var(--muted); text-decoration-color: var(--accent); }
+  .callout .arrow{ color: var(--accent); }
+
+  /* ---------- EXAMPLES ---------- */
+  .examples-grid{ margin-top: 2.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--rule); }
+  @media (max-width: 900px){ .examples-grid{ grid-template-columns: 1fr; } }
+  .examples-col{ padding: 1.75rem; border-left: 1px solid var(--rule); }
+  .examples-col:first-child{ border-left: none; }
+  @media (max-width: 900px){ .examples-col{ border-left: none; border-top: 1px solid var(--rule); } .examples-col:first-child{ border-top: none; } }
+  .examples-col h4{ font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 0 0 1.1rem; }
+  .examples-col ul{ list-style: none; margin: 0; padding: 0; }
+  .examples-col li{
+    padding: 0.55rem 0;
+    border-bottom: 1px dotted var(--rule);
+    font-size: 0.92rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    transition: background 0.2s ease, padding-left 0.2s ease;
+  }
+  .examples-col li:hover{ background: var(--bg-elev); padding-left: 0.4rem; border-color: transparent; }
+  .examples-col li:last-child{ border-bottom: none; }
+  .examples-col li .name{ color: var(--paper); }
+  .examples-col li .uf{ font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); white-space: nowrap; }
+  .examples-foot{ margin-top: 1.5rem; font-size: 0.85rem; color: var(--muted); font-style: italic; }
+
+  /* ---------- AMBIGUITY TABLE ---------- */
+  table{ width: 100%; border-collapse: collapse; margin-top: 2.5rem; font-size: 0.92rem; }
+  thead th{
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  tbody td{ padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--paper-dim); vertical-align: top; }
+  tbody td.term{ color: var(--paper); font-style: italic; font-family: var(--font-display); white-space: nowrap; }
+  tbody td.num{ font-family: var(--font-mono); color: var(--muted); white-space: nowrap; }
+  tbody tr:hover td{ color: var(--paper); }
+
+  .specimen-grid{ margin-top: 2.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  @media (max-width: 800px){ .specimen-grid{ grid-template-columns: 1fr; } }
+  .specimen{ background: var(--bg-elev); border: 1px solid var(--rule); padding: 1.4rem; }
+  .specimen .tag{ font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+  .specimen .biz{ font-family: var(--font-display); font-size: 1.15rem; margin: 0.5rem 0; }
+  .specimen .verdict{ font-size: 0.86rem; color: var(--muted); }
+
+  /* ---------- LIMITS ---------- */
+  .limits-list{ margin-top: 2.5rem; padding: 0; list-style: none; max-width: var(--measure); counter-reset: lim; }
+  .limits-list li{ counter-increment: lim; position: relative; padding: 1.1rem 0 1.1rem 2.75rem; border-bottom: 1px solid var(--rule); color: var(--paper-dim); }
+  .limits-list li:last-child{ border-bottom: none; }
+  .limits-list li::before{
+    content: counter(lim, decimal-leading-zero);
+    position: absolute; left: 0; top: 1.1rem;
+    font-family: var(--font-mono); color: var(--accent); font-size: 0.85rem;
+  }
+  .limits-list strong{ color: var(--paper); font-weight: 500; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: clamp(2.5rem, 2rem + 3vw, 4rem) 0 3rem; }
+  footer .foot-grid{ display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; border-top: 1px solid var(--rule); padding-top: 2rem; }
+  footer h4{ font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 0 0 0.75rem; }
+  footer p{ color: var(--muted); font-size: 0.86rem; max-width: 26rem; margin: 0; }
+  footer .colophon{ margin-top: 2.5rem; font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); display:flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="report-nav"><a href="https://www.jorgebernardo.tech">← jorgebernardo.tech</a></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Levantamento independente · dados abertos · Brasil</div>
+    <h1>Quantos negócios brasileiros ainda usam nomes da <em>escravidão</em>?</h1>
+    <p class="hero-lede">Cruzamos o cadastro nacional de empresas (CNPJ) com o Google Places para contar, com critério, quantos estabelecimentos ativos no país usam em seu nome termos historicamente ligados à escravidão — como "senzala", "capitão do mato" e "gargalheira". Não é um censo. É um piso: o número mínimo que conseguimos confirmar, com as fontes e os limites explicados abaixo.</p>
+    <div class="hero-meta">
+      <span>Junho de 2026</span>
+      <span>Fontes: Receita Federal (CNPJ) + Google Places</span>
+      <span>22 termos pesquisados · 3 reportáveis sem revisão manual</span>
+    </div>
+  </div>
+</header>
+
+<nav class="chapters">
+  <div class="wrap">
+    <a href="#resumo"><span>01</span>Resumo</a>
+    <a href="#metodo"><span>02</span>Método</a>
+    <a href="#exemplos"><span>03</span>Exemplos</a>
+    <a href="#ambiguidade"><span>04</span>Ambiguidade</a>
+    <a href="#limites"><span>05</span>Limites</a>
+  </div>
+</nav>
+
+<main>
+
+  <section id="resumo">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">01 — Resultados confirmáveis</div>
+        <h2>O que encontramos</h2>
+        <p class="section-intro">Pesquisamos 22 termos. Só três têm risco de falso positivo baixo o suficiente para virar número público sem checagem manual caso a caso: <em>senzala</em>, <em>capitão do mato</em> e <em>gargalheira</em>. Os outros 19 estão na seção de ambiguidade, mais abaixo — e não devem ser citados como fato.</p>
+      </div>
+
+      <div class="stat-grid reveal">
+        <div class="stat-card">
+          <div class="term">"senzala"</div>
+          <div class="bar-row">
+            <div class="bar-label"><span>CNPJ ativas</span><b>36</b></div>
+            <div class="bar-track"><div class="bar-fill cnpj" style="width:100%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span>Confirmadas no Places</span><b>25</b></div>
+            <div class="bar-track"><div class="bar-fill places" style="width:69%"></div></div>
+          </div>
+          <div class="note">337 empresas já registraram esse nome ao longo do tempo (incluindo baixadas/encerradas) — 36 seguem ativas hoje. Termo praticamente inequívoco em português.</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="term">"capitão do mato"</div>
+          <div class="bar-row">
+            <div class="bar-label"><span>CNPJ ativas</span><b>0</b></div>
+            <div class="bar-track"><div class="bar-fill cnpj" style="width:0%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span>Confirmadas no Places</span><b>5</b></div>
+            <div class="bar-track"><div class="bar-fill places" style="width:100%"></div></div>
+          </div>
+          <div class="note">Nenhum registro no campo "nome fantasia" do CNPJ — mas 5 estabelecimentos usam o nome publicamente no Google Maps. Provável lacuna de preenchimento do CNPJ, não ausência real.</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="term">"gargalheira"</div>
+          <div class="bar-row">
+            <div class="bar-label"><span>CNPJ ativas</span><b>1</b></div>
+            <div class="bar-track"><div class="bar-fill cnpj" style="width:33%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span>Confirmadas no Places</span><b>3</b></div>
+            <div class="bar-track"><div class="bar-fill places" style="width:100%"></div></div>
+          </div>
+          <div class="note">8 registros históricos no CNPJ, 1 ativo. Das 3 confirmações no Places, ao menos 2 remetem ao nome de um açude/distrito em Acari (RN) — ver ressalva na seção de exemplos.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodo">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">02 — Como contamos</div>
+        <h2>Duas fontes, dois critérios diferentes</h2>
+        <p class="section-intro">Nenhuma base de dados sozinha enxerga o varejo brasileiro inteiro. Por isso usamos duas, com naturezas opostas — e tratamos a divergência entre elas como informação, não como erro a esconder.</p>
+      </div>
+
+      <div class="method-grid reveal">
+        <div class="method-card">
+          <div class="num">FONTE 1</div>
+          <h3>Dados Abertos do CNPJ — Receita Federal</h3>
+          <p>Varremos o cadastro nacional de estabelecimentos (lote de ~10 arquivos, processados via DuckDB em modo streaming) buscando os termos como substring literal no campo "nome fantasia". Separamos empresas ativas de baixadas/suspensas para não inflar o número com negócios que já fecharam.</p>
+        </div>
+        <div class="method-card">
+          <div class="num">FONTE 2</div>
+          <h3>Google Places — busca por texto</h3>
+          <p>Para os três termos de baixa ambiguidade, buscamos cada termo cruzado com 5 categorias de estabelecimento (restaurante, hotel, pousada, bar, motel) e os 27 estados, para contornar o limite de ~60 resultados por consulta da API.</p>
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <div class="eyebrow">O que quase publicamos errado</div>
+        <p>Na primeira passada, contamos qualquer resultado que o Google Places devolvesse para a busca de cada termo. A tentação é tratar isso como "estabelecimentos encontrados" — mas a busca por texto do Google é semântica, não literal: ela devolve qualquer lugar "relevante" para a consulta, com nome ou sem.</p>
+        <p>Ao conferir manualmente se o nome retornado de fato continha o termo buscado, a contagem despencou:</p>
+        <div class="tally">
+          <div><b><del>206</del> → 25</b><span>senzala</span></div>
+          <div><b><del>233</del> → 5</b><span>capitão do mato</span></div>
+          <div><b><del>246</del> → 3</b><span>gargalheira</span></div>
+        </div>
+        <p>Os números acima já são os corrigidos — só contam estabelecimentos cujo nome contém literalmente o termo pesquisado.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="exemplos">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">03 — Amostra</div>
+        <h2>Alguns dos nomes encontrados</h2>
+        <p class="section-intro">Nomes reais de estabelecimentos públicos no Google Maps, com o estado onde a busca os localizou. Listamos para dar concretude aos números — não para julgar a intenção de cada proprietário.</p>
+      </div>
+
+      <div class="examples-grid reveal">
+        <div class="examples-col">
+          <h4>"senzala" — 12 de 25</h4>
+          <ul>
+            <li><span class="name">Restaurante Senzala</span><span class="uf">SP</span></li>
+            <li><span class="name">Hotel Senzala</span><span class="uf">BA</span></li>
+            <li><span class="name">Pousada Senzala dos Amigos</span><span class="uf">CE</span></li>
+            <li><span class="name">Senzala Show House</span><span class="uf">RN</span></li>
+            <li><span class="name">Espaço Senzala</span><span class="uf">RJ</span></li>
+            <li><span class="name">Nova Senzala Restaurante</span><span class="uf">SP</span></li>
+            <li><span class="name">Senzala Clube de Campo</span><span class="uf">SP</span></li>
+            <li><span class="name">Senzala Bar e Churrascaria</span><span class="uf">MG</span></li>
+            <li><span class="name">Empório Senzala</span><span class="uf">MG</span></li>
+            <li><span class="name">Casa Grande Senzala</span><span class="uf">BA</span></li>
+            <li><span class="name">Distribuidora e Bar Senzala</span><span class="uf">AL</span></li>
+            <li><span class="name">Praia de Iguabinha (antigo hotel senzala)</span><span class="uf">RJ</span></li>
+          </ul>
+          <div class="examples-foot">+13 ocorrências adicionais nos dados completos.</div>
+        </div>
+
+        <div class="examples-col">
+          <h4>"capitão do mato" — 5 de 5</h4>
+          <ul>
+            <li><span class="name">Restaurante Capitão do Mato</span><span class="uf">RJ</span></li>
+            <li><span class="name">Capitão do Mato</span><span class="uf">MG</span></li>
+            <li><span class="name">Condomínio Capitão do Mato</span><span class="uf">MG</span></li>
+            <li><span class="name">Pousada Capitão do Mato</span><span class="uf">AM</span></li>
+            <li><span class="name">Bar Capitão do Mato</span><span class="uf">RS</span></li>
+          </ul>
+          <div class="examples-foot">Lista completa — não há mais ocorrências confirmadas.</div>
+        </div>
+
+        <div class="examples-col">
+          <h4>"gargalheira" — 3 de 3</h4>
+          <ul>
+            <li><span class="name">Pousada Gargalheiras</span><span class="uf">RN</span></li>
+            <li><span class="name">Gargalheiras</span><span class="uf">RN</span></li>
+            <li><span class="name">Bar do Miltão Gargalheiras</span><span class="uf">RN</span></li>
+          </ul>
+          <div class="examples-foot">Ressalva: as três ocorrências estão em Acari (RN), onde "Gargalheiras" é também o nome de um açude e distrito local — o nome pode vir do lugar, não de uma referência direta ao objeto histórico.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ambiguidade">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">04 — Termos excluídos</div>
+        <h2>O que decidimos não contar</h2>
+        <p class="section-intro">Pesquisamos outros 19 termos. A maioria aparece centenas — em alguns casos quase 2 mil vezes — no CNPJ, mas quase sempre por outro motivo. Os números abaixo existem só para mostrar a escala da ambiguidade. Não são dado confiável e não devem ser citados como fato.</p>
+      </div>
+
+      <table class="reveal">
+        <thead>
+          <tr><th>Termo</th><th>CNPJ ativas</th><th>CNPJ total</th><th>Por que não conta</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="term">engenho</td><td class="num">560</td><td class="num">1.891</td><td>Termo neutro extremamente comum — marca, sobrenome, "engenho de açúcar" literal.</td></tr>
+          <tr><td class="term">quilombo</td><td class="num">361</td><td class="num">652</td><td>Carrega sentido de resistência e cultura negra positiva — não equivalente a senzala/casa grande.</td></tr>
+          <tr><td class="term">casa grande</td><td class="num">250</td><td class="num">938</td><td>Colide com uso literal ("imóvel espaçoso") e sobrenomes.</td></tr>
+          <tr><td class="term">negreiro</td><td class="num">183</td><td class="num">550</td><td>Hoje usado em sentido figurado ("patrão negreiro") e existe como sobrenome.</td></tr>
+          <tr><td class="term">tronco</td><td class="num">88</td><td class="num">239</td><td>Altíssima ambiguidade — tronco de árvore, tronco rodoviário.</td></tr>
+          <tr><td class="term">trapiche</td><td class="num">47</td><td class="num">219</td><td>Termo genérico para armazém/atracadouro; nome comum de bares costeiros.</td></tr>
+          <tr><td class="term">mocambo</td><td class="num">43</td><td class="num">149</td><td>Também é nome de bairros e sinônimo de quilombo — mesma ressalva.</td></tr>
+          <tr><td class="term">chicote</td><td class="num">42</td><td class="num">95</td><td>Alta ambiguidade, raramente referência à escravidão.</td></tr>
+          <tr><td class="term">pelourinho</td><td class="num">17</td><td class="num">60</td><td>Também é o bairro histórico de Salvador — a maioria das ocorrências é o bairro.</td></tr>
+          <tr><td class="term">cativeiro</td><td class="num">7</td><td class="num">21</td><td>Usado também em "cativeiro de animais".</td></tr>
+          <tr><td class="term">sinhazinha</td><td class="num">4</td><td class="num">112</td><td>Checar contexto — uso histórico ligado à senhora de engenho.</td></tr>
+          <tr><td class="term">casa-grande</td><td class="num">0</td><td class="num">1</td><td>Mesma ressalva da variante sem hífen.</td></tr>
+          <tr><td class="term">sinhá / sinhô</td><td class="num">0</td><td class="num">0</td><td>Checar contexto.</td></tr>
+          <tr><td class="term">tumbeiro</td><td class="num">0</td><td class="num">0</td><td>Também é o termo para profissional funerário.</td></tr>
+          <tr><td class="term">calabouço</td><td class="num">0</td><td class="num">0</td><td>Hoje é sinônimo genérico de masmorra/cela, inclusive em jogos.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="specimen-grid reveal">
+        <div class="specimen">
+          <div class="tag">tronco · falso positivo claro</div>
+          <div class="biz">Beckhauser Troncos e Balanças</div>
+          <div class="verdict">Empresa de balanças para pesar gado. Zero relação com o tema.</div>
+        </div>
+        <div class="specimen">
+          <div class="tag">engenho · falso positivo provável</div>
+          <div class="biz">Panificadora Engenho dos Pães</div>
+          <div class="verdict">"Engenho" como trocadilho de padaria — uso poético do termo, não histórico.</div>
+        </div>
+        <div class="specimen">
+          <div class="tag">casa grande · genuinamente ambíguo</div>
+          <div class="biz">Hotel Casa Grande</div>
+          <div class="verdict">Pode ser nome genérico de hospedagem ou referência estética à casa-grande de engenho. Exige checagem caso a caso.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="limites">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">05 — Leia antes de citar</div>
+        <h2>Os limites deste levantamento</h2>
+      </div>
+      <ol class="limits-list reveal">
+        <li><strong>CNPJ não captura informalidade.</strong> Negócios sem registro formal, e empresas que não preenchem o campo "nome fantasia" (usando só a razão social), não aparecem na contagem.</li>
+        <li><strong>Google Places só cobre o que está no Maps.</strong> Estabelecimentos pequenos ou sem presença digital ficam de fora.</li>
+        <li><strong>Nenhuma das duas fontes garante cobertura total.</strong> Trate os números como piso — uma estimativa com base conhecida, não como total absoluto.</li>
+        <li><strong>Usar o termo no nome não prova intenção.</strong> Não sabemos o que o proprietário atual pensa, nem a história do prédio ou da marca — o levantamento mede nomes, não motivações.</li>
+        <li><strong>Não existe número "oficial" para comparar.</strong> Não encontramos estudo acadêmico anterior fazendo esse levantamento nacional de forma sistemática.</li>
+        <li><strong>Os 19 termos da seção de ambiguidade não devem ser citados como fato.</strong> Exigem revisão manual linha a linha antes de qualquer conclusão.</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Fontes</h4>
+        <p>Receita Federal — Dados Abertos do CNPJ (dadosabertos.rfb.gov.br) · Google Places API (Text Search)</p>
+      </div>
+      <div>
+        <h4>Reprodutibilidade</h4>
+        <p>Pipeline, scripts e dados brutos por trás deste relatório estão disponíveis sob pedido para verificação independente.</p>
+      </div>
+      <div>
+        <h4>Sobre o levantamento</h4>
+        <p>Pesquisa independente, sem afiliação institucional. Não constitui censo, estudo acadêmico revisado por pares, ou posição sobre os estabelecimentos citados.</p>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>Levantamento independente de dados abertos — junho de 2026</span>
+      <span>22 termos pesquisados · 3 reportáveis · 19 em revisão manual</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
