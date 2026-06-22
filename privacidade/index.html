@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade — Jorge Bernardo</title>
+<meta name="description" content="Política de privacidade do Jorge Content Studio: como o app que publica e administra o Instagram de Jorge Bernardo trata dados de comentários e respostas.">
+<link rel="canonical" href="https://www.jorgebernardo.tech/privacidade/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Política de Privacidade — Jorge Bernardo">
+<meta property="og:description" content="Como o Jorge Content Studio trata dados de comentários e respostas no Instagram.">
+<meta property="og:url" content="https://www.jorgebernardo.tech/privacidade/">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Jorge Bernardo">
+<link rel="icon" href="../brand_assets/logo_page_20.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+:root{
+  --black:#1e1a14;--terra:#5e412d;--terra-light:#a0714f;
+  --ash:#d9d9d9;--white:#ffffff;--mid:rgba(255,255,255,0.45);
+  --border:rgba(255,255,255,0.09);--border-terra:rgba(160,113,79,0.25);
+  --font-display:'Noto Serif Display',Georgia,serif;
+  --font-body:'Lora',Georgia,serif;--font-mono:'DM Mono',monospace;
+}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.025;pointer-events:none;z-index:999}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:#0a0a0a}::-webkit-scrollbar-thumb{background:var(--terra-light);border-radius:2px}
+nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(30,26,20,0.92);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.nav-text{font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--white);opacity:0.85;text-decoration:none}
+.nav-back{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--terra-light);text-decoration:none;border:1px solid var(--border-terra);padding:8px 20px;border-radius:1px;transition:background .2s,color .2s}
+.nav-back:hover{background:var(--terra);color:var(--white);border-color:var(--terra)}
+.page-header{padding:72px 0 52px;border-bottom:1px solid var(--border)}
+.page-header-inner{max-width:760px;margin:0 auto;padding:0 52px}
+.page-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra-light);display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.page-eyebrow::before{content:'';width:28px;height:1px;background:var(--terra-light);display:inline-block}
+.page-title{font-family:var(--font-display);font-size:clamp(32px,4vw,52px);font-weight:900;letter-spacing:-0.03em;line-height:1.08;margin-bottom:24px}
+.page-lede{font-size:18px;line-height:1.8;color:var(--ash);max-width:620px}
+.page-meta{margin-top:28px;font-family:var(--font-mono);font-size:11px;color:var(--mid);letter-spacing:0.06em}
+.page-body{max-width:760px;margin:0 auto;padding:56px 52px 100px}
+.policy-section{padding:36px 0;border-bottom:1px solid var(--border)}
+.policy-section:last-child{border-bottom:none}
+.policy-num{font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;color:var(--terra-light);margin-bottom:10px}
+.policy-section h2{font-family:var(--font-display);font-size:clamp(20px,2.4vw,28px);font-weight:700;letter-spacing:-0.02em;margin-bottom:16px;color:var(--white)}
+.policy-section p{font-size:17px;line-height:1.85;color:var(--ash);margin-bottom:16px}
+.policy-section p:last-child{margin-bottom:0}
+.policy-section ul{padding-left:22px;margin:16px 0}
+.policy-section li{font-size:17px;line-height:1.8;color:var(--ash);margin-bottom:10px}
+.policy-section strong{color:var(--white);font-weight:600}
+.policy-section a{color:var(--terra-light);text-decoration:underline;text-decoration-color:var(--border-terra);text-underline-offset:2px;transition:color .2s}
+.policy-section a:hover{color:var(--white)}
+.contact-card{margin-top:8px;background:rgba(94,65,45,0.1);border:1px solid var(--border-terra);border-radius:2px;padding:24px 28px}
+.contact-card .label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra-light);margin-bottom:8px}
+.contact-card .value{font-family:var(--font-mono);font-size:16px;color:var(--white)}
+footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.footer-copy{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.22);letter-spacing:0.08em}
+.footer-tag{font-family:var(--font-mono);font-size:10px;color:var(--terra-light);letter-spacing:0.1em;opacity:0.7}
+@media(max-width:768px){
+  nav{padding:0 24px}
+  .page-header-inner,.page-body{padding-left:24px;padding-right:24px}
+  footer{padding:20px 24px;flex-direction:column;gap:10px;text-align:center}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-text">Jorge Bernardo</a>
+  <a href="/" class="nav-back">← Início</a>
+</nav>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <div class="page-eyebrow">Política de Privacidade</div>
+    <h1 class="page-title">Como o Jorge Content Studio trata dados de comentários no Instagram</h1>
+    <p class="page-lede">Este documento descreve o que a integração que publica e administra o Instagram de Jorge Bernardo faz com dados de comentários públicos — em linguagem direta, sem juridiquês.</p>
+    <div class="page-meta">Última atualização: 22 de junho de 2026</div>
+  </div>
+</header>
+
+<main class="page-body">
+
+  <section class="policy-section">
+    <div class="policy-num">01</div>
+    <h2>O que é o Jorge Content Studio</h2>
+    <p>Jorge Content Studio é o aplicativo Meta que conecta a conta profissional do Instagram de Jorge Bernardo (<strong>@jotabernard0</strong>) às ferramentas que ele usa para publicar conteúdo e responder a comentários. Não é um produto público: serve exclusivamente para administrar essa conta.</p>
+  </section>
+
+  <section class="policy-section">
+    <div class="policy-num">02</div>
+    <h2>Quais dados tratamos</h2>
+    <p>A integração toca dois tipos de dado:</p>
+    <ul>
+      <li><strong>O conteúdo do próprio Jorge</strong> — fotos, legendas e textos que ele publica, através de um token de acesso da conta dele mesmo.</li>
+      <li><strong>Comentários públicos em posts de Jorge</strong> — quando alguém comenta uma palavra-chave específica (por exemplo, "CENSO") em um post, a integração lê o texto do comentário e o nome de usuário e ID de quem comentou, apenas para decidir se deve enviar uma resposta automática.</li>
+    </ul>
+    <p>Não coletamos, lemos ou armazenamos nenhum outro dado de quem comenta — sem acesso a perfil, seguidores, mensagens privadas ou qualquer informação além do texto do comentário público e do identificador necessário para responder a ele.</p>
+  </section>
+
+  <section class="policy-section">
+    <div class="policy-num">03</div>
+    <h2>Como usamos esses dados</h2>
+    <p>Quando um comentário contém a palavra-chave configurada, o sistema envia automaticamente <strong>uma única mensagem direta privada</strong> para quem comentou, contendo um link público (por exemplo, para um relatório ou conteúdo relacionado ao post). Isso é tudo. Não há campanha de marketing, não há coleta de lista de contatos, não há uso posterior desse dado para qualquer outra finalidade.</p>
+  </section>
+
+  <section class="policy-section">
+    <div class="policy-num">04</div>
+    <h2>Retenção de dados</h2>
+    <p>Guardamos, por tempo indeterminado em um arquivo de controle interno, apenas o <strong>ID do comentário</strong> que já recebeu resposta — exclusivamente para evitar enviar a mesma mensagem duas vezes para a mesma pessoa. Não guardamos o texto do comentário, nome de usuário, nem qualquer outro dado pessoal além desse ID técnico.</p>
+  </section>
+
+  <section class="policy-section">
+    <div class="policy-num">05</div>
+    <h2>Compartilhamento com terceiros</h2>
+    <p>Nenhum dado é vendido, alugado ou compartilhado com terceiros. A única comunicação de dados que ocorre é com a própria API do Instagram/Meta, necessária para ler o comentário público e enviar a resposta — a mesma infraestrutura que já processa essas informações quando você usa o Instagram normalmente.</p>
+  </section>
+
+  <section class="policy-section">
+    <div class="policy-num">06</div>
+    <h2>Segurança</h2>
+    <p>O token de acesso da conta do Instagram é armazenado como segredo de ambiente, nunca em código-fonte público, e usado apenas pelos scripts que rodam essa integração.</p>
+  </section>
+
+  <section class="policy-section">
+    <div class="policy-num">07</div>
+    <h2>Seus direitos</h2>
+    <p>Se você comentou em um post de Jorge e quer saber exatamente quais dados foram tratados, ou quer solicitar a remoção do ID do seu comentário do arquivo de controle interno, escreva para o contato abaixo.</p>
+    <div class="contact-card">
+      <div class="label">Contato</div>
+      <div class="value">jorge.mbernardo@gmail.com</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="footer-copy">© 2026 Jorge Bernardo</span>
+  <span class="footer-tag">Estética encontra Estratégia.</span>
+</footer>
+</body>
+</html>
