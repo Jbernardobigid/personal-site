@@ -147,8 +147,17 @@ function buildHistorySummary(posts, count = HISTORY_PROMPT_COUNT) {
   return recent.map((p, i) => {
     const seq = (p.templates ?? []).join(' → ') || '(unknown)';
     const label = i === 0 ? 'Most recent' : `${i + 1} posts ago`;
-    return `- ${label}: ${p.format}, ${p.slideCount} slide(s) [${seq}]`;
+    const photo = p.photo ? ` — photo ${p.photo}` : '';
+    return `- ${label}: ${p.format}, ${p.slideCount} slide(s) [${seq}]${photo}`;
   }).join('\n');
+}
+
+// Photos used across the whole stored history (all HISTORY_LIMIT posts, not
+// just the prompt window) — hard exclusion list so the same image can't
+// headline two nearby posts. Records written before photo tracking existed
+// have no photo field and are skipped.
+function recentPhotoBasenames(posts) {
+  return [...new Set(posts.map(p => p.photo).filter(Boolean))];
 }
 
 // Anti-streak guard: the structure prompt carries a standing "singles are underused,
@@ -175,9 +184,37 @@ function loadInventory() {
 
 /* ── Photo resolver (inventory-aware, env override, random fallback) ── */
 
-function resolvePhoto(preferredName) {
+// The model may name any frame inside an inventory range, but ranges have
+// gaps (culled frames). Substitute the numerically closest surviving frame
+// of the same shoot — close frame numbers mean the same scene and look.
+// The window keeps the substitute within the same look, not a neighboring one.
+const NEAREST_FRAME_WINDOW = 20;
+
+function splitFrameName(stem) {
+  const m = stem.match(/^([A-Za-z0-9_]*?)(\d+)$/);
+  return m ? { prefix: m[1], num: parseInt(m[2], 10) } : null;
+}
+
+function nearestPhoto(photoDir, stem, excluded) {
+  const want = splitFrameName(stem);
+  if (!want) return null;
+  const best = fs.readdirSync(photoDir)
+    .filter(f => /\.(jpg|jpeg|png)$/i.test(f) && !excluded.has(f.toLowerCase()))
+    .map(f => {
+      const got = splitFrameName(path.basename(f, path.extname(f)));
+      return got && got.prefix === want.prefix
+        ? { f, dist: Math.abs(got.num - want.num) }
+        : null;
+    })
+    .filter(c => c && c.dist <= NEAREST_FRAME_WINDOW)
+    .sort((a, b) => a.dist - b.dist)[0];
+  return best ? path.join(photoDir, best.f) : null;
+}
+
+function resolvePhoto(preferredName, excludeBasenames = []) {
   const photoDir = path.join(__dirname, 'brand_assets', 'Fotos');
   if (!fs.existsSync(photoDir)) return null;
+  const excluded = new Set(excludeBasenames.map(b => b.toLowerCase()));
 
   // Resolve a name that may be a bare basename ("DSC00412") or full filename.
   const tryName = (raw) => {
@@ -195,18 +232,33 @@ function resolvePhoto(preferredName) {
     return null;
   };
 
-  // 1. Explicit env override always wins
+  // 1. Explicit env override always wins — even over the recent-photo exclusion
   const envHit = tryName(process.env.JORGE_CAROUSEL_PHOTO);
   if (envHit) return envHit;
 
-  // 2. Inventory-recommended photo (chosen by Claude from INVENTORY.md)
+  // 2. Inventory-recommended photo (chosen by Claude from INVENTORY.md).
+  // A recently used pick counts as a miss: the prompt already forbids repeats,
+  // but enforce it here too — same philosophy as the format streak guard,
+  // determinism over prompt self-correction.
   const prefHit = tryName(preferredName);
-  if (prefHit) return prefHit;
+  if (prefHit && !excluded.has(path.basename(prefHit).toLowerCase())) return prefHit;
 
-  // 3. Random fallback for variety
+  // 2b. Gap in the range or a recent repeat: nearest surviving neighbor
+  // from the same shoot keeps the scene the model chose.
+  const stem = typeof preferredName === 'string'
+    ? path.basename(preferredName.trim()).replace(/\.(jpg|jpeg|png|webp)$/i, '').replace(/[^A-Za-z0-9_-]/g, '')
+    : '';
+  if (stem) {
+    const near = nearestPhoto(photoDir, stem, excluded);
+    if (near) return near;
+  }
+
+  // 3. Random fallback for variety (still avoiding recent repeats)
   const jpgs = fs.readdirSync(photoDir).filter(f => /\.(jpg|jpeg|png)$/i.test(f));
-  if (jpgs.length === 0) return null;
-  return path.join(photoDir, jpgs[Math.floor(Math.random() * jpgs.length)]);
+  const fresh = jpgs.filter(f => !excluded.has(f.toLowerCase()));
+  const pool = fresh.length > 0 ? fresh : jpgs;
+  if (pool.length === 0) return null;
+  return path.join(photoDir, pool[Math.floor(Math.random() * pool.length)]);
 }
 
 /* ── Blog post reader ──────────────────────────────────────── */
@@ -255,7 +307,7 @@ function readLatestPost(explicitFile) {
 
 /* ── Claude: decide format + extract content ──────────────── */
 
-async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '', historySummary = '', forcedFormat = null } = {}) {
+async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '', historySummary = '', recentPhotos = [], forcedFormat = null } = {}) {
   const contentBlock = post.excerpt
     ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
     : `TOPIC IDEA:\n${post.title}`;
@@ -322,7 +374,9 @@ Choose ONE photo for this post from the inventory below and return its exact fil
 - Identity / lifestyle / technology / entrepreneurship / career topics, use the 7B7A Madrid editorial shots.
 - Community / family / event / culture topics, use the 20221203 event portraits.
 - Activism / resistance themes, use the yellow fist-raised frames.
-- When unsure, pick a clean editorial portrait. Prefer the listed "hero frames".
+- You may pick ANY frame number inside a listed range (e.g. "7B7A0110" from the range 7B7A0097–0132) — the "hero frames" are quality anchors, NOT the only choices. Vary your picks so the feed never settles on the same few images.
+- NEVER pick a photo from this recently-used list (a nearby frame number from the same scene is fine):
+${recentPhotos.length ? recentPhotos.join(', ') : '(none on record)'}
 
 PHOTO INVENTORY:
 ${inventoryText || '(inventory unavailable — return "photo": "")'}
@@ -546,19 +600,21 @@ async function main() {
   const inventoryText = loadInventory();
   const usagePosts = loadUsage().posts;
   const historySummary = buildHistorySummary(usagePosts);
+  const recentPhotos = recentPhotoBasenames(usagePosts);
   // Explicit --format wins; otherwise break a same-format streak automatically.
   const forcedFormat = explicitFormat ?? streakForcedFormat(usagePosts);
   console.log('  Recent history (avoiding repeats):');
   console.log(historySummary.split('\n').map(l => `    ${l}`).join('\n'));
+  if (recentPhotos.length) console.log(`  Excluded photos (recently used): ${recentPhotos.join(', ')}`);
   if (forcedFormat) {
     const why = explicitFormat ? '--format flag' : `anti-streak (last ${STREAK_LIMIT} were same format)`;
     console.log(`  Format override: ${forcedFormat} (${why})`);
   }
-  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary, forcedFormat });
+  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary, recentPhotos, forcedFormat });
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
 
-  const photoPath = resolvePhoto(photo);
+  const photoPath = resolvePhoto(photo, recentPhotos);
   if (photoPath) console.log(`  Photo: ${path.basename(photoPath)}${photo ? ` (recommended: ${photo})` : ' (random fallback)'}`);
   else console.warn('  Warning: No photos found in brand_assets/Fotos/');
 
@@ -636,7 +692,7 @@ async function main() {
     'utf8'
   );
 
-  saveUsage({ date, title: post.title, format, slideCount: slides.length, templates: usedTypes });
+  saveUsage({ date, title: post.title, format, slideCount: slides.length, templates: usedTypes, photo: photoPath ? path.basename(photoPath) : null });
 
   console.log(`\nDone! ${slides.length} slide${slides.length > 1 ? 's' : ''} → carousels/${date}-${slug}/`);
   console.log('Caption → post-caption.txt (also inside the output folder)');
