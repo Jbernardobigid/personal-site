@@ -78,3 +78,13 @@ export function getSelect(page, name) {
   const p = page.properties[name];
   return p && p.select ? p.select.name : null;
 }
+
+export function getRichText(page, name) {
+  const p = page.properties[name];
+  return p && Array.isArray(p.rich_text) ? p.rich_text.map((x) => x.plain_text).join('') : '';
+}
+
+export function getUrl(page, name) {
+  const p = page.properties[name];
+  return p && p.url ? p.url : null;
+}

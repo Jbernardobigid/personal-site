@@ -2,14 +2,17 @@
  * prepare-video.mjs
  * Orchestrator for the n8n "Video — Build from latest post" workflow: build the
  * educational video for the newest blog post (or reuse the latest already-built
- * one), upload it to Vercel Blob (video/mp4), and email Jorge the link + caption.
- * Mirrors prepare-carousel.mjs. On-demand (no auto-schedule).
+ * one), upload it to Vercel Blob (video/mp4), and create a Reel card in the
+ * Notion IG Pipeline (Status=Draft) — the same approval surface carousels use.
+ * publish-approved.mjs publishes it once Status = "Approved For Publishing".
+ * Mirrors prepare-carousel.mjs + queue-to-notion.mjs. On-demand (no auto-schedule).
  *
  * Usage:
- *   node prepare-video.mjs                 (build + upload + email, then mark prepared)
- *   node prepare-video.mjs --no-broll      (procedural bg, no KIE cost)
- *   node prepare-video.mjs --skip-generate (deliver the most recent already-built video)
- *   node prepare-video.mjs --dry-run       (build/find, upload, but PRINT the email; don't send/mark)
+ *   node prepare-video.mjs                 (build + upload + queue in Notion, then mark prepared)
+ *   node prepare-video.mjs --kie-broll     (AI video b-roll via KIE, costs credits)
+ *   node prepare-video.mjs --real-broll    (real-footage photo b-roll, Ken Burns)
+ *   node prepare-video.mjs --skip-generate (queue the most recent already-built video)
+ *   node prepare-video.mjs --dry-run       (build/find + upload, print the card; don't create/mark)
  *   node prepare-video.mjs --force         (re-prepare even if this post was already done)
  */
 
@@ -18,6 +21,7 @@ import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import { queryDatabase, createPage, prop } from './notion-api.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = path.join(__dirname, 'blog', 'posts');
@@ -25,8 +29,6 @@ const VIDEOS_DIR = path.join(__dirname, 'videos');
 const LEDGER_PATH = path.join(__dirname, 'video-prepared.json');
 const DAY1_ROOT = process.env.NEWSLETTER_REPO || 'C:/DevWork/AI Automation Society/Day 1';
 const BLOB_UPLOAD = path.join(DAY1_ROOT, 'tools', 'blob_upload.mjs');
-const NOTIFY_EMAIL = process.env.CAROUSEL_NOTIFY_EMAIL || 'jorge.mbernardo@gmail.com';
-const FROM_EMAIL = process.env.NEWSLETTER_FROM || 'Jorge Bernardo <newsletter@jorgebernardo.tech>';
 
 function fail(msg, detail = '') { console.log(JSON.stringify({ success: false, error: msg, detail })); process.exit(1); }
 
@@ -65,28 +67,32 @@ function uploadVideo(videoPath, slug) {
   return parsed.url;
 }
 
-function buildEmail(meta, url) {
-  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  return `<!DOCTYPE html><html><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#faf8f5;padding:24px;color:#1e1a14">
-  <p style="font-family:monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a0714f;margin:0 0 8px">Vídeo pronto para postar</p>
-  <h2 style="margin:0 0 8px;font-size:20px">${esc(meta.title)}</h2>
-  <p style="color:#555;margin:0 0 16px">${meta.durationSec}s · 9:16 · voz PT-BR · b-roll + legendas + música. Baixe e poste no Instagram (Reels).</p>
-  <p style="margin:0 0 22px"><a href="${esc(url)}" style="display:inline-block;background:#5e412d;color:#fff;text-decoration:none;padding:14px 28px;border-radius:6px;font-family:monospace;font-size:13px;letter-spacing:1px">▶ Assistir / baixar o vídeo</a></p>
-  <p style="font-size:12px;color:#888;word-break:break-all;margin:0 0 22px">${esc(url)}</p>
-  <p style="font-family:monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#a0714f;margin:0 0 6px">Legenda</p>
-  <pre style="white-space:pre-wrap;background:#fff;border:1px solid #e6e0d8;border-radius:8px;padding:16px;font-family:inherit;font-size:14px;line-height:1.6;margin:0">${esc(meta.caption)}</pre>
-</body></html>`;
+async function alreadyQueued(dbId, id) {
+  const results = await queryDatabase(dbId, { property: 'Name', title: { equals: id } });
+  return results.length > 0;
 }
 
-async function sendEmail(subject, html) {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) fail('RESEND_API_KEY not set');
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: FROM_EMAIL, to: [NOTIFY_EMAIL], subject, html })
-  });
-  if (!res.ok) fail(`Resend failed (HTTP ${res.status})`, (await res.text()).slice(0, 300));
-  return (await res.json()).id;
+async function queueReel(id, meta, url) {
+  const dbId = process.env.NOTION_IG_DB_ID;
+  if (!dbId) fail('NOTION_IG_DB_ID not set');
+  if (await alreadyQueued(dbId, id)) {
+    console.log(`${id} already in Notion — not queueing again.`);
+    return false;
+  }
+  const properties = {
+    Name: prop.title(id),
+    Status: prop.select('Draft'),
+    Type: prop.select('Reel'),
+    Series: prop.select('Blog-derived'),
+    Caption: prop.richText(meta.caption),
+    'Media URL': prop.url(url),
+    Preview: prop.files([url]),
+    Notes: prop.richText(`Reel ${Math.round(meta.durationSec)}s · 9:16 · voz PT-BR. Approve by setting Status = "Approved For Publishing".`),
+    'Publish Date': prop.date(meta.date),
+  };
+  await createPage(dbId, properties);
+  console.log(`Notion card created (Draft): ${id}`);
+  return true;
 }
 
 async function main() {
@@ -104,10 +110,11 @@ async function main() {
   if (skipGenerate) {
     dir = newestBuiltVideoDir();
     if (!dir) fail('no built video found (run without --skip-generate)');
-    console.log(`Delivering existing: ${path.relative(__dirname, dir)}`);
+    console.log(`Queueing existing: ${path.relative(__dirname, dir)}`);
   } else {
     const passthrough = [];
-    if (args.includes('--no-broll')) passthrough.push('--no-broll');
+    if (args.includes('--kie-broll')) passthrough.push('--kie-broll');
+    if (args.includes('--real-broll')) passthrough.push('--real-broll');
     if (args.includes('--seconds')) passthrough.push('--seconds', args[args.indexOf('--seconds') + 1]);
     console.log('Building video...');
     buildVideo(passthrough);
@@ -116,19 +123,22 @@ async function main() {
   }
 
   const meta = JSON.parse(fs.readFileSync(path.join(dir, 'video-meta.json'), 'utf8'));
-  console.log(`Uploading to Blob...`);
+  const id = path.basename(dir);
+  console.log('Uploading to Blob...');
   const url = uploadVideo(path.join(dir, 'video.mp4'), meta.slug);
-  const subject = `🎬 Vídeo pronto: ${meta.title}`;
 
   if (dryRun) {
-    console.log('\n--- DRY RUN: email NOT sent ---');
-    console.log(`To: ${NOTIFY_EMAIL} | ${url}`);
+    console.log('\n--- DRY RUN: Notion card NOT created ---');
+    console.log(`Name: ${id} | Type: Reel | Status: Draft`);
+    console.log(`Media URL: ${url}`);
+    console.log(`Caption (${meta.caption.length} chars): ${meta.caption.slice(0, 120)}...`);
   } else {
-    const id = await sendEmail(subject, buildEmail(meta, url));
-    markPrepared(stem);
-    console.log(`Email sent (${id}); marked prepared.`);
+    await queueReel(id, meta, url);
+    // Only tie the ledger to the newest post when we actually built for it —
+    // --skip-generate may be delivering a video for an older post.
+    if (!skipGenerate) markPrepared(stem);
   }
-  console.log(JSON.stringify({ success: true, dryRun, stem, title: meta.title, durationSec: meta.durationSec, url }));
+  console.log(JSON.stringify({ success: true, dryRun, stem, id, title: meta.title, durationSec: meta.durationSec, url }));
 }
 
 main().catch(e => fail('unexpected', String(e?.stack || e)));

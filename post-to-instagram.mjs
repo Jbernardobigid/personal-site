@@ -212,6 +212,7 @@ export async function cmdPublishCarousel(id, { dryRun, captionFile } = {}) {
     access_token: token,
   });
   console.log(`Published. IG media id: ${published.id}`);
+  return published.id;
 }
 
 /* ── publish: reel ─────────────────────────────────────────── */
@@ -233,7 +234,7 @@ async function waitForContainerReady(containerId, token) {
   throw new Error('Timed out waiting for video processing (5 min). Check the container status later.');
 }
 
-async function cmdPublishReel({ videoUrl, captionFile, caption, dryRun }) {
+export async function cmdPublishReel({ videoUrl, captionFile, caption, dryRun }) {
   const { token, igUserId } = requireEnv();
   if (!videoUrl) {
     console.error('Missing --video-url <public mp4 url>.');
@@ -273,6 +274,7 @@ async function cmdPublishReel({ videoUrl, captionFile, caption, dryRun }) {
     access_token: token,
   });
   console.log(`Published. IG media id: ${published.id}`);
+  return published.id;
 }
 
 /* ── CLI ───────────────────────────────────────────────────── */

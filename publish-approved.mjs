@@ -2,7 +2,9 @@
  * publish-approved.mjs
  * Polls the Notion IG Pipeline for cards with Status = "Approved For Publishing",
  * publishes them to Instagram via the Graph API, and marks them Published with
- * the IG media id. Run by n8n on a short schedule — safe no-op when queue is empty.
+ * the IG media id. Handles carousels/singles (staged in social/) and Reels
+ * (published straight from the card's Media URL — Vercel Blob, no staging).
+ * Run by n8n on a short schedule — safe no-op when queue is empty.
  *
  * Usage:  node publish-approved.mjs
  */
@@ -11,35 +13,29 @@ import './load-env.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { queryDatabase, updatePage, prop, getTitle } from './notion-api.mjs';
+import { queryDatabase, updatePage, prop, getTitle, getSelect, getRichText, getUrl } from './notion-api.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function publishCard(page) {
   const id = getTitle(page);
+  const type = getSelect(page, 'Type');
+
+  // Import lazily so a Notion-only failure doesn't require IG env
+  const { cmdPublishCarousel, cmdPublishReel } = await import('./post-to-instagram.mjs');
+
+  if (type === 'Reel') {
+    const videoUrl = getUrl(page, 'Media URL');
+    if (!videoUrl) throw new Error('Reel card has no Media URL');
+    const caption = getRichText(page, 'Caption');
+    return cmdPublishReel({ videoUrl, caption });
+  }
+
   const stagedDir = path.join(__dirname, 'social', id);
   if (!fs.existsSync(stagedDir)) {
     throw new Error(`social/${id} not found on disk — was it staged on this machine?`);
   }
-
-  // Import lazily so a Notion-only failure doesn't require IG env
-  const { cmdPublishCarousel } = await import('./post-to-instagram.mjs');
-
-  // cmdPublishCarousel prints progress and throws on failure
-  let mediaId = null;
-  const origLog = console.log;
-  console.log = (...args) => {
-    const line = args.join(' ');
-    const m = /IG media id: (\d+)/.exec(line);
-    if (m) mediaId = m[1];
-    origLog(...args);
-  };
-  try {
-    await cmdPublishCarousel(id, {});
-  } finally {
-    console.log = origLog;
-  }
-  return mediaId;
+  return cmdPublishCarousel(id, {});
 }
 
 async function main() {
@@ -61,7 +57,7 @@ async function main() {
 
   for (const page of approved) {
     const id = getTitle(page);
-    console.log(`Publishing approved card: ${id}`);
+    console.log(`Publishing approved card: ${id} (${getSelect(page, 'Type') || 'Carousel'})`);
     try {
       const mediaId = await publishCard(page);
       const props = {
