@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Typographic b-roll canvas — the carousel design system (layered radial
+       gradients + SVG grain + diagonal watermark + gold ghost typography) as a
+       video background. Rendered OPAQUE at 1296x2304 (1.2x of 1080x1920) so
+       ffmpeg zoompan has headroom to pan/zoom across it; the motion is what
+       turns this static canvas into "footage". One variant per scene (v1-v5). */
+    html, body { margin: 0; padding: 0; }
+    #canvas {
+      width: 1296px;
+      height: 2304px;
+      position: relative;
+      overflow: hidden;
+      background: #1c2c4a;
+    }
+    /* Glow corner + depth corner rotate per scene so consecutive scenes don't
+       feel like the same wallpaper. */
+    #canvas.v1 { background:
+      radial-gradient(105% 58% at 76% 12%, rgba(176,122,69,0.30) 0%, rgba(176,122,69,0) 55%),
+      radial-gradient(85% 55% at 12% 92%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 62%),
+      #1c2c4a; }
+    #canvas.v2 { background:
+      radial-gradient(100% 56% at 18% 88%, rgba(176,122,69,0.28) 0%, rgba(176,122,69,0) 55%),
+      radial-gradient(88% 58% at 86% 12%, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0) 60%),
+      #1c2c4a; }
+    #canvas.v3 { background:
+      radial-gradient(102% 58% at 20% 12%, rgba(176,122,69,0.28) 0%, rgba(176,122,69,0) 55%),
+      radial-gradient(85% 55% at 84% 90%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0) 62%),
+      #1c2c4a; }
+    #canvas.v4 { background:
+      radial-gradient(100% 56% at 80% 88%, rgba(176,122,69,0.29) 0%, rgba(176,122,69,0) 55%),
+      radial-gradient(88% 58% at 14% 12%, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0) 60%),
+      #1c2c4a; }
+    #canvas.v5 { background:
+      radial-gradient(130% 52% at 50% 4%, rgba(176,122,69,0.26) 0%, rgba(176,122,69,0) 58%),
+      radial-gradient(120% 55% at 50% 105%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 60%),
+      #1c2c4a; }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.08;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .wm-wrap {
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      transform: rotate(-45deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .wm-row {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.035);
+      white-space: nowrap;
+      line-height: 4.2;
+    }
+    /* Giant ghost chapter numeral — the kinetic-type anchor the camera drifts
+       across. Deliberately cropped by the frame edge. */
+    .numeral {
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1150px;
+      line-height: 0.78;
+      letter-spacing: -30px;
+      color: rgba(200,169,110,0.09);
+      pointer-events: none;
+    }
+    #canvas.v1 .numeral { left: -90px; bottom: -20px; }
+    #canvas.v2 .numeral { right: -110px; top: -60px; }
+    #canvas.v3 .numeral { right: -100px; bottom: -20px; }
+    #canvas.v4 .numeral { left: -90px; top: -60px; }
+    #canvas.v5 .numeral { left: 50%; top: 46%; transform: translate(-50%, -50%); color: rgba(200,169,110,0.06); }
+    /* Thin gold ring — echoes the carousel badge, gives the pan a second
+       off-center landmark. */
+    .ring {
+      position: absolute;
+      border: 2px solid rgba(200,169,110,0.18);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    #canvas.v1 .ring { width: 860px; height: 860px; top: -240px; left: -300px; }
+    #canvas.v2 .ring { width: 980px; height: 980px; bottom: -340px; right: -320px; }
+    #canvas.v3 .ring { width: 900px; height: 900px; top: -280px; right: -260px; }
+    #canvas.v4 .ring { width: 980px; height: 980px; bottom: -340px; left: -320px; }
+    #canvas.v5 .ring { width: 1560px; height: 1560px; top: 46%; left: 50%; transform: translate(-50%, -50%); border-color: rgba(200,169,110,0.13); }
+    /* Fine editorial hairlines — asymmetric, so drift is perceivable even where
+       the numeral is out of frame. */
+    .rule { position: absolute; height: 1px; background: rgba(217,217,217,0.09); }
+    #canvas.v1 .rule.a { left: 120px; right: 640px; top: 560px; }
+    #canvas.v1 .rule.b { left: 560px; right: 120px; bottom: 640px; }
+    #canvas.v2 .rule.a { left: 640px; right: 120px; top: 620px; }
+    #canvas.v2 .rule.b { left: 120px; right: 560px; bottom: 560px; }
+    #canvas.v3 .rule.a { left: 120px; right: 640px; top: 620px; }
+    #canvas.v3 .rule.b { left: 560px; right: 120px; bottom: 560px; }
+    #canvas.v4 .rule.a { left: 640px; right: 120px; top: 560px; }
+    #canvas.v4 .rule.b { left: 120px; right: 560px; bottom: 640px; }
+    #canvas.v5 .rule.a { left: 240px; right: 240px; top: 500px; }
+    #canvas.v5 .rule.b { left: 240px; right: 240px; bottom: 500px; }
+  </style>
+</head>
+<body>
+  <div id="canvas" class="{{VARIANT}}">
+    <div class="wm-wrap">
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+      <div class="wm-row">DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO · DEPRETOPRAPRETO · AFETO &amp; LIDERANÇA · @JOTABERNARDO · ANCESTRALIDADE &amp; FUTURO</div>
+    </div>
+    <div class="ring"></div>
+    <div class="rule a"></div>
+    <div class="rule b"></div>
+    <div class="numeral">{{NUM}}</div>
+    <div class="grain"></div>
+  </div>
+</body>
+</html>

@@ -1,21 +1,30 @@
 /**
  * generate-video.mjs
  * Turns a blog post into a dynamic, educational, ~45-55s, 9:16 Instagram video:
- * Portuguese voiceover, AI b-roll behind every scene, staggered kinetic text
- * reveals, word-synced "karaoke" captions, and a subtle music bed. Faceless.
+ * Portuguese voiceover, typographic b-roll behind every scene, staggered kinetic
+ * text reveals, word-synced "karaoke" captions, and a subtle music bed. Faceless.
  *
- * Pipeline: Claude script (5 scenes) -> OpenAI TTS per scene -> KIE b-roll per
- * scene (parallel) -> Puppeteer renders each scene's text as 2 transparent layers
- * (intro=label+divider, headline) -> ffmpeg composites darkened b-roll + staggered
- * text + audio per scene -> concat (fade open/close) -> Whisper WORD timestamps ->
+ * DEFAULT b-roll is TYPOGRAPHIC (Direction A, 2026-07-06): each scene gets an
+ * oversized canvas in the carousel design system (layered radial gradients, SVG
+ * grain, diagonal watermark, giant ghost chapter numeral, gold rings) that ffmpeg
+ * slowly pans/zooms across with living film grain — brand-pure and zero API cost.
+ * Jorge rejected literal imagery (KIE AI clips and his own photos) for this format;
+ * both remain available behind flags only.
+ *
+ * Pipeline: Claude script (5 scenes) -> ElevenLabs TTS per scene (Jorge's cloned
+ * voice) -> Puppeteer renders each scene's design bg + 2 transparent text layers
+ * (intro=chrome+label, headline) -> ffmpeg composites moving bg + staggered text
+ * + audio per scene -> concat (fade open/close) -> Whisper WORD timestamps ->
  * karaoke ASS captions -> music bed mix -> videos/{date}-{slug}/video.mp4.
  *
  * Usage:
- *   node generate-video.mjs <post.html>             (b-roll on every scene; default)
- *   node generate-video.mjs <post.html> --no-broll  (procedural navy bg, no KIE cost)
+ *   node generate-video.mjs <post.html>              (typographic b-roll; default)
+ *   node generate-video.mjs <post.html> --kie-broll  (AI video b-roll via KIE, costs credits)
+ *   node generate-video.mjs <post.html> --real-broll (real-footage photos, Ken Burns)
  *   node generate-video.mjs <post.html> --seconds 50 | --dry-run
  *
- * Requires: ANTHROPIC_API_KEY, OPENAI_API_KEY. b-roll: kIE_API_KEY (+ KIE_BROLL_MODEL,
+ * Requires: ANTHROPIC_API_KEY, ELEVENLABS_API_KEY + ELEVENLABS_VOICE_ID (voiceover),
+ * OPENAI_API_KEY (Whisper caption timestamps). b-roll: kIE_API_KEY (+ KIE_BROLL_MODEL,
  * default bytedance/seedance-2-fast). Music: assets/music/bed.mp3 (optional). ffmpeg+ffprobe on PATH.
  */
 
@@ -31,11 +40,19 @@ import puppeteer from 'puppeteer-core';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CHROME = process.env.CHROME_PATH || 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
 const SCENE_TEMPLATE = path.join(__dirname, 'templates', 'video', 'scene.html');
+const SCENE_BG_TEMPLATE = path.join(__dirname, 'templates', 'video', 'scene-bg.html');
 const VIDEOS_DIR = path.join(__dirname, 'videos');
 const POSTS_DIR = path.join(__dirname, 'blog', 'posts');
 const MUSIC_BED = path.join(__dirname, 'assets', 'music', 'bed.mp3');
+const REAL_BROLL_PHOTOS_DIR = path.join(__dirname, 'assets', 'b-roll', 'photos');
+// Below this, the library is mostly small reference/icon images mixed into the
+// consolidated folder (named pro-cyclist portraits, generic fitness icons) rather
+// than Jorge's own race photos — exclude them rather than manually tag 1,400+ files.
+const REAL_BROLL_MIN_BYTES = 200_000;
 
 const W = 1080, H = 1920, FPS = 30;
+// Typographic bg canvas is rendered 1.2x oversize so zoompan has pan/zoom headroom.
+const BG_W = 1296, BG_H = 2304, BG_MAX_ZOOM = 1.2;
 const BG_COLOR = '0x18233E';
 const KIE_BROLL_MODEL = process.env.KIE_BROLL_MODEL || 'bytedance/seedance-2-fast';
 // 480p by default — b-roll sits darkened/blurred behind text, so resolution barely
@@ -62,12 +79,29 @@ function readPost(file) {
   return { title, plain };
 }
 
+function loadRealPhotoCatalog() {
+  if (!fs.existsSync(REAL_BROLL_PHOTOS_DIR)) return [];
+  return fs.readdirSync(REAL_BROLL_PHOTOS_DIR)
+    .filter(f => /\.(jpe?g|png)$/i.test(f))
+    .map(f => path.join(REAL_BROLL_PHOTOS_DIR, f))
+    .filter(f => { try { return fs.statSync(f).size > REAL_BROLL_MIN_BYTES; } catch { return false; } });
+}
+
+function pickRealPhotos(n) {
+  const pool = loadRealPhotoCatalog();
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return Array.from({ length: n }, (_, i) => pool[i % pool.length] || null);
+}
+
 async function generateScript(client, post, seconds) {
   const wordBudget = Math.round(seconds * 2.2);
   const res = await client.messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 1500,
-    system: `Você roteiriza vídeos educativos curtos para o Instagram na voz de Jorge Bernardo: homem negro brasileiro, ciclista, profissional de tecnologia e segurança de dados, fundador da DePretoPraPreto. Primeira pessoa, português do Brasil, direto e reflexivo, sem clichê motivacional, SEM travessões (—), sem emojis.`,
+    system: `Você roteiriza vídeos educativos curtos para o Instagram na voz de Jorge Bernardo: homem negro brasileiro, ciclista, profissional de tecnologia e segurança de dados, fundador da DePretoPraPreto. Primeira pessoa, português do Brasil, direto e reflexivo, sem clichê motivacional, SEM travessões (—), sem emojis. Ortografia e acentuação IMPECÁVEIS em todos os campos (ã, ç, é, í, ó, ô etc.) — o texto vira narração de voz e legenda na tela.`,
     tools: [{
       name: 'create_video_script',
       description: 'Roteiro de um vídeo vertical educativo com narração e texto na tela.',
@@ -114,27 +148,67 @@ ${post.plain.slice(0, 4000)}`
   return tool.input;
 }
 
-/* ── 2. TTS (OpenAI) ─────────────────────────────────────── */
-
-async function tts(openai, text, outPath) {
-  const res = await openai.audio.speech.create({
-    model: 'gpt-4o-mini-tts', voice: 'onyx', input: text,
-    instructions: 'Narração calma, confiante e reflexiva, ritmo pausado, português do Brasil. Tom de quem ensina com serenidade.'
+// Claude's constrained tool-use JSON reliably starts dropping PT-BR diacritics partway
+// through longer scripts ("Médico"→"Medico", "é"→"e") — and the TTS pronounces what's
+// written, so this corrupts the audio, not just the captions. This pass restores
+// accents via a plain-text call, with a hard guard: a corrected line is only accepted
+// if it matches the original once diacritics are stripped, so it can NEVER reword.
+async function fixOrthography(client, script) {
+  const fields = [[script, 'title'], [script, 'caption']];
+  for (const s of script.scenes) fields.push([s, 'label'], [s, 'headline'], [s, 'narration']);
+  const originals = fields.map(([obj, key]) => String(obj[key] || '').replace(/\s+/g, ' ').trim());
+  const numbered = originals.map((v, i) => `${i + 1}. ${v}`).join('\n');
+  const res = await client.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 1500,
+    system: 'Você é um revisor ortográfico de português do Brasil. Corrija APENAS acentos e cedilhas faltando ou errados. NÃO altere palavras, ordem, pontuação ou conteúdo. Responda SOMENTE com as linhas numeradas corrigidas, uma por linha, no mesmo formato.',
+    messages: [{ role: 'user', content: numbered }]
   });
+  const text = res.content.find(b => b.type === 'text')?.text || '';
+  const bare = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
+  for (const m of text.matchAll(/^(\d+)\.\s*(.+)$/gm)) {
+    const i = +m[1] - 1, fixed = m[2].trim();
+    if (i >= 0 && i < fields.length && bare(fixed) === bare(originals[i])) {
+      const [obj, key] = fields[i];
+      obj[key] = fixed;
+    }
+  }
+  return script;
+}
+
+/* ── 2. TTS (ElevenLabs — Jorge's cloned voice) ──────────── */
+
+// Settings picked by Jorge from A/B test 2026-07-06 ("variant B"): lower stability +
+// some style for a lively, less read-aloud delivery; 1.08x speed (his clone's default
+// pace read slightly slower than his real voice).
+const ELEVEN_VOICE_SETTINGS = { stability: 0.38, similarity_boost: 0.8, style: 0.3, use_speaker_boost: true, speed: 1.08 };
+
+async function tts(text, outPath) {
+  const voiceId = process.env.ELEVENLABS_VOICE_ID;
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`, {
+    method: 'POST',
+    headers: { 'xi-api-key': process.env.ELEVENLABS_API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: ELEVEN_VOICE_SETTINGS })
+  });
+  if (!res.ok) throw new Error(`ElevenLabs TTS failed (${res.status}): ${await res.text()}`);
   fs.writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
 }
 
 /* ── 3. Scene text layers (Puppeteer) ────────────────────── */
 
-async function renderSceneLayers(scenes, outDir) {
+async function renderSceneLayers(scenes, outDir, withDesignBg) {
   const tpl = fs.readFileSync(SCENE_TEMPLATE, 'utf8');
+  const bgTpl = withDesignBg ? fs.readFileSync(SCENE_BG_TEMPLATE, 'utf8') : null;
+  const total = String(scenes.length).padStart(2, '0');
   const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox'] });
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: W, height: H, deviceScaleFactor: 1 });
     const layers = [];
     for (let i = 0; i < scenes.length; i++) {
-      const base = tpl.replace(/{{LABEL}}/g, esc(scenes[i].label)).replace(/{{HEADLINE}}/g, esc(scenes[i].headline));
+      const num = String(i + 1).padStart(2, '0');
+      const base = tpl.replace(/{{LABEL}}/g, esc(scenes[i].label)).replace(/{{HEADLINE}}/g, esc(scenes[i].headline))
+        .replace(/{{NUM}}/g, num).replace(/{{TOTAL}}/g, total);
       const out = {};
       for (const only of ['intro', 'headline']) {
         const htmlPath = path.join(outDir, `s${i + 1}-${only}.html`);
@@ -147,6 +221,20 @@ async function renderSceneLayers(scenes, outDir) {
         out[only] = png;
       }
       layers.push(out);
+    }
+    if (withDesignBg) {
+      await page.setViewport({ width: BG_W, height: BG_H, deviceScaleFactor: 1 });
+      for (let i = 0; i < scenes.length; i++) {
+        const num = String(i + 1).padStart(2, '0');
+        const htmlPath = path.join(outDir, `s${i + 1}-bg.html`);
+        fs.writeFileSync(htmlPath, bgTpl.replace(/{{VARIANT}}/g, `v${(i % 5) + 1}`).replace(/{{NUM}}/g, num), 'utf8');
+        await page.goto(pathToFileURL(htmlPath).href, { waitUntil: 'networkidle0', timeout: 20000 });
+        await sleep(200);
+        const png = path.join(outDir, `s${i + 1}-bg.png`);
+        await page.screenshot({ path: png, clip: { x: 0, y: 0, width: BG_W, height: BG_H } });
+        fs.unlinkSync(htmlPath);
+        layers[i].bg = png;
+      }
     }
     return layers;
   } finally {
@@ -195,18 +283,48 @@ async function generateBrollAll(scenes, outDir) {
 
 /* ── 5. ffmpeg: one clip per scene ───────────────────────── */
 
-function buildSceneClip({ intro, headline, audioPath, duration, brollPath, fadeIn, fadeOut, outPath }) {
+// Camera moves over the typographic canvas, one per scene, chosen so the drift
+// REVEALS that variant's ghost numeral (v1 numeral bottom-left -> zoom-in shows
+// it; v2 top-right -> pan-up lands on it; etc.).
+const DESIGN_MOTIONS = ['zoom-in', 'pan-up', 'pan-down', 'zoom-out', 'zoom-in-slow'];
+
+function designMotionFilter(kind, duration) {
+  const N = Math.max(1, Math.round(duration * FPS));
+  const cx = `x='iw/2-(iw/zoom/2)'`, cy = `y='ih/2-(ih/zoom/2)'`;
+  const tail = `d=1:s=${W}x${H}:fps=${FPS}`;
+  switch (kind) {
+    case 'pan-up': return `zoompan=z=${BG_MAX_ZOOM}:${cx}:y='(ih-ih/zoom)*max(1-on/${N},0)':${tail}`;
+    case 'pan-down': return `zoompan=z=${BG_MAX_ZOOM}:${cx}:y='(ih-ih/zoom)*min(on/${N},1)':${tail}`;
+    case 'zoom-out': return `zoompan=z='if(lte(on,1),${BG_MAX_ZOOM},max(zoom-0.0008,1.0))':${cx}:${cy}:${tail}`;
+    case 'zoom-in-slow': return `zoompan=z='min(zoom+0.0005,${BG_MAX_ZOOM})':${cx}:${cy}:${tail}`;
+    default: return `zoompan=z='min(zoom+0.0008,${BG_MAX_ZOOM})':${cx}:${cy}:${tail}`;
+  }
+}
+
+function buildSceneClip({ intro, headline, audioPath, duration, broll, fadeIn, fadeOut, outPath }) {
   const d = duration.toFixed(3);
   const args = ['-y'];
-  if (brollPath) args.push('-stream_loop', '-1', '-t', d, '-i', brollPath);
+  if (broll?.type === 'video') args.push('-stream_loop', '-1', '-t', d, '-i', broll.path);
+  else if (broll?.type === 'photo' || broll?.type === 'design') args.push('-loop', '1', '-framerate', String(FPS), '-t', d, '-i', broll.path);
   else args.push('-f', 'lavfi', '-t', d, '-i', `color=c=${BG_COLOR}:s=${W}x${H}:r=${FPS}`);
   args.push('-loop', '1', '-t', d, '-i', intro);
   args.push('-loop', '1', '-t', d, '-i', headline);
   args.push('-i', audioPath);
 
-  const bg = brollPath
-    ? `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},eq=brightness=-0.24:saturation=0.95,vignette=PI/4.2[bg]`
-    : `[0:v]vignette=PI/4.5[bg]`;
+  let bg;
+  if (broll?.type === 'video') {
+    bg = `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},eq=brightness=-0.24:saturation=0.95,vignette=PI/4.2[bg]`;
+  } else if (broll?.type === 'photo') {
+    // Still photo has no inherent motion — a slow Ken Burns creep (z 1.00->1.08 over
+    // the scene) keeps it from feeling frozen behind several seconds of moving text.
+    bg = `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},zoompan=z='min(zoom+0.0006,1.08)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=${W}x${H}:fps=${FPS},eq=brightness=-0.24:saturation=0.95,vignette=PI/4.2[bg]`;
+  } else if (broll?.type === 'design') {
+    // Designed canvas is already graded — no darkening. Camera drift + temporal
+    // noise (living film grain, bg only so text/captions stay crisp) sell motion.
+    bg = `[0:v]${designMotionFilter(broll.motion, duration)},noise=alls=5:allf=t,vignette=PI/5[bg]`;
+  } else {
+    bg = `[0:v]vignette=PI/4.5[bg]`;
+  }
   let post = 'format=yuv420p';
   if (fadeOut) post = `fade=t=out:st=${Math.max(0, duration - 0.6).toFixed(2)}:d=0.6,${post}`;
   if (fadeIn) post = `fade=t=in:st=0:d=0.5,${post}`;
@@ -288,14 +406,73 @@ function buildSegmentAss(segs) {
   return ASS_HEADER + lines.join('\n') + '\n';
 }
 
-async function burnCaptions(openai, videoNoCap, outDir, outPath) {
+function normWord(w) {
+  return String(w || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+}
+
+function editDistance(a, b) {
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+// Whisper transcribes by ear, so it misspells what it can't hear precisely ("não" →
+// "nau", "doença" → "doenca", "Cida" → "Sida") — but the narration text is known
+// verbatim, so Whisper is only trusted for TIMING. Align its timed words against the
+// script (Needleman-Wunsch, accent-insensitive fuzzy match) and take the script's
+// spelling wherever the two line up.
+function snapWordsToScript(words, narration) {
+  const script = narration.split(/\s+/)
+    .map(raw => ({ raw: raw.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ''), norm: normWord(raw) }))
+    .filter(t => t.norm);
+  const heard = words.map(w => normWord(w.word));
+  const sim = (a, b) => {
+    if (!a || !b) return -1;
+    if (a === b) return 2;
+    return editDistance(a, b) <= Math.max(1, Math.floor(Math.max(a.length, b.length) / 3)) ? 1 : -1;
+  };
+  const GAP = -0.6;
+  const dp = Array.from({ length: heard.length + 1 }, (_, i) => { const r = new Array(script.length + 1).fill(0); r[0] = i * GAP; return r; });
+  for (let j = 1; j <= script.length; j++) dp[0][j] = j * GAP;
+  for (let i = 1; i <= heard.length; i++) {
+    for (let j = 1; j <= script.length; j++) {
+      dp[i][j] = Math.max(dp[i - 1][j - 1] + sim(heard[i - 1], script[j - 1].norm), dp[i - 1][j] + GAP, dp[i][j - 1] + GAP);
+    }
+  }
+  const out = words.map(w => ({ ...w }));
+  for (let i = heard.length, j = script.length; i > 0 && j > 0;) {
+    const s = sim(heard[i - 1], script[j - 1].norm);
+    if (dp[i][j] === dp[i - 1][j - 1] + s) {
+      if (s > 0) out[i - 1].word = script[j - 1].raw;
+      i--; j--;
+    } else if (dp[i][j] === dp[i - 1][j] + GAP) i--;
+    else j--;
+  }
+  return out;
+}
+
+async function burnCaptions(openai, videoNoCap, outDir, outPath, narration) {
   const master = path.join(outDir, 'master.mp3');
   ff('ffmpeg', ['-y', '-i', videoNoCap, '-vn', '-c:a', 'libmp3lame', '-q:a', '4', master]);
+  // NOTE: never pass the narration as `prompt` — Whisper treats a prompt as the
+  // transcript of PRECEDING audio, so a full-script prompt makes it skip transcribing
+  // the opening entirely (observed: first 27s of a render came back with zero words).
+  // Spelling is fixed downstream by snapWordsToScript instead.
   const tr = await openai.audio.transcriptions.create({
-    file: fs.createReadStream(master), model: 'whisper-1', response_format: 'verbose_json', timestamp_granularities: ['word', 'segment']
+    file: fs.createReadStream(master), model: 'whisper-1', response_format: 'verbose_json',
+    timestamp_granularities: ['word', 'segment'], language: 'pt'
   });
-  const ass = (tr.words && tr.words.length) ? buildKaraokeAss(tr.words) : buildSegmentAss(tr.segments || []);
+  const snapped = (tr.words && tr.words.length) ? snapWordsToScript(tr.words, narration) : null;
+  const ass = snapped ? buildKaraokeAss(snapped) : buildSegmentAss(tr.segments || []);
   fs.writeFileSync(path.join(outDir, 'subs.ass'), ass, 'utf8');
+  // Kept for debugging caption spelling/timing (why did a word render the way it did).
+  fs.writeFileSync(path.join(outDir, 'captions-debug.json'), JSON.stringify({ narration, whisperWords: tr.words || [], snappedWords: snapped }, null, 2), 'utf8');
   ff('ffmpeg', ['-y', '-i', videoNoCap, '-vf', 'subtitles=subs.ass', '-c:a', 'copy', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'veryfast', '-crf', '21', '-maxrate', '6M', '-bufsize', '12M', '-movflags', '+faststart', path.basename(outPath)], { cwd: outDir });
   fs.unlinkSync(master);
 }
@@ -320,10 +497,16 @@ function isoDate() { return new Date().toISOString().slice(0, 10); }
 async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
-  const useBroll = !args.includes('--no-broll');
+  const forceKie = args.includes('--kie-broll');
+  const forceReal = args.includes('--real-broll');
   const seconds = args.includes('--seconds') ? parseInt(args[args.indexOf('--seconds') + 1], 10) : 50;
   const postArg = args.find(a => a.endsWith('.html'));
   if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not set');
+  if (!dryRun) {
+    if (!process.env.ELEVENLABS_API_KEY) throw new Error('ELEVENLABS_API_KEY not set');
+    if (!process.env.ELEVENLABS_VOICE_ID) throw new Error('ELEVENLABS_VOICE_ID not set');
+    if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY not set (needed for Whisper captions)');
+  }
 
   let postFile = postArg ? (path.isAbsolute(postArg) ? postArg : path.join(__dirname, postArg)) : null;
   if (!postFile) {
@@ -333,8 +516,14 @@ async function main() {
   const post = readPost(postFile);
   console.log(`Post: ${post.title}`);
 
+  // Typographic is the default (Direction A) — KIE/real footage only when forced.
+  const brollMode = forceKie ? 'kie' : (forceReal ? 'real' : 'design');
+  console.log(`b-roll mode: ${brollMode}`);
+
   console.log('1/7 Scripting (Claude)...');
-  const script = await generateScript(new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }), post, seconds);
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const script = await generateScript(anthropic, post, seconds);
+  await fixOrthography(anthropic, script);
   console.log(`     ${script.scenes.length} scenes`);
 
   if (dryRun) {
@@ -349,26 +538,34 @@ async function main() {
   const outDir = path.join(VIDEOS_DIR, `${isoDate()}-${slug}`);
   fs.mkdirSync(outDir, { recursive: true });
 
-  console.log('2/7 Voiceover (OpenAI TTS)...');
+  console.log('2/7 Voiceover (ElevenLabs voice clone)...');
   const audios = [], durations = [];
   for (let i = 0; i < script.scenes.length; i++) {
     const a = path.join(outDir, `audio-${i + 1}.mp3`);
-    await tts(openai, script.scenes[i].narration, a);
+    await tts(script.scenes[i].narration, a);
     audios.push(a); durations.push(ffprobeDuration(a));
   }
   console.log(`     total VO ~${durations.reduce((x, y) => x + y, 0).toFixed(1)}s`);
 
   let brolls = new Array(script.scenes.length).fill(null);
-  if (useBroll) {
+  if (brollMode === 'kie') {
     console.log(`3/7 b-roll ×${script.scenes.length} (${KIE_BROLL_MODEL}, parallel)...`);
-    brolls = await generateBrollAll(script.scenes, outDir);
+    const paths = await generateBrollAll(script.scenes, outDir);
+    brolls = paths.map(p => p ? { type: 'video', path: p, temp: true } : null);
     console.log(`     ${brolls.filter(Boolean).length}/${brolls.length} clips ready`);
+  } else if (brollMode === 'real') {
+    console.log(`3/7 b-roll: real footage (${script.scenes.length} photos from assets/b-roll)...`);
+    brolls = pickRealPhotos(script.scenes.length).map(p => p ? { type: 'photo', path: p, temp: false } : null);
+    console.log(`     ${brolls.filter(Boolean).length}/${brolls.length} photos selected`);
   } else {
-    console.log('3/7 b-roll skipped (procedural bg).');
+    console.log('3/7 b-roll: typographic canvases (rendered with text layers below).');
   }
 
-  console.log('4/7 Rendering text layers (Puppeteer)...');
-  const layers = await renderSceneLayers(script.scenes, outDir);
+  console.log('4/7 Rendering text + background layers (Puppeteer)...');
+  const layers = await renderSceneLayers(script.scenes, outDir, brollMode === 'design');
+  if (brollMode === 'design') {
+    brolls = layers.map((l, i) => ({ type: 'design', path: l.bg, motion: DESIGN_MOTIONS[i % DESIGN_MOTIONS.length], temp: true }));
+  }
 
   console.log('5/7 Assembling scene clips (ffmpeg)...');
   const clips = [];
@@ -376,7 +573,7 @@ async function main() {
     const clip = path.join(outDir, `clip-${i + 1}.mp4`);
     buildSceneClip({
       intro: layers[i].intro, headline: layers[i].headline, audioPath: audios[i],
-      duration: durations[i], brollPath: brolls[i],
+      duration: durations[i], broll: brolls[i],
       fadeIn: i === 0, fadeOut: i === script.scenes.length - 1, outPath: clip
     });
     clips.push(clip);
@@ -386,7 +583,7 @@ async function main() {
 
   console.log('6/7 Captions (Whisper word-level → karaoke)...');
   const capPath = path.join(outDir, 'video_cap.mp4');
-  await burnCaptions(openai, noCap, outDir, capPath);
+  await burnCaptions(openai, noCap, outDir, capPath, script.scenes.map(s => s.narration).join(' '));
 
   console.log('7/7 Music bed...');
   const finalPath = path.join(outDir, 'video.mp4');
@@ -399,7 +596,8 @@ async function main() {
     date: isoDate(), slug, title: script.title, caption: `${script.caption}\n\n${tags}`, videoPath: finalPath.replace(/\\/g, '/'), durationSec
   }, null, 2), 'utf8');
 
-  for (const f of [...audios, ...brolls.filter(Boolean), ...layers.flatMap(l => [l.intro, l.headline]), ...clips, noCap]) { try { fs.unlinkSync(f); } catch {} }
+  const tempBrolls = brolls.filter(b => b && b.temp).map(b => b.path);
+  for (const f of [...audios, ...tempBrolls, ...layers.flatMap(l => [l.intro, l.headline]), ...clips, noCap]) { try { fs.unlinkSync(f); } catch {} }
   console.log(`\nDone. ${durationSec.toFixed(1)}s → ${path.relative(__dirname, finalPath)}`);
   console.log(JSON.stringify({ slug, durationSec: +durationSec.toFixed(1), video: finalPath.replace(/\\/g, '/') }, null, 2));
 }
