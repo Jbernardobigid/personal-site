@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(120% 80% at 20% 4%, rgba(176,122,69,0.18) 0%, rgba(176,122,69,0) 52%),
+        radial-gradient(90% 70% at 92% 100%, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0) 60%),
+        #1c2c4a;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.09;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .ghost-num {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -56%);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 760px;
+      line-height: 1;
+      color: rgba(255,255,255,0.035);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .frame {
+      position: absolute;
+      inset: 34px 34px 88px;
+      border: 1px solid rgba(255,255,255,0.13);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .frame::before, .frame::after {
+      content: '';
+      position: absolute;
+      width: 24px; height: 24px;
+      border-color: #C8A96E;
+      border-style: solid;
+    }
+    .frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+    .accent-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: #C8A96E;
+    }
+    .slide-index {
+      position: absolute;
+      top: 76px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(214,170,120,0.85);
+    }
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+      width: 840px;
+      text-align: center;
+      z-index: 3;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 84px;
+      line-height: 1.14;
+      color: #ffffff;
+      letter-spacing: -1px;
+    }
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: #C8A96E;
+      margin: 44px auto;
+    }
+    .body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 45px;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.82);
+    }
+    .footer-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0; right: 0;
+      height: 54px;
+      background: #14203A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 52px;
+      z-index: 4;
+    }
+    .footer-bar span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+    }
+    .footer-bar .handle {
+      color: #C8A96E;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <div class="ghost-num">{{SLIDE_NUM}}</div>
+    <div class="accent-top"></div>
+    <div class="frame"></div>
+    <div class="slide-index">{{SLIDE_NUM}} / {{SLIDE_TOTAL}}</div>
+    <div class="content">
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="divider"></div>
+      <div class="body">{{BODY}}</div>
+    </div>
+    <div class="footer-bar">
+      <span>Afeto &amp; Liderança</span>
+      <span class="handle">@jotabernard0</span>
+      <span>Ancestralidade &amp; Futuro</span>
+    </div>
+    <div class="grain"></div>
+  </div>
+</body>
+</html>

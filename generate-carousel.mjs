@@ -1,11 +1,14 @@
 /**
  * generate-carousel.mjs
- * Reads the latest blog post, decides post format (carousel or single image),
- * picks the right template, screenshots with Puppeteer, and writes
- * caption.txt alongside the output PNGs.
+ * Reads the latest blog post, runs the Phase 3.5 editorial filter (see
+ * docs/carousel-reframe-playbook.md) to decide the post format — a reframe
+ * carousel ("Não é sobre X. É sobre Y.") when the post qualifies, a single
+ * image otherwise — picks templates, screenshots with Puppeteer, and writes
+ * caption.txt alongside the output PNGs. The legacy educational carousel
+ * shape is still reachable via --format carousel.
  *
  * Usage:
- *   node generate-carousel.mjs
+ *   node generate-carousel.mjs [post.html] [--format reframe|carousel|single]
  */
 
 import './load-env.mjs';
@@ -27,6 +30,11 @@ const SLIDE_H = 1080;
 /* ── Content type → template file ──────────────────────────── */
 
 const TEMPLATE_MAP = {
+  // Reframe carousel types (Phase 3.5 — docs/carousel-reframe-playbook.md)
+  reframe_cover:       'reframe_cover.html',
+  reframe_beat:        'reframe_beat.html',
+  reframe_beat_dark:   'reframe_beat_dark.html',
+  reframe_cta:         'reframe_cta.html',
   // Carousel types (multi-slide)
   hook:                'hook.html',
   tip:                 'tip.html',
@@ -58,6 +66,7 @@ const TEMPLATE_MAP = {
 const CAROUSEL_TYPES = new Set([
   'hook','tip','numbered_tip','guide','list','checklist',
   'checklist_dark','numbered_checklist','myth_truth','qa','photo_reflection','cta',
+  'reframe_cover','reframe_beat','reframe_beat_dark','reframe_cta',
 ]);
 
 const SINGLE_TYPES = new Set([
@@ -160,19 +169,11 @@ function recentPhotoBasenames(posts) {
   return [...new Set(posts.map(p => p.photo).filter(Boolean))];
 }
 
-// Anti-streak guard: the structure prompt carries a standing "singles are underused,
-// reach for them" nudge with no symmetric counter-pressure, so the model can collapse
-// the feed into an endless run of one format (it did: 7 singles in a row, 06-05→06-13).
-// This enforces alternation deterministically — if the last STREAK_LIMIT posts all share
-// a format, force the opposite next — instead of relying on the prompt to self-correct.
-const STREAK_LIMIT = 2;  // max consecutive posts of the same format before forcing a switch
-function streakForcedFormat(posts) {
-  if (posts.length < STREAK_LIMIT) return null;
-  const recent = posts.slice(-STREAK_LIMIT).map(p => p.format);
-  const allSame = recent.every(f => f === recent[0]);
-  if (!allSame) return null;
-  return recent[0] === 'single' ? 'carousel' : 'single';
-}
+// The old anti-streak guard (force-alternating carousel/single) is gone: since
+// Phase 3.5 the format is decided by the editorial filter — a post that fails
+// the reframe tests must NOT be force-promoted into a carousel for variety's
+// sake, and a run of qualifying posts is the strategy working, not a rut.
+// Format overrides now come only from the explicit --format flag.
 
 /* ── Photo inventory ───────────────────────────────────────── */
 
@@ -312,45 +313,47 @@ async function extractPostStructure(client, post, { hasBlogPost = true, inventor
     ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
     : `TOPIC IDEA:\n${post.title}`;
 
-  // Optional explicit format override (--format carousel|single). When set, the
-  // model still extracts the content but is told which shape to produce, instead
-  // of deciding on its own. Used when the source material clearly warrants one
-  // shape (e.g. data-rich research that needs multiple slides to showcase).
-  const formatDirective = forcedFormat === 'carousel'
-    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" with 6-8 slides. Build the carousel around the strongest material — lead the data points with myth_truth / numbered_tip / qa slides, and give cited numbers and quotes their own slides. Ignore any variety rule that would push you toward a single slide.'
+  // Optional explicit format override (--format reframe|carousel|single). When
+  // set, the model still extracts the content but is told which shape to
+  // produce, instead of deciding on its own. "carousel" (the legacy educational
+  // shape) is ONLY reachable through this flag since the Phase 3.5 redesign.
+  const formatDirective = forcedFormat === 'reframe'
+    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "reframe" — skip the editorial filter and build the reframe carousel from the strongest available angle.'
+    : forcedFormat === 'carousel'
+    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" (LEGACY shape) with 6-8 slides: first slide hook, last slide cta, middle slides from the LEGACY types (tip, numbered_tip, guide, list, checklist, checklist_dark, numbered_checklist, myth_truth, qa, photo_reflection). Lead the data points with myth_truth / numbered_tip / qa slides, and give cited numbers and quotes their own slides.'
     : forcedFormat === 'single'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "single" with exactly 1 slide, using one SINGLE content type.'
     : '';
 
-  const ctaInstruction = hasBlogPost
-    ? '- For carousels: first slide must be hook, last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")'
-    : '- For carousels: first slide must be hook, last must be cta (headline = "Salva pra não perder", body = "E compartilha com quem precisa ver"). This post is NOT a blog post, so NEVER write "Link na bio" or "Leia o post" anywhere in the slides.';
+  const legacyCta = hasBlogPost
+    ? '- LEGACY carousel only: first slide must be hook, last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")'
+    : '- LEGACY carousel only: first slide must be hook, last must be cta (headline = "Salva pra não perder", body = "E compartilha com quem precisa ver"). This post is NOT a blog post, so NEVER write "Link na bio" or "Leia o post" anywhere in the slides.';
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 2500,
     messages: [{
       role: 'user',
-      content: `You are a social media manager for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
+      content: `You are the social media editor for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
 
 ${contentBlock}${formatDirective}
 
-Decide the best Instagram post format FOR THIS SPECIFIC POST, then extract the content.
+STEP 1 — EDITORIAL FILTER (decides the format; see docs/carousel-reframe-playbook.md):
+A post earns a REFRAME CAROUSEL only if it passes ALL THREE tests:
+1. Flip test — its core idea states cleanly as "Não é sobre X. É sobre Y." where X is the mundane/painful surface framing and Y affirms the reader's identity or dignity. If the flip has to be forced, it fails.
+2. Recognition test — the target follower sees their OWN lived experience in it ("se você já viveu isso, sabe"), not a topic they're learning about. Third-person analysis fails.
+3. Screenshot test — it contains at least one line someone would screenshot or DM to a friend. If every line is informational, it fails.
+If ANY test fails → return "format": "single" (one slide carrying the post's sharpest idea). Heavy critique/statistics posts belong on the blog, not forced into a carousel.
 
-RECENT POSTS (most recent first) — vary from these so the feed never looks repetitive:
+REFRAME CAROUSEL structure (6-8 slides), when it qualifies:
+- Slide 1: contentType "reframe_cover" — headline = the X half ("Não é sobre …", max 8 words). body = "" — or the Y line ("É sobre …") ONLY if the flip lands harder stated together.
+- Middle slides (4-6): ONE reframe beat per slide, escalating outer → inner (the fact of life → what it costs → who you become). Alternate contentType "reframe_beat" and "reframe_beat_dark" — never the same one twice in a row. You MAY use ONE "photo_reflection" slide mid-sequence for visual variety.
+- Second-to-last: contentType "quote" — the recognition line, "Se você já viveu isso, sabe." register. Make it the single most screenshot-able sentence of the whole post — ONE sentence, max 20 words.
+- Last: contentType "reframe_cta" — headline = a short share ask (e.g. "Envia pra quem precisa ler isso."), body = a short save ask (e.g. "E salva pra reler quando precisar.").
+Reframe copy rules: 1-2 lines per slide, max ~16 words, second person, present tense. NO statistics, NO citations, NO lecture register, NO "Link na bio" anywhere in the slides — the carousel's job is saves and shares.
+
+RECENT POSTS (most recent first) — vary templates, photos, and rhythm so the feed never looks repetitive (the FORMAT is decided by the filter above, not by variety):
 ${historySummary}
-
-FORMAT RULES — let the content decide, never default to one fixed shape:
-- "single" (1 slide): best when the post's power is one sharp idea, quote, reflection, or striking image. Use a SINGLE content type below. These are currently underused — reach for them whenever the content can carry a single frame.
-- "carousel" (3-10 slides): best for educational or sequential content — guides, tip lists, myth-busting, Q&A, step-by-step. SIZE IT TO THE SUBSTANCE: 3-5 slides for a punchy or quick idea, 6-8 for a normal teaching post, 8-10 only for a genuinely deep guide. Do NOT pad to a fixed slide count.
-
-VARIETY RULES (important):
-- Do NOT repeat the most recent post's format, slide count, or opening template sequence shown above.
-- If the last 1-2 posts were carousels, strongly prefer a single-image post now whenever the content allows it.
-- Favor content types and layouts that do NOT appear in the recent list above.
-
-CAROUSEL content types (use for multi-slide):
-hook (slide 1, always) · tip · numbered_tip · guide · list · checklist · checklist_dark · numbered_checklist · myth_truth · qa · photo_reflection · cta (last slide, always)
 
 SINGLE content types (use for 1 slide):
 quote: A single powerful statement or quote
@@ -366,7 +369,10 @@ rotated_text: Typography-forward, experimental layout
 profile_quote: Personal brand moment, circular photo + reflection
 tags: Keyword/concept cloud — headline + 6 short concept tags (uses items array)
 
-Return JSON: { "format": "carousel" | "single", "photo": "<filename>", "slides": [ ... ] }
+LEGACY carousel content types (ONLY when a FORMAT OVERRIDE demands "carousel"):
+hook (slide 1, always) · tip · numbered_tip · guide · list · checklist · checklist_dark · numbered_checklist · myth_truth · qa · photo_reflection · cta (last slide, always)
+
+Return JSON: { "format": "reframe" | "carousel" | "single", "photo": "<filename>", "slides": [ ... ] }
 
 PHOTO SELECTION:
 Choose ONE photo for this post from the inventory below and return its exact filename in the top-level "photo" field (extension optional, e.g. "DSC00412" or "DSC00412.jpg").
@@ -396,8 +402,8 @@ Each slide object:
 RULES:
 - Write ALL text in Brazilian Portuguese
 - Keep text SHORT — Instagram is scanned, not read
-${ctaInstruction}
-- For carousels: do not repeat the same contentType more than twice
+${legacyCta}
+- LEGACY carousel only: do not repeat the same contentType more than twice
 - For tags: items should be 6 short keyword phrases (2-4 words each)
 - Return ONLY valid JSON, no markdown fences, no explanation
 - Do NOT use brand names like "afterALL" or "AfterALL" in slide text — refer to it as "a marca" instead`,
@@ -415,16 +421,22 @@ ${ctaInstruction}
 
 /* ── Claude: generate caption ──────────────────────────────── */
 
+// Returns { caption, hashtags } — hashtags is null unless the reframe format
+// produced its own tighter tag set (4-5 subject-specific tags beat the generic
+// pillar block for reach on the reframe posts; see the playbook).
 async function generateCaption(client, post, format, hashtags, hasBlogPost = true) {
   const formatHint = format === 'single'
     ? 'This is a single image post.'
     : 'This is a carousel (swipe) post.';
 
+  const reframeRules = format === 'reframe'
+    ? '- Open by restating the post\'s reframe ("Não é sobre X. É sobre Y.") in first person, in Jorge\'s own words\n- Include ONE direct question the reader can answer in one line in the comments (real comment bait, not rhetorical)\n- After the caption, on the very LAST line, output 4-5 hashtags SPECIFIC to this post\'s actual subject (not generic pillar tags), space-separated\n'
+    : '';
   const saveRule = (format === 'carousel' && hasBlogPost)
     ? '- For carousel: add "Salva esse post 📌" somewhere\n'
     : '';
   const endingRule = hasBlogPost
-    ? '- End with "Link na bio ↗" on its own line'
+    ? `- End the caption body with "Link na bio ↗" on its own line${format === 'reframe' ? ' (before the hashtag line)' : ''}`
     : '- This post is NOT a blog post: do NOT write "Link na bio" or mention reading a post anywhere. End with a short engagement line on its own line, e.g. "Salva esse post 📌" or "Compartilha com quem precisa ver isso"';
 
   const response = await client.messages.create({
@@ -446,8 +458,8 @@ Jorge's voice:
 Rules:
 - 280-400 characters (not counting hashtags)
 - Start with a hook — a question or bold statement (NOT a broad generic claim)
-${saveRule}${endingRule}
-- Do NOT include hashtags in the body
+${reframeRules}${saveRule}${endingRule}
+- Do NOT include hashtags in the caption body
 - Return ONLY the caption text, nothing else
 
 NEVER use:
@@ -459,7 +471,20 @@ NEVER use:
     }],
   });
 
-  return sanitizeEmDashes(response.content[0].text.trim());
+  const text = sanitizeEmDashes(response.content[0].text.trim());
+
+  // Reframe posts carry their own tag set on the final line; peel it off so the
+  // caller can use it instead of the generic pillar block. Anything else (or a
+  // malformed line) falls back to null → pillar hashtags.
+  if (format === 'reframe') {
+    const lines = text.split('\n');
+    const last = lines[lines.length - 1].trim();
+    const tags = last.split(/\s+/).filter(Boolean);
+    if (tags.length >= 3 && tags.every(t => /^#\S+$/.test(t))) {
+      return { caption: lines.slice(0, -1).join('\n').trim(), hashtags: tags };
+    }
+  }
+  return { caption: text, hashtags: null };
 }
 
 /* ── Content injection ─────────────────────────────────────── */
@@ -488,7 +513,7 @@ const STANDALONE_CTA_SWAPS = [
   [/Leia o post ↗/g, 'Salva esse post ↗'],
 ];
 
-function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true) {
+function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true, { slideNum = 1, slideTotal = 1, format = 'carousel' } = {}) {
   const contentType = slide.contentType;
   const headline  = sanitizeEmDashes(slide.headline);
   const body      = sanitizeEmDashes(slide.body);
@@ -506,6 +531,8 @@ function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true) {
   html = html.replace(/\{\{TRUTH\}\}/g, escapeHtml(truth ?? ''));
   html = html.replace(/\{\{QUESTION\}\}/g, escapeHtml(question ?? ''));
   html = html.replace(/\{\{ANSWER\}\}/g, escapeHtml(answer ?? ''));
+  html = html.replace(/\{\{SLIDE_NUM\}\}/g, String(slideNum).padStart(2, '0'));
+  html = html.replace(/\{\{SLIDE_TOTAL\}\}/g, String(slideTotal).padStart(2, '0'));
 
   if (ITEM_TYPES.has(contentType)) {
     const useItems = contentType === 'guide' ? (steps ?? []) : (items ?? []);
@@ -517,8 +544,10 @@ function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true) {
   }
 
   // Standalone posts must not reference the blog/bio anywhere, including
-  // hardcoded button labels in the templates.
-  if (!hasBlogPost) {
+  // hardcoded button labels in the templates. Reframe carousels ban blog CTAs
+  // in the slides too (blog-linked or not) — their job is saves/shares, and
+  // the bio link lives in the caption instead.
+  if (!hasBlogPost || format === 'reframe') {
     for (const [pattern, replacement] of STANDALONE_CTA_SWAPS) {
       html = html.replace(pattern, replacement);
     }
@@ -570,7 +599,7 @@ async function main() {
   const topicArg  = topicIdx  !== -1 ? args[topicIdx  + 1] : null;
   const pillarArg = pillarIdx !== -1 ? args[pillarIdx + 1] : null;
   const formatArg = formatIdx !== -1 ? args[formatIdx + 1] : null;
-  const explicitFormat = ['carousel', 'single'].includes(formatArg) ? formatArg : null;
+  const explicitFormat = ['reframe', 'carousel', 'single'].includes(formatArg) ? formatArg : null;
 
   // Whether the post links back to the blog ("Link na bio" CTA) or is standalone.
   // Defaults: --topic runs are standalone; reading a blog file is blog-linked.
@@ -601,15 +630,13 @@ async function main() {
   const usagePosts = loadUsage().posts;
   const historySummary = buildHistorySummary(usagePosts);
   const recentPhotos = recentPhotoBasenames(usagePosts);
-  // Explicit --format wins; otherwise break a same-format streak automatically.
-  const forcedFormat = explicitFormat ?? streakForcedFormat(usagePosts);
+  // Only the explicit --format flag forces a shape; otherwise the editorial
+  // filter in the prompt decides reframe vs single.
+  const forcedFormat = explicitFormat;
   console.log('  Recent history (avoiding repeats):');
   console.log(historySummary.split('\n').map(l => `    ${l}`).join('\n'));
   if (recentPhotos.length) console.log(`  Excluded photos (recently used): ${recentPhotos.join(', ')}`);
-  if (forcedFormat) {
-    const why = explicitFormat ? '--format flag' : `anti-streak (last ${STREAK_LIMIT} were same format)`;
-    console.log(`  Format override: ${forcedFormat} (${why})`);
-  }
+  if (forcedFormat) console.log(`  Format override: ${forcedFormat} (--format flag)`);
   const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary, recentPhotos, forcedFormat });
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
@@ -646,7 +673,7 @@ async function main() {
     }
 
     const templateHtml = fs.readFileSync(templatePath, 'utf8');
-    const injected = injectContent(templateHtml, slide, photoPath, hasBlogPost);
+    const injected = injectContent(templateHtml, slide, photoPath, hasBlogPost, { slideNum: i + 1, slideTotal: slides.length, format });
     const slidePath = path.join(outDir, `slide-0${i + 1}.html`);
     fs.writeFileSync(slidePath, injected, 'utf8');
     slideHtmlPaths.push(slidePath);
@@ -661,10 +688,13 @@ async function main() {
     try { fs.unlinkSync(f); } catch (_) {}
   }
 
-  // Generate caption
+  // Generate caption. Reframe posts may bring their own tighter tag set;
+  // everything else uses the pillar block.
   console.log('Generating caption...');
-  const hashtags = PILLAR_HASHTAGS[post.pillarId] ?? PILLAR_HASHTAGS['cycling'];
-  const captionBody = await generateCaption(client, post, format, hashtags, hasBlogPost);
+  const pillarTags = PILLAR_HASHTAGS[post.pillarId] ?? PILLAR_HASHTAGS['cycling'];
+  const { caption: captionBody, hashtags: ownTags } = await generateCaption(client, post, format, pillarTags, hasBlogPost);
+  const hashtags = ownTags ?? pillarTags;
+  if (ownTags) console.log(`  Reframe hashtags: ${ownTags.join(' ')}`);
   const fullCaption = `${captionBody}\n\n${hashtags.join(' ')}`;
 
   // Write caption.txt into output folder AND project root for easy access
