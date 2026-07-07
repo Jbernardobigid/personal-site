@@ -75,12 +75,15 @@ async function alreadyQueued(dbId, id) {
 async function queueReel(id, meta, url) {
   const dbId = process.env.NOTION_IG_DB_ID;
   if (!dbId) fail('NOTION_IG_DB_ID not set');
-  if (await alreadyQueued(dbId, id)) {
-    console.log(`${id} already in Notion — not queueing again.`);
+  // Distinct from the carousel card for the same post, which is named `id` —
+  // Name-based dedupe would otherwise see the carousel and skip the Reel.
+  const cardName = `${id}-reel`;
+  if (await alreadyQueued(dbId, cardName)) {
+    console.log(`${cardName} already in Notion — not queueing again.`);
     return false;
   }
   const properties = {
-    Name: prop.title(id),
+    Name: prop.title(cardName),
     Status: prop.select('Draft'),
     Type: prop.select('Reel'),
     Series: prop.select('Blog-derived'),
@@ -91,7 +94,7 @@ async function queueReel(id, meta, url) {
     'Publish Date': prop.date(meta.date),
   };
   await createPage(dbId, properties);
-  console.log(`Notion card created (Draft): ${id}`);
+  console.log(`Notion card created (Draft): ${cardName}`);
   return true;
 }
 
