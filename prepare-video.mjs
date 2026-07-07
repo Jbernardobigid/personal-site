@@ -9,8 +9,11 @@
  *
  * Usage:
  *   node prepare-video.mjs                 (build + upload + queue in Notion, then mark prepared)
- *   node prepare-video.mjs --kie-broll     (AI video b-roll via KIE, costs credits)
+ *   node prepare-video.mjs --cycling       (Phase 4: cycling-topics.mjs concept → Reel with mixed
+ *                                           real-photo + gpt-image-2 b-roll; no blog post involved)
+ *   node prepare-video.mjs --kie-broll     (AI video b-roll via KIE — dropped from the plan, flag kept)
  *   node prepare-video.mjs --real-broll    (real-footage photo b-roll, Ken Burns)
+ *   node prepare-video.mjs --image-broll   (gpt-image-2 still b-roll, Ken Burns)
  *   node prepare-video.mjs --skip-generate (queue the most recent already-built video)
  *   node prepare-video.mjs --dry-run       (build/find + upload, print the card; don't create/mark)
  *   node prepare-video.mjs --force         (re-prepare even if this post was already done)
@@ -72,7 +75,7 @@ async function alreadyQueued(dbId, id) {
   return results.length > 0;
 }
 
-async function queueReel(id, meta, url) {
+async function queueReel(id, meta, url, series = 'Blog-derived') {
   const dbId = process.env.NOTION_IG_DB_ID;
   if (!dbId) fail('NOTION_IG_DB_ID not set');
   // Distinct from the carousel card for the same post, which is named `id` —
@@ -86,7 +89,7 @@ async function queueReel(id, meta, url) {
     Name: prop.title(cardName),
     Status: prop.select('Draft'),
     Type: prop.select('Reel'),
-    Series: prop.select('Blog-derived'),
+    Series: prop.select(series),
     Caption: prop.richText(meta.caption),
     'Media URL': prop.url(url),
     Preview: prop.files([url]),
@@ -103,9 +106,12 @@ async function main() {
   const dryRun = args.includes('--dry-run');
   const force = args.includes('--force');
   const skipGenerate = args.includes('--skip-generate');
+  const cycling = args.includes('--cycling');
 
-  const stem = newestPostStem();
-  if (!force && !skipGenerate && loadLedger().prepared.some(p => p.stem === stem)) {
+  // Cycling Reels aren't tied to a blog post: repetition is prevented by
+  // cycling-topics.mjs's own usage ledger, so the post-stem ledger is skipped.
+  const stem = cycling ? null : newestPostStem();
+  if (stem && !force && !skipGenerate && loadLedger().prepared.some(p => p.stem === stem)) {
     console.log(JSON.stringify({ success: true, skipped: true, reason: 'already prepared', stem })); return;
   }
 
@@ -118,7 +124,14 @@ async function main() {
     const passthrough = [];
     if (args.includes('--kie-broll')) passthrough.push('--kie-broll');
     if (args.includes('--real-broll')) passthrough.push('--real-broll');
+    if (args.includes('--image-broll')) passthrough.push('--image-broll');
     if (args.includes('--seconds')) passthrough.push('--seconds', args[args.indexOf('--seconds') + 1]);
+    if (cycling) {
+      console.log('Generating cycling topic...');
+      execFileSync('node', ['cycling-topics.mjs'], { cwd: __dirname, stdio: 'inherit', timeout: 120000, env: process.env });
+      passthrough.push('--topic-file', 'cycling-topic.json');
+      if (!passthrough.some(a => a.endsWith('-broll'))) passthrough.push('--mixed-broll');
+    }
     console.log('Building video...');
     buildVideo(passthrough);
     dir = newestBuiltVideoDir();
@@ -132,14 +145,15 @@ async function main() {
 
   if (dryRun) {
     console.log('\n--- DRY RUN: Notion card NOT created ---');
-    console.log(`Name: ${id} | Type: Reel | Status: Draft`);
+    console.log(`Name: ${id} | Type: Reel | Status: Draft | Series: ${cycling ? 'Cycling' : 'Blog-derived'}`);
     console.log(`Media URL: ${url}`);
     console.log(`Caption (${meta.caption.length} chars): ${meta.caption.slice(0, 120)}...`);
   } else {
-    await queueReel(id, meta, url);
+    await queueReel(id, meta, url, cycling ? 'Cycling' : 'Blog-derived');
     // Only tie the ledger to the newest post when we actually built for it —
-    // --skip-generate may be delivering a video for an older post.
-    if (!skipGenerate) markPrepared(stem);
+    // --skip-generate may be delivering a video for an older post, and cycling
+    // Reels aren't post-derived at all.
+    if (!skipGenerate && stem) markPrepared(stem);
   }
   console.log(JSON.stringify({ success: true, dryRun, stem, id, title: meta.title, durationSec: meta.durationSec, url }));
 }

@@ -18,14 +18,17 @@
  * karaoke ASS captions -> music bed mix -> videos/{date}-{slug}/video.mp4.
  *
  * Usage:
- *   node generate-video.mjs <post.html>              (typographic b-roll; default)
- *   node generate-video.mjs <post.html> --kie-broll  (AI video b-roll via KIE, costs credits)
- *   node generate-video.mjs <post.html> --real-broll (real-footage photos, Ken Burns)
+ *   node generate-video.mjs <post.html>               (typographic b-roll; default)
+ *   node generate-video.mjs --topic-file <json>       (Reel from a cycling-topics.mjs concept, no blog post)
+ *   node generate-video.mjs <post.html> --image-broll (gpt-image-2 stills, Ken Burns)
+ *   node generate-video.mjs <post.html> --mixed-broll (real cycling photos interleaved with gpt-image-2 stills — Phase 4 cycling default)
+ *   node generate-video.mjs <post.html> --kie-broll   (AI video b-roll via KIE — DROPPED from the plan 2026-07-07, flag kept)
+ *   node generate-video.mjs <post.html> --real-broll  (real-footage photos only, Ken Burns)
  *   node generate-video.mjs <post.html> --seconds 50 | --dry-run
  *
  * Requires: ANTHROPIC_API_KEY, ELEVENLABS_API_KEY + ELEVENLABS_VOICE_ID (voiceover),
- * OPENAI_API_KEY (Whisper caption timestamps). b-roll: kIE_API_KEY (+ KIE_BROLL_MODEL,
- * default bytedance/seedance-2-fast). Music: assets/music/bed.mp3 (optional). ffmpeg+ffprobe on PATH.
+ * OPENAI_API_KEY (Whisper caption timestamps + gpt-image-2 stills). b-roll: kIE_API_KEY
+ * only for --kie-broll. Music: assets/music/bed.mp3 (optional). ffmpeg+ffprobe on PATH.
  */
 
 import './load-env.mjs';
@@ -76,11 +79,41 @@ function readPost(file) {
   const title = (html.match(/<title>([^<]+)<\/title>/) ?? [])[1]?.replace(' — Jorge Bernardo', '').trim() ?? path.basename(file);
   const plain = html.replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  return { title, plain };
+  return { title, plain, kind: 'post' };
+}
+
+// A cycling-topics.mjs concept file becomes the same {title, plain} shape the
+// script generator consumes — the concept's hook/angle/beats serialized as text.
+function readTopicFile(file) {
+  const t = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const plain = [
+    `Gancho: ${t.hook}`,
+    `Ângulo: ${t.angle}`,
+    ...(t.beats ?? []).map((b, i) => `Batida ${i + 1}: ${b}`),
+    `Fechamento: ${t.close}`,
+  ].join(' ');
+  return { title: t.title, plain, kind: 'topic' };
 }
 
 function loadRealPhotoCatalog() {
   if (!fs.existsSync(REAL_BROLL_PHOTOS_DIR)) return [];
+  // REEL_PHOTO_FILTER: optional regex against filenames, narrowing picks to a
+  // themed subset for one run (e.g. 'DSC00(2[7-9]|[3-5]\d|6[0-4])\d' = the
+  // Major Taylor jersey shoot). Falls back to the full catalog if it matches nothing.
+  const filterRe = process.env.REEL_PHOTO_FILTER ? new RegExp(process.env.REEL_PHOTO_FILTER, 'i') : null;
+  const all = fs.readdirSync(REAL_BROLL_PHOTOS_DIR)
+    .filter(f => /\.(jpe?g|png)$/i.test(f))
+    .filter(f => !filterRe || filterRe.test(f))
+    .map(f => path.join(REAL_BROLL_PHOTOS_DIR, f))
+    .filter(f => { try { return fs.statSync(f).size > REAL_BROLL_MIN_BYTES; } catch { return false; } });
+  if (all.length === 0 && filterRe) {
+    console.warn('  ! REEL_PHOTO_FILTER matched nothing — using full catalog');
+    return loadRealPhotoCatalogUnfiltered();
+  }
+  return all;
+}
+
+function loadRealPhotoCatalogUnfiltered() {
   return fs.readdirSync(REAL_BROLL_PHOTOS_DIR)
     .filter(f => /\.(jpe?g|png)$/i.test(f))
     .map(f => path.join(REAL_BROLL_PHOTOS_DIR, f))
@@ -132,14 +165,14 @@ async function generateScript(client, post, seconds) {
     tool_choice: { type: 'tool', name: 'create_video_script' },
     messages: [{
       role: 'user',
-      content: `A partir deste post do blog, escreva o roteiro de um vídeo educativo vertical de ~${seconds}s.
+      content: `A partir ${post.kind === 'topic' ? 'desta pauta de Reel' : 'deste post do blog'}, escreva o roteiro de um vídeo educativo vertical de ~${seconds}s.
 Regras RÍGIDAS de tamanho (o vídeo NÃO pode passar de ~${seconds}s):
 - Exatamente 5 cenas.
 - Cada "narration": 1 ou 2 frases curtas, NO MÁXIMO ~22 palavras.
 - A soma de TODAS as narrações deve ficar entre ${wordBudget - 15} e ${wordBudget + 10} palavras.
 Conteúdo: cena 1 gancho concreto; cenas do meio ensinam uma ideia cada; última fecha com imagem ou pergunta aberta (não CTA). "headline" curto (máx 8 palavras). "broll" é uma descrição visual EM INGLÊS, abstrata e sem rostos. Nada de travessões.
 
-POST:
+${post.kind === 'topic' ? 'PAUTA' : 'POST'}:
 ${post.plain.slice(0, 4000)}`
     }]
   });
@@ -279,6 +312,39 @@ async function generateBrollAll(scenes, outDir) {
     const bp = path.join(outDir, `broll-${i + 1}.mp4`);
     return generateBroll(brollPrompt(s), bp).then(() => bp).catch(e => { console.warn(`  ! b-roll ${i + 1}: ${e.message}`); return null; });
   }));
+}
+
+/* ── 4b. gpt-image-2 still b-roll (parallel, per scene) ──── */
+
+// Editorial still per scene, Ken Burns'd by the existing 'photo' branch in
+// buildSceneClip. Faceless by prompt: when mixed with Jorge's REAL photos, an
+// AI-generated identifiable rider would read as a different person — riders
+// appear from behind / silhouette / detail only, and (house invariant, see
+// generate-image.mjs) any human depicted is a Black Brazilian person.
+function imageBrollPrompt(scene) {
+  return `Editorial vertical photograph, cinematic and premium, deep navy and warm amber dawn tones, shallow depth of field, subtle film grain. Subject: ${scene.broll || scene.headline}. If any person appears they are a Black Brazilian cyclist seen from behind or in silhouette, never an identifiable face. No text, no logos, no watermarks.`;
+}
+
+async function generateImageStill(prompt, outPath, openai) {
+  const res = await openai.images.generate({ model: 'gpt-image-2', prompt, n: 1, size: '1024x1536', quality: 'medium' });
+  const item = res.data[0];
+  const buf = item.b64_json
+    ? Buffer.from(item.b64_json, 'base64')
+    : Buffer.from(await (await fetch(item.url)).arrayBuffer());
+  fs.writeFileSync(outPath, buf);
+  return outPath;
+}
+
+async function generateImageBrollAll(scenes, outDir, openai, indices = null) {
+  const wanted = indices ?? scenes.map((_, i) => i);
+  const out = new Array(scenes.length).fill(null);
+  await Promise.all(wanted.map(i => {
+    const p = path.join(outDir, `img-${i + 1}.png`);
+    return generateImageStill(imageBrollPrompt(scenes[i]), p, openai)
+      .then(() => { out[i] = p; })
+      .catch(e => { console.warn(`  ! image ${i + 1}: ${e.message}`); });
+  }));
+  return out;
 }
 
 /* ── 5. ffmpeg: one clip per scene ───────────────────────── */
@@ -499,6 +565,9 @@ async function main() {
   const dryRun = args.includes('--dry-run');
   const forceKie = args.includes('--kie-broll');
   const forceReal = args.includes('--real-broll');
+  const forceImage = args.includes('--image-broll');
+  const forceMixed = args.includes('--mixed-broll');
+  const topicFileArg = args.includes('--topic-file') ? args[args.indexOf('--topic-file') + 1] : null;
   const seconds = args.includes('--seconds') ? parseInt(args[args.indexOf('--seconds') + 1], 10) : 50;
   const postArg = args.find(a => a.endsWith('.html'));
   if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not set');
@@ -508,16 +577,24 @@ async function main() {
     if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY not set (needed for Whisper captions)');
   }
 
-  let postFile = postArg ? (path.isAbsolute(postArg) ? postArg : path.join(__dirname, postArg)) : null;
-  if (!postFile) {
-    const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.html')).sort();
-    postFile = path.join(POSTS_DIR, files[files.length - 1]);
+  let post;
+  if (topicFileArg) {
+    const topicFile = path.isAbsolute(topicFileArg) ? topicFileArg : path.join(__dirname, topicFileArg);
+    post = readTopicFile(topicFile);
+    console.log(`Topic: ${post.title}`);
+  } else {
+    let postFile = postArg ? (path.isAbsolute(postArg) ? postArg : path.join(__dirname, postArg)) : null;
+    if (!postFile) {
+      const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.html')).sort();
+      postFile = path.join(POSTS_DIR, files[files.length - 1]);
+    }
+    post = readPost(postFile);
+    console.log(`Post: ${post.title}`);
   }
-  const post = readPost(postFile);
-  console.log(`Post: ${post.title}`);
 
-  // Typographic is the default (Direction A) — KIE/real footage only when forced.
-  const brollMode = forceKie ? 'kie' : (forceReal ? 'real' : 'design');
+  // Typographic is the default (Direction A) — everything else only when forced.
+  // 'mixed' = real cycling photos interleaved with gpt-image-2 stills (Phase 4).
+  const brollMode = forceKie ? 'kie' : forceReal ? 'real' : forceMixed ? 'mixed' : forceImage ? 'image' : 'design';
   console.log(`b-roll mode: ${brollMode}`);
 
   console.log('1/7 Scripting (Claude)...');
@@ -557,6 +634,29 @@ async function main() {
     console.log(`3/7 b-roll: real footage (${script.scenes.length} photos from assets/b-roll)...`);
     brolls = pickRealPhotos(script.scenes.length).map(p => p ? { type: 'photo', path: p, temp: false } : null);
     console.log(`     ${brolls.filter(Boolean).length}/${brolls.length} photos selected`);
+  } else if (brollMode === 'image') {
+    console.log(`3/7 b-roll: gpt-image-2 stills ×${script.scenes.length} (parallel)...`);
+    const imgs = await generateImageBrollAll(script.scenes, outDir, openai);
+    brolls = imgs.map(p => p ? { type: 'photo', path: p, temp: true } : null);
+    console.log(`     ${brolls.filter(Boolean).length}/${brolls.length} stills ready`);
+  } else if (brollMode === 'mixed') {
+    // Real photos carry the human presence (scenes 1,3,5 — hook opens on real
+    // footage); gpt-image-2 fills the alternating scenes with faceless editorial
+    // stills so an AI-generated "someone" never sits next to the real Jorge.
+    const realIdx = script.scenes.map((_, i) => i).filter(i => i % 2 === 0);
+    const aiIdx = script.scenes.map((_, i) => i).filter(i => i % 2 === 1);
+    console.log(`3/7 b-roll: mixed — ${realIdx.length} real photos + ${aiIdx.length} gpt-image-2 stills...`);
+    const realPicks = pickRealPhotos(realIdx.length);
+    const haveReal = realPicks.some(Boolean);
+    const imgs = await generateImageBrollAll(script.scenes, outDir, openai, haveReal ? aiIdx : script.scenes.map((_, i) => i));
+    brolls = script.scenes.map((_, i) => {
+      if (haveReal && i % 2 === 0) {
+        const p = realPicks[realIdx.indexOf(i)];
+        return p ? { type: 'photo', path: p, temp: false } : (imgs[i] ? { type: 'photo', path: imgs[i], temp: true } : null);
+      }
+      return imgs[i] ? { type: 'photo', path: imgs[i], temp: true } : null;
+    });
+    console.log(`     ${brolls.filter(Boolean).length}/${brolls.length} visuals ready`);
   } else {
     console.log('3/7 b-roll: typographic canvases (rendered with text layers below).');
   }
