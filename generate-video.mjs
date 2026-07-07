@@ -181,6 +181,22 @@ ${post.plain.slice(0, 4000)}`
   return tool.input;
 }
 
+// TTS reads unit abbreviations literally ("32 km/h" → letter-by-letter, caught on
+// the first VPS cycling Reel 2026-07-07), so narrations are expanded to spoken
+// PT-BR before synthesis. Applied to narration ONLY — on-screen headlines keep
+// the compact written form; captions follow the narration automatically because
+// Whisper words are snapped back to this same expanded text. Order matters:
+// km/h before km, min before bare m.
+function expandSpokenUnits(text) {
+  return String(text || '')
+    .replace(/(\d+)\s*h\s*(\d{1,2})\b/g, '$1 horas e $2 minutos')  // 4h51
+    .replace(/(\d+(?:[.,]\d+)?)\s*km\/h/gi, '$1 quilômetros por hora')
+    .replace(/(\d+(?:[.,]\d+)?)\s*km\b/gi, '$1 quilômetros')
+    .replace(/(\d+(?:[.,]\d+)?)\s*min\b/gi, '$1 minutos')
+    .replace(/(\d+(?:[.,]\d+)?)\s*m\b(?![\w/])/g, '$1 metros')
+    .replace(/(\d+(?:[.,]\d+)?)\s*%/g, '$1 por cento');
+}
+
 // Claude's constrained tool-use JSON reliably starts dropping PT-BR diacritics partway
 // through longer scripts ("Médico"→"Medico", "é"→"e") — and the TTS pronounces what's
 // written, so this corrupts the audio, not just the captions. This pass restores
@@ -601,6 +617,7 @@ async function main() {
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const script = await generateScript(anthropic, post, seconds);
   await fixOrthography(anthropic, script);
+  for (const s of script.scenes) s.narration = expandSpokenUnits(s.narration);
   console.log(`     ${script.scenes.length} scenes`);
 
   if (dryRun) {
