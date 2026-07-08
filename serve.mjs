@@ -37,6 +37,8 @@ const MIME = {
   '.woff2': 'font/woff2',
   '.ttf': 'font/ttf',
   '.mp4': 'video/mp4',
+  '.mp3': 'audio/mpeg',
+  '.xml': 'application/xml',
 };
 
 http.createServer((req, res) => {

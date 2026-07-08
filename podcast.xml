@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Interseção</title>
+    <link>https://www.jorgebernardo.tech/blog/</link>
+    <atom:link href="https://www.jorgebernardo.tech/podcast.xml" rel="self" type="application/rss+xml"/>
+    <language>pt-br</language>
+    <description>Ensaios de Jorge Bernardo sobre tecnologia, identidade e carreira, narrados com a própria voz. A versão em áudio do blog jorgebernardo.tech.</description>
+    <itunes:author>Jorge Bernardo</itunes:author>
+    <itunes:owner>
+      <itunes:name>Jorge Bernardo</itunes:name>
+      <itunes:email>jorge.mbernardo@gmail.com</itunes:email>
+    </itunes:owner>
+    <itunes:image href="https://www.jorgebernardo.tech/podcast-cover.jpg"/>
+    <itunes:category text="Society &amp; Culture"/>
+    <itunes:explicit>false</itunes:explicit>
+    <item>
+      <title>Depois dos 40, você para de pedir permissão</title>
+      <description>Julho das Pretas celebra mulheres negras que constroem carreiras nos próprios termos, e isso revela algo verdadeiro sobre o que os 40 anos ensinam a qualquer pessoa.</description>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-07-depois-dos-40-voce-para-de-pedir-permissao.html</link>
+      <guid isPermaLink="false">https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-07-depois-dos-40-voce-para-de-pedir-permissao.mp3</guid>
+      <pubDate>Tue, 07 Jul 2026 12:00:00 GMT</pubDate>
+      <enclosure url="https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-07-depois-dos-40-voce-para-de-pedir-permissao.mp3" length="6317079" type="audio/mpeg"/>
+      <itunes:duration>6:35</itunes:duration>
+      <itunes:author>Jorge Bernardo</itunes:author>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>Saber Que Você Sabe: O Que as Malungas Ensinam Sobre Aprender de Verdade</title>
+      <description>O projeto Tranças no Mapa abre inscrições para sua segunda edição de oficinas on-line e levanta uma pergunta que vai além das tranças: o que acontece quando quem já sabe decide estudar mais?</description>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-05-saber-que-voce-sabe-o-que-as-malungas-ensinam-sobre-aprender.html</link>
+      <guid isPermaLink="false">https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-05-saber-que-voce-sabe-o-que-as-malungas-ensinam-sobre-aprender.mp3</guid>
+      <pubDate>Sun, 05 Jul 2026 12:00:00 GMT</pubDate>
+      <enclosure url="https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-05-saber-que-voce-sabe-o-que-as-malungas-ensinam-sobre-aprender.mp3" length="5816782" type="audio/mpeg"/>
+      <itunes:duration>6:03</itunes:duration>
+      <itunes:author>Jorge Bernardo</itunes:author>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>O Pacto Que Ninguém Assina em Voz Alta</title>
+      <description>O audiobook de \</description>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-03-o-pacto-que-ninguem-assina-em-voz-alta.html</link>
+      <guid isPermaLink="false">https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-03-o-pacto-que-ninguem-assina-em-voz-alta.mp3</guid>
+      <pubDate>Fri, 03 Jul 2026 12:00:00 GMT</pubDate>
+      <enclosure url="https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-03-o-pacto-que-ninguem-assina-em-voz-alta.mp3" length="5943841" type="audio/mpeg"/>
+      <itunes:duration>6:11</itunes:duration>
+      <itunes:author>Jorge Bernardo</itunes:author>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>Jérémy Doku foi embora do treino para ver o filho nascer. O mundo achou que ele errou.</title>
+      <description>Quando Doku deixou a Copa para estar com seu filho, o mundo criticou. O que essa polêmica revela sobre o que ainda esperamos dos pais negros.</description>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-01-jeremy-doku-foi-embora-do-treino-para-ver-o-filho-nascer-o-m.html</link>
+      <guid isPermaLink="false">https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-01-jeremy-doku-foi-embora-do-treino-para-ver-o-filho-nascer-o-m.mp3</guid>
+      <pubDate>Wed, 01 Jul 2026 12:00:00 GMT</pubDate>
+      <enclosure url="https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-07-01-jeremy-doku-foi-embora-do-treino-para-ver-o-filho-nascer-o-m.mp3" length="5399240" type="audio/mpeg"/>
+      <itunes:duration>5:37</itunes:duration>
+      <itunes:author>Jorge Bernardo</itunes:author>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+  </channel>
+</rss>

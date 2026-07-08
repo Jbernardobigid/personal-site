@@ -12,6 +12,8 @@
     "carousel:analyze": "node analyze-templates.mjs",
     "carousel:generate": "node generate-carousel.mjs",
     "video:generate": "node generate-video.mjs",
+    "audio:generate": "node generate-audio-post.mjs",
+    "audio:dry-run": "node generate-audio-post.mjs --dry-run",
     "video:prepare": "node prepare-video.mjs",
     "templates:generate": "node agent-templates.mjs",
     "templates:force": "node agent-templates.mjs --force",
@@ -22,6 +24,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "@google/generative-ai": "^0.24.1",
+    "@vercel/blob": "^2.6.1",
     "@vercel/speed-insights": "^2.0.0",
     "openai": "^6.39.0",
     "puppeteer-core": "^25.0.4",

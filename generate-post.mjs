@@ -274,6 +274,10 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 .post-body blockquote p{font-family:var(--font-display);font-size:clamp(18px,2.2vw,26px);font-weight:300;font-style:italic;color:var(--ash);margin:0}
 .post-body ul,.post-body ol{padding-left:28px;margin-bottom:28px}
 .post-body li{font-size:17px;line-height:1.78;color:var(--ash);margin-bottom:8px}
+.audio-block{max-width:820px;margin:0 auto;padding:36px 52px 0}
+.audio-panel{border:1px solid var(--border-terra);background:rgba(94,65,45,0.07);padding:20px 24px;border-radius:1px}
+.audio-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra-light);margin-bottom:14px}
+.audio-panel audio{width:100%;height:36px;color-scheme:dark}
 .post-footer{border-top:1px solid var(--border);padding:52px;max-width:820px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
 .author-block{display:flex;flex-direction:column;gap:6px}
 .author-name{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-0.01em}
@@ -289,6 +293,7 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
 @media(max-width:768px){
   nav{padding:0 24px}
   .post-header-inner,.post-body{padding-left:24px;padding-right:24px}
+  .audio-block{padding-left:24px;padding-right:24px}
   .post-footer{padding:40px 24px}
   footer{padding:20px 24px;flex-direction:column;gap:10px;text-align:center}
 }
@@ -311,6 +316,8 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
     </div>
   </div>
 </header>
+
+<!-- audio-player-slot -->
 
 <article class="post-body" itemscope itemtype="https://schema.org/BlogPosting">
 ${sanitizeContent(content)}

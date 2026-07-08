@@ -48,8 +48,14 @@ Setup guide: [docs/setup-meta-and-notion.md](docs/setup-meta-and-notion.md) · o
 
 ### Educational videos (Reels format)
 
-- [generate-video.mjs](generate-video.mjs) — blog post → ~45–55s 9:16 video: Claude script (5 scenes), OpenAI TTS voiceover, KIE seedance b-roll, Puppeteer kinetic-text layers ([templates/video/](templates/video/)), ffmpeg compositing, Whisper word-level karaoke captions, music bed ([assets/music/](assets/music/)). Output: `videos/{date}-{slug}/video.mp4`.
+- [generate-video.mjs](generate-video.mjs) — blog post → ~45–55s 9:16 video: Claude script (5 scenes), ElevenLabs voice-clone voiceover (shared [tts.mjs](tts.mjs)), typographic b-roll by default (image/mixed/KIE modes behind flags), Puppeteer kinetic-text layers ([templates/video/](templates/video/)), ffmpeg compositing, Whisper word-level karaoke captions, music bed ([assets/music/](assets/music/)). Output: `videos/{date}-{slug}/video.mp4`.
 - [prepare-video.mjs](prepare-video.mjs) — n8n orchestrator: build (or reuse latest), upload to Vercel Blob, email link + caption. Flags: `--no-broll`, `--skip-generate`, `--dry-run`, `--force`.
+
+### Podcast — "A Interseção" (blog → audio)
+
+- [generate-audio-post.mjs](generate-audio-post.mjs) — narrates a blog post with the ElevenLabs voice clone: Claude adapts the written essay into a spoken pt-BR script (full essay, not a summary), shared [tts.mjs](tts.mjs) fixes orthography/units and synthesizes one MP3, uploaded to Vercel Blob at `podcast/{slug}.mp3`. Appends [podcast-episodes.json](podcast-episodes.json) (script-owned ledger), regenerates [podcast.xml](podcast.xml) (RSS 2.0 + itunes tags), and injects a branded `<audio>` player into the post HTML. `npm run audio:generate` (latest post) / `npm run audio:dry-run` / explicit post path to backfill / `--force` to regenerate. Posts whose script exceeds `AUDIO_MAX_CHARS` (default 9000) are skipped, never truncated; `AUDIO_TTS_MODEL=eleven_flash_v2_5` is the cheap escape hatch.
+- Runs as the **last** step of the VPS blog workflow (after LinkedIn), so an audio failure can never block the post. The GitHub Actions workflow is break-glass only and ships posts **without** audio — catch up afterwards with a single manual `node generate-audio-post.mjs` run (it targets the latest post and injects the player into the existing HTML).
+- **Launch checklist (one-time, manual):** ① Spotify for Creators → "Add your podcast" → `https://www.jorgebernardo.tech/podcast.xml` → verify via code emailed to the `itunes:owner` address. ② Apple Podcasts Connect → same feed URL. Both then auto-publish every new episode from the feed. Cover art: [podcast-cover.jpg](podcast-cover.jpg) (3000×3000).
 
 ## Dev tooling
 
@@ -87,6 +93,6 @@ State files at the root (`post-meta.json`, `carousel-meta.json`, `*-prepared.jso
 
 Secrets live in a local `.env` (never committed; GitHub Actions uses repo secrets). Main keys:
 
-`ANTHROPIC_API_KEY` · `OPENAI_API_KEY` · `TAVILY_API_KEY` · `RESEND_API_KEY` / `RESEND_AUDIENCE_ID` · `NOTION_API_KEY` / `NOTION_IG_DB_ID` / `NOTION_METRICS_DB_ID` · `INSTAGRAM_ACCESS_TOKEN` / `INSTAGRAM_USER_ID` / `INSTAGRAM_API_BASE` · `LINKEDIN_ACCESS_TOKEN` · `KIE_API_KEY` (+ `KIE_BROLL_MODEL`, `KIE_BROLL_RES`) · `SITE_URL` · `CAROUSEL_NOTIFY_EMAIL`
+`ANTHROPIC_API_KEY` · `OPENAI_API_KEY` · `TAVILY_API_KEY` · `RESEND_API_KEY` / `RESEND_AUDIENCE_ID` · `NOTION_API_KEY` / `NOTION_IG_DB_ID` / `NOTION_METRICS_DB_ID` · `INSTAGRAM_ACCESS_TOKEN` / `INSTAGRAM_USER_ID` / `INSTAGRAM_API_BASE` · `LINKEDIN_ACCESS_TOKEN` · `ELEVENLABS_API_KEY` / `ELEVENLABS_VOICE_ID` · `BLOB_READ_WRITE_TOKEN` · `KIE_API_KEY` (+ `KIE_BROLL_MODEL`, `KIE_BROLL_RES`) · `SITE_URL` · `CAROUSEL_NOTIFY_EMAIL`
 
 Run `node post-to-instagram.mjs check` to verify the IG credentials.

@@ -39,6 +39,7 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import puppeteer from 'puppeteer-core';
+import { expandSpokenUnits, fixOrthographyLines, tts } from './tts.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CHROME = process.env.CHROME_PATH || 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
@@ -181,67 +182,21 @@ ${post.plain.slice(0, 4000)}`
   return tool.input;
 }
 
-// TTS reads unit abbreviations literally ("32 km/h" → letter-by-letter, caught on
-// the first VPS cycling Reel 2026-07-07), so narrations are expanded to spoken
-// PT-BR before synthesis. Applied to narration ONLY — on-screen headlines keep
+// Spoken-unit expansion applied to narration ONLY — on-screen headlines keep
 // the compact written form; captions follow the narration automatically because
-// Whisper words are snapped back to this same expanded text. Order matters:
-// km/h before km, min before bare m.
-function expandSpokenUnits(text) {
-  return String(text || '')
-    .replace(/(\d+)\s*h\s*(\d{1,2})\b/g, '$1 horas e $2 minutos')  // 4h51
-    .replace(/(\d+(?:[.,]\d+)?)\s*km\/h/gi, '$1 quilômetros por hora')
-    .replace(/(\d+(?:[.,]\d+)?)\s*km\b/gi, '$1 quilômetros')
-    .replace(/(\d+(?:[.,]\d+)?)\s*min\b/gi, '$1 minutos')
-    .replace(/(\d+(?:[.,]\d+)?)\s*m\b(?![\w/])/g, '$1 metros')
-    .replace(/(\d+(?:[.,]\d+)?)\s*%/g, '$1 por cento');
-}
+// Whisper words are snapped back to the same expanded text. Shared impl in tts.mjs.
 
-// Claude's constrained tool-use JSON reliably starts dropping PT-BR diacritics partway
-// through longer scripts ("Médico"→"Medico", "é"→"e") — and the TTS pronounces what's
-// written, so this corrupts the audio, not just the captions. This pass restores
-// accents via a plain-text call, with a hard guard: a corrected line is only accepted
-// if it matches the original once diacritics are stripped, so it can NEVER reword.
+// Diacritics-restore pass (shared impl + no-reword guard in tts.mjs), applied to
+// every text field of the scene script.
 async function fixOrthography(client, script) {
   const fields = [[script, 'title'], [script, 'caption']];
   for (const s of script.scenes) fields.push([s, 'label'], [s, 'headline'], [s, 'narration']);
-  const originals = fields.map(([obj, key]) => String(obj[key] || '').replace(/\s+/g, ' ').trim());
-  const numbered = originals.map((v, i) => `${i + 1}. ${v}`).join('\n');
-  const res = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 1500,
-    system: 'Você é um revisor ortográfico de português do Brasil. Corrija APENAS acentos e cedilhas faltando ou errados. NÃO altere palavras, ordem, pontuação ou conteúdo. Responda SOMENTE com as linhas numeradas corrigidas, uma por linha, no mesmo formato.',
-    messages: [{ role: 'user', content: numbered }]
-  });
-  const text = res.content.find(b => b.type === 'text')?.text || '';
-  const bare = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
-  for (const m of text.matchAll(/^(\d+)\.\s*(.+)$/gm)) {
-    const i = +m[1] - 1, fixed = m[2].trim();
-    if (i >= 0 && i < fields.length && bare(fixed) === bare(originals[i])) {
-      const [obj, key] = fields[i];
-      obj[key] = fixed;
-    }
-  }
+  const fixed = await fixOrthographyLines(client, fields.map(([obj, key]) => obj[key]));
+  fields.forEach(([obj, key], i) => { obj[key] = fixed[i]; });
   return script;
 }
 
-/* ── 2. TTS (ElevenLabs — Jorge's cloned voice) ──────────── */
-
-// Settings picked by Jorge from A/B test 2026-07-06 ("variant B"): lower stability +
-// some style for a lively, less read-aloud delivery; 1.08x speed (his clone's default
-// pace read slightly slower than his real voice).
-const ELEVEN_VOICE_SETTINGS = { stability: 0.38, similarity_boost: 0.8, style: 0.3, use_speaker_boost: true, speed: 1.08 };
-
-async function tts(text, outPath) {
-  const voiceId = process.env.ELEVENLABS_VOICE_ID;
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`, {
-    method: 'POST',
-    headers: { 'xi-api-key': process.env.ELEVENLABS_API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: ELEVEN_VOICE_SETTINGS })
-  });
-  if (!res.ok) throw new Error(`ElevenLabs TTS failed (${res.status}): ${await res.text()}`);
-  fs.writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
-}
+/* ── 2. TTS (ElevenLabs — Jorge's cloned voice, shared tts.mjs) ── */
 
 /* ── 3. Scene text layers (Puppeteer) ────────────────────── */
 
