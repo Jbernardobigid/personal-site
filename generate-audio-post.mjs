@@ -18,6 +18,7 @@
  *   node generate-audio-post.mjs --dry-run             (spoken script + char count only)
  *   node generate-audio-post.mjs --force               (regenerate even if in ledger)
  *   node generate-audio-post.mjs --feed-only           (rewrite podcast.xml from the ledger, no API calls)
+ *   node generate-audio-post.mjs --relink              (re-render the player block in every ledgered post, no API calls — for player/link markup changes)
  *
  * Requires: ANTHROPIC_API_KEY, ELEVENLABS_API_KEY + ELEVENLABS_VOICE_ID,
  * BLOB_READ_WRITE_TOKEN. Optional: AUDIO_MAX_CHARS (default 9000, posts over it
@@ -45,6 +46,9 @@ const SITE_URL = (process.env.SITE_URL || 'https://www.jorgebernardo.tech').repl
 const SHOW_TITLE = 'A Interseção';
 const SHOW_DESCRIPTION = 'Ensaios de Jorge Bernardo sobre tecnologia, identidade e carreira, narrados com a própria voz. A versão em áudio do blog jorgebernardo.tech.';
 const SHOW_AUTHOR = 'Jorge Bernardo';
+// Assigned by Spotify for Creators after RSS import (2026-07-08). No Apple Podcasts
+// show URL yet — add a second link here once that submission is approved.
+const SHOW_SPOTIFY_URL = 'https://open.spotify.com/show/033LX6pnZMW4pYSva5tQu1';
 const SHOW_OWNER_EMAIL = 'jorge.mbernardo@gmail.com';
 const AUDIO_MAX_CHARS = Number(process.env.AUDIO_MAX_CHARS) || 9000;
 const TTS_MODEL = process.env.AUDIO_TTS_MODEL || 'eleven_multilingual_v2';
@@ -196,6 +200,8 @@ const AUDIO_CSS = `
 .audio-panel{border:1px solid var(--border-terra);background:rgba(94,65,45,0.07);padding:20px 24px;border-radius:1px}
 .audio-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra-light);margin-bottom:14px}
 .audio-panel audio{width:100%;height:36px;color-scheme:dark}
+.audio-spotify{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra-light);text-decoration:none;border-bottom:1px solid var(--border-terra);padding-bottom:2px;transition:color .2s,border-color .2s}
+.audio-spotify:hover{color:var(--white);border-color:rgba(255,255,255,0.3)}
 @media(max-width:768px){.audio-block{padding-left:24px;padding-right:24px}}`;
 
 function buildPlayerBlock(audioUrl, durationSec) {
@@ -204,6 +210,7 @@ function buildPlayerBlock(audioUrl, durationSec) {
   <div class="audio-panel">
     <div class="audio-label">Ouça este ensaio · ${min} min · ${SHOW_TITLE}</div>
     <audio controls preload="none" src="${audioUrl}"></audio>
+    <a class="audio-spotify" href="${SHOW_SPOTIFY_URL}" target="_blank" rel="noopener">Ouça no Spotify ↗</a>
   </div>
 </div>`;
 }
@@ -211,8 +218,9 @@ function buildPlayerBlock(audioUrl, durationSec) {
 function injectPlayer(file, audioUrl, durationSec) {
   let html = fs.readFileSync(file, 'utf8');
   const block = buildPlayerBlock(audioUrl, durationSec);
-  // Re-runs (--force) replace the existing block instead of stacking a second one.
-  const existing = /<div class="audio-block">[\s\S]*?<\/audio>\s*<\/div>\s*<\/div>/;
+  // Re-runs (--force / --relink) replace the existing block instead of stacking a
+  // second one. Generic enough to match both the pre-Spotify-link and current shape.
+  const existing = /<div class="audio-block">[\s\S]*?<\/div>\s*<\/div>/;
   if (existing.test(html)) {
     html = html.replace(existing, block);
   } else if (html.includes('<!-- audio-player-slot -->')) {
@@ -248,6 +256,16 @@ async function main() {
     const episodes = readLedger();
     fs.writeFileSync(FEED_FILE, generateFeed(episodes), 'utf8');
     console.log(`podcast.xml rewritten from ledger (${episodes.length} episodes)`);
+    return;
+  }
+
+  if (args.includes('--relink')) {
+    for (const e of readLedger()) {
+      const file = path.join(POSTS_DIR, e.filename);
+      if (!fs.existsSync(file)) { console.log(`  skip (missing file): ${e.filename}`); continue; }
+      injectPlayer(file, e.audioUrl, e.durationSec);
+      console.log(`  relinked: ${e.filename}`);
+    }
     return;
   }
 

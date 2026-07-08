@@ -278,6 +278,8 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 .audio-panel{border:1px solid var(--border-terra);background:rgba(94,65,45,0.07);padding:20px 24px;border-radius:1px}
 .audio-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra-light);margin-bottom:14px}
 .audio-panel audio{width:100%;height:36px;color-scheme:dark}
+.audio-spotify{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra-light);text-decoration:none;border-bottom:1px solid var(--border-terra);padding-bottom:2px;transition:color .2s,border-color .2s}
+.audio-spotify:hover{color:var(--white);border-color:rgba(255,255,255,0.3)}
 .post-footer{border-top:1px solid var(--border);padding:52px;max-width:820px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
 .author-block{display:flex;flex-direction:column;gap:6px}
 .author-name{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-0.01em}
