@@ -1,0 +1,79 @@
+{
+  "topic": "Há negros na Argentina? Geledés Brasil",
+  "slug": "o-pais-que-apagou-seus-negros-e-ainda-quer-jogar-bola-com-a-",
+  "generated_at": "2026-07-11T12:00:39.078Z",
+  "sources": [
+    "https://www.geledes.org.br/onde-estao-os-negros-da-argentina",
+    "https://brasil.elpais.com/brasil/2017/01/07/internacional/1483795840_886159.html",
+    "https://www.bbc.com/portuguese/internacional-64009276",
+    "https://www.bbc.com/portuguese/internacional-48600318",
+    "https://www1.folha.uol.com.br/colunas/thiago-amparo/2026/07/ha-negros-na-argentina.shtml",
+    "https://pt.wikipedia.org/wiki/Afro-argentinos",
+    "https://www.geledes.org.br/historia-dos-negros-argentinos-por-que-eles-quase-sumiram-do-mapa-por-la",
+    "https://www.youtube.com/watch?v=fGhPQcivtbw",
+    "https://en.wikipedia.org/wiki/Afro-Argentines",
+    "https://revistaafirmativa.com.br/a-argentina-nao-e-um-pais-branco-como-seculos-de-apagamento-nas-estatisticas-demograficas-consolidaram-o-mito-da-homogeneidade-racial-no-pais"
+  ],
+  "insights": [
+    "Afro-descendants in Argentina represent a small percentage of the population, with the 2010 census recognizing around 150,000 Afro-Argentines.",
+    "Historical policies of whitening and the impact of wars led to a significant decline in the Afro-Argentine population, which was once a substantial part of the demographic.",
+    "Studies suggest that between 4% and 6% of the Argentine population may have African ancestry, despite the visible absence of Afro-descendants in many societal sectors.",
+    "The celebration of San Baltasar is one of the few remaining cultural events maintained by Afro-descendants in Argentina.",
+    "The 2022 census indicated an increase in the Afro-Argentine population to approximately 302,936, or 0.66% of the total population."
+  ],
+  "stats": [
+    {
+      "value": "0.37%",
+      "context": "percentage of Afro-Argentines in the total population according to the 2010 census",
+      "source": "Source 3"
+    },
+    {
+      "value": "0.66%",
+      "context": "percentage of Afro-Argentines in the total population according to the 2022 census",
+      "source": "Source 9"
+    },
+    {
+      "value": "150,000",
+      "context": "number of Afro-Argentines recognized in the 2010 census",
+      "source": "Source 4"
+    },
+    {
+      "value": "2 million",
+      "context": "estimated number of Afro-Argentines in the country, though some historians consider this figure exaggerated",
+      "source": "Source 4"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A invisibilidade dos negros na história é tremenda, eles praticamente não são mencionados.",
+      "attribution": "Felipe Pigna, historian"
+    },
+    {
+      "text": "Se um grupo não está no censo, ele não existe para o Estado.",
+      "attribution": "Denise, researcher"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2010,
+      "value": 149493,
+      "unit": "thousands",
+      "label": "number of Afro-Argentines according to the census"
+    },
+    {
+      "year": 2022,
+      "value": 302936,
+      "unit": "thousands",
+      "label": "number of Afro-Argentines according to the census"
+    }
+  ],
+  "summary": "Argentina has a small but significant Afro-descendant population, historically marginalized and often overlooked in national narratives. Recent census data indicates a gradual recognition of this community, though many still face systemic invisibility and challenges in representation.",
+  "pillar": "black-identity",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-07-11-o-pais-que-apagou-seus-negros-e-ainda-quer-jogar-bola-com-a-.html",
+  "signal": {
+    "title": "Há negros na Argentina?",
+    "source": "Geledés",
+    "url": "https://www.geledes.org.br/ha-negros-na-argentina/",
+    "date": "2026-07-10T15:12:56.000Z"
+  }
+}
