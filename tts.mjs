@@ -53,13 +53,40 @@ export async function fixOrthographyLines(client, lines) {
 // pace read slightly slower than his real voice).
 export const ELEVEN_VOICE_SETTINGS = { stability: 0.38, similarity_boost: 0.8, style: 0.3, use_speaker_boost: true, speed: 1.08 };
 
-export async function tts(text, outPath, { modelId = 'eleven_multilingual_v2' } = {}) {
+// Request stitching: without context, ElevenLabs generates every request as a
+// standalone utterance — neutral onset, declarative body, falling final. Splitting a
+// script into N calls therefore resets the prosody N times and reads flat, which is
+// what the per-scene Reels loop was doing. previousText/nextText (or the stronger
+// previousRequestIds) condition each chunk on its neighbours so the delivery carries
+// across the cut. ElevenLabs ignores previous_text when previous_request_ids is also
+// sent, so both are passed: the IDs lead, the text is the fallback when a request-id
+// header is missing. Unused by single-call callers (the podcast), which need none.
+// https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/request-stitching
+const MAX_PREVIOUS_REQUEST_IDS = 3;  // API limit; IDs must also be under 2h old
+
+export async function tts(text, outPath, {
+  modelId = 'eleven_multilingual_v2',
+  previousText,
+  nextText,
+  previousRequestIds = []
+} = {}) {
   const voiceId = process.env.ELEVENLABS_VOICE_ID;
+  // Stitching is unsupported on eleven_v3 — sending the fields there is an error, not
+  // a no-op, so they are dropped rather than passed through.
+  const stitch = modelId === 'eleven_v3' ? {} : {
+    ...(previousText ? { previous_text: previousText } : {}),
+    ...(nextText ? { next_text: nextText } : {}),
+    ...(previousRequestIds.length ? { previous_request_ids: previousRequestIds.slice(-MAX_PREVIOUS_REQUEST_IDS) } : {})
+  };
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`, {
     method: 'POST',
     headers: { 'xi-api-key': process.env.ELEVENLABS_API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, model_id: modelId, voice_settings: ELEVEN_VOICE_SETTINGS })
+    body: JSON.stringify({ text, model_id: modelId, voice_settings: ELEVEN_VOICE_SETTINGS, ...stitch })
   });
   if (!res.ok) throw new Error(`ElevenLabs TTS failed (${res.status}): ${await res.text()}`);
+  // Read the ID before the body: conditioning on a request requires it to have fully
+  // processed, which writing the buffer below guarantees for the caller's next call.
+  const requestId = res.headers.get('request-id') || null;
   fs.writeFileSync(outPath, Buffer.from(await res.arrayBuffer()));
+  return { requestId };
 }

@@ -26,6 +26,18 @@
  *   node generate-video.mjs <post.html> --real-broll  (real-footage photos only, Ken Burns)
  *   node generate-video.mjs <post.html> --seconds 50 | --dry-run
  *
+ * Voice A/B flags (the script is regenerated fresh on every run, so comparing two
+ * voice settings needs the SAME narration on both sides — otherwise you are hearing
+ * two different texts and guessing which difference came from the voice):
+ *   --script-file <json>   reuse a previous run's script.json verbatim (skips Claude)
+ *   --no-stitch            disable TTS request stitching (the pre-2026-07-15 read)
+ *   --keep-audio           keep per-scene audio-N.mp3 instead of deleting at cleanup
+ *   --out-suffix <s>       disambiguate output dirs (--no-stitch implies "-nostitch",
+ *                          since a reused script yields an identical slug and the
+ *                          second run would otherwise overwrite the first)
+ * Every run writes its fully-processed script to videos/{dir}/script.json, so run A
+ * produces the input for run B's --script-file.
+ *
  * Requires: ANTHROPIC_API_KEY, ELEVENLABS_API_KEY + ELEVENLABS_VOICE_ID (voiceover),
  * OPENAI_API_KEY (Whisper caption timestamps + gpt-image-2 stills). b-roll: kIE_API_KEY
  * only for --kie-broll. Music: assets/music/bed.mp3 (optional). ffmpeg+ffprobe on PATH.
@@ -552,7 +564,10 @@ async function main() {
   const topicFileArg = args.includes('--topic-file') ? args[args.indexOf('--topic-file') + 1] : null;
   const seconds = args.includes('--seconds') ? parseInt(args[args.indexOf('--seconds') + 1], 10) : 50;
   const postArg = args.find(a => a.endsWith('.html'));
-  if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not set');
+  const noStitch = args.includes('--no-stitch');
+  const keepAudio = args.includes('--keep-audio');
+  const scriptFileArg = args.includes('--script-file') ? args[args.indexOf('--script-file') + 1] : null;
+  if (!scriptFileArg && !process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not set');
   if (!dryRun) {
     if (!process.env.ELEVENLABS_API_KEY) throw new Error('ELEVENLABS_API_KEY not set');
     if (!process.env.ELEVENLABS_VOICE_ID) throw new Error('ELEVENLABS_VOICE_ID not set');
@@ -579,12 +594,23 @@ async function main() {
   const brollMode = forceKie ? 'kie' : forceReal ? 'real' : forceMixed ? 'mixed' : forceImage ? 'image' : 'design';
   console.log(`b-roll mode: ${brollMode}`);
 
-  console.log('1/7 Scripting (Claude)...');
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  const script = await generateScript(anthropic, post, seconds);
-  await fixOrthography(anthropic, script);
-  for (const s of script.scenes) s.narration = expandSpokenUnits(s.narration);
-  console.log(`     ${script.scenes.length} scenes`);
+  // A reused script.json is already orthography-fixed and unit-expanded (it is saved
+  // after both passes), so it is replayed verbatim — re-running the passes could shift
+  // a word and break the very text-identity the A/B depends on.
+  let script;
+  if (scriptFileArg) {
+    const f = path.isAbsolute(scriptFileArg) ? scriptFileArg : path.join(__dirname, scriptFileArg);
+    script = JSON.parse(fs.readFileSync(f, 'utf8'));
+    console.log(`1/7 Scripting — reusing ${path.relative(__dirname, f)} verbatim (Claude skipped)`);
+    console.log(`     ${script.scenes.length} scenes`);
+  } else {
+    console.log('1/7 Scripting (Claude)...');
+    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    script = await generateScript(anthropic, post, seconds);
+    await fixOrthography(anthropic, script);
+    for (const s of script.scenes) s.narration = expandSpokenUnits(s.narration);
+    console.log(`     ${script.scenes.length} scenes`);
+  }
 
   if (dryRun) {
     script.scenes.forEach((s, i) => console.log(`\n  [${i + 1}] ${s.label.toUpperCase()} — "${s.headline}"\n      VO: ${s.narration}\n      b-roll: ${s.broll}`));
@@ -595,14 +621,30 @@ async function main() {
 
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const slug = slugify(script.title);
-  const outDir = path.join(VIDEOS_DIR, `${isoDate()}-${slug}`);
+  const outSuffix = args.includes('--out-suffix') ? `-${args[args.indexOf('--out-suffix') + 1]}`
+    : noStitch ? '-nostitch' : '';
+  const outDir = path.join(VIDEOS_DIR, `${isoDate()}-${slug}${outSuffix}`);
   fs.mkdirSync(outDir, { recursive: true });
+  // Saved post-orthography/post-expansion, i.e. exactly the text TTS will speak, so
+  // --script-file can replay this run's narration byte-for-byte.
+  fs.writeFileSync(path.join(outDir, 'script.json'), JSON.stringify(script, null, 2), 'utf8');
 
-  console.log('2/7 Voiceover (ElevenLabs voice clone)...');
-  const audios = [], durations = [];
+  console.log(`2/7 Voiceover (ElevenLabs voice clone${noStitch ? ', stitching OFF' : ', stitched'})...`);
+  // Scenes stay separate files (per-scene ffprobe durations drive the video timing,
+  // and Whisper captions the concatenated master later), but each request is stitched
+  // to its neighbours so the read builds across the 5 scenes instead of restarting
+  // flat on every one. Chaining is sequential by necessity: conditioning on a request
+  // ID requires that request to have completed.
+  const audios = [], durations = [], requestIds = [];
+  const narrations = script.scenes.map(s => s.narration);
   for (let i = 0; i < script.scenes.length; i++) {
     const a = path.join(outDir, `audio-${i + 1}.mp3`);
-    await tts(script.scenes[i].narration, a);
+    const { requestId } = await tts(narrations[i], a, noStitch ? {} : {
+      previousText: narrations.slice(0, i).join(' ') || undefined,
+      nextText: narrations.slice(i + 1).join(' ') || undefined,
+      previousRequestIds: requestIds
+    });
+    if (requestId) requestIds.push(requestId);
     audios.push(a); durations.push(ffprobeDuration(a));
   }
   console.log(`     total VO ~${durations.reduce((x, y) => x + y, 0).toFixed(1)}s`);
@@ -681,8 +723,13 @@ async function main() {
   }, null, 2), 'utf8');
 
   const tempBrolls = brolls.filter(b => b && b.temp).map(b => b.path);
-  for (const f of [...audios, ...tempBrolls, ...layers.flatMap(l => [l.intro, l.headline]), ...clips, noCap]) { try { fs.unlinkSync(f); } catch {} }
+  const scratch = [...tempBrolls, ...layers.flatMap(l => [l.intro, l.headline]), ...clips, noCap];
+  // The finished video buries the voice under captions and a music bed, so --keep-audio
+  // spares the bare per-scene VO — the only clean thing to judge intonation on.
+  if (!keepAudio) scratch.push(...audios);
+  for (const f of scratch) { try { fs.unlinkSync(f); } catch {} }
   console.log(`\nDone. ${durationSec.toFixed(1)}s → ${path.relative(__dirname, finalPath)}`);
+  if (keepAudio) console.log(`Kept bare VO: ${path.relative(__dirname, outDir)}/audio-1..${audios.length}.mp3`);
   console.log(JSON.stringify({ slug, durationSec: +durationSec.toFixed(1), video: finalPath.replace(/\\/g, '/') }, null, 2));
 }
 
