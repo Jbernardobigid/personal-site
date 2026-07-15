@@ -1,0 +1,17 @@
+POST FORMAT: SINGLE (1 slide)
+DATE: 2026-07-15
+PILLAR: technology
+FROM BLOG: yes
+PHOTO: 7B7A0105.jpg
+
+─────────────────────────────────
+36 milhões de idosos aptos a votar. É o maior eleitorado idoso da história do Brasil, e a tecnologia cívica ainda não sabe como chegar até eles de verdade.
+
+Aprendi que dados sem alcance são só números bonitos. A lacuna não é técnica, é de escuta.
+
+Link na bio ↗
+
+#Tecnologia #IA #SegurançaDeDados #PrivacidadeDeDados #GovernançaDeIA #TechBR #InovaçãoTech
+─────────────────────────────────
+
+SLIDES: slide-01.png
