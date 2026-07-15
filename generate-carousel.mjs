@@ -513,6 +513,14 @@ const STANDALONE_CTA_SWAPS = [
   [/Leia o post ↗/g, 'Salva esse post ↗'],
 ];
 
+// Not every template has a photo slot — the reframe set and most legacy text
+// slides are type-on-gradient by design. The resolver still picks a photo for
+// every run, so without this check a run can select an image, record it as
+// "used" (burning it out of the rotation) and never put it on a canvas.
+function templateUsesPhoto(templateHtml) {
+  return /\{\{PHOTO_URL\}\}/.test(templateHtml);
+}
+
 function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true, { slideNum = 1, slideTotal = 1, format = 'carousel' } = {}) {
   const contentType = slide.contentType;
   const headline  = sanitizeEmDashes(slide.headline);
@@ -662,6 +670,7 @@ async function main() {
   // Write and screenshot slides
   const slideHtmlPaths = [];
   const usedTypes = [];
+  const photoSlots = [];
 
   for (const [i, slide] of slides.entries()) {
     const templateFile = TEMPLATE_MAP[slide.contentType];
@@ -673,11 +682,27 @@ async function main() {
     }
 
     const templateHtml = fs.readFileSync(templatePath, 'utf8');
+    if (templateUsesPhoto(templateHtml)) photoSlots.push(slide.contentType);
     const injected = injectContent(templateHtml, slide, photoPath, hasBlogPost, { slideNum: i + 1, slideTotal: slides.length, format });
     const slidePath = path.join(outDir, `slide-0${i + 1}.html`);
     fs.writeFileSync(slidePath, injected, 'utf8');
     slideHtmlPaths.push(slidePath);
     usedTypes.push(slide.contentType);
+  }
+
+  // A photo only counts as "used" once a template with a slot actually renders
+  // it. Recording an unrendered pick would exclude that frame from the next
+  // HISTORY_LIMIT posts for nothing.
+  const photoRendered = Boolean(photoPath) && photoSlots.length > 0;
+  const renderedPhoto = photoRendered ? path.basename(photoPath) : null;
+
+  if (photoPath && photoSlots.length === 0) {
+    console.warn(`  ⚠ Photo ${path.basename(photoPath)} was selected but DISCARDED — none of these templates `
+      + `(${[...new Set(usedTypes)].join(', ')}) has a {{PHOTO_URL}} slot. This post is 100% typographic.`);
+  }
+  if (!photoPath && photoSlots.length > 0) {
+    console.warn(`  ⚠ Templates ${[...new Set(photoSlots)].join(', ')} expect a photo but none resolved — `
+      + `slides will render a broken image. Check brand_assets/Fotos/ exists on this machine.`);
   }
 
   console.log('Screenshotting...');
@@ -703,7 +728,7 @@ async function main() {
     `DATE: ${date}`,
     `PILLAR: ${post.pillarId}`,
     `FROM BLOG: ${hasBlogPost ? 'yes' : 'no'}`,
-    `PHOTO: ${photoPath ? path.basename(photoPath) : 'none'}`,
+    `PHOTO: ${renderedPhoto ?? 'none (no template in this post has a photo slot)'}`,
     '',
     '─────────────────────────────────',
     fullCaption,
@@ -718,11 +743,11 @@ async function main() {
   // Keep carousel-meta.json for backward compatibility
   fs.writeFileSync(
     path.join(__dirname, 'carousel-meta.json'),
-    JSON.stringify({ date, slug, format, pillar: post.pillarId, fromBlog: hasBlogPost, photo: photoPath ? path.basename(photoPath) : null, caption: fullCaption, hashtags, contentTypes: usedTypes, slides: pngs.map(p => p.replace(/\\/g, '/')) }, null, 2),
+    JSON.stringify({ date, slug, format, pillar: post.pillarId, fromBlog: hasBlogPost, photo: renderedPhoto, caption: fullCaption, hashtags, contentTypes: usedTypes, slides: pngs.map(p => p.replace(/\\/g, '/')) }, null, 2),
     'utf8'
   );
 
-  saveUsage({ date, title: post.title, format, slideCount: slides.length, templates: usedTypes, photo: photoPath ? path.basename(photoPath) : null });
+  saveUsage({ date, title: post.title, format, slideCount: slides.length, templates: usedTypes, photo: renderedPhoto });
 
   console.log(`\nDone! ${slides.length} slide${slides.length > 1 ? 's' : ''} → carousels/${date}-${slug}/`);
   console.log('Caption → post-caption.txt (also inside the output folder)');
