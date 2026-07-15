@@ -1,0 +1,97 @@
+{
+  "topic": "Com alta de 74% em 16 anos, eleitorado idoso ganha força, mas enfrenta desafio da abstenção Notícia Preta Brasil",
+  "slug": "36-milhoes-de-idosos-aptos-a-votar-o-que-a-tecnologia-ainda-",
+  "generated_at": "2026-07-15T12:00:35.739Z",
+  "sources": [
+    "https://noticiapreta.com.br",
+    "https://www.blogdojairogomes.com/2026/07/aumento-do-eleitorado-idoso-pauta.html",
+    "https://www.congressoemfoco.com.br/noticia/118138/pesquisa-mostra-aumento-de-74-de-eleitores-idosos-nos-ultimos-16-anos",
+    "https://www.folhape.com.br/politica/aumento-do-eleitorado-idoso-pauta-campanhas-mas-abstencao-e-desafio/500461",
+    "https://defato.com/politica/126537/nmero-de-eleitores-idosos-aumenta-74-nos-ltimos-16-anos",
+    "https://veja.abril.com.br/politica/pesquisa-aponta-aumento-de-mais-de-70-de-eleitores-60-em-16-anos",
+    "https://www.nexus.fsb.com.br/estudos-divulgados/quantidade-de-brasileiros-com-mais-de-60-anos-aptos-a-votar-cresce-5-vezes-mais-do-que-o-eleitorado-geral-nos-ultimos-16-anos",
+    "https://noticias.cancaonova.com/brasil/pesquisa-mostra-aumento-no-numero-de-eleitores-idosos-no-brasil",
+    "https://www.youtube.com/watch?v=UWOXBkHTFrw",
+    "https://agenciabrasil.ebc.com.br/radioagencia-nacional/politica/audio/2018-09/tse-mostra-que-abstencao-media-entre-idosos-e-de-60-69",
+    "https://valor.globo.com/politica/noticia/2026/05/13/percentual-de-eleitores-com-mais-de-60-e-o-maior-da-serie.ghtml"
+  ],
+  "insights": [
+    "The elderly electorate in Brazil has increased by 74% over the past 16 years, now representing 23% of the total voter base.",
+    "There are over 36.8 million elderly voters in Brazil, marking the largest elderly electorate ever recorded.",
+    "Despite the growth in numbers, elderly voters face significant challenges with high abstention rates, necessitating targeted mobilization efforts."
+  ],
+  "stats": [
+    {
+      "value": "74%",
+      "context": "increase in the number of elderly voters from 20.8 million in 2010 to 36.2 million in 2026",
+      "source": "Nexus - Pesquisa e Inteligência de Dados"
+    },
+    {
+      "value": "23%",
+      "context": "percentage of voters aged 60 and above in the total electorate",
+      "source": "Tribunal Superior Eleitoral (TSE)"
+    },
+    {
+      "value": "41.1%",
+      "context": "voter turnout among those over 70 years old in 2022",
+      "source": "Congress in Foco"
+    },
+    {
+      "value": "63.6%",
+      "context": "abstention rate among voters over 70 in 2014",
+      "source": "Veja"
+    },
+    {
+      "value": "58.9%",
+      "context": "abstention rate among voters over 70 in 2022",
+      "source": "Veja"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "It's possible to reduce the abstention, but this depends on specific mobilization efforts for this group.",
+      "attribution": "Mayra Goulart, UFRJ"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2010,
+      "value": 20.8,
+      "unit": "millions",
+      "label": "number of elderly voters"
+    },
+    {
+      "year": 2026,
+      "value": 36.2,
+      "unit": "millions",
+      "label": "number of elderly voters"
+    },
+    {
+      "year": 2014,
+      "value": 63.6,
+      "unit": "%",
+      "label": "abstention rate for voters over 70"
+    },
+    {
+      "year": 2018,
+      "value": 36.4,
+      "unit": "%",
+      "label": "abstention rate for voters over 70"
+    },
+    {
+      "year": 2022,
+      "value": 34.5,
+      "unit": "%",
+      "label": "abstention rate for voters over 70"
+    }
+  ],
+  "summary": "The elderly electorate in Brazil has seen a significant increase of 74% over the last 16 years, now comprising 23% of all voters. However, this demographic faces challenges with high abstention rates, highlighting the need for targeted efforts to engage and mobilize elderly voters.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-07-15-36-milhoes-de-idosos-aptos-a-votar-o-que-a-tecnologia-ainda-.html",
+  "signal": {
+    "title": "Com alta de 74% em 16 anos, eleitorado idoso ganha força, mas enfrenta desafio da abstenção",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/com-alta-de-74-em-16-anos-eleitorado-idoso-ganha-forca-mas-enfrenta-desafio-da-abstencao/?utm_source=rss&utm_medium=rss&utm_campaign=com-alta-de-74-em-16-anos-eleitorado-idoso-ganha-forca-mas-enfrenta-desafio-da-abstencao",
+    "date": "2026-07-14T22:00:00.000Z"
+  }
+}
