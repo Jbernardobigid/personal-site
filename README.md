@@ -48,8 +48,10 @@ Setup guide: [docs/setup-meta-and-notion.md](docs/setup-meta-and-notion.md) · o
 
 ### Educational videos (Reels format)
 
-- [generate-video.mjs](generate-video.mjs) — blog post → ~45–55s 9:16 video: Claude script (5 scenes), ElevenLabs voice-clone voiceover (shared [tts.mjs](tts.mjs)), typographic b-roll by default (image/mixed/KIE modes behind flags), Puppeteer kinetic-text layers ([templates/video/](templates/video/)), ffmpeg compositing, Whisper word-level karaoke captions, music bed ([assets/music/](assets/music/)). Output: `videos/{date}-{slug}/video.mp4`.
-- [prepare-video.mjs](prepare-video.mjs) — n8n orchestrator: build (or reuse latest), upload to Vercel Blob, email link + caption. Flags: `--no-broll`, `--skip-generate`, `--dry-run`, `--force`.
+- [generate-video.mjs](generate-video.mjs) — blog post (or a `--topic-file` cycling concept) → ~45–55s 9:16 video: Claude script (5 scenes), ElevenLabs voice-clone voiceover (shared [tts.mjs](tts.mjs)), typographic b-roll by default (image/mixed/real/KIE modes behind flags), Puppeteer kinetic-text layers ([templates/video/](templates/video/)), ffmpeg compositing, Whisper word-level karaoke captions, music bed ([assets/music/](assets/music/)). Output: `videos/{date}-{slug}/video.mp4`.
+  - The per-scene TTS calls are **stitched** (each conditioned on the neighbouring narration + prior request IDs) so the read builds across the 5 scenes instead of restarting flat on each one. Scenes stay separate files — per-scene durations drive the video timing.
+  - Voice A/B: every run saves the exact spoken text to `script.json`; `--script-file <json>` replays it verbatim so two voice settings can be compared on identical narration. `--no-stitch` renders the pre-stitching read, `--keep-audio` keeps the bare VO (the final mix buries it under captions + music), `--out-suffix` disambiguates output dirs.
+- [prepare-video.mjs](prepare-video.mjs) — n8n orchestrator: build (or reuse latest), upload to Vercel Blob, create a **Draft Reel card** in the Notion IG Pipeline — the same approval surface carousels use; [publish-approved.mjs](publish-approved.mjs) publishes it once approved. Flags: `--cycling` (Phase 4 topic-driven Reel, no blog post), `--skip-generate`, `--dry-run`, `--force`, b-roll mode passthroughs.
 
 ### Podcast — "A Interseção" (blog → audio)
 
