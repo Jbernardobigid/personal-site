@@ -1,0 +1,48 @@
+{
+  "topic": "Racismo algorítmico: estudo aponta que IA aumenta em até 69% associação de homens negros e latinos à criminalidade Notícia Preta Brasil",
+  "slug": "o-algoritmo-nao-e-neutro-quando-a-ia-aprende-a-suspeitar-de-",
+  "generated_at": "2026-07-21T12:00:32.016Z",
+  "sources": [
+    "https://afoitas.com.br/racismo-algoritmico-estudo-aponta-que-ia-aumenta-em-ate-69-associacao-de-homens-negros-e-latinos-a-criminalidade",
+    "https://www.instagram.com/p/Da_R_vwAQhJ",
+    "https://almapreta.com.br/sessao/cotidiano/ia-associacao-homens-negros-latinos-criminalidade",
+    "https://mundonegro.inf.br/racismo-algoritmico-ia-vies-homens-negros/amp",
+    "https://laranjeiras.news/noticia/137951/estudo-aponta-que-ia-aumenta-em-ate-69-associacao-de-homens-negros-e-latinos-a-criminalidade",
+    "https://noticiapreta.com.br/racismo-algoritmico-estudo-aponta-que-ia-aumenta-em-ate-69-associacao-de-homens-negros-e-latinos-a-criminalidade",
+    "https://www.scielo.br/j/eb/a/QkXT9mpFFmbDPyH9Gc4y3zS"
+  ],
+  "insights": [
+    "A baixa diversidade nos dados de treinamento de IA contribui para o viés racial nas associações de criminalidade.",
+    "Estudos demonstram um impacto significativo da IA nas percepções de criminalidade entre grupos raciais.",
+    "A associação de homens negros à criminalidade aumentou em 65% devido a modelos de IA.",
+    "Entre homens latinos, a associação à criminalidade cresceu em até 69%."
+  ],
+  "stats": [
+    {
+      "value": "69%",
+      "context": "aumento da associação de homens latinos à criminalidade",
+      "source": "Source 1"
+    },
+    {
+      "value": "65%",
+      "context": "aumento da associação de homens negros à criminalidade",
+      "source": "Source 4"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Baixa diversidade nos dados usados para treinar modelos de IA contribui para a reprodução de vieses raciais em ferramentas digitais.",
+      "attribution": "Source 3"
+    }
+  ],
+  "time_series": [],
+  "summary": "A pesquisa revela que a inteligência artificial (IA) tem um impacto significativo na associação de homens negros e latinos à criminalidade, com aumentos de até 69% para latinos e 65% para negros. A falta de diversidade nos dados de treinamento é um fator crítico que perpetua esses vieses raciais.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-07-21-o-algoritmo-nao-e-neutro-quando-a-ia-aprende-a-suspeitar-de-.html",
+  "signal": {
+    "title": "Racismo algorítmico: estudo aponta que IA aumenta em até 69% associação de homens negros e latinos à criminalidade",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/racismo-algoritmico-estudo-aponta-que-ia-aumenta-em-ate-69-associacao-de-homens-negros-e-latinos-a-criminalidade/?utm_source=rss&utm_medium=rss&utm_campaign=racismo-algoritmico-estudo-aponta-que-ia-aumenta-em-ate-69-associacao-de-homens-negros-e-latinos-a-criminalidade",
+    "date": "2026-07-21T10:00:00.000Z"
+  }
+}
