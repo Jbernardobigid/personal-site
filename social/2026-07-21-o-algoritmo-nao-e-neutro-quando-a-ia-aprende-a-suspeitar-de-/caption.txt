@@ -1,0 +1,17 @@
+POST FORMAT: SINGLE (1 slide)
+DATE: 2026-07-21
+PILLAR: technology
+FROM BLOG: yes
+PHOTO: none (no template in this post has a photo slot)
+
+─────────────────────────────────
+A IA que "decide" quem merece crédito, emprego ou atenção policial não é neutra. Ela aprende com dados históricos cheios de viés, e reproduz esse viés em escala industrial.
+
+Um estudo mostrou que modelos de IA associam homens negros e latinos à criminalidade até 69% mais. Aprendi que ignorar isso é uma escolha política, não técnica.
+
+Link na bio ↗
+
+#Tecnologia #IA #SegurançaDeDados #PrivacidadeDeDados #GovernançaDeIA #TechBR #InovaçãoTech
+─────────────────────────────────
+
+SLIDES: slide-01.png
