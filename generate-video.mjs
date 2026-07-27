@@ -142,8 +142,37 @@ function pickRealPhotos(n) {
   return Array.from({ length: n }, (_, i) => pool[i % pool.length] || null);
 }
 
+// Cross-channel CTA funnel: today every Reel caption ends open (no CTA at
+// all), including blog-derived ones — only carousels ever push "Link na bio".
+// Rotate a CTA in some of the time instead (never stacked with another ask),
+// spread across blog / newsletter / podcast so the two channels that get zero
+// in-feed promotion today occasionally get a mention. Standalone cycling-topic
+// videos (no corresponding blog post) skip the blog option entirely.
+function pickVideoCta(hasBlogPost) {
+  const options = hasBlogPost
+    ? [
+        { weight: 5, instruction: 'Termine a legenda de forma aberta (reflexão ou pergunta), SEM nenhum CTA' },
+        { weight: 2, instruction: 'Termine a legenda com uma linha curta convidando a ler o post completo do blog, ex: "Escrevi sobre isso hoje. Link na bio ↗"' },
+        { weight: 2, instruction: 'Termine a legenda com uma linha curta convidando a assinar a newsletter semanal "A Interseção" (derivada do blog), ex: "Toda semana eu escrevo sobre isso na newsletter. Link na bio ↗"' },
+        { weight: 2, instruction: 'Termine a legenda com uma linha curta convidando a ouvir o episódio do podcast sobre esse assunto (versão em áudio do blog), ex: "Tem episódio novo do podcast sobre isso. Link na bio ↗"' },
+      ]
+    : [
+        { weight: 6, instruction: 'Termine a legenda de forma aberta (reflexão ou pergunta), SEM nenhum CTA' },
+        { weight: 1, instruction: 'Termine a legenda com uma linha curta convidando a assinar a newsletter semanal "A Interseção", ex: "Escrevo sobre isso toda semana na newsletter. Link na bio ↗"' },
+        { weight: 1, instruction: 'Termine a legenda com uma linha curta convidando a ouvir o podcast, ex: "Tem episódio do podcast sobre isso. Link na bio ↗"' },
+      ];
+  const total = options.reduce((s, o) => s + o.weight, 0);
+  let r = Math.random() * total;
+  for (const o of options) {
+    r -= o.weight;
+    if (r <= 0) return o.instruction;
+  }
+  return options[0].instruction;
+}
+
 async function generateScript(client, post, seconds) {
   const wordBudget = Math.round(seconds * 2.2);
+  const ctaInstruction = pickVideoCta(post.kind === 'post');
   const res = await client.messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 1500,
@@ -155,7 +184,7 @@ async function generateScript(client, post, seconds) {
         type: 'object',
         properties: {
           title: { type: 'string', description: 'Título curto do vídeo (PT-BR)' },
-          caption: { type: 'string', description: 'Legenda de Instagram em PT-BR, voz do Jorge, ~70 palavras, termina aberta, SEM hashtags' },
+          caption: { type: 'string', description: 'Legenda de Instagram em PT-BR, voz do Jorge, ~70 palavras, SEM hashtags. O fechamento segue a instrução de CTA dada abaixo.' },
           scenes: {
             type: 'array',
             description: 'Exatamente 5 cenas: a primeira é o gancho, a última fecha com reflexão.',
@@ -183,7 +212,9 @@ Regras RÍGIDAS de tamanho (o vídeo NÃO pode passar de ~${seconds}s):
 - Exatamente 5 cenas.
 - Cada "narration": 1 ou 2 frases curtas, NO MÁXIMO ~22 palavras.
 - A soma de TODAS as narrações deve ficar entre ${wordBudget - 15} e ${wordBudget + 10} palavras.
-Conteúdo: cena 1 gancho concreto; cenas do meio ensinam uma ideia cada; última fecha com imagem ou pergunta aberta (não CTA). "headline" curto (máx 8 palavras). "broll" é uma descrição visual EM INGLÊS, abstrata e sem rostos. Nada de travessões.
+Conteúdo: cena 1 gancho concreto; cenas do meio ensinam uma ideia cada; última fecha com imagem ou pergunta aberta (as cenas do vídeo em si NUNCA pedem CTA). "headline" curto (máx 8 palavras). "broll" é uma descrição visual EM INGLÊS, abstrata e sem rostos. Nada de travessões.
+
+Legenda (campo "caption" separado, não aparece no vídeo): ${ctaInstruction}
 
 ${post.kind === 'topic' ? 'PAUTA' : 'POST'}:
 ${post.plain.slice(0, 4000)}`

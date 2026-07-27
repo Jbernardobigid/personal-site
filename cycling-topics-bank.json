@@ -1,5 +1,5 @@
 {
-  "comment": "Phase 4 cycling Reel idea bank. Categories mirror what the account audit says wins: listicle tips (top saves), relatable identity humor (top engagement), advocacy (top reach/shares), Black cycling history (proven with Major Taylor). Add ideas freely; cycling-topics.mjs tracks usage in cycling-topics-used.json (gitignored) so nothing repeats until the bank cycles.",
+  "comment": "Phase 4 cycling Reel + photo-day idea bank. Categories mirror what the account audit says wins: listicle tips (top saves), relatable identity humor (top engagement), advocacy (top reach/shares), Black cycling history (proven with Major Taylor). Add ideas freely; cycling-topics.mjs tracks usage in cycling-topics-used.json (gitignored) so nothing repeats until the bank cycles. An optional \"photo\" field pins a specific brand_assets/Fotos basename (see INVENTORY.md §3a jersey catalog) so photo-day.mjs forces that exact real photo via JORGE_CAROUSEL_PHOTO instead of leaving the pick to Claude's inventory judgment — used for jersey-specific stories where the visual IS the point.",
   "ideas": [
     { "id": "tips-01", "category": "tips", "idea": "Erros que todo ciclista iniciante comete nos primeiros 90 dias (e como pular essa fase)" },
     { "id": "tips-02", "category": "tips", "idea": "Como pedalar mais longe sem ser mais forte: o segredo é ritmo, não potência" },
@@ -24,6 +24,14 @@
     { "id": "identity-02", "category": "identity", "idea": "O pelotão te ensina o que a empresa esconde: ninguém cruza a linha sozinho" },
     { "id": "identity-03", "category": "identity", "idea": "Pedalar na periferia vs pedalar no centro: duas cidades, uma bike" },
     { "id": "identity-04", "category": "identity", "idea": "Representatividade no pedal: por que ver um ciclista negro na frente muda quem vem atrás" },
+    { "id": "identity-05", "category": "identity", "idea": "A camisa 'Fogo nos Racistas' que eu visto pra pedalar no meio do trânsito de São Paulo", "photo": "20221203_110531" },
+    { "id": "identity-06", "category": "identity", "idea": "O que significa carregar o símbolo do Black Panther Party numa prova de estrada", "photo": "20221203_105448" },
+    { "id": "identity-07", "category": "identity", "idea": "Punho erguido na estampa, punho erguido no guidão: o que a camisa Resistência carrega", "photo": "20221203_110857" },
+    { "id": "identity-08", "category": "identity", "idea": "A estampa africana na minha camisa de ciclismo não é decoração, é declaração", "photo": "20221203_105845" },
+    { "id": "identity-09", "category": "identity", "idea": "O dia que a coleção inteira da marca ficou pendurada pela primeira vez numa feira" },
+    { "id": "history-05", "category": "history", "idea": "Sankofa: por que o pássaro que olha pra trás está estampado na minha camisa de treino", "photo": "20221203_110813" },
+    { "id": "history-06", "category": "history", "idea": "Cada símbolo adinkra na minha camisa é um provérbio africano que eu carrego pedalando", "photo": "20221203_110347" },
+    { "id": "advocacy-05", "category": "advocacy", "idea": "Por que colocar história negra numa camisa de ciclismo não é modinha, é memória", "photo": "20221203_124300" },
     { "id": "mind-01", "category": "mind", "idea": "O que 4 horas de sela ensinam sobre paciência que nenhum curso ensina" },
     { "id": "mind-02", "category": "mind", "idea": "Tem pedal que ninguém vê. É ali que você se encontra" },
     { "id": "mind-03", "category": "mind", "idea": "A dor boa e a dor ruim: o que o corpo avisa e o ego ignora" },

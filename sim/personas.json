@@ -1,0 +1,718 @@
+{
+  "_comment": "MiroFish-style synthetic audience: designed cohort clusters (market research, NOT scraped from Jorge's real followers). segment=follower clusters weighted to represent ~4000 followers; segment=influencer clusters weighted to represent ~300 influencer/brand-scout accounts. Weights are relative population share within each segment, used to compute weighted-average propensity scores.",
+  "generatedAt": "2026-07-27",
+  "followers": [
+    {
+      "id": "f01-weekend-warrior-roadie",
+      "segment": "follower",
+      "weight": 214,
+      "profile": "Homem ou mulher 30-45 anos, pedala road bike aos fins de semana em grupo, treina com plano estruturado mas não é atleta profissional. Segue contas de ciclismo para dicas de treino e inspiração de longões.",
+      "dispositions": [
+        "responde bem a números concretos (km, elevação, W/kg)",
+        "valoriza disciplina e consistência",
+        "cético com conteúdo raso de 'dica genérica'"
+      ],
+      "goals": [
+        "melhorar performance",
+        "encontrar parceiros de pedal",
+        "validar que o esforço do fim de semana vale a pena"
+      ]
+    },
+    {
+      "id": "f02-cycling-humor-lurker",
+      "segment": "follower",
+      "weight": 214,
+      "profile": "Segue várias contas de ciclismo só pelo entretenimento; ciclista casual ou nem pedala regularmente, mas curte a cultura da bike.",
+      "dispositions": [
+        "engaja rápido e sem fricção com humor e flagras",
+        "raramente comenta, mas compartilha o que acha engraçado",
+        "baixa tolerância a conteúdo longo ou didático"
+      ],
+      "goals": [
+        "ser entretido no scroll",
+        "mandar pra um amigo ciclista"
+      ]
+    },
+    {
+      "id": "f03-strava-data-nerd",
+      "segment": "follower",
+      "weight": 214,
+      "profile": "Obcecado por métricas: zona de treino, FTP, W/kg, TSS. Analisa o próprio Strava com afinco e busca essa mesma linguagem em quem segue.",
+      "dispositions": [
+        "desconfia de motivação vaga sem dado por trás",
+        "adora comparar números",
+        "engaja em posts que ensinam a interpretar métrica"
+      ],
+      "goals": [
+        "aprender a treinar com mais precisão",
+        "comparar sua performance com a de outros"
+      ]
+    },
+    {
+      "id": "f04-black-cyclist-representation",
+      "segment": "follower",
+      "weight": 278,
+      "profile": "Segue Jorge especificamente pela representatividade: ciclista negro brasileiro visível num esporte majoritariamente branco. Pode pedalar ou não.",
+      "dispositions": [
+        "forte identificação emocional com pautas de identidade e história negra no ciclismo",
+        "compartilha para amplificar representatividade",
+        "sensível a autenticidade, rejeita tom institucional"
+      ],
+      "goals": [
+        "ver-se representado",
+        "apoiar uma voz negra crescendo no nicho",
+        "aprender história apagada (Major Taylor etc)"
+      ]
+    },
+    {
+      "id": "f05-long-time-silent-lurker",
+      "segment": "follower",
+      "weight": 214,
+      "profile": "Segue há tempos, quase nunca curte, comenta ou compartilha, mas assiste os Reels até o fim com frequência.",
+      "dispositions": [
+        "baixíssima taxa de ação visível (like/comment)",
+        "mas 'save' é seu único sinal de investimento real",
+        "prefere consumir a interagir publicamente"
+      ],
+      "goals": [
+        "absorver conteúdo sem se expor"
+      ]
+    },
+    {
+      "id": "f06-urban-commuter-advocate",
+      "segment": "follower",
+      "weight": 223,
+      "profile": "Pedala para o trabalho na cidade, se importa com infraestrutura cicloviária e segurança viária. Segue contas que discutem mobilidade urbana.",
+      "dispositions": [
+        "engaja fortemente com pautas de segurança e advocacy",
+        "comenta com sua própria experiência de quase-acidente",
+        "compartilha posts sobre infraestrutura com legenda própria"
+      ],
+      "goals": [
+        "mudar a cultura de trânsito",
+        "trocar experiências de commuting seguro"
+      ]
+    },
+    {
+      "id": "f07-tech-professional-cyclist",
+      "segment": "follower",
+      "weight": 223,
+      "profile": "Profissional de tecnologia, como o próprio Jorge, que pedala como escape do trabalho de tela. Vê em Jorge um par profissional.",
+      "dispositions": [
+        "se identifica com o cruzamento tech + bike + disciplina",
+        "engaja mais com conteúdo de 'mentalidade' e rotina do que com dicas técnicas de bike",
+        "compartilha em grupos de WhatsApp de colegas de trabalho"
+      ],
+      "goals": [
+        "equilibrar carreira exigente com vida física",
+        "validar que dá pra ter as duas coisas"
+      ]
+    },
+    {
+      "id": "f08-new-cyclist-weightloss",
+      "segment": "follower",
+      "weight": 205,
+      "profile": "Começou a pedalar há poucos meses, motivado por saúde ou emagrecimento. Ainda inseguro tecnicamente.",
+      "dispositions": [
+        "busca ativamente conteúdo de dica e tutorial",
+        "engaja com posts de transformação, se vê no 'antes'",
+        "comenta pedindo conselho"
+      ],
+      "goals": [
+        "não se machucar ou desistir",
+        "ver prova de que a transformação é possível"
+      ]
+    },
+    {
+      "id": "f09-masters-age-cyclist",
+      "segment": "follower",
+      "weight": 188,
+      "profile": "40+ anos, voltou a pedalar depois de um hiato ou começou tarde. Preocupado com recuperação, lesão e longevidade no esporte.",
+      "dispositions": [
+        "forte ressonância com conteúdo sobre platô, recuperação e 'não é mais sobre pedir permissão'",
+        "engaja com reflexão mais do que com dica técnica pura",
+        "comenta compartilhando a própria idade/jornada"
+      ],
+      "goals": [
+        "treinar de forma sustentável",
+        "sentir que ainda tem tempo/relevância no esporte"
+      ]
+    },
+    {
+      "id": "f10-gran-fondo-aspirant",
+      "segment": "follower",
+      "weight": 154,
+      "profile": "Está treinando para uma prova de longa distância (gran fondo, granfondo, L'Étape) como o próprio Jorge.",
+      "dispositions": [
+        "altíssimo engajamento com recap de prova e dados de treino específico",
+        "salva posts com plano de treino ou pacing",
+        "compara sua meta de tempo com a de Jorge"
+      ],
+      "goals": [
+        "completar a prova",
+        "não sofrer tanto na parte final"
+      ]
+    },
+    {
+      "id": "f11-black-professional-in-tech",
+      "segment": "follower",
+      "weight": 154,
+      "profile": "Profissional negro em tech, não necessariamente ciclista, seguiu Jorge pela pauta de carreira/identidade e ficou pelo ciclismo.",
+      "dispositions": [
+        "engaja fortemente com identidade e mente/carreira",
+        "moderado com conteúdo puramente técnico de bike",
+        "compartilha posts de identidade em redes profissionais (LinkedIn)"
+      ],
+      "goals": [
+        "ver referência de trajetória negra em tech",
+        "network e inspiração de carreira"
+      ]
+    },
+    {
+      "id": "f12-mtb-weekend-explorer",
+      "segment": "follower",
+      "weight": 111,
+      "profile": "Prefere mountain bike e trilha a road, mas segue Jorge pela cultura geral de ciclismo.",
+      "dispositions": [
+        "menor afinidade com conteúdo road-specific",
+        "alta afinidade com bikepacking e aventura",
+        "engaja pouco com conteúdo urbano/commuter"
+      ],
+      "goals": [
+        "descobrir novas trilhas e rotas de aventura"
+      ]
+    },
+    {
+      "id": "f13-sao-paulo-local-rider",
+      "segment": "follower",
+      "weight": 111,
+      "profile": "Pedala nas mesmas serras/rotas que Jorge (Salesópolis, Jaca Machadinho etc), conexão geográfica direta.",
+      "dispositions": [
+        "reconhece lugares específicos e comenta com detalhe local",
+        "engaja fortissimo quando o conteúdo cita uma rota que ele também pedalou",
+        "compartilha marcando amigos do mesmo grupo de pedal"
+      ],
+      "goals": [
+        "trocar rota e experiência local",
+        "se conectar com a comunidade paulistana de ciclismo"
+      ]
+    },
+    {
+      "id": "f14-womens-cycling-follower",
+      "segment": "follower",
+      "weight": 128,
+      "profile": "Ciclista mulher, segue contas mistas mas presta atenção especial em como o espaço é tratado para mulheres no esporte.",
+      "dispositions": [
+        "engaja com pautas de representatividade mesmo quando o recorte não é sobre gênero, por analogia",
+        "sensível a tom inclusivo vs. machismo casual do meio ciclista",
+        "compartilha conteúdo de segurança viária"
+      ],
+      "goals": [
+        "se sentir bem-vinda no nicho",
+        "achar conteúdo sem o tom 'macho' comum do ciclismo de estrada"
+      ]
+    },
+    {
+      "id": "f15-cycling-parent-limited-time",
+      "segment": "follower",
+      "weight": 128,
+      "profile": "Tem filhos pequenos, luta pra achar tempo pra pedalar, sente culpa e recompensa em doses iguais.",
+      "dispositions": [
+        "forte ressonância emocional com conteúdo de paternidade + rotina + disciplina",
+        "comenta compartilhando o próprio dilema tempo/família",
+        "engaja menos com conteúdo puramente performático"
+      ],
+      "goals": [
+        "validar que dá pra manter o esporte sendo pai/mãe",
+        "roubar tempo de qualidade sem culpa"
+      ]
+    },
+    {
+      "id": "f16-budget-gear-seeker",
+      "segment": "follower",
+      "weight": 120,
+      "profile": "Ciclista com orçamento limitado, sempre em busca de review honesto de equipamento custo-benefício.",
+      "dispositions": [
+        "salva posts de gear/review para referência futura",
+        "comenta pedindo recomendação específica",
+        "cético com conteúdo que parece publi disfarçada"
+      ],
+      "goals": [
+        "equipar a bike sem gastar muito",
+        "evitar compra ruim"
+      ]
+    },
+    {
+      "id": "f17-indoor-trainer-zwift-enthusiast",
+      "segment": "follower",
+      "weight": 103,
+      "profile": "Treina bastante em rolo/Zwift por clima ou trânsito, complementa com pedal de rua nos fins de semana.",
+      "dispositions": [
+        "engaja com dado de treino estruturado",
+        "baixa afinidade com conteúdo 'aventura ao ar livre' puro",
+        "comenta comparando treino indoor vs outdoor"
+      ],
+      "goals": [
+        "otimizar o tempo limitado de treino",
+        "não perder forma na semana"
+      ]
+    },
+    {
+      "id": "f18-urban-safety-advocate",
+      "segment": "follower",
+      "weight": 111,
+      "profile": "Ativista ou simpatizante de mobilidade urbana segura, pode nem pedalar todo dia mas se importa com a pauta.",
+      "dispositions": [
+        "altíssimo engajamento com histórias de quase-acidente e crítica a infraestrutura",
+        "compartilha para pressionar por mudança de política pública",
+        "comenta com dados de outras cidades"
+      ],
+      "goals": [
+        "mudar política de trânsito",
+        "reduzir mortes de ciclistas"
+      ]
+    },
+    {
+      "id": "f19-fitness-crossover-follower",
+      "segment": "follower",
+      "weight": 94,
+      "profile": "Corredor ou triatleta curioso sobre ciclismo, segue Jorge para entender o esporte antes de migrar ou complementar.",
+      "dispositions": [
+        "engaja com conteúdo comparativo (bike vs corrida) e dicas de iniciante",
+        "baixa afinidade com conteúdo de identidade/advocacy",
+        "comenta perguntando equivalências de esforço"
+      ],
+      "goals": [
+        "decidir se vale investir em bike",
+        "não se machucar na transição"
+      ]
+    },
+    {
+      "id": "f20-coffee-ride-social-cyclist",
+      "segment": "follower",
+      "weight": 103,
+      "profile": "Pedala mais pelo social (café, grupo, papo) do que por performance pura.",
+      "dispositions": [
+        "engaja com conteúdo de comunidade e bastidor de grupo",
+        "baixa afinidade com dado técnico puro",
+        "comenta marcando o grupo de pedal"
+      ],
+      "goals": [
+        "fortalecer a turma de pedal",
+        "descobrir novos pontos de encontro"
+      ]
+    },
+    {
+      "id": "f21-race-results-follower",
+      "segment": "follower",
+      "weight": 94,
+      "profile": "Acompanha resultado de prova, ranking, tempo, posição — consome ciclismo quase como esporte de espectador.",
+      "dispositions": [
+        "engaja com recap de prova e número de resultado",
+        "baixa afinidade com conteúdo introspectivo sem dado concreto",
+        "compartilha resultado como conquista alheia inspiradora"
+      ],
+      "goals": [
+        "acompanhar a evolução competitiva de quem segue"
+      ]
+    },
+    {
+      "id": "f22-gravel-bikepacker",
+      "segment": "follower",
+      "weight": 111,
+      "profile": "Faz gravel e bikepacking, busca inspiração de rota e logística de viagem de bike.",
+      "dispositions": [
+        "altíssima afinidade com conteúdo de bikepacking e aventura longa",
+        "salva posts com logística/equipamento de viagem",
+        "baixa afinidade com conteúdo urbano-commuter"
+      ],
+      "goals": [
+        "planejar a próxima viagem de bike",
+        "aprender logística de bikepacking"
+      ]
+    },
+    {
+      "id": "f23-brazil-national-cycling-fan",
+      "segment": "follower",
+      "weight": 77,
+      "profile": "Acompanha ciclismo profissional brasileiro e internacional, segue Jorge como parte de uma dieta maior de conteúdo de ciclismo.",
+      "dispositions": [
+        "compara conteúdo amador com o profissional que consome",
+        "engaja com história do ciclismo e curiosidades",
+        "baixa afinidade com conteúdo de vida pessoal sem gancho de ciclismo"
+      ],
+      "goals": [
+        "consumir cultura geral de ciclismo"
+      ]
+    },
+    {
+      "id": "f24-climbing-specialist-hills",
+      "segment": "follower",
+      "weight": 77,
+      "profile": "Vive de subida, mora ou treina em região montanhosa, se orgulha de ganho de elevação.",
+      "dispositions": [
+        "altíssimo engajamento com conteúdo de subida/elevação/serra",
+        "compara ganho de elevação nos comentários",
+        "baixa afinidade com conteúdo plano/urbano"
+      ],
+      "goals": [
+        "validar sofrimento de subida como identidade",
+        "trocar rota de montanha"
+      ]
+    },
+    {
+      "id": "f25-gear-reviewer-enthusiast",
+      "segment": "follower",
+      "weight": 68,
+      "profile": "Curte review técnico aprofundado de equipamento, mais nerd de especificação do que budget-consciente.",
+      "dispositions": [
+        "salva review técnico detalhado",
+        "comenta com contrapontos técnicos",
+        "baixa afinidade com conteúdo puramente emocional"
+      ],
+      "goals": [
+        "decidir upgrade de equipamento com base técnica"
+      ]
+    },
+    {
+      "id": "f26-aspiring-content-creator-cyclist",
+      "segment": "follower",
+      "weight": 60,
+      "profile": "Também pedala e também quer criar conteúdo de ciclismo, estuda o que funciona nas contas que segue.",
+      "dispositions": [
+        "engaja analiticamente, comenta sobre a produção do conteúdo em si",
+        "salva formatos para 'se inspirar'",
+        "compartilha com outros criadores"
+      ],
+      "goals": [
+        "aprender a fazer conteúdo de ciclismo melhor"
+      ]
+    },
+    {
+      "id": "f27-e-bike-curious",
+      "segment": "follower",
+      "weight": 51,
+      "profile": "Considerando entrar no ciclismo via e-bike, ainda não se vê como 'ciclista de verdade'.",
+      "dispositions": [
+        "engaja com conteúdo de iniciante e superação de barreira de entrada",
+        "baixa afinidade com conteúdo performático avançado",
+        "comenta com insegurança sobre pertencimento"
+      ],
+      "goals": [
+        "se sentir autorizado a começar",
+        "entender o básico sem julgamento"
+      ]
+    },
+    {
+      "id": "f28-former-cyclist-nostalgia",
+      "segment": "follower",
+      "weight": 51,
+      "profile": "Já pedalou sério no passado, parou por lesão, trabalho ou família, segue por nostalgia.",
+      "dispositions": [
+        "engaja com conteúdo de reflexão e platô/retorno",
+        "comenta contando a própria história de pausa",
+        "baixa afinidade com dica técnica de quem está treinando pesado agora"
+      ],
+      "goals": [
+        "reviver a identidade de ciclista, mesmo que só na memória"
+      ]
+    },
+    {
+      "id": "f29-night-rider-safety-conscious",
+      "segment": "follower",
+      "weight": 51,
+      "profile": "Só consegue pedalar à noite por causa da rotina de trabalho, muito atento a visibilidade e segurança.",
+      "dispositions": [
+        "engaja fortemente com conteúdo de segurança e equipamento de visibilidade",
+        "comenta com a própria rotina noturna",
+        "baixa afinidade com conteúdo de longão diurno de fim de semana"
+      ],
+      "goals": [
+        "pedalar à noite com segurança",
+        "validar que a rotina não convencional também é válida"
+      ]
+    },
+    {
+      "id": "f30-international-diaspora-follower",
+      "segment": "follower",
+      "weight": 70,
+      "profile": "Segue de fora do Brasil (diáspora negra, EUA/Europa), interessado na interseção de ciclismo e identidade negra global.",
+      "dispositions": [
+        "forte afinidade com história (Major Taylor ressoa em inglês/contexto internacional)",
+        "compartilha em círculos fora do Brasil, ampliando alcance internacional",
+        "menor afinidade com conteúdo hiperlocal de São Paulo"
+      ],
+      "goals": [
+        "conectar a experiência negra no ciclismo brasileiro com a própria realidade"
+      ]
+    }
+  ],
+  "influencers": [
+    {
+      "id": "i01-mid-tier-cycling-creator",
+      "segment": "influencer",
+      "weight": 30,
+      "profile": "Criador de conteúdo de ciclismo com audiência própria de 20-100k, sempre buscando quem convidar pra collab ou dueto.",
+      "dispositions": [
+        "ressoa com formato ousado ou tecnicamente bem produzido",
+        "avalia se o conteúdo teria fôlego no próprio feed",
+        "prioriza reshare de conteúdo com potencial viral (humor, história forte)"
+      ],
+      "goals": [
+        "achar conteúdo/collab que cresça a própria audiência"
+      ],
+      "brandCategories": [
+        "media/creator-network"
+      ]
+    },
+    {
+      "id": "i02-local-bike-shop-account",
+      "segment": "influencer",
+      "weight": 25,
+      "profile": "Loja de bike local em São Paulo, usa Instagram para engajar a comunidade de clientes.",
+      "dispositions": [
+        "ressoa com conteúdo hiperlocal (rotas de SP, comunidade)",
+        "interesse comercial em gear/review e commuter",
+        "reposta conteúdo que traz cliente até a loja física"
+      ],
+      "goals": [
+        "engajar clientela local",
+        "ser citado como referência de equipamento/serviço"
+      ],
+      "brandCategories": [
+        "bike-shop-local",
+        "gear-retail"
+      ]
+    },
+    {
+      "id": "i03-nutrition-brand-scout",
+      "segment": "influencer",
+      "weight": 22,
+      "profile": "Time de marketing/parcerias de marca de nutrição esportiva (gel, isotônico, suplemento) buscando embaixadores de endurance.",
+      "dispositions": [
+        "procura autenticidade de treino real e números de prova",
+        "ressoa com conteúdo de longão, prova e recuperação",
+        "avalia consistência de postagem antes de propor parceria"
+      ],
+      "goals": [
+        "achar embaixador crível para nutrição de endurance"
+      ],
+      "brandCategories": [
+        "nutrition-sports"
+      ]
+    },
+    {
+      "id": "i04-apparel-brand-scout",
+      "segment": "influencer",
+      "weight": 25,
+      "profile": "Marca de roupa/equipamento de ciclismo (jersey, bermuda) avaliando criadores para parceria de produto.",
+      "dispositions": [
+        "ressoa fortemente com estética visual forte e identidade de marca pessoal",
+        "interesse alto em conteúdo de identidade negra + ciclismo como diferencial de posicionamento",
+        "avalia qualidade de produção de vídeo/imagem"
+      ],
+      "goals": [
+        "associar a marca a uma identidade autêntica e visualmente forte"
+      ],
+      "brandCategories": [
+        "apparel",
+        "gear-retail"
+      ]
+    },
+    {
+      "id": "i05-event-organizer-gran-fondo",
+      "segment": "influencer",
+      "weight": 18,
+      "profile": "Organização de provas de longa distância (gran fondo, L'Étape-style), busca ciclistas amadores para embaixaixar/cobrir o evento.",
+      "dispositions": [
+        "ressoa fortemente com recap de prova e conteúdo de treino para prova específica",
+        "interesse em cobertura autêntica em primeira pessoa",
+        "menor interesse em conteúdo sem gancho competitivo"
+      ],
+      "goals": [
+        "gerar buzz orgânico pré e pós-prova"
+      ],
+      "brandCategories": [
+        "event-organizer"
+      ]
+    },
+    {
+      "id": "i06-cycling-app-partnerships",
+      "segment": "influencer",
+      "weight": 20,
+      "profile": "Time de parcerias de app de ciclismo (Strava-like, Komoot-like), busca criadores que já usam dado de treino organicamente.",
+      "dispositions": [
+        "ressoa fortemente com conteúdo data/Strava e interpretação de métrica",
+        "avalia se o criador já integra o app organicamente antes de propor",
+        "menor interesse em conteúdo puramente emocional sem dado"
+      ],
+      "goals": [
+        "mostrar caso de uso real do app através de um criador confiável"
+      ],
+      "brandCategories": [
+        "cycling-app",
+        "tech-adjacent"
+      ]
+    },
+    {
+      "id": "i07-bike-component-brand-scout",
+      "segment": "influencer",
+      "weight": 20,
+      "profile": "Marca de componente/bike (grupo, rodas, quadro) de nível regional, avaliando embaixador amador consistente.",
+      "dispositions": [
+        "ressoa com conteúdo técnico de gear e POV de performance",
+        "avalia frequência e qualidade de menção orgânica de equipamento",
+        "cético com criador que parece só atrás de produto grátis"
+      ],
+      "goals": [
+        "achar embaixador tecnicamente crível de longo prazo"
+      ],
+      "brandCategories": [
+        "bike-components",
+        "gear-retail"
+      ]
+    },
+    {
+      "id": "i08-diversity-equity-brand-scout",
+      "segment": "influencer",
+      "weight": 22,
+      "profile": "Marca (não necessariamente de ciclismo) com iniciativa de diversidade, buscando parceria com criadores negros em nichos não-óbvios.",
+      "dispositions": [
+        "altíssima ressonância com pautas de identidade e história negra no ciclismo",
+        "avalia autenticidade e consistência da voz antes de propor, evita tokenismo",
+        "menor interesse em conteúdo puramente técnico de bike"
+      ],
+      "goals": [
+        "parceria autêntica que não pareça oportunista"
+      ],
+      "brandCategories": [
+        "dei-brand",
+        "consumer-brand"
+      ]
+    },
+    {
+      "id": "i09-tech-company-brand-scout",
+      "segment": "influencer",
+      "weight": 18,
+      "profile": "Marca de tecnologia (software, hardware, fintech) buscando embaixador que una tech + estilo de vida saudável.",
+      "dispositions": [
+        "ressoa com conteúdo de mentalidade, rotina e cruzamento tech+bike",
+        "avalia se o criador tem credibilidade profissional em tech (Jorge tem)",
+        "menor interesse em conteúdo puramente esportivo sem gancho profissional"
+      ],
+      "goals": [
+        "achar embaixador que fale a linguagem de um público profissional de tech"
+      ],
+      "brandCategories": [
+        "tech-brand",
+        "fintech-adjacent"
+      ]
+    },
+    {
+      "id": "i10-cycling-media-outlet",
+      "segment": "influencer",
+      "weight": 16,
+      "profile": "Veículo de mídia ou podcast de ciclismo buscando pauta/convidado para entrevista ou matéria.",
+      "dispositions": [
+        "ressoa com história pessoal forte e ângulo de reportagem (identidade, tech+bike)",
+        "avalia se há uma narrativa maior por trás do post",
+        "menor interesse em conteúdo puramente promocional"
+      ],
+      "goals": [
+        "achar pauta/entrevistado com boa história para o público deles"
+      ],
+      "brandCategories": [
+        "media/creator-network"
+      ]
+    },
+    {
+      "id": "i11-black-owned-business-network",
+      "segment": "influencer",
+      "weight": 18,
+      "profile": "Rede/coletivo de negócios negros buscando amplificar e cross-promover empreendedores e criadores negros, incluindo a DePretoPraPreto.",
+      "dispositions": [
+        "altíssima ressonância com identidade e comunidade negra",
+        "reposta para fortalecer a rede, não por métrica pura",
+        "menor interesse em conteúdo sem menção de comunidade/identidade"
+      ],
+      "goals": [
+        "fortalecer a rede de negócios e criadores negros"
+      ],
+      "brandCategories": [
+        "black-owned-network",
+        "dei-brand"
+      ]
+    },
+    {
+      "id": "i12-insurance-fintech-brand-scout",
+      "segment": "influencer",
+      "weight": 14,
+      "profile": "Marca de seguro ou fintech voltada a atletas amadores (seguro de bike, cartão com cashback fitness), buscando prova social.",
+      "dispositions": [
+        "ressoa com conteúdo de disciplina financeira/mentalidade aplicada ao esporte",
+        "avalia consistência e profissionalismo do criador antes de propor",
+        "menor interesse em conteúdo puramente esportivo sem gancho de estilo de vida"
+      ],
+      "goals": [
+        "associar o produto a um estilo de vida disciplinado e confiável"
+      ],
+      "brandCategories": [
+        "fintech-adjacent",
+        "insurance"
+      ]
+    },
+    {
+      "id": "i13-bike-tourism-brand-scout",
+      "segment": "influencer",
+      "weight": 14,
+      "profile": "Órgão de turismo ou operadora de viagem de bike buscando criador para divulgar destino/rota.",
+      "dispositions": [
+        "altíssima ressonância com bikepacking e conteúdo de paisagem/jornada",
+        "avalia qualidade visual do conteúdo antes de propor viagem patrocinada",
+        "menor interesse em conteúdo urbano sem componente de viagem"
+      ],
+      "goals": [
+        "gerar desejo de viagem através de conteúdo autêntico de bike"
+      ],
+      "brandCategories": [
+        "tourism",
+        "bike-tourism"
+      ]
+    },
+    {
+      "id": "i14-e-bike-brand-scout",
+      "segment": "influencer",
+      "weight": 12,
+      "profile": "Marca de e-bike buscando embaixador que ajude a legitimar e-bike para o público 'ciclista de verdade'.",
+      "dispositions": [
+        "interesse moderado, principalmente em conteúdo de iniciante/acessibilidade",
+        "avalia se o criador validaria e-bike sem soar como venda forçada",
+        "menor interesse em conteúdo hardcore de performance"
+      ],
+      "goals": [
+        "expandir a percepção de e-bike além do estigma de 'não é ciclismo de verdade'"
+      ],
+      "brandCategories": [
+        "e-bike",
+        "gear-retail"
+      ]
+    },
+    {
+      "id": "i15-micro-influencer-peer-collab",
+      "segment": "influencer",
+      "weight": 26,
+      "profile": "Outro criador de ciclismo de porte similar ou menor que Jorge, buscando collab, duo ou troca de menção, não uma marca.",
+      "dispositions": [
+        "ressoa com formato replicável no próprio feed (humor, POV)",
+        "reposta por afinidade de comunidade, não por avaliação comercial",
+        "engaja publicamente para construir relação"
+      ],
+      "goals": [
+        "crescer em conjunto via troca de audiência"
+      ],
+      "brandCategories": [
+        "peer-creator"
+      ]
+    }
+  ]
+}

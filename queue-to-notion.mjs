@@ -56,9 +56,14 @@ function parseMeta(carouselDir) {
   const raw = fs.existsSync(captionPath) ? fs.readFileSync(captionPath, 'utf8') : '';
   const format = /POST FORMAT:\s*(\w+)/i.exec(raw);
   const pillar = /PILLAR:\s*([\w-]+)/i.exec(raw);
+  const fromBlog = /FROM BLOG:\s*(\w+)/i.exec(raw);
   return {
     type: format && format[1].toUpperCase() === 'SINGLE' ? 'Single' : 'Carousel',
     pillar: pillar ? (PILLAR_LABELS[pillar[1].toLowerCase()] || null) : null,
+    // Standalone (non-blog) posts are always cycling-pillar today (photo-day +
+    // cycling-topics.mjs standalone Reels) — mirrors prepare-video.mjs's
+    // Series: cycling ? 'Cycling' : 'Blog-derived' convention.
+    series: fromBlog && fromBlog[1].toLowerCase() === 'no' ? 'Cycling' : 'Blog-derived',
   };
 }
 
@@ -100,7 +105,7 @@ async function queueCarousel(dbId, id) {
     Name: prop.title(id),
     Status: prop.select('Draft'),
     Type: prop.select(meta.type),
-    Series: prop.select('Blog-derived'),
+    Series: prop.select(meta.series),
     Caption: prop.richText(caption),
     'Media URL': prop.url(firstUrl),
     Preview: prop.files([firstUrl]),

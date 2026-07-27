@@ -40,3 +40,14 @@ infra/
 cycling-topic.json
 cycling-topics-used.json
 ig-performance.json
+
+# Photo-day (single-image, non-Reel) daily cadence — per-run pick, same ledger convention
+photo-topic.json
+
+# Audience simulation — sim/personas.json, sim/content-variants.json, and the
+# .mjs tooling are committed (methodology), but round data and the generated
+# strategy outputs contain brand-partnership targeting analysis — repo is
+# PUBLIC, keep these local, same tier as brainstorms/.
+sim/sim-state.json
+sim-predictions.json
+docs/audience-simulation-report.md

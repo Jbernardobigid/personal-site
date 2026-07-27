@@ -1,0 +1,44 @@
+{
+  "_comment": "Seed material under test: type x format taxonomy. 14 content types x 6 platform formats, curated (not full cross-product) to ~30 variants. Each variant is a short brief the persona-agents react to, in Jorge's actual voice/context.",
+  "types": [
+    "tips", "humor", "advocacy", "history", "identity", "mind", "gear",
+    "community", "data", "race-recap", "pov-ride", "transformation",
+    "bikepacking", "bts-vlog"
+  ],
+  "formats": [
+    "reel-vo-faceless", "reel-pov-footage", "carousel-educational",
+    "single-image", "story-bts", "story-blog-teaser"
+  ],
+  "variants": [
+    { "id": "v01", "type": "tips", "format": "reel-vo-faceless", "brief": "3 erros que todo ciclista iniciante comete nas primeiras semanas (postura, cadência, hidratação), narrado em primeira pessoa com exemplos concretos de erro que o próprio Jorge cometeu." },
+    { "id": "v02", "type": "tips", "format": "carousel-educational", "brief": "Checklist visual de manutenção básica de bike antes de sair pra pedalar (pneu, freio, corrente, marcha) em 6 slides." },
+    { "id": "v03", "type": "humor", "format": "reel-vo-faceless", "brief": "Flagra relatable e engraçado de um momento clássico de pedal (queda em baixa velocidade parado no farol, caimbra no meio da subida), tom leve e autodepreciativo." },
+    { "id": "v04", "type": "humor", "format": "reel-pov-footage", "brief": "POV cru, sem narração, só texto na tela, de um momento cômico durante o pedal captado no calor da hora." },
+    { "id": "v05", "type": "advocacy", "format": "reel-vo-faceless", "brief": "Relato de um quase-acidente no trânsito (carro que 'achou que deu espaço'), narrado com raiva controlada e fechamento reflexivo sobre infraestrutura." },
+    { "id": "v06", "type": "advocacy", "format": "carousel-educational", "brief": "Dados sobre infraestrutura cicloviária em São Paulo (km de ciclovia, mortes de ciclistas no trânsito) em formato educativo de carrossel." },
+    { "id": "v07", "type": "history", "format": "reel-vo-faceless", "brief": "A história de Major Taylor, primeiro campeão mundial negro de ciclismo, conectada à própria trajetória de Jorge como ciclista negro hoje." },
+    { "id": "v08", "type": "history", "format": "carousel-educational", "brief": "Linha do tempo educativa da presença negra no ciclismo mundial, dos pioneiros esquecidos até hoje." },
+    { "id": "v09", "type": "identity", "format": "reel-vo-faceless", "brief": "O que é pedalar sendo homem negro no Brasil: os olhares, os espaços que ainda parecem não ser feitos pra você, e por que continuar." },
+    { "id": "v10", "type": "identity", "format": "single-image", "brief": "Foto de Jorge na bike com legenda reflexiva sobre identidade e pertencimento no ciclismo de estrada." },
+    { "id": "v11", "type": "mind", "format": "reel-vo-faceless", "brief": "O platô dos 90 dias: como confundir volume com progresso e o que muda quando você entende a diferença entre acumular km e treinar de verdade." },
+    { "id": "v12", "type": "mind", "format": "story-bts", "brief": "Reflexão crua e não-produzida em Stories, gravada logo depois de um pedal difícil, sobre disciplina e motivação no dia em que não deu vontade de sair." },
+    { "id": "v13", "type": "gear", "format": "reel-vo-faceless", "brief": "Review rápido e honesto de um item de equipamento custo-benefício que realmente fez diferença no treino, sem parecer publicidade." },
+    { "id": "v14", "type": "gear", "format": "single-image", "brief": "Foto do setup da bike com specs técnicas na legenda, para quem está pesquisando upgrade." },
+    { "id": "v15", "type": "community", "format": "reel-vo-faceless", "brief": "A galera do rachão de sábado: o que o grupo de pedal significa além do treino, amizade e pertencimento." },
+    { "id": "v16", "type": "community", "format": "story-bts", "brief": "Bastidores crus do encontro do grupo antes de sair pra pedalar, café, risada, sem produção." },
+    { "id": "v17", "type": "data", "format": "reel-vo-faceless", "brief": "Números reais do Strava de uma semana de treino (W/kg, zona 4, elevação total) explicados de forma que até quem não entende de métrica acompanha." },
+    { "id": "v18", "type": "data", "format": "carousel-educational", "brief": "Carrossel educativo ensinando a interpretar as métricas básicas do Strava (FTP, zona de treino, TSS) para quem está começando a treinar sério." },
+    { "id": "v19", "type": "race-recap", "format": "reel-vo-faceless", "brief": "Recap emocional pós-prova de longa distância (tipo L'Étape): a dor da largada, o momento de quase desistir, a chegada." },
+    { "id": "v20", "type": "race-recap", "format": "story-bts", "brief": "Stories ao vivo no dia da prova: largada, pontos de apoio, chegada, sem edição, em tempo real." },
+    { "id": "v21", "type": "pov-ride", "format": "reel-pov-footage", "brief": "POV puro de uma subida difícil de ~700m de ganho de elevação, sem narração, só o som da respiração e da estrada, texto mínimo na tela com o número da subida." },
+    { "id": "v22", "type": "pov-ride", "format": "story-bts", "brief": "Trecho cru de um pedal comum de terça-feira, sem produção, só pra mostrar a rotina real." },
+    { "id": "v23", "type": "transformation", "format": "reel-vo-faceless", "brief": "Antes e depois físico e mental de um ano de treino consistente, com números reais de peso, tempo e W/kg." },
+    { "id": "v24", "type": "transformation", "format": "carousel-educational", "brief": "O plano de treino estruturado por trás da transformação, em formato de carrossel passo a passo." },
+    { "id": "v25", "type": "bikepacking", "format": "reel-vo-faceless", "brief": "Gancho de aventura: uma viagem de bikepacking de fim de semana, o imprevisto no meio do caminho, a paisagem que compensou." },
+    { "id": "v26", "type": "bikepacking", "format": "single-image", "brief": "Foto de paisagem de uma viagem de bikepacking com legenda contando a jornada por trás da imagem." },
+    { "id": "v27", "type": "bts-vlog", "format": "reel-vo-faceless", "brief": "Um dia na vida: reunião de trabalho em tech de manhã, pedal de treino à tarde, como as duas coisas convivem na rotina real de Jorge." },
+    { "id": "v28", "type": "bts-vlog", "format": "story-bts", "brief": "Stories crus do dia a dia intercalando trabalho e bike, sem roteiro, mostrando a rotina real." },
+    { "id": "v29", "type": "tips", "format": "story-blog-teaser", "brief": "Story rápido teaser puxando para um post do blog sobre um erro específico de treino, com sticker de link para 'ler o post completo'." },
+    { "id": "v30", "type": "advocacy", "format": "story-blog-teaser", "brief": "Story teaser puxando para um post do blog sobre segurança viária e infraestrutura cicloviária, com sticker de link." }
+  ]
+}

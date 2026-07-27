@@ -32,6 +32,11 @@ const USED_PATH = path.join(__dirname, 'cycling-topics-used.json');
 const OUT_PATH = path.join(__dirname, 'cycling-topic.json');
 const PERF_PATH = path.join(__dirname, 'ig-performance.json');
 const PERF_MAX_AGE_DAYS = 30;
+// sim-predictions.json (sim/report.mjs) is a one-off strategic artifact, not a
+// continuously-refreshed feed like ig-performance.json, so it gets a much
+// longer shelf life before being treated as stale.
+const SIM_PATH = path.join(__dirname, 'sim-predictions.json');
+const SIM_MAX_AGE_DAYS = 180;
 
 const CANDIDATE_COUNT = 8;   // unused bank ideas offered to Claude per run
 const RECENT_TITLES_KEPT = 12; // produced titles fed back as "don't repeat"
@@ -75,6 +80,22 @@ function loadPerformance() {
       return null;
     }
     return p;
+  } catch { return null; }
+}
+
+// MiroFish-style synthetic-audience simulation (sim/report.mjs, one-off run —
+// see docs/audience-simulation-report.md). Predictive, not real account data;
+// folded into the same "wind, not rail" perfBlock as ig-performance.json.
+// Fail-soft: no file / stale file → no bias.
+function loadSimPredictions() {
+  try {
+    const s = JSON.parse(fs.readFileSync(SIM_PATH, 'utf8'));
+    const ageDays = (Date.now() - new Date(s.generatedAt).getTime()) / 86_400_000;
+    if (ageDays > SIM_MAX_AGE_DAYS) {
+      console.log(`  (sim-predictions.json is ${Math.round(ageDays)}d old — ignoring)`);
+      return null;
+    }
+    return s;
   } catch { return null; }
 }
 
@@ -155,7 +176,7 @@ async function stravaRecentRides() {
 
 /* ── Claude: develop the concept ─────────────────────────── */
 
-async function developConcept(client, { candidates, seed, rides, recentTitles, perf }) {
+async function developConcept(client, { candidates, seed, rides, recentTitles, perf, sim }) {
   const source = seed
     ? `IDEIA-SEMENTE (obrigatória — desenvolva ESTA ideia):\n${seed}`
     : `BANCO DE IDEIAS (escolha UMA — a que rende o melhor Reel HOJE, considerando o material do Strava e o desempenho real se houver):\n${candidates.map(c => `- [${c.id}] (${c.category}) ${c.idea}`).join('\n')}`;
@@ -173,6 +194,12 @@ async function developConcept(client, { candidates, seed, rides, recentTitles, p
         ? `Últimos Reels: ${perf.recentReels.slice(0, 5).map(r => `[${r.category ?? '—'}] reach ${r.reach}: "${r.caption.slice(0, 60)}"`).join(' | ')}\n`
         : '') +
       `Use isto como VENTO, não como trilho: entre duas ideias igualmente fortes, prefira a categoria que performa melhor — mas uma ideia concreta e viva SEMPRE vence uma categoria vencedora com ideia fraca.\n`
+    : '';
+
+  const simBlock = sim?.reelCategories?.length
+    ? `\nSIMULAÇÃO PREDITIVA DE AUDIÊNCIA (sim-predictions.json, ${sim.generatedAt.slice(0, 10)} — NÃO é dado real da conta, é uma estimativa de agentes sintéticos; use com ainda mais cautela que o desempenho real acima):\n` +
+      `Tipos de conteúdo com maior engajamento previsto: ${sim.reelCategories.slice(0, 5).map(c => `${c.group} (engajamento previsto ${c.predictedEngagement})`).join(' · ')}\n` +
+      `Isto é só mais um vento, mais fraco que o desempenho real da conta acima — nunca vença uma ideia concreta e viva, e nunca vença o desempenho real quando os dois discordarem.\n`
     : '';
 
   const res = await client.messages.create({
@@ -206,7 +233,7 @@ async function developConcept(client, { candidates, seed, rides, recentTitles, p
       content: `Desenvolva UMA pauta de Reel vertical de ciclismo (~45-50s) para hoje.
 
 ${source}
-${stravaBlock}${perfBlock}
+${stravaBlock}${perfBlock}${simBlock}
 PAUTAS RECENTES (não repita tema nem estrutura):
 ${recentTitles.length ? recentTitles.map(t => `- ${t}`).join('\n') : '(nenhuma ainda)'}
 
@@ -245,9 +272,12 @@ async function main() {
   const perf = loadPerformance();
   console.log(perf ? `  Performance data loaded (${perf.generatedAt.slice(0, 10)})` : '  (no ig-performance.json — unbiased pick)');
 
+  const sim = loadSimPredictions();
+  console.log(sim ? `  Sim predictions loaded (${sim.generatedAt.slice(0, 10)})` : '  (no sim-predictions.json — unbiased pick)');
+
   console.log('Developing concept (Claude)...');
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  const concept = await developConcept(client, { candidates, seed, rides, recentTitles: used.recentTitles, perf });
+  const concept = await developConcept(client, { candidates, seed, rides, recentTitles: used.recentTitles, perf, sim });
 
   console.log(`\n  Title: ${concept.title}`);
   console.log(`  Hook:  ${concept.hook}`);

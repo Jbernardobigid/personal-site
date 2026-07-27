@@ -436,7 +436,7 @@ async function generateCaption(client, post, format, hashtags, hasBlogPost = tru
     ? '- For carousel: add "Salva esse post 📌" somewhere\n'
     : '';
   const endingRule = hasBlogPost
-    ? `- End the caption body with "Link na bio ↗" on its own line${format === 'reframe' ? ' (before the hashtag line)' : ''}`
+    ? `- ${pickCrossChannelCta()}${format === 'reframe' ? ' (before the hashtag line)' : ''}`
     : '- This post is NOT a blog post: do NOT write "Link na bio" or mention reading a post anywhere. End with a short engagement line on its own line, e.g. "Salva esse post 📌" or "Compartilha com quem precisa ver isso"';
 
   const response = await client.messages.create({
@@ -503,6 +503,28 @@ function buildItemsHtml(items, contentType) {
     const prefix = numbered ? `${i + 1}.` : (checkmark ? '✓' : '•');
     return `<div class="item"><span class="item-prefix">${prefix}</span><span class="item-text">${escapeHtml(clean)}</span></div>`;
   }).join('\n');
+}
+
+// Cross-channel CTA funnel: the newsletter and podcast are both blog-sourced
+// but, unlike the blog itself, never get promoted in-feed — only "Link na bio"
+// ever appears. Rotate the blog-linked caption's closing line across all three
+// funnels (never stacked in one caption) so newsletter/podcast get feed
+// visibility too. Blog stays the majority weight since it's the direct source
+// of most posts; newsletter/podcast are the added funnels.
+const CROSS_CHANNEL_CTAS = [
+  { weight: 5, instruction: 'End the caption body with "Link na bio ↗" on its own line' },
+  { weight: 2, instruction: 'End the caption body with a line inviting the reader to subscribe to the weekly newsletter "A Interseção" (it\'s blog-sourced), e.g. "Toda semana eu escrevo sobre isso na newsletter. Link na bio ↗" — do NOT also mention reading the post' },
+  { weight: 2, instruction: 'End the caption body with a line inviting the reader to listen to the podcast episode on this subject (audio version of the blog), e.g. "Tem episódio novo do podcast sobre isso. Link na bio ↗" — do NOT also mention reading the post' },
+];
+
+function pickCrossChannelCta() {
+  const total = CROSS_CHANNEL_CTAS.reduce((s, c) => s + c.weight, 0);
+  let r = Math.random() * total;
+  for (const c of CROSS_CHANNEL_CTAS) {
+    r -= c.weight;
+    if (r <= 0) return c.instruction;
+  }
+  return CROSS_CHANNEL_CTAS[0].instruction;
 }
 
 // Blog-referencing CTA labels baked into some templates (not {{placeholders}}),
