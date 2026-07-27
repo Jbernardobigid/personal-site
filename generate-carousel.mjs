@@ -9,6 +9,10 @@
  *
  * Usage:
  *   node generate-carousel.mjs [post.html] [--format reframe|carousel|single]
+ *   node generate-carousel.mjs --topic "..." --format single --photo-required
+ *                                            (rules out the "quote" single-type,
+ *                                            the only one with no real photo —
+ *                                            used by photo-day.mjs)
  */
 
 import './load-env.mjs';
@@ -308,7 +312,7 @@ function readLatestPost(explicitFile) {
 
 /* ── Claude: decide format + extract content ──────────────── */
 
-async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '', historySummary = '', recentPhotos = [], forcedFormat = null } = {}) {
+async function extractPostStructure(client, post, { hasBlogPost = true, inventoryText = '', historySummary = '', recentPhotos = [], forcedFormat = null, photoRequired = false } = {}) {
   const contentBlock = post.excerpt
     ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
     : `TOPIC IDEA:\n${post.title}`;
@@ -317,10 +321,16 @@ async function extractPostStructure(client, post, { hasBlogPost = true, inventor
   // set, the model still extracts the content but is told which shape to
   // produce, instead of deciding on its own. "carousel" (the legacy educational
   // shape) is ONLY reachable through this flag since the Phase 3.5 redesign.
+  // --photo-required (photo-day.mjs) additionally rules out "quote" — the one
+  // SINGLE type with no {{PHOTO_URL}} slot — so a photo-day post can't land on
+  // a 100%-typographic card by chance; every other SINGLE type has a real
+  // photo, not just a background accent.
   const formatDirective = forcedFormat === 'reframe'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "reframe" — skip the editorial filter and build the reframe carousel from the strongest available angle.'
     : forcedFormat === 'carousel'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" (LEGACY shape) with 6-8 slides: first slide hook, last slide cta, middle slides from the LEGACY types (tip, numbered_tip, guide, list, checklist, checklist_dark, numbered_checklist, myth_truth, qa, photo_reflection). Lead the data points with myth_truth / numbered_tip / qa slides, and give cited numbers and quotes their own slides.'
+    : forcedFormat === 'single' && photoRequired
+    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "single" with exactly 1 slide. This post MUST prominently show the chosen photo, so pick the content type from: polaroid, split_photo, triptych, arch_photo, circle_photo, split_h, dual_photo, editorial_photo, rotated_text, profile_quote, tags — NEVER "quote" (it renders no photo at all).'
     : forcedFormat === 'single'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "single" with exactly 1 slide, using one SINGLE content type.'
     : '';
@@ -630,6 +640,9 @@ async function main() {
   const pillarArg = pillarIdx !== -1 ? args[pillarIdx + 1] : null;
   const formatArg = formatIdx !== -1 ? args[formatIdx + 1] : null;
   const explicitFormat = ['reframe', 'carousel', 'single'].includes(formatArg) ? formatArg : null;
+  // Rules out the "quote" single-type (no photo slot) — for callers where the
+  // whole point of the post is the real photo (photo-day.mjs).
+  const photoRequired = args.includes('--photo-required');
 
   // Whether the post links back to the blog ("Link na bio" CTA) or is standalone.
   // Defaults: --topic runs are standalone; reading a blog file is blog-linked.
@@ -667,7 +680,7 @@ async function main() {
   console.log(historySummary.split('\n').map(l => `    ${l}`).join('\n'));
   if (recentPhotos.length) console.log(`  Excluded photos (recently used): ${recentPhotos.join(', ')}`);
   if (forcedFormat) console.log(`  Format override: ${forcedFormat} (--format flag)`);
-  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary, recentPhotos, forcedFormat });
+  const { format, slides, photo } = await extractPostStructure(client, post, { hasBlogPost, inventoryText, historySummary, recentPhotos, forcedFormat, photoRequired });
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
 

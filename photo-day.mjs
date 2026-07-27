@@ -17,6 +17,8 @@
  * Idea-to-photo pinning: jersey-specific ideas in the bank carry a "photo" field
  * (see brand_assets/Fotos/INVENTORY.md §3a) forcing that exact real photo via
  * JORGE_CAROUSEL_PHOTO — deterministic, not left to Claude's inventory judgment.
+ * Always passes --photo-required to generate-carousel.mjs so the post can't
+ * land on the one single-type ("quote") that renders no photo at all.
  *
  * Usage:
  *   node photo-day.mjs            (pick + build + queue)
@@ -50,7 +52,7 @@ function main() {
   const topic = JSON.parse(fs.readFileSync(TOPIC_PATH, 'utf8'));
   console.log(`\n2/3 Building single-image post: "${topic.idea}"...`);
   const genEnv = topic.photo ? { JORGE_CAROUSEL_PHOTO: topic.photo } : {};
-  run(['generate-carousel.mjs', '--topic', topic.idea, '--format', 'single', '--pillar', 'cycling'], genEnv);
+  run(['generate-carousel.mjs', '--topic', topic.idea, '--format', 'single', '--pillar', 'cycling', '--photo-required'], genEnv);
 
   if (dryRun) {
     console.log('\n--- DRY RUN: built but NOT queued to Notion ---');
