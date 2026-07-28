@@ -229,7 +229,8 @@ ${imageUrl ? `<meta property="og:image" content="${imageUrl}">
 <meta property="article:published_time" content="${iso}">
 <meta name="twitter:title" content="${escapeJson(title)}">
 <meta name="twitter:description" content="${escapeJson(excerpt)}">
-<link rel="icon" href="../../brand_assets/logo_page_20.png" type="image/png">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script>
   window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
 </script>
@@ -401,12 +402,14 @@ ${postEntries}
 
 /* ── robots.txt ──────────────────────────────────────────── */
 
-function generateRobotsTxt() {
-  return `User-agent: *
-Allow: /
+// Named explicitly so the AI-answer crawlers stay opted in even if a future
+// default tightens `*`. Losing these silently would drop the site out of
+// ChatGPT/Perplexity/Claude answers, which is a real slice of the traffic.
+const CRAWLERS = ['*', 'GPTBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'anthropic-ai', 'Bingbot'];
 
-Sitemap: ${SITE_URL}/sitemap.xml
-`;
+function generateRobotsTxt() {
+  const agents = CRAWLERS.map(ua => `User-agent: ${ua}\nAllow: /\n`).join('\n');
+  return `${agents}\nSitemap: ${SITE_URL}/sitemap.xml\n`;
 }
 
 /* ── Main ────────────────────────────────────────────────── */
