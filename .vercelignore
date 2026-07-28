@@ -1,0 +1,37 @@
+# Keep the content-engine source out of the deployment.
+#
+# The site is served from the repo root, so anything committed here is otherwise
+# fetchable at https://www.jorgebernardo.tech/<path> — /generate-post.mjs,
+# /CLAUDE.md and /docs/PRODUCT.md all returned 200, and robots.txt invites every
+# crawler (incl. GPTBot/ClaudeBot) to index them. The repo is public, so this is
+# crawl hygiene rather than secrecy, plus one layer of protection if a future
+# commit ever lands something at the root before .gitignore catches it.
+#
+# Paths are root-anchored on purpose. Everything the live site needs must stay:
+#   index.html  blog/  privacidade/  relatorios/  images/  social/  api/
+#   favicon.png  apple-touch-icon.png  sitemap.xml  robots.txt  feed.xml
+#   podcast.xml  podcast-cover.jpg  package.json  vercel.json
+# social/ is load-bearing — post-to-instagram.mjs builds Graph API media URLs
+# from ${SITE_URL}/social/<id>/*.png and fails if they are not reachable.
+
+# Pipeline scripts (dev/VPS only — never executed by Vercel).
+/*.mjs
+
+# Repo-facing docs and instructions.
+/CLAUDE.md
+/README.md
+/docs/
+/.impeccable/
+
+# Carousel/video source templates, rendered server-side into images.
+/templates/
+
+# CI definitions and local scratch.
+/.github/
+/temp/
+/sim/
+
+# Pipeline ledgers — read by the generators on the VPS, never by a browser.
+/cycling-topics-bank.json
+/signal-sources.json
+/used-signals.json
