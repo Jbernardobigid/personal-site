@@ -96,6 +96,19 @@ if (!feed) {
   check(!newest || items[0]?.endsWith(newest),
     `feed.xml's first item is not the newest post (${newest}) — the feed is stale.`);
   check(!/<pubDate>Invalid/.test(feed), 'feed.xml contains an invalid pubDate.');
+
+  // RSS <enclosure> requires url + length + type. Google Search Console flagged
+  // a missing length once (2026-07-28) because generateFeed() only wrote two of
+  // the three — check for any enclosure tag lacking one of them.
+  // [^>]*, not [^/]* — the url attribute itself contains slashes, so excluding
+  // slashes truncates the match before the tag ever closes (this shipped once).
+  const enclosureCount = (feed.match(/<enclosure\b/g) || []).length;
+  const enclosures = feed.match(/<enclosure\b[^>]*\/>/g) || [];
+  check(enclosures.length === enclosureCount,
+    `feed.xml has ${enclosureCount} <enclosure> tag(s) but only ${enclosures.length} matched a well-formed self-closing tag — one is likely malformed.`);
+  const malformed = enclosures.filter(e => !/\burl="/.test(e) || !/\blength="\d+"/.test(e) || !/\btype="/.test(e));
+  check(malformed.length === 0,
+    `feed.xml has ${malformed.length} <enclosure> tag(s) missing url/length/type (first: ${malformed[0] ?? '-'}).`);
 }
 
 /* ── robots.txt keeps the AI-crawler allowlist ───────────── */

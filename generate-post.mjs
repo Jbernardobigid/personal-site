@@ -127,12 +127,22 @@ function getAllPostMeta() {
       const dateMatch = filename.match(/^(\d{4}-\d{2}-\d{2})/);
       let html = '';
       try { html = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf8'); } catch { /* keep going */ }
+      const image = readMetaTag(html, 'og:image');
+      // RSS <enclosure> requires a byte-size length attribute (not just url/type) —
+      // read it from the file on disk rather than guessing, and only if it resolves,
+      // so a missing image drops the enclosure instead of emitting an invalid one.
+      let imageBytes = 0;
+      if (image) {
+        try { imageBytes = fs.statSync(path.join(IMAGES_DIR, image.split('/').pop())).size; }
+        catch { /* no local file (e.g. an external OG image) — omit the enclosure */ }
+      }
       return {
         filename,
         date: dateMatch ? dateMatch[1] : isoDate(new Date()),
         title: readMetaTag(html, 'og:title'),
         description: readMetaTag(html, 'og:description'),
-        image: readMetaTag(html, 'og:image'),
+        image,
+        imageBytes,
       };
     })
     .sort((a, b) => b.date.localeCompare(a.date));
@@ -442,8 +452,8 @@ function rfc822(isoDay) {
 function generateFeed(posts) {
   const items = posts.slice(0, FEED_MAX_ITEMS).map((p) => {
     const url = `${SITE_URL}/blog/posts/${escapeXml(p.filename)}`;
-    const image = p.image
-      ? `\n      <enclosure url="${escapeXml(p.image)}" type="image/png"/>`
+    const image = (p.image && p.imageBytes)
+      ? `\n      <enclosure url="${escapeXml(p.image)}" length="${p.imageBytes}" type="image/png"/>`
       : '';
     return `    <item>
       <title>${escapeXml(p.title || p.filename)}</title>
