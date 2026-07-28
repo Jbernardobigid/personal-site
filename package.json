@@ -8,6 +8,7 @@
     "blog:generate": "node generate-post.mjs",
     "blog:generate:live": "node generate-post.mjs --with-signals",
     "blog:dry-run": "node generate-post.mjs --dry-run",
+    "content:check": "node validate-content.mjs",
     "signals:fetch": "node fetch-signals.mjs",
     "carousel:analyze": "node analyze-templates.mjs",
     "carousel:generate": "node generate-carousel.mjs",
