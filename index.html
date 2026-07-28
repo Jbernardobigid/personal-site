@@ -1517,6 +1517,10 @@ footer {
 .footer-links {
   display: flex;
   align-items: center;
+  justify-content: center;
+  /* Five links no longer fit on one line at 320px; wrapping keeps the row
+     intact at every width above that instead of forcing a horizontal scroll. */
+  flex-wrap: wrap;
   gap: 28px;
 }
 .footer-link {
