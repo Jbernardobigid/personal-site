@@ -32,6 +32,7 @@ const RESEARCH_DIR = path.join(POSTS_DIR, 'research');
 const INDEX_FILE = path.join(BLOG_DIR, 'index.html');
 const SITEMAP    = path.join(__dirname, 'sitemap.xml');
 const ROBOTS     = path.join(__dirname, 'robots.txt');
+const FEED       = path.join(__dirname, 'feed.xml');
 
 // Live canonical host is www (apex jorgebernardo.tech 307-redirects to www). Override with
 // a SITE_URL env/secret if the primary domain changes; default targets the non-redirecting host.
@@ -111,13 +112,28 @@ function getNextPillar() {
 
 /* ── Existing posts (for sitemap) ────────────────────────── */
 
+// og:* rather than <title>/<meta name="description"> because og:title carries no
+// " — Jorge Bernardo" suffix, so it drops straight into a feed item.
+function readMetaTag(html, property) {
+  const m = html.match(new RegExp(`<meta property="${property}" content="([^"]*)"`));
+  return m ? m[1] : '';
+}
+
 function getAllPostMeta() {
   if (!fs.existsSync(POSTS_DIR)) return [];
   return fs.readdirSync(POSTS_DIR)
     .filter(f => f.endsWith('.html'))
     .map(filename => {
       const dateMatch = filename.match(/^(\d{4}-\d{2}-\d{2})/);
-      return { filename, date: dateMatch ? dateMatch[1] : isoDate(new Date()) };
+      let html = '';
+      try { html = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf8'); } catch { /* keep going */ }
+      return {
+        filename,
+        date: dateMatch ? dateMatch[1] : isoDate(new Date()),
+        title: readMetaTag(html, 'og:title'),
+        description: readMetaTag(html, 'og:description'),
+        image: readMetaTag(html, 'og:image'),
+      };
     })
     .sort((a, b) => b.date.localeCompare(a.date));
 }
@@ -184,6 +200,9 @@ function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filena
     '@type': 'BlogPosting',
     headline: title,
     description: excerpt,
+    // Google wants image in the structured data, not only in the og: tags —
+    // without it the post is not eligible for Article rich results.
+    image: imageUrl,
     url: postUrl,
     datePublished: iso,
     dateModified: iso,
@@ -231,6 +250,7 @@ ${imageUrl ? `<meta property="og:image" content="${imageUrl}">
 <meta name="twitter:description" content="${escapeJson(excerpt)}">
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="Jorge Bernardo — Blog" href="/feed.xml">
 <script>
   window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
 </script>
@@ -376,7 +396,23 @@ function updateBlogIndex(newEntry) {
 
 /* ── Sitemap ─────────────────────────────────────────────── */
 
+// Hand-authored pages. They are not generated, so nothing else would ever add
+// them to the sitemap — the censo report in particular is original data worth
+// surfacing, and both were orphaned (unlinked, unindexed) until 2026-07-28.
+const STATIC_PAGES = [
+  { path: '/',                                            changefreq: 'monthly', priority: '1.0' },
+  { path: '/blog/',                                       changefreq: 'weekly',  priority: '0.8' },
+  { path: '/relatorios/censo-de-nomes-ligados-a-escravidao/', changefreq: 'yearly', priority: '0.6' },
+  { path: '/privacidade/',                                changefreq: 'yearly',  priority: '0.3' },
+];
+
 function generateSitemap(posts) {
+  const staticEntries = STATIC_PAGES.map(p => `  <url>
+    <loc>${SITE_URL}${p.path}</loc>
+    <changefreq>${p.changefreq}</changefreq>
+    <priority>${p.priority}</priority>
+  </url>`).join('\n');
+
   const postEntries = posts.map(p => `  <url>
     <loc>${SITE_URL}/blog/posts/${escapeXml(p.filename)}</loc>
     <lastmod>${p.date}</lastmod>
@@ -386,18 +422,50 @@ function generateSitemap(posts) {
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${SITE_URL}/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>${SITE_URL}/blog/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+${staticEntries}
 ${postEntries}
 </urlset>`;
+}
+
+/* ── RSS feed ────────────────────────────────────────────── */
+
+const FEED_TITLE = 'Jorge Bernardo — Blog';
+const FEED_DESCRIPTION = 'Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.';
+const FEED_MAX_ITEMS = 20;
+
+// RSS dates must be RFC-822. Post dates are date-only, so anchor them at
+// midday UTC — that way no reader shifts an item onto the previous day.
+function rfc822(isoDay) {
+  return new Date(`${isoDay}T12:00:00Z`).toUTCString();
+}
+
+function generateFeed(posts) {
+  const items = posts.slice(0, FEED_MAX_ITEMS).map((p) => {
+    const url = `${SITE_URL}/blog/posts/${escapeXml(p.filename)}`;
+    const image = p.image
+      ? `\n      <enclosure url="${escapeXml(p.image)}" type="image/png"/>`
+      : '';
+    return `    <item>
+      <title>${escapeXml(p.title || p.filename)}</title>
+      <link>${url}</link>
+      <guid isPermaLink="true">${url}</guid>
+      <pubDate>${rfc822(p.date)}</pubDate>
+      <description>${escapeXml(p.description)}</description>${image}
+    </item>`;
+  }).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${escapeXml(FEED_TITLE)}</title>
+    <link>${SITE_URL}/blog/</link>
+    <description>${escapeXml(FEED_DESCRIPTION)}</description>
+    <language>pt-BR</language>
+    <lastBuildDate>${posts.length ? rfc822(posts[0].date) : new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+${items}
+  </channel>
+</rss>`;
 }
 
 /* ── robots.txt ──────────────────────────────────────────── */
@@ -659,6 +727,9 @@ Requirements:
   const allPosts = getAllPostMeta();
   fs.writeFileSync(SITEMAP, generateSitemap(allPosts), 'utf8');
   console.log(`Sitemap updated: ${allPosts.length} post(s) indexed.`);
+
+  fs.writeFileSync(FEED, generateFeed(allPosts), 'utf8');
+  console.log(`Feed updated: ${Math.min(allPosts.length, FEED_MAX_ITEMS)} item(s).`);
 
   fs.writeFileSync(ROBOTS, generateRobotsTxt(), 'utf8');
   console.log('robots.txt updated.');

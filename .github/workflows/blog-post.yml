@@ -65,11 +65,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # blog/ covers posts/, posts/images/, posts/research/. sitemap.xml and
-          # robots.txt live at the repo root and are rewritten by generate-post.mjs
-          # on every run — staging them here is what keeps the sitemap from going
-          # stale (it silently did, May-Jul 2026, because only blog/ was staged).
-          git add blog/ sitemap.xml robots.txt
+          # blog/ covers posts/, posts/images/, posts/research/. sitemap.xml,
+          # robots.txt and feed.xml live at the repo root and are rewritten by
+          # generate-post.mjs on every run — staging them here is what keeps the
+          # sitemap from going stale (it silently did, May-Jul 2026, because only
+          # blog/ was staged). Keep this list in sync with validate-content.mjs.
+          git add blog/ sitemap.xml robots.txt feed.xml
           if [ -f used-signals.json ]; then git add used-signals.json; fi
           if git diff --cached --quiet; then
             echo "No changes to commit."

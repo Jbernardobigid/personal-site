@@ -6,56 +6,73 @@
  * sitemap was discarded each time and froze at 4 posts while 36 were live.
  * Nothing failed, nothing warned — the pipeline reported success throughout.
  *
- * This asserts that the generated artifacts actually agree with each other.
- * Exits non-zero with a readable diff so it can gate a pipeline step.
+ * This asserts that the generated artifacts actually agree with each other and
+ * with what is on disk. Exits non-zero with a readable diff so it can gate a
+ * pipeline step.
  *
- *   node validate-content.mjs
+ *   node validate-content.mjs      (or: npm run content:check)
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const POSTS_DIR = path.join(__dirname, 'blog', 'posts');
-const SITEMAP   = path.join(__dirname, 'sitemap.xml');
-const ROBOTS    = path.join(__dirname, 'robots.txt');
+const POSTS_DIR  = path.join(__dirname, 'blog', 'posts');
+const SITEMAP    = path.join(__dirname, 'sitemap.xml');
+const ROBOTS     = path.join(__dirname, 'robots.txt');
+const FEED       = path.join(__dirname, 'feed.xml');
 const BLOG_INDEX = path.join(__dirname, 'blog', 'index.html');
 
 // Crawlers that must stay explicitly opted in — losing them silently would drop
 // the site out of AI answer engines.
 const REQUIRED_AGENTS = ['GPTBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot', 'anthropic-ai', 'Bingbot'];
-const STATIC_SITEMAP_URLS = 2; // homepage + /blog/
+// Directories never scanned for hand-authored pages.
+const IGNORED_DIRS = new Set(['node_modules', 'blog', 'templates', 'temp', 'docs', 'sim', 'social', 'images', 'api', 'brand_assets', 'assets', '.git', '.github', '.impeccable', 'temporary screenshots']);
 
 const problems = [];
 const check = (ok, msg) => { if (!ok) problems.push(msg); };
-
 const read = (p) => (fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : null);
 
 const posts = fs.existsSync(POSTS_DIR)
   ? fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.html'))
   : [];
 
-/* ── sitemap covers every post ───────────────────────────── */
+/** Hand-authored pages (any dir with an index.html), found rather than hardcoded
+ *  so a new landing page cannot be silently left out of the sitemap. */
+function findStaticPages(dir = __dirname, depth = 0, found = []) {
+  if (depth > 2) return found;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory() || IGNORED_DIRS.has(entry.name) || entry.name.startsWith('.')) continue;
+    const full = path.join(dir, entry.name);
+    if (fs.existsSync(path.join(full, 'index.html'))) {
+      found.push('/' + path.relative(__dirname, full).split(path.sep).join('/') + '/');
+    }
+    findStaticPages(full, depth + 1, found);
+  }
+  return found;
+}
+
+/* ── sitemap covers every post and every hand-authored page ── */
 const sitemap = read(SITEMAP);
 if (!sitemap) {
   problems.push('sitemap.xml is missing.');
 } else {
-  const listed = [...sitemap.matchAll(/<loc>[^<]*\/blog\/posts\/([^<]+)<\/loc>/g)].map(m => m[1]);
-  const missing = posts.filter(p => !listed.includes(p));
-  const stale   = listed.filter(l => !posts.includes(l));
+  const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+  const listedPosts = locs.map(l => l.match(/\/blog\/posts\/(.+)$/)?.[1]).filter(Boolean);
 
+  const missing = posts.filter(p => !listedPosts.includes(p));
+  const stale   = listedPosts.filter(l => !posts.includes(l));
   check(missing.length === 0,
     `sitemap.xml is missing ${missing.length} of ${posts.length} posts (first: ${missing[0] ?? '-'}).\n` +
     `      Usual cause: the commit step did not stage sitemap.xml, so the regenerated copy was discarded.`);
   check(stale.length === 0,
     `sitemap.xml lists ${stale.length} post(s) that no longer exist (first: ${stale[0] ?? '-'}).`);
 
-  const total = (sitemap.match(/<url>/g) || []).length;
-  check(total === posts.length + STATIC_SITEMAP_URLS,
-    `sitemap.xml has ${total} <url> entries; expected ${posts.length + STATIC_SITEMAP_URLS} (${posts.length} posts + ${STATIC_SITEMAP_URLS} static).`);
+  for (const p of ['/', '/blog/', ...findStaticPages()]) {
+    check(locs.some(l => l.endsWith(p)), `sitemap.xml does not list the page ${p} — it would be orphaned.`);
+  }
 
-  // Every URL must sit on one host, and it must be the non-redirecting one.
-  const hosts = new Set([...sitemap.matchAll(/<loc>(https?:\/\/[^/]+)/g)].map(m => m[1]));
+  const hosts = new Set(locs.map(l => l.match(/^(https?:\/\/[^/]+)/)?.[1]));
   check(hosts.size <= 1, `sitemap.xml mixes hosts: ${[...hosts].join(', ')}. Split ranking signal.`);
 }
 
@@ -66,6 +83,19 @@ else {
   const unlinked = posts.filter(p => !index.includes(p));
   check(unlinked.length === 0,
     `blog/index.html does not link ${unlinked.length} post(s) (first: ${unlinked[0] ?? '-'}).`);
+}
+
+/* ── feed tracks the newest posts ────────────────────────── */
+const feed = read(FEED);
+if (!feed) {
+  problems.push('feed.xml is missing — every page advertises it via <link rel="alternate">.');
+} else {
+  const items = [...feed.matchAll(/<link>([^<]*\/blog\/posts\/[^<]+)<\/link>/g)].map(m => m[1]);
+  check(items.length > 0, 'feed.xml contains no items.');
+  const newest = [...posts].sort().reverse()[0];
+  check(!newest || items[0]?.endsWith(newest),
+    `feed.xml's first item is not the newest post (${newest}) — the feed is stale.`);
+  check(!/<pubDate>Invalid/.test(feed), 'feed.xml contains an invalid pubDate.');
 }
 
 /* ── robots.txt keeps the AI-crawler allowlist ───────────── */
@@ -94,4 +124,4 @@ if (problems.length) {
   process.exit(1);
 }
 
-console.log(`content check passed — ${posts.length} posts, sitemap and robots.txt consistent.`);
+console.log(`content check passed — ${posts.length} posts; sitemap, feed and robots.txt consistent.`);

@@ -11,6 +11,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.jorgebernardo.tech/relatorios/censo-de-nomes-ligados-a-escravidao/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.jorgebernardo.tech/privacidade/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://www.jorgebernardo.tech/blog/posts/2026-07-27-50-vagas-uma-camera-e-a-logica-de-quem-sempre-criou-do-zero.html</loc>
     <lastmod>2026-07-27</lastmod>
     <changefreq>never</changefreq>
