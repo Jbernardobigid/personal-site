@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Mon, 27 Jul 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jul 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Quando o mercado financeiro fala com você, não sobre você</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-29-quando-o-mercado-financeiro-fala-com-voce-nao-sobre-voce.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-29-quando-o-mercado-financeiro-fala-com-voce-nao-sobre-voce.html</guid>
+      <pubDate>Wed, 29 Jul 2026 12:00:00 GMT</pubDate>
+      <description>A N3 Notícias, de Nath Finanças, ultrapassa 5,9 milhões de views e prova que empreendedorismo negro não é nicho, é um novo centro de gravidade.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-29-quando-o-mercado-financeiro-fala-com-voce-nao-sobre-voce.png" length="2028240" type="image/png"/>
+    </item>
     <item>
       <title>50 Vagas, Uma Câmera e a Lógica de Quem Sempre Criou do Zero</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-07-27-50-vagas-uma-camera-e-a-logica-de-quem-sempre-criou-do-zero.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Sun, 21 Jun 2026 12:00:00 GMT</pubDate>
       <description>Quando uma série questiona se a Justiça é igual para todos, ela não está falando só de tribunais, está falando de quem nós somos e do que carregamos desde criança.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-06-21-a-justica-que-nao-enxerga-igual-identidade-negra-num-sistema.png" length="2152364" type="image/png"/>
-    </item>
-    <item>
-      <title>A tecnologia que chega pela porta da frente da favela</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-06-19-a-tecnologia-que-chega-pela-porta-da-frente-da-favela.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-06-19-a-tecnologia-que-chega-pela-porta-da-frente-da-favela.html</guid>
-      <pubDate>Fri, 19 Jun 2026 12:00:00 GMT</pubDate>
-      <description>Quando a CUFA e o iFood ampliam sua parceria, a pergunta real não é sobre negócios, é sobre para quem a tecnologia foi construída.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-06-19-a-tecnologia-que-chega-pela-porta-da-frente-da-favela.png" length="2298835" type="image/png"/>
     </item>
   </channel>
 </rss>
