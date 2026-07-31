@@ -21,7 +21,9 @@
  * Requires: INSTAGRAM_ACCESS_TOKEN, INSTAGRAM_USER_ID, re-authed with the
  * instagram_business_manage_comments scope (the existing token only has
  * posting scopes — see docs/setup-meta-and-notion.md).
- * Optional: COMMENT_TRIGGER_KEYWORD (default "censo"), COMMENT_REPLY_MESSAGE.
+ * Keywords live in the TRIGGERS table below (one row per report). The optional
+ * COMMENT_TRIGGER_KEYWORD / COMMENT_REPLY_MESSAGE env pair overrides the table
+ * with a single keyword, kept for back-compat.
  */
 
 import './load-env.mjs';
@@ -35,13 +37,37 @@ const LEDGER_PATH = path.join(__dirname, 'replied-comments.json');
 const API_BASE = (process.env.INSTAGRAM_API_BASE || 'https://graph.facebook.com').replace(/\/$/, '');
 const GRAPH = `${API_BASE}/v23.0`;
 
-const TRIGGER = (process.env.COMMENT_TRIGGER_KEYWORD || 'censo').toLowerCase();
-const REPLY_MESSAGE = process.env.COMMENT_REPLY_MESSAGE || [
-  'Oi! Aqui está o relatório completo, com todos os números e a metodologia:',
-  'https://www.jorgebernardo.tech/relatorios/censo-de-nomes-ligados-a-escravidao/',
-  '',
-  'Se você ainda não segue a página, ficaria feliz em ter você por aqui.'
-].join('\n');
+// One keyword per report. Adding a report means adding a row here and pushing:
+// the n8n VPS workflow git-resets to origin/main before every invocation, so a
+// push IS the deploy. Keywords are matched accent-insensitively as whole words.
+const TRIGGERS = [
+  {
+    keyword: 'censo',
+    message: [
+      'Oi! Aqui está o relatório completo, com todos os números e a metodologia:',
+      'https://www.jorgebernardo.tech/relatorios/censo-de-nomes-ligados-a-escravidao/',
+      '',
+      'Se você ainda não segue a página, ficaria feliz em ter você por aqui.'
+    ].join('\n')
+  },
+  {
+    keyword: 'mitologia',
+    message: [
+      'Oi! Aqui está o relatório completo, com as 12 comparações, as fontes e os limites:',
+      'https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/',
+      '',
+      'Se você ainda não segue a página, ficaria feliz em ter você por aqui.'
+    ].join('\n')
+  }
+];
+
+// Back-compat: the single-keyword env pair still works and, when set, overrides
+// the table above rather than sitting alongside it.
+const ENV_KEYWORD = process.env.COMMENT_TRIGGER_KEYWORD;
+const ENV_MESSAGE = process.env.COMMENT_REPLY_MESSAGE;
+const ACTIVE_TRIGGERS = ENV_KEYWORD
+  ? [{ keyword: ENV_KEYWORD.toLowerCase(), message: ENV_MESSAGE || TRIGGERS[0].message }]
+  : TRIGGERS;
 
 /* ── Idempotency ledger ──────────────────────────────────── */
 
@@ -66,10 +92,15 @@ function stripAccents(s) {
   return s.normalize('NFD').replace(/[̀-ͯ]/g, '');
 }
 
-function matchesTrigger(text) {
-  if (!text) return false;
+// Returns the matching trigger (so the caller knows WHICH report to send), or
+// null. First match wins, so keyword order in the table is the tie-breaker for
+// a comment that somehow contains two of them.
+function matchTrigger(text) {
+  if (!text) return null;
   const normalized = stripAccents(text.toLowerCase());
-  return new RegExp(`\\b${TRIGGER}\\b`, 'i').test(normalized);
+  return ACTIVE_TRIGGERS.find(t =>
+    new RegExp(`\\b${stripAccents(t.keyword)}\\b`, 'i').test(normalized)
+  ) || null;
 }
 
 function extractComments(payload, igUserId) {
@@ -133,15 +164,16 @@ async function main() {
       results.push({ commentId: comment.id, skipped: 'already replied' });
       continue;
     }
-    if (!matchesTrigger(comment.text)) {
+    const trigger = matchTrigger(comment.text);
+    if (!trigger) {
       results.push({ commentId: comment.id, skipped: 'no keyword match' });
       continue;
     }
 
     try {
-      await sendPrivateReply(token, igUserId, comment.id, REPLY_MESSAGE);
+      await sendPrivateReply(token, igUserId, comment.id, trigger.message);
       markReplied(comment.id);
-      results.push({ commentId: comment.id, sent: true, to: comment.from?.username });
+      results.push({ commentId: comment.id, sent: true, keyword: trigger.keyword, to: comment.from?.username });
     } catch (err) {
       results.push({ commentId: comment.id, error: err.message });
     }
