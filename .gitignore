@@ -51,3 +51,5 @@ photo-topic.json
 sim/sim-state.json
 sim-predictions.json
 docs/audience-simulation-report.md
+temp/
+projects/*/out/

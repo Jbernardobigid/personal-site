@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O que apagaram dos nossos deuses: sincretismo, do Egito à Bahia</title>
+<meta name="description" content="A Grécia copiou o Egito e assinou embaixo. O Brasil escondeu os orixás atrás dos santos para não morrer. Doze pares, dois mil e quinhentos anos de apagamento, e o que as fontes realmente sustentam.">
+<link rel="canonical" href="https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="O que apagaram dos nossos deuses">
+<meta property="og:description" content="A Grécia copiou o Egito e assinou embaixo. O Brasil escondeu os orixás atrás dos santos para não morrer. Doze pares, dois mil e quinhentos anos de apagamento.">
+<meta property="og:url" content="https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/">
+<meta property="og:image" content="https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/images/05-iansa-barbara.png">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Jorge Bernardo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="O que apagaram dos nossos deuses">
+<meta name="twitter:description" content="A Grécia copiou o Egito e assinou embaixo. O Brasil escondeu os orixás atrás dos santos para não morrer.">
+<meta name="twitter:image" content="https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/images/05-iansa-barbara.png">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,500;1,9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14110d;
+    --bg-elev: #1c1813;
+    --bg-elev-2: #221c15;
+    --paper: #f1e7d6;
+    --paper-dim: #cdc0a4;
+    --muted: #8d8170;
+    --rule: rgba(241,231,214,0.14);
+    --rule-strong: rgba(241,231,214,0.3);
+    --accent: #c1532f;
+    --accent-soft: rgba(193,83,47,0.16);
+    --gold: #c6a02f;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --space-section: clamp(4rem, 3rem + 5vw, 8rem);
+    --measure: 38rem;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: clip;
+  }
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight: 600; margin: 0; color: var(--paper); }
+  a{ color: var(--gold); text-decoration-thickness: 1px; }
+  a:hover{ color: var(--accent); }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .wrap{ max-width: 72rem; margin: 0 auto; padding: 0 clamp(1.25rem, 1rem + 2vw, 3rem); }
+  .measure{ max-width: var(--measure); }
+
+  /* ---------- REPORT NAV ---------- */
+  .report-nav{ position: relative; z-index: 30; padding: 1.25rem clamp(1.25rem, 1rem + 2vw, 3rem) 0; }
+  .report-nav a{
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-decoration: none;
+  }
+  .report-nav a:hover{ color: var(--gold); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: clamp(3.5rem, 3rem + 6vw, 7rem) 0 clamp(2.5rem, 2rem + 3vw, 4rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 20% -10%, rgba(193,83,47,0.18), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 100% 0%, rgba(198,160,47,0.10), transparent 55%),
+      var(--bg);
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .kicker{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: rise 0.7s 0.05s ease-out forwards;
+  }
+  .kicker::before{ content:""; width: 2.25rem; height: 1px; background: var(--gold); display:inline-block; }
+
+  .hero h1{
+    font-size: clamp(2.4rem, 1.9rem + 3.4vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    max-width: 16ch;
+    opacity: 0;
+    animation: rise 0.8s 0.15s ease-out forwards;
+  }
+  .hero h1 em{
+    font-style: italic;
+    font-weight: 500;
+    color: transparent;
+    background: linear-gradient(95deg, var(--accent), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero-lede{
+    margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+    max-width: 40rem;
+    font-size: clamp(1.08rem, 1rem + 0.3vw, 1.3rem);
+    color: var(--paper-dim);
+    opacity: 0;
+    animation: rise 0.8s 0.3s ease-out forwards;
+  }
+  .hero-lede::first-letter{
+    font-family: var(--font-display);
+    font-size: 3.4em;
+    float: left;
+    line-height: 0.8;
+    padding: 0.05em 0.12em 0 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .hero-meta{
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    opacity: 0;
+    animation: rise 0.8s 0.45s ease-out forwards;
+  }
+
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(14px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- CHAPTER NAV ---------- */
+  .chapters{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg-elev);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(6px);
+  }
+  .chapters .wrap{ display:flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .chapters .wrap::-webkit-scrollbar{ display: none; }
+  .chapters a{
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-decoration: none;
+    padding: 0.85rem 1.1rem;
+    border-right: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  .chapters a span{ color: var(--gold); margin-right: 0.5em; }
+  .chapters a:hover{ color: var(--paper); background: var(--bg-elev-2); }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: var(--space-section) 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type{ border-bottom: none; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.9rem;
+  }
+  h2{ font-size: clamp(1.7rem, 1.4rem + 1.5vw, 2.6rem); line-height: 1.08; letter-spacing: -0.015em; margin-bottom: 1rem; max-width: 26ch; }
+  h3{ line-height: 1.12; }
+  .section-intro{ color: var(--paper-dim); max-width: var(--measure); font-size: 1.05rem; }
+  .section-intro + .section-intro{ margin-top: 1rem; }
+  .section-intro strong{ color: var(--paper); font-weight: 500; }
+
+  .reveal{ opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  /* ---------- ACT TITLE ---------- */
+  .act{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1.25rem, 1rem + 2vw, 3rem);
+    align-items: start;
+    padding-bottom: 1rem;
+  }
+  .act-num{
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 2.5rem + 6vw, 8rem);
+    line-height: 0.78;
+    font-weight: 300;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--rule-strong);
+    letter-spacing: -0.02em;
+  }
+  .act-body h2{ margin-bottom: 0.75rem; }
+
+  /* ---------- PANELS ---------- */
+  .panel{
+    margin-top: clamp(3rem, 2.5rem + 3vw, 5.5rem);
+    border-top: 1px solid var(--rule);
+    padding-top: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  }
+  .panel-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.4rem;
+  }
+  .panel-pair{
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 2.1rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .panel-pair .sep{ color: var(--accent); font-weight: 300; font-style: italic; }
+  .panel-idx{
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .panel figure{ margin: 0; }
+  .panel-img{
+    position: relative;
+    border: 1px solid var(--rule);
+    background: var(--bg-elev);
+    overflow: hidden;
+  }
+  .panel-img img{
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: saturate(0.94) contrast(1.03);
+    transform: scale(1.001);
+    transition: transform 0.9s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease;
+  }
+  .panel-img:hover img{ transform: scale(1.028); filter: saturate(1.04) contrast(1.05); }
+  .panel-img::after{
+    content:"";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(to top, rgba(20,17,13,0.62), transparent 42%),
+      radial-gradient(ellipse 80% 60% at 50% 50%, transparent 45%, rgba(20,17,13,0.45));
+  }
+  .panel-labels{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    z-index: 2;
+    font-family: var(--font-mono);
+    font-size: clamp(0.66rem, 0.6rem + 0.25vw, 0.82rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .panel-labels span{
+    padding: clamp(0.7rem, 0.6rem + 0.5vw, 1.15rem) clamp(0.8rem, 0.6rem + 1vw, 1.6rem);
+    color: var(--paper);
+    text-shadow: 0 1px 12px rgba(20,17,13,0.9);
+  }
+  .panel-labels span + span{ text-align: right; color: var(--paper-dim); }
+
+  .panel-caption{
+    margin-top: 1.35rem;
+    display: grid;
+    grid-template-columns: 1fr 16rem;
+    gap: clamp(1.25rem, 1rem + 2vw, 3rem);
+    align-items: start;
+  }
+  @media (max-width: 860px){ .panel-caption{ grid-template-columns: 1fr; gap: 1.25rem; } }
+  .panel-claim{ color: var(--paper-dim); max-width: 44rem; margin: 0; }
+  .panel-claim strong{ color: var(--paper); font-weight: 500; }
+  .panel-claim em{ color: var(--gold); font-style: italic; }
+  .panel-src{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.55;
+    color: var(--muted);
+    border-left: 1px solid var(--rule-strong);
+    padding-left: 1rem;
+  }
+  .panel-src b{ color: var(--paper-dim); font-weight: 500; display: block; margin-bottom: 0.3rem; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.66rem; }
+
+  /* ---------- CALLOUT / HONESTY ---------- */
+  .callout{
+    margin-top: 3rem;
+    background: var(--accent-soft);
+    border: 1px solid rgba(193,83,47,0.35);
+    border-radius: 2px;
+    padding: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+    max-width: 48rem;
+  }
+  .callout .eyebrow{ color: var(--accent); }
+  .callout p{ color: var(--paper); font-size: 1rem; margin: 0; }
+  .callout p + p{ margin-top: 0.85rem; }
+  .callout.cool{ background: rgba(198,160,47,0.10); border-color: rgba(198,160,47,0.32); }
+  .callout.cool .eyebrow{ color: var(--gold); }
+
+  /* ---------- PULL QUOTE / CLOSING ---------- */
+  .closing{
+    background:
+      radial-gradient(ellipse 70% 60% at 30% 0%, rgba(193,83,47,0.16), transparent 60%),
+      var(--bg-elev);
+  }
+  .quote-slab{ max-width: 52rem; }
+  .quote-slab blockquote{
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.6rem, 1.2rem + 2.6vw, 3.4rem);
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+    color: var(--paper);
+    text-wrap: balance;
+  }
+  .quote-slab blockquote::before{ content: "“"; color: var(--accent); }
+  .quote-slab blockquote::after{ content: "”"; color: var(--accent); }
+  .quote-attr{
+    margin-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--paper-dim);
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+  }
+  .quote-attr b{ color: var(--gold); font-weight: 500; }
+
+  /* ---------- LIMITS ---------- */
+  .limits-list{ margin-top: 2.5rem; padding: 0; list-style: none; max-width: 46rem; counter-reset: lim; }
+  .limits-list li{ counter-increment: lim; position: relative; padding: 1.1rem 0 1.1rem 2.75rem; border-bottom: 1px solid var(--rule); color: var(--paper-dim); }
+  .limits-list li:last-child{ border-bottom: none; }
+  .limits-list li::before{
+    content: counter(lim, decimal-leading-zero);
+    position: absolute; left: 0; top: 1.1rem;
+    font-family: var(--font-mono); color: var(--accent); font-size: 0.85rem;
+  }
+  .limits-list strong{ color: var(--paper); font-weight: 500; }
+
+  /* ---------- SOURCES ---------- */
+  .src-list{ margin-top: 2.5rem; padding: 0; list-style: none; max-width: 46rem; }
+  .src-list li{ padding: 0.85rem 0; border-bottom: 1px dotted var(--rule); color: var(--paper-dim); font-size: 0.95rem; }
+  .src-list li:last-child{ border-bottom: none; }
+  .src-list cite{ color: var(--paper); font-style: italic; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: clamp(2.5rem, 2rem + 3vw, 4rem) 0 3rem; }
+  footer .foot-grid{ display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; border-top: 1px solid var(--rule); padding-top: 2rem; }
+  footer h4{ font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 0 0 0.75rem; }
+  footer p{ color: var(--muted); font-size: 0.86rem; max-width: 26rem; margin: 0; }
+  footer .colophon{ margin-top: 2.5rem; font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); display:flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .reveal{ opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="report-nav"><a href="https://www.jorgebernardo.tech">← jorgebernardo.tech</a></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Relatório 02 · Sincretismo</div>
+    <h1>O que <em>apagaram</em> dos nossos deuses</h1>
+    <p class="hero-lede">No século V a.C., Heródoto escreveu que os gregos aprenderam os nomes dos seus deuses com os egípcios. Está lá, em grego, escrito por um grego. Ninguém escondeu nada. O apagamento veio depois, quando alguém decidiu que a civilização ocidental começa em Atenas e o Egito, que fica na África, virou cenário. No Brasil foi diferente. Aqui os orixás tiveram que se esconder atrás dos santos para não morrer. Dois mil e quinhentos anos separam as duas histórias, e o desfecho é o mesmo. A África entra com a matéria-prima e sai sem o crédito.</p>
+    <div class="hero-meta">
+      <span>12 pares</span>
+      <span>Egito · Grécia · Kongo · Bahia</span>
+      <span>Publicado 31.07.2026</span>
+      <span>Jorge Bernardo</span>
+    </div>
+  </div>
+</header>
+
+<nav class="chapters" aria-label="Capítulos do relatório">
+  <div class="wrap">
+    <a href="#metodo"><span>00</span> Método</a>
+    <a href="#ato-i"><span>I</span> Egito ⇄ Grécia</a>
+    <a href="#ressalva"><span>··</span> A ressalva</a>
+    <a href="#ato-ii"><span>II</span> África ⇄ Brasil</a>
+    <a href="#kimpa"><span>III</span> Kimpa Vita</a>
+    <a href="#fecho"><span>IV</span> 1983</a>
+    <a href="#limites"><span>05</span> Limites</a>
+    <a href="#fontes"><span>06</span> Fontes</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ══════════ MÉTODO ══════════ -->
+<section id="metodo">
+  <div class="wrap reveal">
+    <div class="eyebrow">00 · Como se apaga um deus</div>
+    <h2>Ninguém queima uma religião. Renomeia.</h2>
+    <p class="section-intro">Apagar um panteão não exige fogueira. Exige duas coisas muito mais baratas: <strong>um nome novo</strong> e <strong>tempo</strong>. Você chama o deus alheio pelo nome do seu, repete por algumas gerações, e no fim ninguém lembra qual dos dois chegou primeiro.</p>
+    <p class="section-intro">Sigo esse mecanismo em dois momentos que quase nunca aparecem na mesma página. E digo desde já: <strong>eles não são a mesma coisa</strong>. Um foi conquista e comércio. O outro foi escravidão. Confundir os dois é o tipo de erro que desmonta o argumento inteiro, então separo os dois, com a ressalva no meio.</p>
+    <p class="section-intro">O que os une não é o método. É o resultado: nos dois casos, a África entrou com a matéria-prima e saiu sem o crédito.</p>
+  </div>
+</section>
+
+<!-- ══════════ ATO I ══════════ -->
+<section id="ato-i">
+  <div class="wrap">
+    <div class="act reveal">
+      <div class="act-num">I</div>
+      <div class="act-body">
+        <div class="eyebrow">Egito ⇄ Grécia</div>
+        <h2>Eles nunca esconderam. Nós é que paramos de contar.</h2>
+        <p class="section-intro">Aqui está a parte que o ensino médio não me deu: <strong>os gregos jamais negaram a dívida</strong>. Heródoto, no século V a.C., escreveu que os nomes dos deuses chegaram à Grécia vindos do Egito. Os próprios gregos criaram um procedimento para isso, a <em>interpretatio graeca</em>. O hábito de olhar para o deus estrangeiro e dizer "esse é o nosso, com outro nome".</p>
+        <p class="section-intro">A confissão está na fonte grega, escrita em grego, por um grego. O apagamento não foi obra deles. Foi obra de quem veio depois e montou a história da "civilização ocidental" começando convenientemente em Atenas, com o Egito, que fica na África, reclassificado como cenário.</p>
+      </div>
+    </div>
+
+    <!-- 01 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Thoth <span class="sep">⇄</span> Hermes</h3>
+        <div class="panel-idx">Par 01 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/01-thoth-hermes.png" width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async" alt="Composição dividida: à esquerda, estátua egípcia de Thoth com cabeça de íbis segurando paleta e estilete de escriba; à direita, estátua grega de Hermes com caduceu segurando a mesma tábua e o mesmo estilete, sob luz idêntica.">
+          <div class="panel-labels"><span>Thoth · Egito</span><span>Hermes · Grécia</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Repare no que os dois seguram: <strong>a mesma tábua, o mesmo estilete</strong>. Thoth é o deus egípcio da escrita. Em Hermópolis, cidade construída em torno do antigo templo dele, os dois passaram a ser cultuados como <strong>uma divindade só</strong>. Dessa fusão nasceu Hermes Trismegisto e todo o corpus hermético, que o Ocidente passou séculos tratando como fundação do próprio pensamento esotérico. <em>A fundação era egípcia.</em></p>
+          <div class="panel-src"><b>Fonte</b>Interpretatio graeca no Egito ptolomaico; Hermópolis, antigo Templo de Thoth; origem do corpus hermético.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 02 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Amon <span class="sep">⇄</span> Zeus</h3>
+        <div class="panel-idx">Par 02 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/02-amon-zeus.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, estátua egípcia de Amon em granito com coroa de chifres de carneiro; à direita, estátua grega de Zeus barbado com chifres de carneiro nas têmporas, no modo Zeus-Amon.">
+          <div class="panel-labels"><span>Amon · Egito</span><span>Zeus · Grécia</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Heródoto registrou a equivalência no século V a.C. E ela não ficou no papel: o culto de <strong>Zeus-Amon</strong>, Júpiter Amon para os romanos, juntou o deus oracular egípcio ao céu grego no mesmo altar. Os chifres de carneiro que aparecem na cabeça de Zeus <strong>não são gregos</strong>. São de Amon. O rei do Olimpo carregou emprestado, na própria testa, o símbolo de um deus africano.</p>
+          <div class="panel-src"><b>Fonte</b>Heródoto equaciona Amon → Zeus; culto sincrético de Zeus-Amon / Júpiter Amon.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 03 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Osíris <span class="sep">⇄</span> Dioniso</h3>
+        <div class="panel-idx">Par 03 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/03-osiris-dioniso.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, estátua egípcia mumiforme de Osíris em xisto verde com cajado e mangual cruzados ao peito; à direita, estátua grega de Dioniso com coroa de hera e tirso cruzado no mesmo ângulo.">
+          <div class="panel-labels"><span>Osíris · Egito</span><span>Dioniso · Grécia</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Heródoto igualou os dois diretamente. O deus egípcio que <strong>morre e volta</strong>, a estrutura mais antiga que temos de ressurreição registrada, foi lido pelos gregos como o deus do vinho e do êxtase. O mistério de Osíris já tinha milênios quando Dioniso ganhou os seus. <em>Não foi coincidência de imaginação. Foi contato.</em></p>
+          <div class="panel-src"><b>Fonte</b>Heródoto equaciona Osíris → Dioniso.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 04 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Ísis <span class="sep">⇄</span> Deméter</h3>
+        <div class="panel-idx">Par 04 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/04-isis-demeter.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, estátua egípcia sentada de Ísis com o trono na cabeça; à direita, estátua grega sentada de Deméter, velada, com feixe de trigo, na mesma pose.">
+          <div class="panel-labels"><span>Ísis · Egito</span><span>Deméter · Grécia</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Ísis não foi apenas traduzida. Ela <strong>viajou</strong>. O culto chegou à Itália por volta de <strong>140 a.C.</strong>, levado por comerciantes vindos da ilha de Delos, e em dois séculos tinha templos de Pompeia à Britânia, com imperadores de Vespasiano a Cômodo se associando aos deuses egípcios. Uma deusa africana foi, por séculos, religião de massa no coração do império romano. Terminou por decreto: o cristianismo vira religião de Estado em 380, e o Serapeu de Alexandria é destruído em <strong>391</strong>. <em>O apagamento aqui tem data.</em></p>
+          <div class="panel-src"><b>Fonte</b>Culto de Ísis chega à Itália c. 140 a.C. via mercadores de Delos (Met / Karoglou); Édito de Tessalônica, 380 d.C.; destruição do Serapeu, 391 d.C.</div>
+        </figcaption>
+      </figure>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════ RESSALVA ══════════ -->
+<section id="ressalva">
+  <div class="wrap reveal">
+    <div class="eyebrow">Ressalva · leia antes de compartilhar</div>
+    <h2>Onde este relatório se recusa a ir além da fonte.</h2>
+    <p class="section-intro">Um texto sobre apagamento não pode se dar ao luxo de inventar. Então aqui estão, explicitamente, os limites do que o Ato I sustenta:</p>
+
+    <div class="callout cool">
+      <div class="eyebrow">O que é debate aberto, não fato</div>
+      <p>Circula muito a afirmação de que a <strong>Ísis amamentando Hórus</strong> (<em>Isis lactans</em>) deu origem direta à Madona com o menino. É plausível e há gente séria defendendo. Mas <strong>é contestado</strong>. O estudo de referência de Tran Tam Tinh (1973) reconhece a semelhança visual e argumenta <em>contra</em> a adoção deliberada, apontando o intervalo cronológico entre as duas iconografias. O mesmo vale para a ideia de que a barba de Serápis moldou o rosto de Cristo: especulativo.</p>
+      <p>Neste relatório isso entra como <strong>debate</strong>, nunca como prova. Quem usar essas duas imagens como se fossem fato consumado vai ser desmontado, e com razão.</p>
+    </div>
+
+    <div class="callout">
+      <div class="eyebrow">E a diferença que não dá para embaralhar</div>
+      <p>O que aconteceu entre Egito e Grécia foi <strong>interpretatio</strong>: equivalência intelectual, movida por conquista, comércio e exército. Foi assimétrico, foi apropriação de prestígio, e o crédito acabou sumindo. Mas <strong>não foi escravidão</strong>.</p>
+      <p>O que vem a seguir foi. E é aí que a comparação para de ser elegante e passa a doer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ATO II ══════════ -->
+<section id="ato-ii">
+  <div class="wrap">
+    <div class="act reveal">
+      <div class="act-num">II</div>
+      <div class="act-body">
+        <div class="eyebrow">África ⇄ Brasil</div>
+        <h2>Aqui o disfarce não era estilo. Era sobrevivência.</h2>
+        <p class="section-intro">O Brasil recebeu a maior população escravizada das Américas: a estimativa da base SlaveVoyages aponta <strong>entre 4,8 e 4,9 milhões de africanos desembarcados</strong> até a abolição, em 1888. Chegavam batizados à força, sob um regime que classificava a prática africana como feitiçaria.</p>
+        <p class="section-intro">A saída foi cirúrgica. Como os santos católicos funcionavam do mesmo jeito que os orixás, intermediários entre a pessoa e um deus supremo distante (Olodumare, Nzambi, Mawu), bastava parear cada orixá com o santo de cor, símbolo ou data de festa parecida. Rezando diante da imagem do santo, cultuava-se o orixá. <strong>A pessoa escravizada não se converteu. Ela camuflou.</strong></p>
+        <p class="section-intro">E isso muda quem é o autor da história. O sincretismo brasileiro não foi algo que <em>fizeram com</em> os africanos. Foi uma <strong>engenharia que eles executaram</strong>, debaixo de vigilância, com pena de morte na mesa.</p>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Iansã <span class="sep">⇄</span> Santa Bárbara</h3>
+        <div class="panel-idx">Par 05 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/05-iansa-barbara.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, mulher negra brasileira incorporando Iansã, em contas vermelhas, erguendo o eruexim; à direita, estátua colonial de madeira policromada de Santa Bárbara com a torre na mão, sob a mesma luz.">
+          <div class="panel-labels"><span>Iansã · viva</span><span>Santa Bárbara · entalhada</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">O par mais conhecido do Brasil, e o primeiro que a própria tradição desmontou. A guerreira do vento e da tempestade foi guardada atrás de uma santa católica invocada contra o raio. Funcionou por séculos. Até que, em 1983, Mãe Stella de Oxóssi disse a frase que encerrou o assunto para o Ilê Axé Opô Afonjá: <em>"sabemos que Iansã é outra energia; ela não é Santa Bárbara."</em></p>
+          <div class="panel-src"><b>Fonte</b>Oyá/Iansã → Santa Bárbara (Brasil); entrevista ao Jornal da Bahia, 29 jul. 1983.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 06 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Xangô <span class="sep">⇄</span> São Jerônimo</h3>
+        <div class="panel-idx">Par 06 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/06-xango-jeronimo.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, homem negro brasileiro incorporando Xangô com paramentos vermelhos e brancos e machado duplo erguido; à direita, estátua colonial de madeira policromada de São Jerônimo de manto vermelho segurando um livro.">
+          <div class="panel-labels"><span>Xangô · vivo</span><span>São Jerônimo · entalhado</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Aqui cai por terra a ideia de tabela única. Na Bahia, Xangô foi pareado com <strong>São Jerônimo</strong>. Em Cuba, o mesmo Changó virou <strong>Santa Bárbara</strong>, uma mulher. O disfarce mudava de cidade para cidade, de terreiro para terreiro, porque <strong>nunca houve autoridade central</strong> para padronizar nada. Não existia cúpula. Existia gente resolvendo sozinha, em cada canto, como não morrer. <em>Quem apresenta uma "tabela oficial" de correspondências está vendendo simplificação.</em></p>
+          <div class="panel-src"><b>Fonte</b>Bahia: Xangô → São Jerônimo (ficha do Center for Latin American Studies, Univ. of Pittsburgh); Cuba: Changó → Santa Bárbara. "No central hierarchy to make the ascriptions."</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 07 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Iemanjá <span class="sep">⇄</span> N. Sra. da Conceição</h3>
+        <div class="panel-idx">Par 07 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/07-iemanja-conceicao.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, mulher negra brasileira incorporando Iemanjá em contas brancas e prateadas com abebé, mar ao fundo; à direita, estátua colonial de madeira policromada de Nossa Senhora da Conceição em manto azul e branco.">
+          <div class="panel-labels"><span>Iemanjá · viva</span><span>N. Sra. da Conceição · entalhada</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">A festa do Rio Vermelho, em Salvador, começou em <strong>1923</strong>, com <strong>25 pescadores</strong>. Hoje reúne <strong>mais de 300 mil pessoas</strong>, a maior festa afro-brasileira do país. Cresceu cem anos à sombra de uma santa, e a cidade inteira aprendeu a chamá-la de 2 de fevereiro. <em>Um culto africano virou patrimônio nacional sem nunca ter sido devolvido ao próprio nome.</em></p>
+          <div class="panel-src"><b>Fonte</b>Festa de Iemanjá, Rio Vermelho, Salvador. Iniciada em 1923 por 25 pescadores; 300 mil+ participantes.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 08 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Ogum <span class="sep">⇄</span> São Jorge</h3>
+        <div class="panel-idx">Par 08 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/08-ogum-jorge.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, homem negro brasileiro incorporando Ogum com paramentos verde-escuros, espada e ferramentas de ferro; à direita, estátua colonial de madeira policromada de São Jorge a cavalo com a lança baixada.">
+          <div class="panel-labels"><span>Ogum · vivo</span><span>São Jorge · entalhado</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Ferro, guerra, estrada aberta. No Rio virou <strong>São Jorge</strong> a cavalo; na Bahia, <strong>Santo Antônio</strong>; em Cuba, <strong>São Pedro</strong>, o das chaves; em Trinidad, <strong>São Miguel</strong>. Um orixá, quatro máscaras, quatro geografias da diáspora. <em>A máscara nunca foi sobre teologia. Era sobre qual santo estava disponível no altar mais próximo.</em></p>
+          <div class="panel-src"><b>Fonte</b>Ogum → São Jorge (Rio), Santo Antônio (Bahia), São Pedro (Cuba), São Miguel (Trinidad).</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 09 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Oxóssi <span class="sep">⇄</span> São Sebastião</h3>
+        <div class="panel-idx">Par 09 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/09-oxossi-sebastiao.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, homem negro brasileiro incorporando Oxóssi retesando um arco cerimonial na mata; à direita, estátua colonial de madeira policromada de São Sebastião amarrado a um tronco e atravessado por flechas.">
+          <div class="panel-labels"><span>Oxóssi · vivo</span><span>São Sebastião · entalhado</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">O caçador da mata, senhor do arco, escondido atrás do santo <strong>atravessado</strong> por flechas. Do lado esquerdo, a flecha que caça e alimenta. Do direito, a flecha que perfura e mata. <em>É o mesmo objeto contando duas histórias opostas, e diz muito sobre qual das duas o colonizador conseguia enxergar.</em></p>
+          <div class="panel-src"><b>Fonte</b>Oxóssi / Ochosi → São Sebastião ou São Jorge; domínio de caça, arco e mata.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 10 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Omulu <span class="sep">⇄</span> São Lázaro</h3>
+        <div class="panel-idx">Par 10 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/10-omulu-lazaro.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, figura incorporando Omulu inteiramente coberta por palha da costa, sem rosto visível; à direita, estátua colonial de madeira policromada de São Lázaro apoiado em muleta, com feridas nas pernas e cães aos pés.">
+          <div class="panel-labels"><span>Omulu · vivo</span><span>São Lázaro · entalhado</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Senhor da varíola, da doença e da cura, coberto da cabeça aos pés pela palha da costa. Virou <strong>São Lázaro</strong>, e também São Roque, o santo das feridas. Pense no que isso significa em termos práticos: a doença que <strong>matava africanos escravizados em massa</strong> precisou de um nome que os senhores aceitassem ouvir rezado em voz alta. <em>Até a dor teve que ser traduzida para passar.</em></p>
+          <div class="panel-src"><b>Fonte</b>Omulu / Obaluaiê / Babalú-Ayé → São Lázaro e São Roque; domínio de varíola, doença e cura.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 11 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Oxalá <span class="sep">⇄</span> Sr. do Bonfim</h3>
+        <div class="panel-idx">Par 11 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/11-oxala-bonfim.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, homem negro brasileiro idoso incorporando Oxalá, todo de branco, apoiado no opaxorô; à direita, imagem colonial do Senhor do Bonfim com pano branco, sob a mesma luz.">
+          <div class="panel-labels"><span>Oxalá · vivo</span><span>Sr. do Bonfim · entalhado</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">É daqui que vem o <strong>branco das sextas-feiras</strong> na Bahia. Não é superstição, não é moda, não é "cultura baiana" no sentido decorativo que o turismo vende: é Oxalá. Uma cidade inteira se veste de um orixá toda semana. Boa parte dela <strong>sem saber que está fazendo isso</strong>. <em>O apagamento mais eficiente não é o que proíbe o rito. É o que mantém o rito e remove o nome.</em></p>
+          <div class="panel-src"><b>Fonte</b>Oxalá / Obatalá → Nosso Senhor do Bonfim; origem do costume baiano de vestir branco às sextas-feiras; opaxorô.</div>
+        </figcaption>
+      </figure>
+    </article>
+
+    <!-- 12 -->
+    <article class="panel reveal">
+      <div class="panel-head">
+        <h3 class="panel-pair">Exu <span class="sep">⇄</span> a mentira</h3>
+        <div class="panel-idx">Par 12 / 12</div>
+      </div>
+      <figure>
+        <div class="panel-img">
+          <img src="images/12-exu-demonizacao.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Composição dividida: à esquerda, homem negro brasileiro de terno preto e vermelho e chapéu de aba larga, em pé numa encruzilhada ao anoitecer; à direita, uma antiga chapa europeia de gravura em cobre sobre pedestal, com a superfície tão gasta e riscada que a figura entalhada é ilegível.">
+          <div class="panel-labels"><span>Exu · vivo</span><span>a caricatura · gasta</span></div>
+        </div>
+        <figcaption class="panel-caption">
+          <p class="panel-claim">Exu abre caminho, leva o recado, guarda a encruzilhada. Foi pareado com <strong>Santo Antônio</strong> e com o <strong>Menino de Atocha</strong>. Mas foi de fora que veio a distorção que pegou: transformaram ele no <strong>Diabo</strong>. Não foi tradução, foi difamação, e é uma leitura que os praticantes rejeitam até hoje.</p>
+          <p class="panel-claim" style="margin-top:0.85rem">À direita não está o demônio que inventaram. Está a chapa de gravura que imprimia a mentira, <strong>corroída até a ilegibilidade</strong>. <em>Ele continua de pé na encruzilhada. A calúnia é que não se lê mais.</em></p>
+          <div class="panel-src"><b>Fonte</b>Exu / Elegguá → Santo Antônio de Pádua, Menino de Atocha, São Miguel; "demonized and conflated with the Devil by outsiders", distorção que os praticantes rejeitam.</div>
+        </figcaption>
+      </figure>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════ KIMPA VITA ══════════ -->
+<section id="kimpa">
+  <div class="wrap">
+    <div class="act reveal">
+      <div class="act-num">III</div>
+      <div class="act-body">
+        <div class="eyebrow">Kongo, 1706</div>
+        <h2>Ela disse que Cristo era negro. Foi queimada por isso.</h2>
+        <p class="section-intro">Antes de qualquer navio negreiro justificar teologia, o Reino do Kongo <strong>já era cristão por decisão própria</strong>. A conversão vem de 1491, com o rei Nzinga a Nkuwu batizado como João I. Não foi missionário impondo: como mostra o trabalho de John Thornton, a igreja kongolesa cresceu <strong>sob direção das autoridades kongolesas</strong>, não dos missionários. Ajudou o fato de já existir ali a cruz cosmogramática do <em>dikenga</em>, dividindo o mundo dos vivos do mundo dos ancestrais muito antes de qualquer europeu aparecer com a dele.</p>
+        <p class="section-intro">Em 1704, <strong>Dona Beatriz Kimpa Vita</strong>, com cerca de vinte anos, declarou-se possuída por Santo Antônio de Pádua. Pregou que Jesus e Maria eram kongoleses, negros. Acusou os missionários capuchinhos de não sustentarem santos negros. Tentou encerrar as guerras civis que dilaceravam o reino.</p>
+        <p class="section-intro">Em <strong>2 de julho de 1706</strong>, foi queimada viva por heresia. O que sabemos dela foi reconstruído, em larga medida, a partir de <strong>quatro relatos dos próprios capuchinhos italianos</strong>. Ou seja: <em>a versão que sobrou é a de quem acendeu a fogueira.</em></p>
+      </div>
+    </div>
+    <div class="callout reveal">
+      <div class="eyebrow">Por que isso importa aqui</div>
+      <p>Porque desmonta a desculpa. Ninguém precisou "explicar" o cristianismo aos africanos, e africanos não confundiram um santo com um orixá por ingenuidade. O Kongo era cristão, letrado e político. E quando uma africana leu o cristianismo <strong>pelos próprios termos</strong>, o castigo não foi teológico. Foi a fogueira.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FECHO ══════════ -->
+<section id="fecho" class="closing">
+  <div class="wrap">
+    <div class="act reveal">
+      <div class="act-num">IV</div>
+      <div class="act-body">
+        <div class="eyebrow">Salvador, julho de 1983</div>
+        <h2>O dia em que o disfarce foi devolvido.</h2>
+        <p class="section-intro">Na II Conferência Mundial da Tradição dos Orixás e Cultura, entre <strong>17 e 23 de julho de 1983</strong>, um grupo de iyalorixás dos terreiros jeje-nagô mais tradicionais da Bahia publicou um manifesto. À frente dele, <strong>Mãe Stella de Oxóssi</strong>, Maria Stella de Azevedo Santos, do Ilê Axé Opô Afonjá.</p>
+      </div>
+    </div>
+
+    <div class="quote-slab reveal">
+      <blockquote>ficou claro ser nossa crença uma religião e não uma seita sincretizada</blockquote>
+      <div class="quote-attr">
+        <b>Mãe Stella de Oxóssi</b> (Maria Stella de Azevedo Santos, 1925–2018), iyalorixá do Ilê Axé Opô Afonjá<br>
+        Manifesto <i>"Ao público e ao povo de Candomblé"</i>, lido em 27 de julho e ampliado em 12 de agosto de 1983.
+      </div>
+    </div>
+
+    <div class="callout reveal" style="margin-top:3.5rem">
+      <div class="eyebrow">A segunda versão foi mais longe</div>
+      <p>O texto ampliado rejeita o sincretismo <strong>"como fruto da nossa religião, já que ele foi criado pela escravidão a que nossos ancestrais foram submetidos"</strong>, e afirma que o candomblé só se realiza em sua pureza de propósito e de rito agora que <strong>"não somos mais escravos"</strong>.</p>
+      <p>Leia de novo essa lógica, porque ela é impecável: <strong>o disfarce era ferramenta de quem estava preso.</strong> Manter o disfarce depois da abolição é continuar cumprindo pena por um crime que nunca existiu.</p>
+    </div>
+
+    <div class="wrap" style="padding:0; margin-top:3.5rem">
+      <p class="section-intro reveal">Na prática, poucas casas foram até o fim: o Opô Afonjá e mais algumas. Umbanda, candomblé de caboclo e boa parte do país seguem sincréticos, e há quem defenda essa escolha com bons argumentos. Antropólogos como Peter Fry lembram que "pureza" e "mistura" são, elas próprias, <strong>construções sociais que aparecem em disputas por poder</strong>. J. Lorand Matory mostra que a identidade iorubá "pura" foi, em parte, produzida por elites transnacionais, não é sobrevivência intocada da África.</p>
+      <p class="section-intro reveal" style="margin-top:1rem">Tudo isso é verdade, e eu não fecho esse debate aqui. <strong>Mas o debate é deles.</strong> A diferença entre 1888 e 1983 é que a decisão sobre o próprio nome voltou para dentro do terreiro. <em>Reconhecer isso é o mínimo que um texto sobre apagamento pode fazer: parar de falar por cima.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LIMITES ══════════ -->
+<section id="limites">
+  <div class="wrap reveal">
+    <div class="eyebrow">05 · Limites deste relatório</div>
+    <h2>O que aqui não pode ser usado como prova.</h2>
+    <p class="section-intro">Um argumento sobre falsificação histórica precisa ser mais rigoroso que o normal, não menos. Então:</p>
+    <ol class="limits-list">
+      <li><strong>Não existe tabela universal de correspondências.</strong> Os pares mudam por país, por nação (ketu/nagô, jeje, angola/congo) e por terreiro. Toda vez que uma fonte discorda de outra (Xangô com Jerônimo ou com Bárbara, Ogum com Jorge ou com Pedro), mostro a variação em vez de escolher uma e esconder o resto.</li>
+      <li><strong>Interpretatio não é escravidão.</strong> Egito⇄Grécia e África⇄Brasil são fenômenos estruturalmente distintos e estão separados de propósito. Usar as imagens do Ato I para sugerir que a Grécia escravizou africanos é falsificar.</li>
+      <li><strong>Ísis → Madona é debate, não fato</strong>, e Serápis → Cristo é ainda mais frágil. Ver a ressalva.</li>
+      <li><strong>Os números são estimativas.</strong> 4,8–4,9 milhões de desembarcados no Brasil é a faixa da base SlaveVoyages, não uma contagem exata.</li>
+      <li><strong>Duas assinaturas do manifesto de 1983 ficam pendentes.</strong> Mãe Menininha do Gantois e Mãe Olga de Alaketu estão confirmadas como signatárias; Mãe Tetê de Iansã e Mãe Nicinha do Bogum aparecem em fonte única e precisam de verificação na biografia de Vera Felicidade de Almeida Campos.</li>
+      <li><strong>As imagens são geradas, não documentais.</strong> Nenhuma delas é fotografia de acervo, peça de museu real ou registro de ritual. São composições feitas para este relatório, com iconografia baseada nas fontes, e não devem ser citadas como evidência material de nada.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════ FONTES ══════════ -->
+<section id="fontes">
+  <div class="wrap reveal">
+    <div class="eyebrow">06 · Para ir além</div>
+    <h2>Quem realmente fez o trabalho.</h2>
+    <p class="section-intro">Este relatório é síntese. A pesquisa de base é destas pessoas:</p>
+    <ul class="src-list">
+      <li>Roger Bastide, <cite>As religiões africanas no Brasil</cite>. Inclui o conceito de <em>principe de coupure</em>, a compartimentalização de quem vive como católico e como praticante sem que os dois lados se misturem.</li>
+      <li>Pierre Verger, <cite>Orixás</cite> e <cite>Dieux d'Afrique</cite>.</li>
+      <li>J. Lorand Matory, <cite>Black Atlantic Religion</cite> (Princeton, 2005). A "pureza" iorubá como escolha estratégica e transnacional, não sobrevivência inerte.</li>
+      <li>Stefania Capone, <cite>A busca da África no candomblé</cite>. A construção de Salvador como "Meca" nagô.</li>
+      <li>Beatriz Góis Dantas, <cite>Vovó Nagô e Papai Branco</cite> (1988).</li>
+      <li>John K. Thornton, <cite>The Kongolese Saint Anthony: Dona Beatriz Kimpa Vita and the Antonian Movement, 1684–1706</cite> (Cambridge, 1998).</li>
+      <li>Joseph M. Murphy (Georgetown), sobre as tradições de orixá nas Américas.</li>
+      <li>Vera Felicidade de Almeida Campos, biografia de Mãe Stella de Oxóssi, onde o manifesto de 1983 está reproduzido nas duas versões.</li>
+      <li>Base de dados <cite>SlaveVoyages</cite> (Emory) para os números do tráfico transatlântico.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Sobre este relatório</h4>
+        <p>Segundo de uma série sobre o que o Brasil herdou e não conta. O primeiro contou quantos negócios ainda usam nomes ligados à escravidão.</p>
+      </div>
+      <div>
+        <h4>Correções</h4>
+        <p>Achou um erro, uma fonte melhor ou uma correspondência que seu terreiro faz diferente? Escreva. Correção pública é parte do método.</p>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>Jorge Bernardo · jorgebernardo.tech</span>
+      <span>Imagens geradas para este relatório · 31.07.2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
+    els.forEach(function(el){ io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>

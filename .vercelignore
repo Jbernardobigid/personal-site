@@ -35,3 +35,10 @@
 /cycling-topics-bank.json
 /signal-sources.json
 /used-signals.json
+
+# Report panel specs (dev-only, read by generate-report-images.mjs).
+/relatorios/*/panels.mjs
+/relatorios/*/instagram.md
+
+# One-off project workspaces (dev only, never served).
+/projects/
