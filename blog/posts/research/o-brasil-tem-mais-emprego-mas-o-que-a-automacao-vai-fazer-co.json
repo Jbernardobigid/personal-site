@@ -1,0 +1,72 @@
+{
+  "topic": "Desemprego fica em 5,4% em junho, mas com 38,5 milhões de trabalhadores informais Notícia Preta Brasil",
+  "slug": "o-brasil-tem-mais-emprego-mas-o-que-a-automacao-vai-fazer-co",
+  "generated_at": "2026-07-31T12:00:31.371Z",
+  "sources": [
+    "https://noticiapreta.com.br",
+    "https://g1.globo.com/economia/noticia/2026/07/30/desemprego-pnad-junho.ghtml",
+    "https://movimentoeconomico.com.br/trabalho/2026/06/26/taxa-de-desemprego-no-pais-cai-para-56-em-maio-e-atinge-menor-nivel-historico",
+    "https://sul21.com.br/noticias/economia/2026/07/desemprego-cai-para-54-no-brasil-em-trimestre-ate-junho-de-2026",
+    "https://g1.globo.com/google/amp/economia/noticia/2026/07/30/desemprego-pnad-junho.ghtml",
+    "https://www1.folha.uol.com.br/mercado/2026/07/desemprego-recua-a-54-e-tem-menor-taxa-ate-junho-na-serie-historica.shtml",
+    "https://www.wiego.org/wp-content/uploads/2023/03/statistical-brief-n33-brazil.pdf",
+    "https://www.cnnbrasil.com.br/economia/macroeconomia/taxa-de-desemprego-fica-em-54-no-trimestre-encerrado-em-junho-diz-ibge",
+    "https://sbtnews.sbt.com.br/noticia/economia/brasil-tem-desemprego-de-5-4-no-trimestre-ate-junho",
+    "https://g1.globo.com/google/amp/economia/noticia/2019/08/30/trabalho-informal-avanca-para-413percent-da-populacao-ocupada-e-atinge-nivel-recorde-diz-ibge.ghtml",
+    "https://www.cnnbrasil.com.br/economia/macroeconomia/taxa-de-informalidade-tem-menor-nivel-desde-2020-e-retrata-qualidade-do-emprego-diz-ibge"
+  ],
+  "insights": [
+    "The unemployment rate in June 2026 was 5.4%, the lowest for that period in historical data.",
+    "There are 38.5 million informal workers in Brazil, indicating a significant level of informal employment.",
+    "The population with jobs reached 103.1 million, reflecting a high level of employment.",
+    "The real average income remained stable at R$ 3,738, showing no significant change over the period.",
+    "The level of occupation in the country was estimated at 58.8%."
+  ],
+  "stats": [
+    {
+      "value": "5.4%",
+      "context": "unemployment rate in June 2026",
+      "source": "G1"
+    },
+    {
+      "value": "38.5 million",
+      "context": "number of informal workers",
+      "source": "Notícia Preta"
+    },
+    {
+      "value": "103.1 million",
+      "context": "total population with jobs",
+      "source": "G1"
+    },
+    {
+      "value": "R$ 3,738",
+      "context": "real average income",
+      "source": "G1"
+    },
+    {
+      "value": "58.8%",
+      "context": "level of occupation in the country",
+      "source": "G1"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "The unemployment rate in June 2026 was 5.4%, the lowest for that period in historical data.",
+      "attribution": "G1"
+    },
+    {
+      "text": "The population desalentada, formed by people who gave up looking for work, was 2.3 million.",
+      "attribution": "G1"
+    }
+  ],
+  "time_series": [],
+  "summary": "As of June 2026, Brazil's unemployment rate has reached a historic low of 5.4%, with a significant number of informal workers totaling 38.5 million. The overall job market remains robust with 103.1 million employed individuals, while the average income has stabilized at R$ 3,738.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-07-31-o-brasil-tem-mais-emprego-mas-o-que-a-automacao-vai-fazer-co.html",
+  "signal": {
+    "title": "Desemprego fica em 5,4% em junho, mas com 38,5 milhões de trabalhadores informais",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/desemprego-fica-em-54-em-junho-mas-com-385-milhoes-de-trabalhadores-informais/?utm_source=rss&utm_medium=rss&utm_campaign=desemprego-fica-em-54-em-junho-mas-com-385-milhoes-de-trabalhadores-informais",
+    "date": "2026-07-30T19:00:00.000Z"
+  }
+}
