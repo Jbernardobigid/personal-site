@@ -416,7 +416,8 @@ ${legacyCta}
 - LEGACY carousel only: do not repeat the same contentType more than twice
 - For tags: items should be 6 short keyword phrases (2-4 words each)
 - Return ONLY valid JSON, no markdown fences, no explanation
-- Do NOT use brand names like "afterALL" or "AfterALL" in slide text — refer to it as "a marca" instead`,
+- Do NOT use brand names like "afterALL" or "AfterALL" in slide text — refer to it as "a marca" instead
+- Factual accuracy is non-negotiable: if the topic references real people, races, or events, use ONLY the specific facts (names, dates, results, numbers) already given in the topic text above. NEVER add a specific detail that isn't explicitly there, even if it sounds plausible — when in doubt, stay general instead of inventing a fact`,
     }],
   });
 
@@ -477,7 +478,9 @@ NEVER use:
 - Transition fillers: "Além disso", "Portanto", "Vale ressaltar", "Em suma", "Nesse contexto", "No entanto"
 - Openers like "O fato é que", "É fundamental que", "É importante destacar"
 - LinkedIn-style motivational phrases
-- Brand names like "afterALL" or "AfterALL" — refer to it as "a marca" instead`,
+- Brand names like "afterALL" or "AfterALL" — refer to it as "a marca" instead
+
+Factual accuracy is non-negotiable: if the topic references real people, races, or events, use ONLY the specific facts already given above. NEVER add a specific detail (name, date, result, number) that isn't explicitly there, even if it sounds plausible — when in doubt, stay general instead of inventing a fact.`,
     }],
   });
 

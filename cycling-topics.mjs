@@ -241,7 +241,8 @@ Regras:
 - Concretude vence generalidade: cena, número, situação específica.
 - O gancho NUNCA é uma pergunta genérica ("você sabia...?"); é uma afirmação ou cena que gera reconhecimento imediato.
 - Se houver dados do Strava e a ideia escolhida combinar, ancore a pauta neles.
-- Fechamento abre reflexão, não pede like/follow.`
+- Fechamento abre reflexão, não pede like/follow.
+- Precisão factual é inegociável: para pautas de história/ciclismo real (ex: outros ciclistas, provas, recordes, datas), NUNCA invente ou adicione fatos específicos (nome de prova, ano, resultado, idade) que não estejam já na ideia do banco acima. Use apenas o que está escrito ali; se quiser mais detalhe, fique no vago ("uma corrida importante", "há alguns anos") em vez de arriscar um dado errado.`
     }],
   });
 

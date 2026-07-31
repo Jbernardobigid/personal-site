@@ -158,8 +158,8 @@ function pickVideoCta(hasBlogPost) {
       ]
     : [
         { weight: 6, instruction: 'Termine a legenda de forma aberta (reflexão ou pergunta), SEM nenhum CTA' },
-        { weight: 1, instruction: 'Termine a legenda com uma linha curta convidando a assinar a newsletter semanal "A Interseção", ex: "Escrevo sobre isso toda semana na newsletter. Link na bio ↗"' },
-        { weight: 1, instruction: 'Termine a legenda com uma linha curta convidando a ouvir o podcast, ex: "Tem episódio do podcast sobre isso. Link na bio ↗"' },
+        { weight: 1, instruction: 'Termine a legenda com uma linha curta convidando a assinar a newsletter semanal "A Interseção" (não afirme que ela cobriu ESTE assunto específico, é um convite geral), ex: "Escrevo toda semana na newsletter A Interseção. Link na bio ↗"' },
+        { weight: 1, instruction: 'Termine a legenda com uma linha curta convidando a ouvir o podcast "A Interseção" (não afirme que existe um episódio sobre ESTE assunto específico, é um convite geral), ex: "Tem episódio novo do podcast A Interseção toda semana. Link na bio ↗"' },
       ];
   const total = options.reduce((s, o) => s + o.weight, 0);
   let r = Math.random() * total;
@@ -213,6 +213,7 @@ Regras RÍGIDAS de tamanho (o vídeo NÃO pode passar de ~${seconds}s):
 - Cada "narration": 1 ou 2 frases curtas, NO MÁXIMO ~22 palavras.
 - A soma de TODAS as narrações deve ficar entre ${wordBudget - 15} e ${wordBudget + 10} palavras.
 Conteúdo: cena 1 gancho concreto; cenas do meio ensinam uma ideia cada; última fecha com imagem ou pergunta aberta (as cenas do vídeo em si NUNCA pedem CTA). "headline" curto (máx 8 palavras). "broll" é uma descrição visual EM INGLÊS, abstrata e sem rostos. Nada de travessões.
+Precisão factual é inegociável: se a pauta/post menciona pessoas, provas ou eventos reais, use SOMENTE os fatos específicos (nomes, datas, resultados, números) já presentes no texto abaixo. NUNCA acrescente um detalhe específico que não esteja explicitamente ali, mesmo que pareça plausível — na dúvida, narre em termos gerais em vez de inventar um dado.
 
 Legenda (campo "caption" separado, não aparece no vídeo): ${ctaInstruction}
 
