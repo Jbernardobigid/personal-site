@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Fri, 31 Jul 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 01 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O filho não espera o campeonato terminar</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-01-o-filho-nao-espera-o-campeonato-terminar.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-01-o-filho-nao-espera-o-campeonato-terminar.html</guid>
+      <pubDate>Sat, 01 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Italo Ferreira, mamadeiras e a verdade que a paternidade ensina sobre prioridade, identidade e o tipo de legado que nenhum troféu carrega.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-01-o-filho-nao-espera-o-campeonato-terminar.png" length="2045786" type="image/png"/>
+    </item>
     <item>
       <title>O Brasil tem mais emprego. Mas o que a automação vai fazer com 38,5 milhões de informais?</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-07-31-o-brasil-tem-mais-emprego-mas-o-que-a-automacao-vai-fazer-co.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Thu, 25 Jun 2026 12:00:00 GMT</pubDate>
       <description>Quando Emicida usou pesquisas da FGV e dados de um Nobel de Economia para responder a Luciano Huck, ele fez algo que a maioria dos debates sobre desigualdade evita: trouxe evidência para onde só havia impressão.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-06-25-o-algoritmo-que-decidimos-ignorar-dados-pobreza-e-o-preconce.png" length="2310744" type="image/png"/>
-    </item>
-    <item>
-      <title>O Pai Que Aparece: Sobre Presença, Identidade e o que um Vídeo por Semana Tem a Ensinar</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-06-23-o-pai-que-aparece-sobre-presenca-identidade-e-o-que-um-video.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-06-23-o-pai-que-aparece-sobre-presenca-identidade-e-o-que-um-video.html</guid>
-      <pubDate>Tue, 23 Jun 2026 12:00:00 GMT</pubDate>
-      <description>Presença não é quantidade de horas, é qualidade de atenção, e os pais que constroem esse hábito deixam algo que nenhum currículo consegue registrar.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-06-23-o-pai-que-aparece-sobre-presenca-identidade-e-o-que-um-video.png" length="2097154" type="image/png"/>
     </item>
   </channel>
 </rss>
