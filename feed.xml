@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sat, 01 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 03 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Segurança digital não é privilégio: o que a REPCONE revela sobre quem a tecnologia protege de verdade</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-03-seguranca-digital-nao-e-privilegio-o-que-a-repcone-revela-so.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-03-seguranca-digital-nao-e-privilegio-o-que-a-repcone-revela-so.html</guid>
+      <pubDate>Mon, 03 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Quando mulheres negras, indígenas e quilombolas são as mais expostas à violência digital, ensinar cibersegurança vira ato político.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-03-seguranca-digital-nao-e-privilegio-o-que-a-repcone-revela-so.png" length="2228210" type="image/png"/>
+    </item>
     <item>
       <title>O filho não espera o campeonato terminar</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-01-o-filho-nao-espera-o-campeonato-terminar.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Sat, 27 Jun 2026 12:00:00 GMT</pubDate>
       <description>Chegar aos 40 não é o fim de uma trajetória, é o momento em que você finalmente sabe o suficiente para construir algo que realmente importa.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-06-27-o-que-voce-acumulou-ate-aqui-nao-e-bagagem-e-capital.png" length="1861459" type="image/png"/>
-    </item>
-    <item>
-      <title>O algoritmo que decidimos ignorar: dados, pobreza e o preconceito travestido de opinião</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-06-25-o-algoritmo-que-decidimos-ignorar-dados-pobreza-e-o-preconce.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-06-25-o-algoritmo-que-decidimos-ignorar-dados-pobreza-e-o-preconce.html</guid>
-      <pubDate>Thu, 25 Jun 2026 12:00:00 GMT</pubDate>
-      <description>Quando Emicida usou pesquisas da FGV e dados de um Nobel de Economia para responder a Luciano Huck, ele fez algo que a maioria dos debates sobre desigualdade evita: trouxe evidência para onde só havia impressão.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-06-25-o-algoritmo-que-decidimos-ignorar-dados-pobreza-e-o-preconce.png" length="2310744" type="image/png"/>
     </item>
   </channel>
 </rss>
