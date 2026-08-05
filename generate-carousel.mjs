@@ -8,11 +8,14 @@
  * shape is still reachable via --format carousel.
  *
  * Usage:
- *   node generate-carousel.mjs [post.html] [--format reframe|carousel|single]
- *   node generate-carousel.mjs --topic "..." --format single --photo-required
- *                                            (rules out the "quote" single-type,
- *                                            the only one with no real photo —
- *                                            used by photo-day.mjs)
+ *   node generate-carousel.mjs [post.html] [--format reframe|carousel|list|single]
+ *   node generate-carousel.mjs --topic "..." --format list --photo-required
+ *
+ *   --format list       legacy carousel machinery in a shorter enumeration cut
+ *                       (cover + one item per slide + cta) for list-shaped ideas
+ *   --photo-required    hard-fails the build unless at least one slide lands on
+ *                       a template with a {{PHOTO_URL}} slot — used by
+ *                       photo-day.mjs, whose whole premise is the real photo
  */
 
 import './load-env.mjs';
@@ -42,6 +45,8 @@ const TEMPLATE_MAP = {
   // Carousel types (multi-slide)
   hook:                'hook.html',
   tip:                 'tip.html',
+  tip_dark:            'tip_dark.html',
+  tip_photo:           'tip_photo.html',
   numbered_tip:        'numbered_tip.html',
   guide:               'guide.html',
   list:                'list.html',
@@ -68,7 +73,7 @@ const TEMPLATE_MAP = {
 };
 
 const CAROUSEL_TYPES = new Set([
-  'hook','tip','numbered_tip','guide','list','checklist',
+  'hook','tip','tip_dark','tip_photo','numbered_tip','guide','list','checklist',
   'checklist_dark','numbered_checklist','myth_truth','qa','photo_reflection','cta',
   'reframe_cover','reframe_beat','reframe_beat_dark','reframe_cta',
 ]);
@@ -81,6 +86,22 @@ const SINGLE_TYPES = new Set([
 const ITEM_TYPES = new Set([
   'list','checklist','numbered_tip','guide','checklist_dark','numbered_checklist','tags',
 ]);
+
+// Which content types actually render a photo, derived from the templates on
+// disk rather than hardcoded — the curated templates are the source of truth
+// and a hardcoded list would silently drift the day one gains or loses its
+// {{PHOTO_URL}} slot. Drives both the --photo-required prompt directive and
+// the build-time guard, so the two can never disagree.
+function photoCapableTypes() {
+  return new Set(
+    Object.entries(TEMPLATE_MAP)
+      .filter(([, file]) => {
+        const p = path.join(HTML_TEMPLATES_DIR, file);
+        return fs.existsSync(p) && templateUsesPhoto(fs.readFileSync(p, 'utf8'));
+      })
+      .map(([type]) => type)
+  );
+}
 
 const PILLAR_HASHTAGS = {
   'black-identity':   ['#IdentidadeNegra', '#OrgulhoNegro', '#NegrosNaTech', '#RepresentatividadeImporta', '#BlackExcellence', '#JorgeBernardo'],
@@ -317,22 +338,38 @@ async function extractPostStructure(client, post, { hasBlogPost = true, inventor
     ? `BLOG POST:\nTitle: ${post.title}\nExcerpt: ${post.excerpt}\nContent: ${post.plainText.substring(0, 3000)}`
     : `TOPIC IDEA:\n${post.title}`;
 
-  // Optional explicit format override (--format reframe|carousel|single). When
-  // set, the model still extracts the content but is told which shape to
+  // Optional explicit format override (--format reframe|carousel|list|single).
+  // When set, the model still extracts the content but is told which shape to
   // produce, instead of deciding on its own. "carousel" (the legacy educational
   // shape) is ONLY reachable through this flag since the Phase 3.5 redesign.
-  // --photo-required (photo-day.mjs) additionally rules out "quote" — the one
-  // SINGLE type with no {{PHOTO_URL}} slot — so a photo-day post can't land on
-  // a 100%-typographic card by chance; every other SINGLE type has a real
-  // photo, not just a background accent.
+  // "list" is the same legacy machinery in a shorter, punchier cut for
+  // enumeration ideas ("as 4 estações do ciclista") — see photo-day.mjs.
   const formatDirective = forcedFormat === 'reframe'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "reframe" — skip the editorial filter and build the reframe carousel from the strongest available angle.'
     : forcedFormat === 'carousel'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" (LEGACY shape) with 6-8 slides: first slide hook, last slide cta, middle slides from the LEGACY types (tip, numbered_tip, guide, list, checklist, checklist_dark, numbered_checklist, myth_truth, qa, photo_reflection). Lead the data points with myth_truth / numbered_tip / qa slides, and give cited numbers and quotes their own slides.'
-    : forcedFormat === 'single' && photoRequired
-    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "single" with exactly 1 slide. This post MUST prominently show the chosen photo, so pick the content type from: polaroid, split_photo, triptych, arch_photo, circle_photo, split_h, dual_photo, editorial_photo, rotated_text, profile_quote, tags — NEVER "quote" (it renders no photo at all).'
+    : forcedFormat === 'list'
+    ? `\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" with 5-7 slides, in the ENUMERATION cut — this topic is a list, and the swipe IS the joke's timing. Do NOT lecture.
+- Slide 1: contentType "hook" — the premise as a cover (headline max 8 words). body = "" or one short setup line.
+- Middle slides (3-5): ONE list item per slide, in escalating order — the funniest or most cutting item LAST. headline = the item itself (max 45 chars), body = the twist or "" when the item lands alone. Never bundle several items onto one slide. Set "label" on each of these to its position, zero-padded ("01", "02", "03"…) so the swipe reads as a countdown — NEVER leave it as the default "Dica", this is not advice.
+- Middle-slide contentType MUST alternate across the beat family so no two consecutive slides share a ground: "tip" (cream card), "tip_dark" (deep blue field), "tip_photo" (the real photograph, full-bleed). Use "tip_photo" for at least one beat — ideally the one whose line lands hardest against a real image of me riding.
+- Exactly ONE middle slide may instead be "photo_reflection" or "numbered_checklist" for a longer visual break.
+- Last: contentType "cta" — a short share ask (e.g. "Marca quem faz isso.") + a short save ask.
+Enumeration copy rules: first or second person, present tense, max ~12 words per line. NO statistics, NO explaining the joke, NO lecture register.`
     : forcedFormat === 'single'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "single" with exactly 1 slide, using one SINGLE content type.'
+    : '';
+
+  // --photo-required (photo-day.mjs): the post exists to show a real photograph,
+  // so at least one slide must land on a type that has a {{PHOTO_URL}} slot.
+  // Applies to EVERY shape, not just single: the four reframe templates are
+  // 100% typographic and only 3 of the 12 legacy carousel types carry a photo,
+  // so without this a multi-slide photo day would silently render no photo at
+  // all — the same failure the "quote" single type caused. Enforced again at
+  // build time in main(); the directive is the polite half of the contract.
+  const photoCapable = [...photoCapableTypes()];
+  const photoDirective = photoRequired
+    ? `\n\nPHOTO REQUIRED (mandatory): This post exists to show a real photograph. ONLY these content types render one: ${photoCapable.join(', ')}. A "single" post's one slide MUST be one of them (NEVER "quote" — it renders no photo at all). A multi-slide post MUST include at least one of them; "photo_reflection" fits any sequence, including a reframe carousel.`
     : '';
 
   const legacyCta = hasBlogPost
@@ -346,7 +383,7 @@ async function extractPostStructure(client, post, { hasBlogPost = true, inventor
       role: 'user',
       content: `You are the social media editor for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
 
-${contentBlock}${formatDirective}
+${contentBlock}${formatDirective}${photoDirective}
 
 STEP 1 — EDITORIAL FILTER (decides the format; see docs/carousel-reframe-playbook.md):
 A post earns a REFRAME CAROUSEL only if it passes ALL THREE tests:
@@ -380,7 +417,8 @@ profile_quote: Personal brand moment, circular photo + reflection
 tags: Keyword/concept cloud — headline + 6 short concept tags (uses items array)
 
 LEGACY carousel content types (ONLY when a FORMAT OVERRIDE demands "carousel"):
-hook (slide 1, always) · tip · numbered_tip · guide · list · checklist · checklist_dark · numbered_checklist · myth_truth · qa · photo_reflection · cta (last slide, always)
+hook (slide 1, always) · tip · tip_dark · tip_photo · numbered_tip · guide · list · checklist · checklist_dark · numbered_checklist · myth_truth · qa · photo_reflection · cta (last slide, always)
+(tip / tip_dark / tip_photo are the same headline+body beat on three different grounds — cream card, deep blue field, full-bleed photograph. Alternate them rather than repeating one.)
 
 Return JSON: { "format": "reframe" | "carousel" | "single", "photo": "<filename>", "slides": [ ... ] }
 
@@ -402,6 +440,7 @@ Each slide object:
 - contentType (from the lists above)
 - headline: short, punchy (max 55 chars, Brazilian Portuguese)
 - body: supporting text (max 110 chars, Portuguese) — use empty string when not needed
+- label: OPTIONAL eyebrow override (max 12 chars, e.g. "01") — only the "tip" type reads it; omit it to keep that template's curated default
 - items: array of 3-6 short strings — for list/checklist/numbered_tip/guide/checklist_dark/numbered_checklist/tags types; empty array otherwise
 - steps: array of 3-5 strings — for guide type only; empty array otherwise
 - myth: string (max 70 chars) — for myth_truth only; null otherwise
@@ -556,6 +595,17 @@ function templateUsesPhoto(templateHtml) {
   return /\{\{PHOTO_URL\}\}/.test(templateHtml);
 }
 
+// Eyebrow label baked into a template, now overridable per slide via {{LABEL}}.
+// "Dica" is right for a legacy educational carousel and wrong for an
+// enumeration beat — a humor punchline framed as advice kills the joke — so the
+// list cut passes its own label ("01", "02"…) and everything else keeps the
+// curated default, rendering byte-identical to before.
+const TEMPLATE_DEFAULT_LABELS = {
+  tip: 'Dica',
+  tip_dark: 'Dica',
+  tip_photo: 'Dica',
+};
+
 function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true, { slideNum = 1, slideTotal = 1, format = 'carousel' } = {}) {
   const contentType = slide.contentType;
   const headline  = sanitizeEmDashes(slide.headline);
@@ -574,6 +624,8 @@ function injectContent(templateHtml, slide, photoAbsPath, hasBlogPost = true, { 
   html = html.replace(/\{\{TRUTH\}\}/g, escapeHtml(truth ?? ''));
   html = html.replace(/\{\{QUESTION\}\}/g, escapeHtml(question ?? ''));
   html = html.replace(/\{\{ANSWER\}\}/g, escapeHtml(answer ?? ''));
+  const label = sanitizeEmDashes(slide.label);
+  html = html.replace(/\{\{LABEL\}\}/g, escapeHtml(label || TEMPLATE_DEFAULT_LABELS[contentType] || ''));
   html = html.replace(/\{\{SLIDE_NUM\}\}/g, String(slideNum).padStart(2, '0'));
   html = html.replace(/\{\{SLIDE_TOTAL\}\}/g, String(slideTotal).padStart(2, '0'));
 
@@ -642,9 +694,10 @@ async function main() {
   const topicArg  = topicIdx  !== -1 ? args[topicIdx  + 1] : null;
   const pillarArg = pillarIdx !== -1 ? args[pillarIdx + 1] : null;
   const formatArg = formatIdx !== -1 ? args[formatIdx + 1] : null;
-  const explicitFormat = ['reframe', 'carousel', 'single'].includes(formatArg) ? formatArg : null;
-  // Rules out the "quote" single-type (no photo slot) — for callers where the
-  // whole point of the post is the real photo (photo-day.mjs).
+  const explicitFormat = ['reframe', 'carousel', 'list', 'single'].includes(formatArg) ? formatArg : null;
+  // Guarantees the finished post actually renders a real photo — for callers
+  // where that IS the point of the post (photo-day.mjs). Enforced below, after
+  // Claude picks the content types.
   const photoRequired = args.includes('--photo-required');
 
   // Whether the post links back to the blog ("Link na bio" CTA) or is standalone.
@@ -690,6 +743,25 @@ async function main() {
   const photoPath = resolvePhoto(photo, recentPhotos);
   if (photoPath) console.log(`  Photo: ${path.basename(photoPath)}${photo ? ` (recommended: ${photo})` : ' (random fallback)'}`);
   else console.warn('  Warning: No photos found in brand_assets/Fotos/');
+
+  // --photo-required is a hard contract, not a hint: fail before touching the
+  // output folder so a rejected build never deletes the previous good slides
+  // (the cleanup below wipes slide-*.png for this same date+slug) and never
+  // reaches the Notion queue. The prompt asks; this enforces.
+  if (photoRequired) {
+    const photoCapable = photoCapableTypes();
+    const rendering = slides.filter(s => photoCapable.has(s.contentType));
+    if (rendering.length === 0) {
+      throw new Error(`--photo-required: no slide would render a photo. Claude returned only `
+        + `[${[...new Set(slides.map(s => s.contentType))].join(', ')}]; photo-capable types are `
+        + `[${[...photoCapable].join(', ')}].`);
+    }
+    if (!photoPath) {
+      throw new Error('--photo-required: no photo could be resolved from brand_assets/Fotos/ — '
+        + 'the slides would render a broken image. Check the folder exists on this machine.');
+    }
+    console.log(`  Photo slides: ${rendering.length}/${slides.length} (${rendering.map(s => s.contentType).join(', ')})`);
+  }
 
   const date = post.sourceDate || isoDate();
   const slug = slugify(post.title);
