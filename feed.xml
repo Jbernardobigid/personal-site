@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Wed, 05 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 07 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O Ideb subiu. E agora, o que fazemos com isso?</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-07-o-ideb-subiu-e-agora-o-que-fazemos-com-isso.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-07-o-ideb-subiu-e-agora-o-que-fazemos-com-isso.html</guid>
+      <pubDate>Fri, 07 Aug 2026 12:00:00 GMT</pubDate>
+      <description>O Brasil avançou nos indicadores de educação básica, mas os números revelam algo mais profundo: aprender nunca foi só tarefa de escola ou de criança.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-07-o-ideb-subiu-e-agora-o-que-fazemos-com-isso.png" length="1930406" type="image/png"/>
+    </item>
     <item>
       <title>Depois dos 40, o jogo muda de nome</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-05-depois-dos-40-o-jogo-muda-de-nome.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Wed, 01 Jul 2026 12:00:00 GMT</pubDate>
       <description>Quando Doku deixou a Copa para estar com seu filho, o mundo criticou. O que essa polêmica revela sobre o que ainda esperamos dos pais negros.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-01-jeremy-doku-foi-embora-do-treino-para-ver-o-filho-nascer-o-m.png" length="2249775" type="image/png"/>
-    </item>
-    <item>
-      <title>400 Vagas. Gratuito. Online. O Que Você Está Esperando?</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-06-29-400-vagas-gratuito-online-o-que-voce-esta-esperando.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-06-29-400-vagas-gratuito-online-o-que-voce-esta-esperando.html</guid>
-      <pubDate>Mon, 29 Jun 2026 12:00:00 GMT</pubDate>
-      <description>Quando uma oportunidade real de aprender cibersegurança de graça aparece para jovens de baixa renda, ela revela algo maior sobre o que separa quem aprende de quem não aprende.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-06-29-400-vagas-gratuito-online-o-que-voce-esta-esperando.png" length="1743389" type="image/png"/>
     </item>
   </channel>
 </rss>
