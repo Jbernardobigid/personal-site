@@ -44,6 +44,8 @@ const TEMPLATE_MAP = {
   reframe_cta:         'reframe_cta.html',
   // Carousel types (multi-slide)
   hook:                'hook.html',
+  hook_light:          'hook_light.html',
+  hook_photo:          'hook_photo.html',
   tip:                 'tip.html',
   tip_dark:            'tip_dark.html',
   tip_photo:           'tip_photo.html',
@@ -73,7 +75,7 @@ const TEMPLATE_MAP = {
 };
 
 const CAROUSEL_TYPES = new Set([
-  'hook','tip','tip_dark','tip_photo','numbered_tip','guide','list','checklist',
+  'hook','hook_light','hook_photo','tip','tip_dark','tip_photo','numbered_tip','guide','list','checklist',
   'checklist_dark','numbered_checklist','myth_truth','qa','photo_reflection','cta',
   'reframe_cover','reframe_beat','reframe_beat_dark','reframe_cta',
 ]);
@@ -347,10 +349,10 @@ async function extractPostStructure(client, post, { hasBlogPost = true, inventor
   const formatDirective = forcedFormat === 'reframe'
     ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "reframe" — skip the editorial filter and build the reframe carousel from the strongest available angle.'
     : forcedFormat === 'carousel'
-    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" (LEGACY shape) with 6-8 slides: first slide hook, last slide cta, middle slides from the LEGACY types (tip, numbered_tip, guide, list, checklist, checklist_dark, numbered_checklist, myth_truth, qa, photo_reflection). Lead the data points with myth_truth / numbered_tip / qa slides, and give cited numbers and quotes their own slides.'
+    ? '\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" (LEGACY shape) with 6-8 slides: first slide one of hook / hook_light / hook_photo (vary it against the recent posts listed above), last slide cta, middle slides from the LEGACY types (tip, numbered_tip, guide, list, checklist, checklist_dark, numbered_checklist, myth_truth, qa, photo_reflection). Lead the data points with myth_truth / numbered_tip / qa slides, and give cited numbers and quotes their own slides.'
     : forcedFormat === 'list'
     ? `\n\nFORMAT OVERRIDE (mandatory): You MUST return "format": "carousel" with 5-7 slides, in the ENUMERATION cut — this topic is a list, and the swipe IS the joke's timing. Do NOT lecture.
-- Slide 1: contentType "hook" — the premise as a cover (headline max 8 words). body = "" or one short setup line.
+- Slide 1: contentType "hook" OR "hook_light" OR "hook_photo" — the premise as a cover (headline max 8 words). body = "" or one short setup line. Choose a DIFFERENT one from whatever the most recent post in "RECENT POSTS" opened with; for a humour enumeration "hook_light" usually lands best.
 - Middle slides (3-5): ONE list item per slide, in escalating order — the funniest or most cutting item LAST. headline = the item itself (max 45 chars), body = the twist or "" when the item lands alone. Never bundle several items onto one slide. Set "label" on each of these to its position, zero-padded ("01", "02", "03"…) so the swipe reads as a countdown — NEVER leave it as the default "Dica", this is not advice.
 - Middle-slide contentType MUST alternate across the beat family so no two consecutive slides share a ground: "tip" (cream card), "tip_dark" (deep blue field), "tip_photo" (the real photograph, full-bleed). Use "tip_photo" for at least one beat — ideally the one whose line lands hardest against a real image of me riding.
 - Exactly ONE middle slide may instead be "photo_reflection" or "numbered_checklist" for a longer visual break.
@@ -373,8 +375,8 @@ Enumeration copy rules: first or second person, present tense, max ~12 words per
     : '';
 
   const legacyCta = hasBlogPost
-    ? '- LEGACY carousel only: first slide must be hook, last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")'
-    : '- LEGACY carousel only: first slide must be hook, last must be cta (headline = "Salva pra não perder", body = "E compartilha com quem precisa ver"). This post is NOT a blog post, so NEVER write "Link na bio" or "Leia o post" anywhere in the slides.';
+    ? '- LEGACY carousel only: first slide must be one of hook / hook_light / hook_photo (vary the variant post to post), last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")'
+    : '- LEGACY carousel only: first slide must be one of hook / hook_light / hook_photo (vary the variant post to post), last must be cta (headline = "Salva pra não perder", body = "E compartilha com quem precisa ver"). This post is NOT a blog post, so NEVER write "Link na bio" or "Leia o post" anywhere in the slides.';
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -417,8 +419,9 @@ profile_quote: Personal brand moment, circular photo + reflection
 tags: Keyword/concept cloud — headline + 6 short concept tags (uses items array)
 
 LEGACY carousel content types (ONLY when a FORMAT OVERRIDE demands "carousel"):
-hook (slide 1, always) · tip · tip_dark · tip_photo · numbered_tip · guide · list · checklist · checklist_dark · numbered_checklist · myth_truth · qa · photo_reflection · cta (last slide, always)
+hook | hook_light | hook_photo (slide 1, always — pick exactly ONE) · tip · tip_dark · tip_photo · numbered_tip · guide · list · checklist · checklist_dark · numbered_checklist · myth_truth · qa · photo_reflection · cta (last slide, always)
 (tip / tip_dark / tip_photo are the same headline+body beat on three different grounds — cream card, deep blue field, full-bleed photograph. Alternate them rather than repeating one.)
+(hook / hook_light / hook_photo are the same cover on those same three grounds — deep blue field, cream card, full-bleed photograph. Slide 1 is the ONLY thing most people ever see, so CHECK "RECENT POSTS" ABOVE AND DO NOT REUSE THE HOOK VARIANT THE LAST POST OPENED WITH. Pick the ground that suits this topic: hook_photo when a real photograph carries the premise, hook_light for warmer/personal or humorous premises, hook for sharper or more serious ones.)
 
 Return JSON: { "format": "reframe" | "carousel" | "single", "photo": "<filename>", "slides": [ ... ] }
 

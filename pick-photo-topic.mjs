@@ -20,6 +20,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { predictedShape, routeFormat, shapeOfFormat } from './photo-day-format.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BANK_PATH = path.join(__dirname, 'cycling-topics-bank.json');
@@ -30,6 +31,7 @@ const OUT_PATH = path.join(__dirname, 'photo-topic.json');
 // narrated multi-beat categories (tips/advocacy/mind/community/strava) Reels use.
 const PHOTO_DAY_CATEGORIES = ['humor', 'identity', 'history', 'gear'];
 const RECENT_TITLES_KEPT = 12;
+const RECENT_SHAPES_KEPT = 4;
 
 function fail(msg) {
   console.log(JSON.stringify({ success: false, error: msg }));
@@ -45,15 +47,21 @@ function loadBank() {
 function loadUsed() {
   try {
     const u = JSON.parse(fs.readFileSync(USED_PATH, 'utf8'));
-    return { usedIds: u.usedIds ?? [], recentTitles: u.recentTitles ?? [], recentCategories: u.recentCategories ?? [] };
-  } catch { return { usedIds: [], recentTitles: [], recentCategories: [] }; }
+    return {
+      usedIds: u.usedIds ?? [],
+      recentTitles: u.recentTitles ?? [],
+      recentCategories: u.recentCategories ?? [],
+      recentShapes: u.recentShapes ?? [],
+    };
+  } catch { return { usedIds: [], recentTitles: [], recentCategories: [], recentShapes: [] }; }
 }
 
-function saveUsed(used, pickedId, title, category) {
+function saveUsed(used, pickedId, title, category, shape) {
   const usedIds = [...used.usedIds, pickedId];
   const recentTitles = [...used.recentTitles, title].slice(-RECENT_TITLES_KEPT);
   const recentCategories = [...used.recentCategories, category].slice(-4);
-  fs.writeFileSync(USED_PATH, JSON.stringify({ usedIds, recentTitles, recentCategories }, null, 2), 'utf8');
+  const recentShapes = [...used.recentShapes, shape].slice(-RECENT_SHAPES_KEPT);
+  fs.writeFileSync(USED_PATH, JSON.stringify({ usedIds, recentTitles, recentCategories, recentShapes }, null, 2), 'utf8');
 }
 
 // Same diversity-floor philosophy as cycling-topics.mjs's pickCandidates: the
@@ -61,7 +69,7 @@ function saveUsed(used, pickedId, title, category) {
 // + Reel streams together can't collapse onto one winning category. Spreads
 // evenly across categories (not a uniform pick over the pool) so identity's
 // larger idea count doesn't dominate every draw.
-function pickIdea(ideas, usedIds, lastCategory) {
+function pickIdea(ideas, usedIds, lastCategory, lastShape) {
   let pool = ideas.filter(i => PHOTO_DAY_CATEGORIES.includes(i.category) && !usedIds.includes(i.id));
   let cycled = false;
   if (pool.length === 0) {
@@ -71,6 +79,16 @@ function pickIdea(ideas, usedIds, lastCategory) {
   if (lastCategory) {
     const withoutLast = pool.filter(i => i.category !== lastCategory);
     if (withoutLast.length > 0) pool = withoutLast;
+  }
+  // Shape floor, the second axis. The category floor above can't see that humor
+  // and gear both route to the enumeration carousel, so on its own it happily
+  // ships carousel after carousel (2026-08-08/09/10). Ideas whose shape is still
+  // undecided at pick time (predictedShape === null) are never excluded here -
+  // the editorial filter owns that call, and pretending to know it would starve
+  // the pool for no reason.
+  if (lastShape) {
+    const withoutShape = pool.filter(i => predictedShape(i, lastShape) !== lastShape);
+    if (withoutShape.length > 0) pool = withoutShape;
   }
   const byCategory = new Map();
   for (const idea of pool) {
@@ -89,13 +107,20 @@ function main() {
   const ideas = loadBank();
   const used = loadUsed();
   const lastCategory = used.recentCategories[used.recentCategories.length - 1] ?? null;
+  const lastShape = used.recentShapes[used.recentShapes.length - 1] ?? null;
 
-  const { idea, cycled } = pickIdea(ideas, used.usedIds, lastCategory);
+  const { idea, cycled } = pickIdea(ideas, used.usedIds, lastCategory, lastShape);
+  // Routing happens here, not in photo-day.mjs, because it depends on lastShape
+  // and the ledger has already been advanced by the time the builder reads it.
+  // photo-day.mjs consumes the decision instead of recomputing it.
+  const { format, why } = routeFormat(idea, lastShape);
+  const shape = shapeOfFormat(format);
   console.log(`Picked: [${idea.id}] (${idea.category}) ${idea.idea}${cycled ? ' (photo-day pool cycled — restarted)' : ''}`);
+  console.log(`  Shape: ${format ?? 'undecided (editorial filter)'} — ${why}${lastShape ? ` | last post was ${lastShape}` : ''}`);
   if (idea.photo) console.log(`  Photo pin: ${idea.photo}`);
 
-  fs.writeFileSync(OUT_PATH, JSON.stringify({ idea: idea.idea, category: idea.category, photo: idea.photo ?? null, bankId: idea.id }, null, 2), 'utf8');
-  if (!dryRun) saveUsed(used, idea.id, idea.idea, idea.category);
+  fs.writeFileSync(OUT_PATH, JSON.stringify({ idea: idea.idea, category: idea.category, photo: idea.photo ?? null, bankId: idea.id, format, formatWhy: why }, null, 2), 'utf8');
+  if (!dryRun) saveUsed(used, idea.id, idea.idea, idea.category, shape);
 
   console.log(`\nWritten: photo-topic.json${dryRun ? ' (dry run — bank id NOT marked used)' : ` (bank id ${idea.id} marked used)`}`);
   console.log(JSON.stringify({ success: true, dryRun, bankId: idea.id, category: idea.category }));

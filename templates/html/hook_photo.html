@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html { margin: 0; padding: 0; }
+    /* Third ground for slide 1, completing the same cream -> dark -> photograph
+       progression the tip family already runs. Two deliberate breaks from the
+       other two hooks and from tip_photo.html, so a carousel opening on this one
+       is unmistakable at thumbnail size:
+         1. Type is bottom-anchored, not centred - the photograph gets the top
+            two thirds and the headline lands like a poster caption.
+         2. Type is LEFT-aligned. Every other template in the set centres, so
+            the ragged right edge alone reads as a different post.
+       tip_photo centres its stack inside the inset frame; putting a second
+       centred photo composition here would have made the two beats twins. */
+    #slide {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      background: #14100c;
+    }
+    .bg-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+      /* Held brighter than tip_photo's 0.62: the scrim below is bottom-weighted
+         rather than centred, so the upper frame never competes with type and can
+         stay open. This slide's whole job is to make someone stop scrolling. */
+      filter: brightness(0.74) saturate(0.9) contrast(1.05);
+    }
+    .photo-tint {
+      position: absolute;
+      inset: 0;
+      /* Bottom-weighted so legibility is bought only where the copy actually
+         sits. A centred scrim would grey out the subject for nothing. */
+      background:
+        linear-gradient(180deg, rgba(20,16,12,0.30) 0%, rgba(20,16,12,0.04) 34%, rgba(12,10,8,0.72) 72%, rgba(10,8,6,0.92) 100%),
+        linear-gradient(180deg, rgba(28,49,74,0.22) 0%, rgba(28,49,74,0.05) 60%);
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.10;
+      z-index: 5;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .accent-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #d6aa78;
+      z-index: 4;
+    }
+    .slide-frame {
+      position: absolute;
+      inset: 54px;
+      border: 1px solid rgba(241,236,225,0.18);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .slide-frame::before, .slide-frame::after {
+      content: '';
+      position: absolute;
+      width: 26px; height: 26px;
+      border-color: #d6aa78;
+      border-style: solid;
+    }
+    .slide-frame::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .slide-frame::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+    .handle-right {
+      position: absolute;
+      top: 50%;
+      right: 22px;
+      transform: translateY(-50%) rotate(90deg);
+      z-index: 4;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(241,236,225,0.32);
+      white-space: nowrap;
+    }
+    .stack {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      bottom: 126px;
+      z-index: 4;
+      text-align: left;
+    }
+    .divider {
+      width: 64px;
+      height: 3px;
+      background: #d6aa78;
+      margin-bottom: 34px;
+    }
+    .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 82px;
+      line-height: 1.1;
+      color: #f7f3ea;
+      letter-spacing: -0.5px;
+      margin-bottom: 26px;
+      text-shadow: 0 3px 30px rgba(0,0,0,0.62);
+    }
+    .body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px;
+      line-height: 1.45;
+      color: rgba(247,243,234,0.84);
+      max-width: 760px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.58);
+    }
+    .footer-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 54px;
+      background: rgba(12,10,8,0.88);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 52px;
+      z-index: 4;
+    }
+    .footer-bar span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+    }
+    .footer-bar .handle {
+      color: #d6aa78;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide">
+    <img class="bg-photo" src="{{PHOTO_URL}}" alt="">
+    <div class="photo-tint"></div>
+    <div class="accent-line"></div>
+    <div class="slide-frame"></div>
+    <div class="handle-right">@jotabernardO</div>
+    <div class="stack">
+      <div class="divider"></div>
+      <div class="headline">{{HEADLINE}}</div>
+      <div class="body">{{BODY}}</div>
+    </div>
+    <div class="footer-bar">
+      <span>Afeto &amp; Liderança</span>
+      <span class="handle">@jotabernard0</span>
+      <span>Ancestralidade &amp; Futuro</span>
+    </div>
+    <div class="grain"></div>
+  </div>
+</body>
+</html>

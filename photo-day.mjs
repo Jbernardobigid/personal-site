@@ -7,7 +7,7 @@
  * generate-carousel.mjs, then queues it through the same Notion approval rail
  * carousels already use (queue-to-notion.mjs).
  *
- * Shape follows the idea's theme (see routeFormat below), it is no longer
+ * Shape follows the idea's theme (see photo-day-format.mjs), it is no longer
  * pinned to a single image: enumeration categories become a short list
  * carousel, photo-pinned jersey ideas stay single, and unpinned arguments go
  * through generate-carousel.mjs's own editorial filter. The publish rail is
@@ -40,9 +40,12 @@ import fs from 'fs';
 import { execFileSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { routeFormat, shapeOfFormat } from './photo-day-format.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TOPIC_PATH = path.join(__dirname, 'photo-topic.json');
+const USED_PATH = path.join(__dirname, 'cycling-topics-used.json');
+const META_PATH = path.join(__dirname, 'carousel-meta.json');
 
 function fail(msg, detail = '') {
   console.log(JSON.stringify({ success: false, error: msg, detail }));
@@ -53,35 +56,34 @@ function run(args, extraEnv = {}) {
   execFileSync('node', args, { cwd: __dirname, stdio: 'inherit', env: { ...process.env, ...extraEnv }, timeout: 300000 });
 }
 
-// Categories whose ideas in cycling-topics-bank.json are enumerations by
-// construction ("Sinais de que…", "as 4 estações…", "o que priorizar quando o
-// orçamento é curto"). All 5 humor ideas and 2 of 3 gear ideas are lists, and
-// flattening a list onto one card throws away the joke's timing — the swipe is
-// the punchline pacing. These get the shorter enumeration carousel cut.
-const LIST_SHAPED_CATEGORIES = ['humor', 'gear'];
+// routeFormat and the shape classes now live in photo-day-format.mjs, because
+// pick-photo-topic.mjs has to apply the same rules one step earlier to keep its
+// diversity floor honest about shape. The photo pin is the tiebreaker for
+// identity/history: a pinned idea exists to show that one specific jersey (see
+// brand_assets/Fotos/INVENTORY.md §3a), so the photo IS the post and a single
+// card serves it best. Unpinned ideas in the same categories carry an argument,
+// which the filter is built to shape.
 
-// Picks the post shape from the idea's theme instead of pinning every photo day
-// to one format. Returns { format, why }; a null format means "pass no --format
-// flag and let generate-carousel.mjs's editorial filter decide" (reframe when
-// the idea passes the three tests, single when it doesn't).
-//
-// Why this beats the old hardcoded --format single: that override doesn't just
-// choose a shape, it SKIPS the editorial filter entirely, so ideas that are
-// textbook flips ("a estampa não é decoração, é declaração") could never become
-// the reframe carousel they were written as.
-//
-// The photo pin is the tiebreaker for identity/history: a pinned idea exists to
-// show that one specific jersey (see brand_assets/Fotos/INVENTORY.md §3a), so
-// the photo IS the post and a single card serves it best. Unpinned ideas in the
-// same categories carry an argument, which the filter is built to shape.
-function routeFormat(topic) {
-  if (LIST_SHAPED_CATEGORIES.includes(topic.category)) {
-    return { format: 'list', why: `${topic.category} ideas are enumerations` };
+// When routeFormat defers to the editorial filter, the picker could only record
+// null for this post's shape — so tomorrow's floor would have nothing to push
+// away from and could hand us a second carousel in a row. generate-carousel.mjs
+// has just written the real answer to carousel-meta.json, so correct the ledger
+// entry the picker left open. Best-effort by design: a bad write here must never
+// fail a post that already built and is about to queue.
+function recordBuiltShape() {
+  try {
+    const built = JSON.parse(fs.readFileSync(META_PATH, 'utf8'));
+    const shape = shapeOfFormat(built.format);
+    if (!shape) return;
+    const used = JSON.parse(fs.readFileSync(USED_PATH, 'utf8'));
+    if (!Array.isArray(used.recentShapes) || used.recentShapes.length === 0) return;
+    if (used.recentShapes[used.recentShapes.length - 1] === shape) return;
+    used.recentShapes[used.recentShapes.length - 1] = shape;
+    fs.writeFileSync(USED_PATH, JSON.stringify(used, null, 2), 'utf8');
+    console.log(`     Shape ledger corrected to "${shape}" (built format: ${built.format})`);
+  } catch (err) {
+    console.log(`     [warn] could not record built shape: ${err.message}`);
   }
-  if (topic.photo) {
-    return { format: 'single', why: 'photo-pinned idea, the jersey is the post' };
-  }
-  return { format: null, why: 'unpinned argument, let the three-test filter choose' };
 }
 
 function main() {
@@ -91,12 +93,18 @@ function main() {
   run(['pick-photo-topic.mjs', ...(dryRun ? ['--dry-run'] : [])]);
 
   const topic = JSON.parse(fs.readFileSync(TOPIC_PATH, 'utf8'));
-  const { format, why } = routeFormat(topic);
+  // pick-photo-topic.mjs already routed this idea (it needs the previous post's
+  // shape, which the ledger no longer exposes once today's pick is recorded).
+  // Recompute only as a fallback for a photo-topic.json written before that.
+  const { format, why } = 'format' in topic
+    ? { format: topic.format, why: topic.formatWhy ?? 'routed at pick time' }
+    : routeFormat(topic);
   console.log(`\n2/3 Building post: "${topic.idea}"`);
   console.log(`     Shape: ${format ?? 'editorial filter decides'} (${why})`);
   const genEnv = topic.photo ? { JORGE_CAROUSEL_PHOTO: topic.photo } : {};
   const formatArgs = format ? ['--format', format] : [];
   run(['generate-carousel.mjs', '--topic', topic.idea, ...formatArgs, '--pillar', 'cycling', '--photo-required'], genEnv);
+  if (!dryRun) recordBuiltShape();
 
   if (dryRun) {
     console.log('\n--- DRY RUN: built but NOT queued to Notion ---');
