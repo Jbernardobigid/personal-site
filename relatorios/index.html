@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatórios — Jorge Bernardo</title>
+<meta name="description" content="Dossiês longos sobre dados, memória e apagamento. Levantamentos independentes com método aberto, fontes citadas e limites declarados.">
+<link rel="canonical" href="https://www.jorgebernardo.tech/relatorios/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Relatórios — Jorge Bernardo">
+<meta property="og:description" content="Dossiês longos sobre dados, memória e apagamento. Método aberto, fontes citadas, limites declarados.">
+<meta property="og:url" content="https://www.jorgebernardo.tech/relatorios/">
+<meta property="og:image" content="https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/images/05-iansa-barbara.png">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Jorge Bernardo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Relatórios — Jorge Bernardo">
+<meta name="twitter:description" content="Dossiês longos sobre dados, memória e apagamento. Método aberto, fontes citadas, limites declarados.">
+<meta name="twitter:image" content="https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/images/05-iansa-barbara.png">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14110d;
+    --bg-elev: #1c1813;
+    --bg-elev-2: #221c15;
+    --paper: #f1e7d6;
+    --paper-dim: #cdc0a4;
+    --muted: #8d8170;
+    --rule: rgba(241,231,214,0.14);
+    --rule-strong: rgba(241,231,214,0.3);
+    --accent: #c1532f;
+    --accent-soft: rgba(193,83,47,0.16);
+    --gold: #c6a02f;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --space-section: clamp(4rem, 3rem + 5vw, 8rem);
+    --measure: 38rem;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: clip;
+  }
+
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight: 600; margin: 0; color: var(--paper); }
+  a{ color: var(--gold); text-decoration-thickness: 1px; }
+  a:hover{ color: var(--accent); }
+  a:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .wrap{ max-width: 72rem; margin: 0 auto; padding: 0 clamp(1.25rem, 1rem + 2vw, 3rem); }
+
+  /* ---------- REPORT NAV ---------- */
+  .report-nav{ position: relative; z-index: 30; padding: 1.25rem clamp(1.25rem, 1rem + 2vw, 3rem) 0; }
+  .report-nav a{
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-decoration: none;
+  }
+  .report-nav a:hover{ color: var(--gold); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: clamp(3.5rem, 3rem + 6vw, 7rem) 0 clamp(2.5rem, 2rem + 3vw, 4rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 20% -10%, rgba(193,83,47,0.18), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 100% 0%, rgba(198,160,47,0.10), transparent 55%),
+      var(--bg);
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .kicker{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: rise 0.7s 0.05s ease-out forwards;
+  }
+  .kicker::before{ content:""; width: 2.25rem; height: 1px; background: var(--gold); display:inline-block; }
+
+  .hero h1{
+    font-size: clamp(2.6rem, 2rem + 4vw, 5.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    max-width: 14ch;
+    opacity: 0;
+    animation: rise 0.8s 0.15s ease-out forwards;
+  }
+  .hero h1 em{
+    font-style: italic;
+    font-weight: 500;
+    color: transparent;
+    background: linear-gradient(95deg, var(--accent), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero-lede{
+    margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+    max-width: 40rem;
+    font-size: clamp(1.08rem, 1rem + 0.3vw, 1.3rem);
+    color: var(--paper-dim);
+    opacity: 0;
+    animation: rise 0.8s 0.3s ease-out forwards;
+  }
+
+  .hero-meta{
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    opacity: 0;
+    animation: rise 0.8s 0.45s ease-out forwards;
+  }
+
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(14px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- INDEX ---------- */
+  main{ padding: clamp(3rem, 2.5rem + 3vw, 5.5rem) 0 var(--space-section); }
+
+  .index-label{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  .dossiers{ border-top: 1px solid var(--rule-strong); }
+
+  .dossier{
+    display: grid;
+    grid-template-columns: minmax(6rem, 9rem) 1fr;
+    gap: clamp(1.25rem, 1rem + 2vw, 3.5rem);
+    align-items: start;
+    padding: clamp(2.25rem, 1.75rem + 2.5vw, 4rem) 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    opacity: 0;
+    animation: rise 0.8s ease-out forwards;
+  }
+  .dossier:nth-of-type(1){ animation-delay: 0.5s; }
+  .dossier:nth-of-type(2){ animation-delay: 0.62s; }
+
+  /* accent rule that grows from the left edge on hover */
+  .dossier::before{
+    content:"";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    height: 1px;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dossier:hover::before,
+  .dossier:focus-visible::before{ width: 100%; }
+
+  .dossier-num{
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(3.2rem, 2.4rem + 4vw, 6rem);
+    line-height: 0.82;
+    color: var(--accent-soft);
+    letter-spacing: -0.03em;
+    transition: color 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dossier:hover .dossier-num,
+  .dossier:focus-visible .dossier-num{
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .dossier-tag{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.9rem;
+  }
+
+  .dossier h2{
+    font-size: clamp(1.6rem, 1.3rem + 1.6vw, 2.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 20ch;
+    transition: color 0.35s ease;
+  }
+  .dossier h2 em{
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .dossier:hover h2,
+  .dossier:focus-visible h2{ color: var(--gold); }
+
+  .dossier p{
+    margin: 1.1rem 0 0;
+    max-width: var(--measure);
+    color: var(--paper-dim);
+    font-size: 1rem;
+  }
+
+  .dossier-meta{
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .dossier-cta{
+    margin-top: 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .dossier-cta span{
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dossier:hover .dossier-cta span,
+  .dossier:focus-visible .dossier-cta span{ transform: translateX(6px); }
+
+  .dossier:active{ transform: translateY(1px); }
+
+  /* ---------- COLOPHON ---------- */
+  .colophon-block{
+    margin-top: clamp(3rem, 2.5rem + 3vw, 5rem);
+    padding: clamp(1.75rem, 1.5rem + 1.5vw, 2.75rem);
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+  }
+  .colophon-block h3{
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+  }
+  .colophon-block p{
+    margin: 0;
+    max-width: var(--measure);
+    color: var(--paper-dim);
+    font-size: 0.95rem;
+  }
+  .colophon-links{
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+  }
+  .colophon-links a{ text-decoration: none; }
+
+  @media (max-width: 640px){
+    .dossier{
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .dossier-num{ line-height: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *, *::before, *::after{
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      animation-fill-mode: forwards !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="report-nav"><a href="/">← jorgebernardo.tech</a></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Relatórios · Dossiês independentes</div>
+    <h1>O que os dados <em>ainda</em> carregam</h1>
+    <p class="hero-lede">Investigações longas sobre memória, dados e apagamento. Cada relatório aqui declara de onde vieram os números, o que eles sustentam e, principalmente, o que eles não sustentam. Não publico conclusão sem método, e não escondo a ressalva no rodapé.</p>
+    <div class="hero-meta">
+      <span>2 relatórios</span>
+      <span>Método aberto · fontes citadas</span>
+      <span>Jorge Bernardo</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="index-label">Índice</div>
+
+    <div class="dossiers">
+
+      <a class="dossier" href="/relatorios/o-que-apagaram-dos-nossos-deuses/">
+        <div class="dossier-num">02</div>
+        <div>
+          <span class="dossier-tag">Sincretismo · Egito à Bahia</span>
+          <h2>O que <em>apagaram</em> dos nossos deuses</h2>
+          <p>Heródoto escreveu, no século V a.C., que os gregos aprenderam os nomes dos seus deuses com os egípcios. Ninguém escondeu nada: o apagamento veio depois. No Brasil foi diferente, aqui os orixás tiveram que se esconder atrás dos santos para não morrer. Doze pares, dois mil e quinhentos anos, e o mesmo desfecho.</p>
+          <div class="dossier-meta">
+            <span>12 pares</span>
+            <span>Egito · Grécia · Kongo · Bahia</span>
+            <span>31.07.2026</span>
+          </div>
+          <div class="dossier-cta">Ler o relatório <span>→</span></div>
+        </div>
+      </a>
+
+      <a class="dossier" href="/relatorios/censo-de-nomes-ligados-a-escravidao/">
+        <div class="dossier-num">01</div>
+        <div>
+          <span class="dossier-tag">Dados abertos · Brasil</span>
+          <h2>Quantos negócios brasileiros ainda usam nomes da <em>escravidão</em>?</h2>
+          <p>Cruzamos o cadastro nacional de empresas (CNPJ) com o Google Places para contar quantos estabelecimentos ativos no país usam em seu nome termos historicamente ligados à escravidão. Não é um censo fechado. É um piso: o número mínimo que conseguimos confirmar, com os limites explicados.</p>
+          <div class="dossier-meta">
+            <span>22 termos pesquisados</span>
+            <span>Receita Federal (CNPJ) + Google Places</span>
+            <span>Junho de 2026</span>
+          </div>
+          <div class="dossier-cta">Ler o relatório <span>→</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="colophon-block">
+      <h3>Correções são parte do método</h3>
+      <p>Achou um erro, uma fonte melhor ou um recorte que muda a leitura? Escreva. Todo relatório aqui declara seus limites, e correção pública vale mais do que número bonito.</p>
+      <div class="colophon-links">
+        <a href="/#contato">Contato</a>
+        <a href="/blog/">Blog</a>
+        <a href="/">Início</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
