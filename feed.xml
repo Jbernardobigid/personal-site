@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sun, 09 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 11 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O que você está ensinando ao seu filho quando ele te observa apostando?</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-11-o-que-voce-esta-ensinando-ao-seu-filho-quando-ele-te-observa.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-11-o-que-voce-esta-ensinando-ao-seu-filho-quando-ele-te-observa.html</guid>
+      <pubDate>Tue, 11 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Ser pai com intenção significa perceber que cada escolha cotidiana, inclusive as financeiras, já é uma aula sobre valores, identidade e legado.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-11-o-que-voce-esta-ensinando-ao-seu-filho-quando-ele-te-observa.png" length="2586684" type="image/png"/>
+    </item>
     <item>
       <title>A maior revolução que já fiz não foi no trabalho. Foi em casa.</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-09-a-maior-revolucao-que-ja-fiz-nao-foi-no-trabalho-foi-em-casa.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Sun, 05 Jul 2026 12:00:00 GMT</pubDate>
       <description>O projeto Tranças no Mapa abre inscrições para sua segunda edição de oficinas on-line e levanta uma pergunta que vai além das tranças: o que acontece quando quem já sabe decide estudar mais?</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-05-saber-que-voce-sabe-o-que-as-malungas-ensinam-sobre-aprender.png" length="1837695" type="image/png"/>
-    </item>
-    <item>
-      <title>O Pacto Que Ninguém Assina em Voz Alta</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-03-o-pacto-que-ninguem-assina-em-voz-alta.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-03-o-pacto-que-ninguem-assina-em-voz-alta.html</guid>
-      <pubDate>Fri, 03 Jul 2026 12:00:00 GMT</pubDate>
-      <description>O audiobook de \</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-03-o-pacto-que-ninguem-assina-em-voz-alta.png" length="2053877" type="image/png"/>
     </item>
   </channel>
 </rss>
