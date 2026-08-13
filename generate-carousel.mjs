@@ -156,6 +156,7 @@ function escapeHtml(str) {
 // so the generator actively varies format, length, and template mix over time.
 const HISTORY_LIMIT = 8;         // posts kept in carousel-usage.json
 const HISTORY_PROMPT_COUNT = 5;  // posts summarized into the Claude prompt
+const EXTRACT_ATTEMPTS = 3;      // resamples allowed when Claude returns malformed JSON
 
 function loadUsage() {
   if (!fs.existsSync(USAGE_PATH)) return { posts: [] };
@@ -378,12 +379,7 @@ Enumeration copy rules: first or second person, present tense, max ~12 words per
     ? '- LEGACY carousel only: first slide must be one of hook / hook_light / hook_photo (vary the variant post to post), last must be cta (headline = "Leia o post completo", body = "Link na bio ↗")'
     : '- LEGACY carousel only: first slide must be one of hook / hook_light / hook_photo (vary the variant post to post), last must be cta (headline = "Salva pra não perder", body = "E compartilha com quem precisa ver"). This post is NOT a blog post, so NEVER write "Link na bio" or "Leia o post" anywhere in the slides.';
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 2500,
-    messages: [{
-      role: 'user',
-      content: `You are the social media editor for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
+  const prompt = `You are the social media editor for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
 
 ${contentBlock}${formatDirective}${photoDirective}
 
@@ -459,17 +455,53 @@ ${legacyCta}
 - For tags: items should be 6 short keyword phrases (2-4 words each)
 - Return ONLY valid JSON, no markdown fences, no explanation
 - Do NOT use brand names like "afterALL" or "AfterALL" in slide text — refer to it as "a marca" instead
-- Factual accuracy is non-negotiable: if the topic references real people, races, or events, use ONLY the specific facts (names, dates, results, numbers) already given in the topic text above. NEVER add a specific detail that isn't explicitly there, even if it sounds plausible — when in doubt, stay general instead of inventing a fact`,
-    }],
-  });
+- Factual accuracy is non-negotiable: if the topic references real people, races, or events, use ONLY the specific facts (names, dates, results, numbers) already given in the topic text above. NEVER add a specific detail that isn't explicitly there, even if it sounds plausible — when in doubt, stay general instead of inventing a fact`;
 
-  const raw = response.content[0].text.trim();
-  const start = raw.indexOf('{');
-  const end = raw.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('Claude did not return valid JSON');
-  const parsed = JSON.parse(raw.slice(start, end + 1));
-  if (!parsed.format || !Array.isArray(parsed.slides)) throw new Error('Unexpected JSON structure from Claude');
-  return { ...parsed, photo: typeof parsed.photo === 'string' ? parsed.photo : '' };
+  // Sampling occasionally returns JSON with an unescaped quote inside a
+  // Portuguese string ("a corrente "frouxa"" and friends), which threw straight
+  // out of JSON.parse and killed the whole run — that is what silently cost the
+  // 2026-08-13 photo day. A resample almost always comes back clean, so try
+  // again with the parser error fed back before giving up, and put the raw text
+  // in the final message so the next failure is diagnosable from the n8n log.
+  let lastErr = null;
+  let lastRaw = '';
+  for (let attempt = 1; attempt <= EXTRACT_ATTEMPTS; attempt++) {
+    const messages = [{ role: 'user', content: prompt }];
+    if (attempt > 1) {
+      messages.push({ role: 'assistant', content: lastRaw });
+      messages.push({
+        role: 'user',
+        content: `That response was not valid JSON — JSON.parse failed with: ${lastErr.message}\n\nReturn the SAME post, corrected, as strictly valid JSON. Escape every double quote inside a string value as \\", and return only the JSON object with no markdown fences or commentary.`,
+      });
+    }
+
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2500,
+      messages,
+    });
+
+    lastRaw = response.content[0].text.trim();
+    const start = lastRaw.indexOf('{');
+    const end = lastRaw.lastIndexOf('}');
+    if (start === -1 || end === -1) {
+      lastErr = new Error('Claude did not return valid JSON (no object found)');
+      console.log(`  [warn] extract attempt ${attempt}/${EXTRACT_ATTEMPTS}: ${lastErr.message}`);
+      continue;
+    }
+
+    try {
+      const parsed = JSON.parse(lastRaw.slice(start, end + 1));
+      if (!parsed.format || !Array.isArray(parsed.slides)) throw new Error('Unexpected JSON structure from Claude');
+      if (attempt > 1) console.log(`  Recovered malformed JSON on attempt ${attempt}`);
+      return { ...parsed, photo: typeof parsed.photo === 'string' ? parsed.photo : '' };
+    } catch (err) {
+      lastErr = err;
+      console.log(`  [warn] extract attempt ${attempt}/${EXTRACT_ATTEMPTS}: ${err.message}`);
+    }
+  }
+
+  throw new Error(`Claude returned unusable JSON after ${EXTRACT_ATTEMPTS} attempts: ${lastErr.message}\n--- last raw response ---\n${lastRaw.slice(0, 1200)}`);
 }
 
 /* ── Claude: generate caption ──────────────────────────────── */
@@ -866,7 +898,17 @@ async function main() {
   console.log('Caption → post-caption.txt (also inside the output folder)');
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+// Only run when invoked directly. Importing this module used to fire main() —
+// the same trap generate-video.mjs carries — which makes the extractor
+// impossible to test without doing a full paid build.
+export { extractPostStructure };
+
+const isDirectRun = process.argv[1]
+  && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+
+if (isDirectRun) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

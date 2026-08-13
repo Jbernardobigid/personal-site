@@ -86,6 +86,30 @@ function recordBuiltShape() {
   }
 }
 
+// pick-photo-topic.mjs marks the bank id used the moment it picks, so a build
+// that dies afterwards consumes the idea and leaves nothing behind — that is how
+// gear-09 was lost on 2026-08-13 without a single post to show for it. The bank
+// is finite and cycles silently, so put the idea back when the build fails.
+// Mirrors saveUsed(): one id off usedIds, one entry off each recent* tail.
+function rollbackPick(bankId) {
+  try {
+    const used = JSON.parse(fs.readFileSync(USED_PATH, 'utf8'));
+    if (used.usedIds?.[used.usedIds.length - 1] !== bankId) {
+      console.log(`     [warn] not rolling back ${bankId}: it is not the most recent pick`);
+      return;
+    }
+    fs.writeFileSync(USED_PATH, JSON.stringify({
+      usedIds: used.usedIds.slice(0, -1),
+      recentTitles: (used.recentTitles ?? []).slice(0, -1),
+      recentCategories: (used.recentCategories ?? []).slice(0, -1),
+      recentShapes: (used.recentShapes ?? []).slice(0, -1),
+    }, null, 2), 'utf8');
+    console.log(`     Bank id ${bankId} returned to the pool (build failed)`);
+  } catch (err) {
+    console.log(`     [warn] could not roll back ${bankId}: ${err.message}`);
+  }
+}
+
 function main() {
   const dryRun = process.argv.includes('--dry-run');
 
@@ -103,7 +127,12 @@ function main() {
   console.log(`     Shape: ${format ?? 'editorial filter decides'} (${why})`);
   const genEnv = topic.photo ? { JORGE_CAROUSEL_PHOTO: topic.photo } : {};
   const formatArgs = format ? ['--format', format] : [];
-  run(['generate-carousel.mjs', '--topic', topic.idea, ...formatArgs, '--pillar', 'cycling', '--photo-required'], genEnv);
+  try {
+    run(['generate-carousel.mjs', '--topic', topic.idea, ...formatArgs, '--pillar', 'cycling', '--photo-required'], genEnv);
+  } catch (err) {
+    if (!dryRun) rollbackPick(topic.bankId);
+    fail('build failed', String(err));
+  }
   if (!dryRun) recordBuiltShape();
 
   if (dryRun) {
