@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Tue, 11 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O que os jovens nos ensinam sobre recomeçar depois dos 40</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-13-o-que-os-jovens-nos-ensinam-sobre-recomecar-depois-dos-40.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-13-o-que-os-jovens-nos-ensinam-sobre-recomecar-depois-dos-40.html</guid>
+      <pubDate>Thu, 13 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Uma notícia sobre empregabilidade juvenil me fez enxergar o que realmente significa construir uma carreira com propósito depois dos 40 anos.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-13-o-que-os-jovens-nos-ensinam-sobre-recomecar-depois-dos-40.png" length="1922117" type="image/png"/>
+    </item>
     <item>
       <title>O que você está ensinando ao seu filho quando ele te observa apostando?</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-11-o-que-voce-esta-ensinando-ao-seu-filho-quando-ele-te-observa.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Tue, 07 Jul 2026 12:00:00 GMT</pubDate>
       <description>Julho das Pretas celebra mulheres negras que constroem carreiras nos próprios termos, e isso revela algo verdadeiro sobre o que os 40 anos ensinam a qualquer pessoa.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-07-depois-dos-40-voce-para-de-pedir-permissao.png" length="1855627" type="image/png"/>
-    </item>
-    <item>
-      <title>Saber Que Você Sabe: O Que as Malungas Ensinam Sobre Aprender de Verdade</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-05-saber-que-voce-sabe-o-que-as-malungas-ensinam-sobre-aprender.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-05-saber-que-voce-sabe-o-que-as-malungas-ensinam-sobre-aprender.html</guid>
-      <pubDate>Sun, 05 Jul 2026 12:00:00 GMT</pubDate>
-      <description>O projeto Tranças no Mapa abre inscrições para sua segunda edição de oficinas on-line e levanta uma pergunta que vai além das tranças: o que acontece quando quem já sabe decide estudar mais?</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-05-saber-que-voce-sabe-o-que-as-malungas-ensinam-sobre-aprender.png" length="1837695" type="image/png"/>
     </item>
   </channel>
 </rss>
