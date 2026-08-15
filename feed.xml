@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Thu, 13 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O que um pai herda, o que um pai passa: sobre presença, identidade e o que fica</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-15-o-que-um-pai-herda-o-que-um-pai-passa-sobre-presenca-identid.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-15-o-que-um-pai-herda-o-que-um-pai-passa-sobre-presenca-identid.html</guid>
+      <pubDate>Sat, 15 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Ser pai não é uma função de suporte, é um ato de transmissão cultural, e o que escolhemos passar adiante diz tudo sobre quem somos.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-15-o-que-um-pai-herda-o-que-um-pai-passa-sobre-presenca-identid.png" length="2117086" type="image/png"/>
+    </item>
     <item>
       <title>O que os jovens nos ensinam sobre recomeçar depois dos 40</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-13-o-que-os-jovens-nos-ensinam-sobre-recomecar-depois-dos-40.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Thu, 09 Jul 2026 12:00:00 GMT</pubDate>
       <description>A história do chef Léo Oldman, indicado ao \</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-09-fechar-para-abrir-de-novo-o-que-os-40-anos-ensinam-sobre-rec.png" length="1773247" type="image/png"/>
-    </item>
-    <item>
-      <title>Depois dos 40, você para de pedir permissão</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-07-depois-dos-40-voce-para-de-pedir-permissao.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-07-depois-dos-40-voce-para-de-pedir-permissao.html</guid>
-      <pubDate>Tue, 07 Jul 2026 12:00:00 GMT</pubDate>
-      <description>Julho das Pretas celebra mulheres negras que constroem carreiras nos próprios termos, e isso revela algo verdadeiro sobre o que os 40 anos ensinam a qualquer pessoa.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-07-depois-dos-40-voce-para-de-pedir-permissao.png" length="1855627" type="image/png"/>
     </item>
   </channel>
 </rss>
