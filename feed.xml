@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Mon, 17 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 19 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Nenhum Direito a Menos: O Que Está em Jogo Quando Mexem na Lei do Racismo</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.html</guid>
+      <pubDate>Wed, 19 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Quando 292 organizações do movimento negro se levantam juntas, é porque o que está em jogo não é só uma lei, é a própria narrativa de quem somos.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.png" length="2039925" type="image/png"/>
+    </item>
     <item>
       <title>Aprender no meio do jogo: o que um projeto em Pernambuco revela sobre o único tipo de formação que funciona</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-17-aprender-no-meio-do-jogo-o-que-um-projeto-em-pernambuco-reve.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Mon, 13 Jul 2026 12:00:00 GMT</pubDate>
       <description>A história da chef Flávia Alves mostra que empreendedorismo negro não começa com capital, começa com pertencimento, cultura e o coraje de levar o que é seu a sério.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-13-o-quintal-como-estrategia-o-que-flavia-alves-nos-ensina-sobr.png" length="1913128" type="image/png"/>
-    </item>
-    <item>
-      <title>O país que apagou seus negros e ainda quer jogar bola com a cara limpa</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-11-o-pais-que-apagou-seus-negros-e-ainda-quer-jogar-bola-com-a-.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-11-o-pais-que-apagou-seus-negros-e-ainda-quer-jogar-bola-com-a-.html</guid>
-      <pubDate>Sat, 11 Jul 2026 12:00:00 GMT</pubDate>
-      <description>Quando a Argentina entra em campo, o racismo entra junto, e o apagamento histórico de dois milhões de afro-argentinos revela algo que vai muito além do futebol.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-11-o-pais-que-apagou-seus-negros-e-ainda-quer-jogar-bola-com-a-.png" length="2122514" type="image/png"/>
     </item>
   </channel>
 </rss>
