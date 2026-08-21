@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Wed, 19 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Eleitorado ou Sujeito? O que o Brasil ainda não entendeu sobre a negritude</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.html</guid>
+      <pubDate>Fri, 21 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Quando a política descobre o eleitor negro a cada quatro anos mas esquece o cidadão negro nos outros três, algo fundamental sobre identidade e poder está sendo evitado.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.png" length="2170050" type="image/png"/>
+    </item>
     <item>
       <title>Nenhum Direito a Menos: O Que Está em Jogo Quando Mexem na Lei do Racismo</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Wed, 15 Jul 2026 12:00:00 GMT</pubDate>
       <description>O maior eleitorado idoso da história do Brasil expõe uma lacuna que a tecnologia cívica e de dados ainda não sabe fechar: alcançar quem mais precisa ser alcançado.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-15-36-milhoes-de-idosos-aptos-a-votar-o-que-a-tecnologia-ainda-.png" length="2064847" type="image/png"/>
-    </item>
-    <item>
-      <title>O quintal como estratégia: o que Flávia Alves nos ensina sobre empreender com identidade</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-13-o-quintal-como-estrategia-o-que-flavia-alves-nos-ensina-sobr.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-13-o-quintal-como-estrategia-o-que-flavia-alves-nos-ensina-sobr.html</guid>
-      <pubDate>Mon, 13 Jul 2026 12:00:00 GMT</pubDate>
-      <description>A história da chef Flávia Alves mostra que empreendedorismo negro não começa com capital, começa com pertencimento, cultura e o coraje de levar o que é seu a sério.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-13-o-quintal-como-estrategia-o-que-flavia-alves-nos-ensina-sobr.png" length="1913128" type="image/png"/>
     </item>
   </channel>
 </rss>
