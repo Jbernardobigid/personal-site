@@ -175,7 +175,11 @@ async function generateScript(client, post, seconds) {
   const ctaInstruction = pickVideoCta(post.kind === 'post');
   const res = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 1500,
+    // 1500 was occasionally too tight for 5 scenes + long English broll descriptions:
+    // a truncated response leaves "scenes" as the raw unclosed-JSON string instead of
+    // an array, which blows up downstream with a cryptic "Cannot create property
+    // 'label' on string '['" once fixOrthography() iterates its characters.
+    max_tokens: 3000,
     system: `Você roteiriza vídeos educativos curtos para o Instagram na voz de Jorge Bernardo: homem negro brasileiro, ciclista, profissional de tecnologia e segurança de dados, fundador da DePretoPraPreto. Primeira pessoa, português do Brasil, direto e reflexivo, sem clichê motivacional, SEM travessões (—), sem emojis. Ortografia e acentuação IMPECÁVEIS em todos os campos (ã, ç, é, í, ó, ô etc.) — o texto vira narração de voz e legenda na tela.`,
     tools: [{
       name: 'create_video_script',
@@ -223,6 +227,12 @@ ${post.plain.slice(0, 4000)}`
   });
   const tool = res.content.find(b => b.type === 'tool_use');
   if (!tool) throw new Error('no script returned');
+  if (res.stop_reason === 'max_tokens') {
+    throw new Error('script generation hit max_tokens (response truncated mid-JSON) — raise max_tokens in generateScript()');
+  }
+  if (!Array.isArray(tool.input.scenes) || tool.input.scenes.some(s => typeof s !== 'object' || s === null)) {
+    throw new Error(`script generation returned malformed scenes (expected array of objects, got ${JSON.stringify(tool.input.scenes).slice(0, 200)}) — likely a truncated tool-use response`);
+  }
   return tool.input;
 }
 
