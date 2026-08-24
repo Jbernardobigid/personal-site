@@ -8,6 +8,9 @@
   "scripts": {
     "serve": "node serve.mjs",
     "screenshot": "node screenshot.mjs",
+    "scroll:audit": "node scroll-audit.mjs http://localhost:3000",
+    "scroll:audit:mobile": "node scroll-audit.mjs http://localhost:3000 --width 390 --height 844 --out mobile",
+    "scroll:audit:reduced": "node scroll-audit.mjs http://localhost:3000 --reduced-motion --out reduced",
     "blog:generate": "node generate-post.mjs",
     "blog:generate:live": "node generate-post.mjs --with-signals",
     "blog:dry-run": "node generate-post.mjs --dry-run",

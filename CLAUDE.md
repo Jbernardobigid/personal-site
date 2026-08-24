@@ -31,6 +31,15 @@ Two things live here — see [README.md](README.md) for the full map:
 - Check: spacing/padding, font size/weight/line-height, colors (exact hex), alignment, border-radius, shadows, image sizing.
 - For mobile horizontal-scroll bugs: `node overflow-check.mjs http://localhost:3000 375` pinpoints overflowing elements.
 
+## Scroll Audit — required after any motion or color change
+`screenshot.mjs` flattens the whole page into one image. A scroll page has no single state: every position is a different frame, and travelling parallax, mid-reveal cues and text-over-photo contrast are invisible in a flattened shot.
+
+- `npm run scroll:audit` — walks each `<section>` at 6 scroll positions and reports **dead scroll**, **cues that never reach full opacity**, **contrast measured on the composited page** (text hidden, background re-shot, failure direction picked per line), and a **device-per-act table**.
+- Also run `npm run scroll:audit:mobile` and `npm run scroll:audit:reduced`. Contrast findings differ per viewport: a scrim sized for 1440 can leave copy on open sky at 390.
+- Then **read `sheet.png`** in `temporary screenshots/scroll-audit/<label>/`. The harness proves something moved; it cannot tell you the composition is good. A pinned act can pass every check while showing a blank screen.
+- Device rules it enforces: at least four device families across the page, and never the same family twice in a row. Five sections that behave identically are one section shown five times.
+- One act is the **peak** (`#statement`) and holds the largest scroll span. Do not add a second one.
+
 ## Reference Images
 - If a reference image is provided: match layout, spacing, typography, and color exactly. Do not improve or add to the design.
 - If no reference image: design from scratch with high craft, within the brand system above.

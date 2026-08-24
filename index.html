@@ -129,11 +129,16 @@ html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; overflow-x:
   --black:       #1e1a14;
   --terra:       #5e412d;
   --terra-light: #a0714f;
+  /* Same hue as --terra-light, lifted until it clears 4.5:1 on the ground.
+     Display type only needs 3:1, so the darker tone stays the brand accent for
+     headings; this one carries the 10-13px mono labels, where --terra-light
+     measured 3.7-3.97:1 across the page. */
+  --terra-bright:#b8825a;
   --night:       #1c314a;
   --green:       #273F29;
   --ash:         #d9d9d9;
   --white:       #ffffff;
-  --mid:         rgba(255,255,255,0.45);
+  --mid:         rgba(255,255,255,0.50);
   --border:      rgba(255,255,255,0.09);
   --border-terra:rgba(160,113,79,0.25);
   --font-display:'Noto Serif Display', Georgia, serif;
@@ -142,8 +147,11 @@ html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; overflow-x:
 }
 
 /* ── Base ───────────────────────────────────────────────── */
+/* The root carries the ground colour so the fixed .ground drift layers, which
+   sit at z-index -1, can paint above the canvas and below the sections. */
+html { background: var(--black); }
 body {
-  background: var(--black);
+  background: transparent;
   color: var(--white);
   font-family: var(--font-body);
   overflow-x: hidden;
@@ -214,7 +222,10 @@ nav {
   border-bottom: 1px solid transparent;
 }
 nav.scrolled {
-  background: rgba(0,0,0,0.85);
+  /* 0.85 left the CTA at 4.49:1 where the bar crosses the night-blue stats
+     band. The bar is a surface, not a veil; making it read as one fixes the
+     label without touching the accent colour. */
+  background: rgba(0,0,0,0.92);
   border-color: var(--border);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -244,7 +255,7 @@ nav.scrolled {
   text-transform: uppercase;
   color: var(--white);
   text-decoration: none;
-  opacity: 0.4;
+  opacity: 0.55;
   transition: opacity 0.2s ease;
   position: relative;
 }
@@ -265,7 +276,7 @@ nav.scrolled {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   text-decoration: none;
   border: 1px solid var(--border-terra);
   padding: 8px 20px;
@@ -376,7 +387,7 @@ nav.scrolled {
   font-size: 10px;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   margin-top: 6px;
 }
 .hero-eyebrow {
@@ -384,7 +395,7 @@ nav.scrolled {
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   margin-bottom: 40px;
   opacity: 0;
 }
@@ -414,7 +425,7 @@ nav.scrolled {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   padding: 7px 16px;
   border: 1px solid var(--border-terra);
   border-radius: 1px;
@@ -423,29 +434,6 @@ nav.scrolled {
 .hero-tag:hover {
   background: var(--terra);
   color: var(--white);
-}
-.hero-scroll-hint {
-  margin-top: 64px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  opacity: 0;
-}
-.hero-scroll-line {
-  width: 40px; height: 1px;
-  background: var(--terra-light);
-  animation: scrollLine 2.5s ease-in-out infinite;
-}
-@keyframes scrollLine {
-  0%, 100% { width: 40px; opacity: 1; }
-  50% { width: 64px; opacity: 0.6; }
-}
-.hero-scroll-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--mid);
 }
 .hero-name {
   font-family: var(--font-display);
@@ -499,7 +487,7 @@ nav.scrolled {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   margin-bottom: 16px;
 }
 .section-divider {
@@ -584,7 +572,7 @@ nav.scrolled {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   margin-bottom: 7px;
   display: flex;
   align-items: center;
@@ -671,7 +659,7 @@ nav.scrolled {
 .career-num {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   padding-top: 6px;
   letter-spacing: 0.08em;
 }
@@ -689,7 +677,7 @@ nav.scrolled {
 .career-company {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 10px;
@@ -703,7 +691,7 @@ nav.scrolled {
 .career-period {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.52);
   white-space: nowrap;
   padding-top: 6px;
   letter-spacing: 0.06em;
@@ -729,7 +717,7 @@ nav.scrolled {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   padding: 0 28px;
   flex-shrink: 0;
 }
@@ -791,7 +779,7 @@ nav.scrolled {
 .work-num {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   letter-spacing: 0.08em;
 }
 .work-name {
@@ -812,12 +800,12 @@ nav.scrolled {
 .work-year {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.52);
   white-space: nowrap;
 }
 .work-arrow {
   font-size: 18px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.45);
   transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), color 0.2s ease;
   display: flex;
   align-items: center;
@@ -867,7 +855,7 @@ nav.scrolled {
   margin-top: 48px;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -916,7 +904,7 @@ nav.scrolled {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   text-decoration: none;
   border-bottom: 1px solid var(--border-terra);
   padding-bottom: 8px;
@@ -1000,6 +988,36 @@ nav.scrolled {
     linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 65%);
   pointer-events: none;
 }
+/* Scrim for the hero copy.
+   A SIBLING of the copy, never a child: as a child it inherits the copy's
+   reveal, so the type arrives before the ground that makes it readable.
+   Sized to the copy block rather than the frame, because a full-bleed overlay
+   would flatten the photograph to fix two lines of text. Measured need: the
+   sky behind "cor." put that word at 1.36:1 against a 3:1 threshold. */
+.cycling-hero-scrim {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(72%, 1040px);
+  height: 66%;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top,
+      rgba(20,17,13,0.92) 0%,
+      rgba(20,17,13,0.86) 40%,
+      rgba(20,17,13,0.58) 72%,
+      rgba(20,17,13,0.20) 90%,
+      rgba(20,17,13,0) 100%),
+    linear-gradient(to right,
+      rgba(20,17,13,0.62) 0%,
+      rgba(20,17,13,0.28) 55%,
+      rgba(20,17,13,0) 100%);
+}
+/* Over photography the eyebrow drops the accent for the neutral. Terracotta at
+   11px cannot clear 4.5:1 against sky without a scrim dense enough to flatten
+   the photograph; the heading below it keeps the accent, where 3:1 applies. */
+.cycling-hero-text .section-num { color: var(--ash); }
 .cycling-hero-text {
   position: absolute;
   bottom: 72px;
@@ -1054,7 +1072,7 @@ nav.scrolled {
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   margin-bottom: 10px;
 }
 .org-name {
@@ -1077,7 +1095,7 @@ nav.scrolled {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -1137,7 +1155,7 @@ nav.scrolled {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   font-style: normal;
 }
 
@@ -1179,7 +1197,7 @@ nav.scrolled {
 .stat-label {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.52);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   margin-top: 14px;
@@ -1265,7 +1283,7 @@ nav.scrolled {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  color: var(--terra-bright);
   display: block;
   margin-bottom: 10px;
 }
@@ -1285,7 +1303,7 @@ nav.scrolled {
 }
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.52);
   font-style: italic;
 }
 .form-input:focus,
@@ -1336,7 +1354,7 @@ nav.scrolled {
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   margin-bottom: 26px;
 }
 .nl-heading {
@@ -1392,7 +1410,7 @@ nav.scrolled {
 .contato-link-label {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.52);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1425,7 +1443,7 @@ nav.scrolled {
 .lang-label {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.52);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1436,7 +1454,7 @@ nav.scrolled {
   letter-spacing: 0.1em;
   padding: 6px 16px;
   border: 1px solid var(--border);
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.52);
   border-radius: 1px;
 }
 
@@ -1459,7 +1477,7 @@ nav.scrolled {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.55);
   background: none;
   border: none;
   cursor: pointer;
@@ -1468,8 +1486,12 @@ nav.scrolled {
   line-height: 1;
   border-radius: 1px;
 }
-.ls-btn.active { color: var(--terra-light); }
-.ls-btn:hover:not(.active) { color: rgba(255,255,255,0.6); }
+.ls-btn.active { color: var(--terra-bright); }
+.ls-btn:hover:not(.active) { color: var(--white); }
+.ls-btn:focus-visible {
+  outline: 1px solid var(--terra-bright);
+  outline-offset: 2px;
+}
 .ls-sep {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -1490,13 +1512,13 @@ nav.scrolled {
   font-size: 16px;
   letter-spacing: 0.14em;
   padding: 10px 20px;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.55);
   border: 1px solid var(--border);
   border-radius: 1px;
   min-height: 44px;
 }
 .drawer-lang .ls-btn.active {
-  color: var(--terra-light);
+  color: var(--terra-bright);
   border-color: var(--border-terra);
 }
 
@@ -1511,7 +1533,7 @@ footer {
 .footer-copy {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(255,255,255,0.22);
+  color: rgba(255,255,255,0.52);
   letter-spacing: 0.08em;
 }
 .footer-links {
@@ -1526,7 +1548,7 @@ footer {
 .footer-link {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(255,255,255,0.28);
+  color: rgba(255,255,255,0.52);
   letter-spacing: 0.1em;
   text-decoration: none;
   text-transform: uppercase;
@@ -1536,9 +1558,9 @@ footer {
 .footer-tagline {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--terra-light);
+  color: var(--terra-bright);
   letter-spacing: 0.1em;
-  opacity: 0.7;
+  opacity: 1;
 }
 
 /* ── Reveal (fallback for no-JS) ───────────────────────── */
@@ -1635,6 +1657,76 @@ footer {
   transform: scale(1.4);
 }
 
+/* ── Scroll devices ─────────────────────────────────────────
+   The page used two devices for eleven sections: fade-up-on-enter and a
+   yPercent parallax. Five sections that behave identically read as one
+   section shown five times, so each block below adds a family the page did
+   not have, and adjacent sections never share one.
+
+   Everything here animates transform, opacity or clip-path only. ───────── */
+
+/* Ground drift.
+   The page ground travels as you do, cooling toward the night blue behind the
+   stats and passing through the dark green on the way. Painted as stacked
+   fixed layers cross-faded by opacity rather than by tweening a background
+   colour, so the whole device stays on the compositor.
+
+   `html` carries the base ground and `body` is transparent, so a z-index:-1
+   child paints above the canvas and below every section. */
+.ground {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  contain: strict;
+}
+.ground-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  will-change: opacity;
+}
+.gl-green { background: radial-gradient(ellipse 120% 90% at 50% 50%, var(--green) 0%, transparent 78%); }
+.gl-night { background: radial-gradient(ellipse 120% 90% at 50% 50%, var(--night) 0%, transparent 78%); }
+
+/* Kinetic type.
+   Each word gets a clipping shell and an inner mover, so a line assembles
+   word by word from behind its own baseline instead of fading in as a block.
+   The shell's padding/margin pair keeps descenders and italic overhang from
+   being clipped by the very overflow that makes the effect work. */
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding: 0.14em 0.06em 0.16em;
+  margin: -0.14em -0.06em -0.16em;
+}
+.w-i {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* The peak.
+   #statement is the brand manifesto and it was getting the same 1.1s fade as
+   every other section. It now pins and holds the largest scroll span on the
+   page, which is what makes it read as the moment rather than a slide. */
+#statement {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Wipe reveals. A change of state, which is what these two beats are. */
+.wipe { clip-path: inset(0 0 100% 0); }
+.wipe-x { clip-path: inset(0 100% 0 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ground { display: none; }
+  .wipe, .wipe-x { clip-path: none !important; }
+  .w { overflow: visible; }
+}
+
 /* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 960px) {
   nav { padding: 0 28px; }
@@ -1685,6 +1777,10 @@ footer {
 
   .cycling-hero-wrap { height: 70svh; }
   .cycling-hero-text { bottom: 40px; left: 28px; }
+  /* The copy spans nearly the full column here and the frame is shorter, so
+     the desktop scrim's 72% width and 66% height leave the eyebrow on open
+     sky. Measured at 390px: "— 05" came in at 1.99:1. */
+  .cycling-hero-scrim { width: 100%; height: 82%; }
   .cycling-main-heading { font-size: clamp(52px, 13vw, 88px); }
   .cycling-content { padding: 60px 28px; grid-template-columns: 1fr; gap: 44px; }
   .cycling-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 280px 220px 280px; }
@@ -1743,7 +1839,7 @@ footer {
     transition-duration: 0.001ms !important;
   }
   .gsap-hidden,
-  .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint, .hero-stats {
+  .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-stats {
     opacity: 1 !important;
     transform: none !important;
   }
@@ -1756,6 +1852,12 @@ footer {
 </style>
 </head>
 <body>
+
+<!-- ── Ground (scroll-driven colour drift) ─────────────── -->
+<div class="ground" id="ground" aria-hidden="true">
+  <span class="ground-layer gl-green"></span>
+  <span class="ground-layer gl-night"></span>
+</div>
 
 <!-- ── Cursor ──────────────────────────────────────────── -->
 <div class="cursor-dot" id="cursorDot"></div>
@@ -1821,10 +1923,6 @@ footer {
         <span class="hero-tag">Ciclismo</span>
         <span class="hero-tag">Comunidade</span>
         <span class="hero-tag">Afrofuturismo</span>
-      </div>
-      <div class="hero-scroll-hint">
-        <span class="hero-scroll-line"></span>
-        <span class="hero-scroll-label">Explorar</span>
       </div>
     </div>
     <div class="hero-stats">
@@ -2082,6 +2180,7 @@ footer {
 <section id="ciclismo">
   <div class="cycling-hero-wrap">
     <img src="images/cycling-hero.jpg" alt="Jorge Bernardo — ciclista em pista">
+    <div class="cycling-hero-scrim" aria-hidden="true"></div>
     <div class="cycling-hero-text">
       <div class="section-num gsap-hidden">— 05</div>
       <h2 class="cycling-main-heading gsap-hidden">
@@ -2360,7 +2459,7 @@ function closeDrawer() {
 const isPreview = new URLSearchParams(location.search).has('preview');
 if (isPreview) {
   document.querySelectorAll(
-    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint, .hero-stats'
+    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-stats'
   ).forEach(el => { el.style.cssText += 'opacity:1!important;transform:none!important'; });
   document.querySelectorAll('img').forEach(img => {
     img.style.cssText += 'opacity:1!important;transform:none!important';
@@ -2374,7 +2473,7 @@ if (isPreview) {
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (prefersReducedMotion && !isPreview) {
   document.querySelectorAll(
-    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-scroll-hint, .hero-stats, .contato-heading'
+    '.gsap-hidden, .hero-eyebrow, .hero-name, .hero-intro, .hero-tags, .hero-stats, .contato-heading'
   ).forEach(el => { el.style.cssText += 'opacity:1!important;transform:none!important'; });
   document.querySelectorAll('[data-count]').forEach(el => { el.textContent = el.dataset.count; });
   document.querySelector('#stats')?.classList.add('lines-drawn');
@@ -2453,9 +2552,6 @@ heroTl
   .fromTo('.hero-tags',
     { y: 24, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }, 1.0)
-  .fromTo('.hero-scroll-hint',
-    { opacity: 0 },
-    { opacity: 1, duration: 0.6 }, 1.3)
   .fromTo('.hero-stats',
     { y: 20, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' }, 1.4);
@@ -2471,7 +2567,17 @@ gsap.to('.hero-right img', {
   scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
 });
 
-/* ── About photo reveal + parallax ─────────────────────── */
+/* ── Sobre: the portrait opens ──────────────────────────
+   A vertical wipe, not another fade. Carreira below it slides in from the
+   left and the hero above scales, so an entrance fade here would have made
+   three consecutive acts read as one. The scale is kept underneath the wipe:
+   the frame opens while the image settles. */
+gsap.fromTo('.about-photo',
+  { clipPath: 'inset(0 0 100% 0)' },
+  { clipPath: 'inset(0 0 0% 0)', duration: 1.25, ease: 'power3.inOut',
+    scrollTrigger: { trigger: '#sobre', start: 'top 82%', once: true },
+    onComplete() { document.querySelector('.about-photo').style.clipPath = ''; },
+  });
 gsap.fromTo('.about-photo img',
   { scale: 1.06 },
   { scale: 1, duration: 1.4, ease: 'power2.out',
@@ -2483,8 +2589,12 @@ gsap.to('.about-photo img', {
   scrollTrigger: { trigger: '#sobre', start: 'top bottom', end: 'bottom top', scrub: 1 },
 });
 
-/* ── Generic scroll reveals ─────────────────────────────── */
-gsap.utils.toArray('.gsap-hidden').forEach((el, i) => {
+/* ── Generic scroll reveals ─────────────────────────────
+   The statement and the cycling headline opt out: both are driven by the
+   kinetic builders below, and a fade-up on the same element would fight the
+   word assembly for the same opacity channel. */
+const GENERIC_OPT_OUT = '.gsap-hidden:not(.statement-text):not(.statement-sig):not(.cycling-main-heading)';
+gsap.utils.toArray(GENERIC_OPT_OUT).forEach((el, i) => {
   gsap.fromTo(el,
     { y: 44, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out',
@@ -2508,32 +2618,188 @@ gsap.utils.toArray('.career-row').forEach((row, i) => {
     });
 });
 
-/* ── Work items stagger ─────────────────────────────────── */
+/* ── Projetos: lateral wipe ─────────────────────────────
+   Carreira above it slides in from the left, so a second x-slide here would
+   be the same device twice in a row. A wipe is a change of state, which is
+   what a project list entry is. */
 gsap.utils.toArray('.work-item').forEach((item, i) => {
+  item.classList.add('wipe-x');
   gsap.fromTo(item,
-    { x: -24, opacity: 0 },
-    { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+    { clipPath: 'inset(0 100% 0 0)', opacity: 0.35 },
+    { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.95, ease: 'power3.inOut',
       scrollTrigger: { trigger: item, start: 'top 88%', once: true },
-      delay: i * 0.1,
+      delay: i * 0.12,
+      onComplete() { item.classList.remove('wipe-x'); item.style.clipPath = ''; },
     });
 });
 
-/* ── Statement text split reveal ────────────────────────── */
-gsap.fromTo('.statement-text',
-  { y: 50, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.1, ease: 'power3.out',
-    scrollTrigger: { trigger: '#statement', start: 'top 75%', once: true }
-  });
-
-/* ── Feature photo reveal ───────────────────────────────── */
+/* ── DePretoPraPreto: photos wipe up ────────────────────
+   Was scale + fade, the same pairing the cycling mosaic already uses. */
 gsap.utils.toArray('#dppp img').forEach((img, i) => {
   gsap.fromTo(img,
-    { scale: 1.08, opacity: 0 },
-    { scale: 1, opacity: 1, duration: 1.2, ease: 'power2.out',
+    { clipPath: 'inset(100% 0 0 0)' },
+    { clipPath: 'inset(0% 0 0 0)', duration: 1.15, ease: 'power3.inOut',
       scrollTrigger: { trigger: img, start: 'top 85%', once: true },
-      delay: i * 0.12,
+      delay: i * 0.14,
+      onComplete() { img.style.clipPath = ''; },
     });
 });
+
+/* ── Kinetic type ───────────────────────────────────────
+   Wraps every word in a clipping shell so a line can assemble from behind its
+   own baseline. Structure-preserving: it walks text nodes and leaves <strong>,
+   <em> and <br> where they are, because the accent spans carry the meaning. */
+function splitWords(root) {
+  if (root.dataset.split === '1') {
+    const existing = root.querySelectorAll('.w-i');
+    if (existing.length) return gsap.utils.toArray(existing);
+    /* The flag is an attribute on the element itself, so it survives an
+       innerHTML replacement that destroyed every shell underneath it. Trusting
+       it blindly is how a language switch silently drops the kinetic device
+       while leaving the copy looking fine. */
+    delete root.dataset.split;
+  }
+
+  const walk = (node) => {
+    for (const child of Array.from(node.childNodes)) {
+      if (child.nodeType === 3) {
+        if (!child.textContent.trim()) continue;
+        const frag = document.createDocumentFragment();
+        for (const part of child.textContent.split(/(\s+)/)) {
+          if (!part) continue;
+          if (!part.trim()) { frag.appendChild(document.createTextNode(part)); continue; }
+          const shell = document.createElement('span');
+          shell.className = 'w';
+          const mover = document.createElement('span');
+          mover.className = 'w-i';
+          mover.textContent = part;
+          shell.appendChild(mover);
+          frag.appendChild(shell);
+        }
+        node.replaceChild(frag, child);
+      } else if (child.nodeType === 1 && child.tagName !== 'BR') {
+        walk(child);
+      }
+    }
+  };
+
+  walk(root);
+  root.dataset.split = '1';
+  return gsap.utils.toArray(root.querySelectorAll('.w-i'));
+}
+
+/* Each builder lives in its own gsap.context so the i18n layer can revert and
+   rebuild it: applyLang() replaces these elements' innerHTML wholesale, which
+   destroys the word shells and would leave orphaned ScrollTriggers behind. */
+const kineticContexts = [];
+
+function buildKinetic(build) {
+  const ctx = { current: null };
+  const run = () => {
+    if (ctx.current) ctx.current.revert();
+    ctx.current = gsap.context(build);
+  };
+  kineticContexts.push(run);
+  run();
+}
+
+/* The peak.
+   #statement is the brand manifesto and it was getting the same 1.1s fade as
+   every other section.
+
+   This was a pin the first time through: `start: 'top top'` means the pin,
+   and everything driven by its scrub, doesn't activate until the section's
+   top has already reached the top of the viewport. Since the section is
+   exactly one viewport tall, that is the *entire* 900px it takes to scroll
+   into view — and the words were set invisible immediately on load via
+   `gsap.set`, with no scroll-linked reveal to fill that gap. The result was
+   real dead scroll the audit's frame-diff check couldn't see (something was
+   always moving: the page itself, sliding the blank section into place), on
+   top of the 85%-viewport hold added after it. Caught by the person actually
+   scrolling it, not by the harness.
+
+   Peak now means largest type and heaviest stagger, on enter like every other
+   kinetic beat, not the most scroll length spent getting there. */
+buildKinetic(() => {
+  const section = document.getElementById('statement');
+  const text = section && section.querySelector('.statement-text');
+  if (!text) return;
+
+  const words = splitWords(text);
+  const sig = section.querySelector('.statement-sig');
+
+  gsap.set([text, sig], { opacity: 1, y: 0 });
+  gsap.set(words, { yPercent: 130 });
+  gsap.set(sig, { opacity: 0, y: 16 });
+
+  gsap.timeline({
+    scrollTrigger: { trigger: section, start: 'top 78%', once: true },
+  })
+    .to(words, { yPercent: 0, ease: 'power4.out', duration: 0.85, stagger: 0.055 }, 0)
+    .to(sig, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.6 }, '-=0.3');
+});
+
+/* On enter, like the statement above: the three kinetic beats on the page
+   read as one device family (which the device table now correctly shows),
+   differentiated by scale and pacing instead of by mechanism. */
+buildKinetic(() => {
+  const heading = document.querySelector('.cycling-main-heading');
+  if (!heading) return;
+
+  const words = splitWords(heading);
+  gsap.set(heading, { opacity: 1, y: 0 });
+  gsap.fromTo(words,
+    { yPercent: 115 },
+    { yPercent: 0, duration: 1.1, ease: 'power4.out', stagger: 0.09,
+      scrollTrigger: { trigger: heading, start: 'top 86%', once: true } });
+});
+
+/* The close resolves instead of fading out: the last feeling is the one they
+   carry away from the page. */
+buildKinetic(() => {
+  const heading = document.querySelector('.contato-heading');
+  if (!heading) return;
+
+  const words = splitWords(heading);
+  gsap.set(heading, { opacity: 1, y: 0 });
+  gsap.fromTo(words,
+    { yPercent: 118 },
+    { yPercent: 0, duration: 1.25, ease: 'power4.out', stagger: 0.1,
+      scrollTrigger: { trigger: '#contato', start: 'top 78%', once: true } });
+});
+
+/* Rebuild after a language switch, which replaces these elements' innerHTML. */
+window.__motionRebuild = () => {
+  kineticContexts.forEach((run) => run());
+  ScrollTrigger.refresh();
+};
+
+/* ── Ground drift ───────────────────────────────────────
+   The page ground travels with the reader: warm terracotta-black through the
+   work, the dark green rising across the cycling section, the night blue
+   taking over behind the stats, then back to the ground it started on.
+   Cross-faded opacity, never a tweened background colour, so it stays on the
+   compositor. Kept low so it reads as atmosphere, not as a colour change. */
+const groundGreen = document.querySelector('.gl-green');
+const groundNight = document.querySelector('.gl-night');
+if (groundGreen && groundNight) {
+  gsap.timeline({
+    scrollTrigger: {
+      trigger: document.body,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.8,
+    },
+  })
+    /* Timeline total is exactly 1, so every position and duration below reads
+       directly as a fraction of the page. The rise and fall of each layer must
+       not overlap: two live tweens on one opacity fight, and the layer never
+       reaches the value it was given. */
+    .to(groundGreen, { opacity: 0.30, ease: 'sine.inOut', duration: 0.18 }, 0.38)
+    .to(groundGreen, { opacity: 0,    ease: 'sine.inOut', duration: 0.16 }, 0.62)
+    .to(groundNight, { opacity: 0.34, ease: 'sine.inOut', duration: 0.18 }, 0.62)
+    .to(groundNight, { opacity: 0.12, ease: 'sine.inOut', duration: 0.14 }, 0.86);
+}
 
 /* ── Stat values punch-in + counter ─────────────────────── */
 gsap.utils.toArray('#stats .stat-value').forEach((el, i) => {
@@ -2618,13 +2884,6 @@ ScrollTrigger.create({
   onEnter: () => document.getElementById('contato').classList.add('lines-drawn'),
 });
 
-/* ── Contact heading dramatic entrance ──────────────────── */
-gsap.fromTo('.contato-heading',
-  { y: 80, opacity: 0 },
-  { y: 0, opacity: 1, duration: 1.3, ease: 'power4.out',
-    scrollTrigger: { trigger: '#contato', start: 'top 78%', once: true },
-  });
-
 } /* end !prefersReducedMotion (scroll animations) */
 
 /* ── Nav active section highlight ───────────────────────── */
@@ -2640,7 +2899,7 @@ sections.forEach(id => {
 });
 function updateNav(activeId) {
   document.querySelectorAll('.nav-links a').forEach(a => {
-    a.style.opacity = a.getAttribute('href') === `#${activeId}` ? '1' : '0.4';
+    a.style.opacity = a.getAttribute('href') === `#${activeId}` ? '1' : '0.55';
   });
 }
 
@@ -2881,8 +3140,6 @@ function updateNav(activeId) {
     document.querySelectorAll('.hero-tag').forEach(function (el, i) {
       if (t.hero.tags[i]) el.textContent = t.hero.tags[i];
     });
-    var scrollLabel = document.querySelector('.hero-scroll-label');
-    if (scrollLabel) scrollLabel.textContent = t.hero.scroll;
     document.querySelectorAll('.hero-stat-label').forEach(function (el, i) {
       if (t.hero.stats[i]) el.textContent = t.hero.stats[i];
     });
@@ -2983,6 +3240,12 @@ function updateNav(activeId) {
 
     /* Persist */
     try { localStorage.setItem('jb-lang', lang); } catch (e) {}
+
+    /* The kinetic headings above were split into per-word shells, and the
+       innerHTML writes in this function have just destroyed them. Rebuild the
+       splits and their ScrollTriggers, or the statement stays parked offscreen
+       in whichever language the reader just chose. */
+    if (window.__motionRebuild) window.__motionRebuild();
   }
 
   /* Init */
