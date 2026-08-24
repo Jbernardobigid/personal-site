@@ -1,0 +1,59 @@
+{
+  "topic": "Negros são maioria entre empreendedores de Pernambuco, mas recebem 78% menos que brancos Notícia Preta Brasil",
+  "slug": "maioria-no-mercado-minoria-na-renda-o-que-os-dados-de-pernam",
+  "generated_at": "2026-08-23T12:00:29.173Z",
+  "sources": [
+    "https://www.cartacapital.com.br/economia/negros-sao-a-maioria-dos-pequenos-empreendedores-no-brasil-mas-lucram-menos-que-brancos",
+    "https://globoplay.globo.com/v/11445743/editorial/32744ad8-a4fa-4518-9318-09fe28d1a8ec",
+    "https://oglobo.globo.com/blogs/miriam-leitao/post/2024/11/negros-ganham-40percent-menos-do-que-brancos-no-mercado-formal-e-no-empreendedorismo.ghtml",
+    "https://www.diariodepernambuco.com.br/economia/2026/08/11721255-negros-sao-maioria-entre-empreendedores-de-pe-mas-ganham-78-menos.html",
+    "https://g1.globo.com/jornal-nacional/noticia/2023/03/13/negros-sao-donos-da-maioria-dos-pequenos-negocios-no-pais-mas-ganham-menos-do-que-os-brancos-diz-estudo.ghtml",
+    "https://g1.globo.com/economia/noticia/2022/11/15/trabalhadores-pretos-ganham-402percent-menos-do-que-brancos-por-hora-trabalhada.ghtml",
+    "https://revistapegn.globo.com/empreendedorismo/noticia/2025/11/maioria-no-brasil-empreendedores-negros-ainda-enfrentam-desafios-estruturais.ghtml",
+    "https://noticiapreta.com.br/negros-sao-maioria-entre-empreendedores-de-pernambuco-mas-recebem-78-menos-que-brancos",
+    "https://fpabramo.org.br/negros-sao-78-entre-os-mais-pobres-e-somente-25-entre-os-mais-ricos"
+  ],
+  "insights": [
+    "In Pernambuco, black entrepreneurs make up 62.3% of the entrepreneurial landscape but earn significantly less than their white counterparts.",
+    "The average income for black entrepreneurs in Pernambuco is R$ 2,334.28, while white entrepreneurs earn R$ 4,155.25.",
+    "The income disparity between black and white entrepreneurs in Pernambuco is 78%, highlighting systemic economic inequalities."
+  ],
+  "stats": [
+    {
+      "value": "62.3%",
+      "context": "percentage of entrepreneurs in Pernambuco who are black",
+      "source": "https://noticiapreta.com.br/negros-sao-maioria-entre-empreendedores-de-pernambuco-mas-recebem-78-menos-que-brancos"
+    },
+    {
+      "value": "78%",
+      "context": "income disparity between black and white entrepreneurs in Pernambuco",
+      "source": "https://noticiapreta.com.br/negros-sao-maioria-entre-empreendedores-de-pernambuco-mas-recebem-78-menos-que-brancos"
+    },
+    {
+      "value": "R$ 2,334.28",
+      "context": "average income of black entrepreneurs in Pernambuco",
+      "source": "https://noticiapreta.com.br/negros-sao-maioria-entre-empreendedores-de-pernambuco-mas-recebem-78-menos-que-brancos"
+    },
+    {
+      "value": "R$ 4,155.25",
+      "context": "average income of white entrepreneurs in Pernambuco",
+      "source": "https://noticiapreta.com.br/negros-sao-maioria-entre-empreendedores-de-pernambuco-mas-recebem-78-menos-que-brancos"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Despite being the majority among business owners, the black population faces a significant gap in financial returns.",
+      "attribution": "Source 4"
+    }
+  ],
+  "time_series": [],
+  "summary": "Black entrepreneurs represent a majority in Pernambuco's entrepreneurial sector, yet they face a stark income disparity compared to white entrepreneurs, earning 78% less on average. This reflects broader systemic inequalities within Brazil's economic landscape.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-08-23-maioria-no-mercado-minoria-na-renda-o-que-os-dados-de-pernam.html",
+  "signal": {
+    "title": "Negros são maioria entre empreendedores de Pernambuco, mas recebem 78% menos que brancos",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/negros-sao-maioria-entre-empreendedores-de-pernambuco-mas-recebem-78-menos-que-brancos/?utm_source=rss&utm_medium=rss&utm_campaign=negros-sao-maioria-entre-empreendedores-de-pernambuco-mas-recebem-78-menos-que-brancos",
+    "date": "2026-08-23T10:00:00.000Z"
+  }
+}

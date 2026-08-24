@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Fri, 21 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 23 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Maioria no mercado, minoria na renda: o que os dados de Pernambuco revelam sobre quem a tecnologia ainda não alcança</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-23-maioria-no-mercado-minoria-na-renda-o-que-os-dados-de-pernam.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-23-maioria-no-mercado-minoria-na-renda-o-que-os-dados-de-pernam.html</guid>
+      <pubDate>Sun, 23 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Pessoas negras são 62,3% dos empreendedores em Pernambuco, mas ganham 78% menos que brancos, e a tecnologia, sozinha, não resolve o que o racismo estrutural construiu.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-23-maioria-no-mercado-minoria-na-renda-o-que-os-dados-de-pernam.png" length="2053849" type="image/png"/>
+    </item>
     <item>
       <title>Eleitorado ou Sujeito? O que o Brasil ainda não entendeu sobre a negritude</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Fri, 17 Jul 2026 12:00:00 GMT</pubDate>
       <description>A Copa do Mundo Feminina de 2027 vai injetar bilhões na economia brasileira, mas o empreendedorismo negro precisa estar posicionado para capturar essa oportunidade antes que ela passe.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-17-r-88-bilhoes-vao-chegar-ao-brasil-a-pergunta-e-quem-vai-fica.png" length="1911430" type="image/png"/>
-    </item>
-    <item>
-      <title>36 Milhões de Idosos Aptos a Votar: o que a Tecnologia Ainda Não Aprendeu Sobre Envelhecer</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-15-36-milhoes-de-idosos-aptos-a-votar-o-que-a-tecnologia-ainda-.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-15-36-milhoes-de-idosos-aptos-a-votar-o-que-a-tecnologia-ainda-.html</guid>
-      <pubDate>Wed, 15 Jul 2026 12:00:00 GMT</pubDate>
-      <description>O maior eleitorado idoso da história do Brasil expõe uma lacuna que a tecnologia cívica e de dados ainda não sabe fechar: alcançar quem mais precisa ser alcançado.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-15-36-milhoes-de-idosos-aptos-a-votar-o-que-a-tecnologia-ainda-.png" length="2064847" type="image/png"/>
     </item>
   </channel>
 </rss>
