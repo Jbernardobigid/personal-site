@@ -200,10 +200,24 @@ function sanitizeContent(html) {
 
 /* ── Post HTML builder ───────────────────────────────────── */
 
-function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl }) {
+function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl, faq = [] }) {
   const formattedDate = formatDate(date);
   const iso = isoDate(date);
   const postUrl = `${SITE_URL}/blog/posts/${filename}`;
+
+  const faqJsonLd = faq.length ? JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer }
+    }))
+  }, null, 2) : null;
+
+  const faqHtml = faq.length ? `
+<h2>Perguntas frequentes</h2>
+${faq.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3>\n<p>${escapeHtml(answer)}</p>`).join('\n')}` : '';
 
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
@@ -270,7 +284,10 @@ ${imageUrl ? `<meta property="og:image" content="${imageUrl}">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 ${jsonLd}
-</script>
+</script>${faqJsonLd ? `
+<script type="application/ld+json">
+${faqJsonLd}
+</script>` : ''}
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
@@ -354,6 +371,7 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
 
 <article class="post-body" itemscope itemtype="https://schema.org/BlogPosting">
 ${sanitizeContent(content)}
+${faqHtml}
 </article>
 
 <div class="post-footer">
@@ -629,7 +647,9 @@ Requirements:
 - No em dashes (—) anywhere in the text
 - No AI filler transitions (Além disso, Vale ressaltar, Em suma, etc.)
 - Close by returning to the opening moment or landing on a quiet image — never summarize
-- Sentence rhythm should feel uneven and human — not every paragraph the same length${groundingRequirements}`;
+- Sentence rhythm should feel uneven and human — not every paragraph the same length${groundingRequirements}
+
+Also provide 2-3 FAQ pairs: short reader questions this post answers, each with a direct, self-contained answer (1-2 sentences, in Portuguese, no em dashes). These run as a visible FAQ block at the end of the post, so each answer must stand alone without the reader having read the body.`;
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -642,9 +662,21 @@ Requirements:
         properties: {
           title: { type: 'string', description: 'The blog post title in Portuguese' },
           excerpt: { type: 'string', description: 'One sentence excerpt (~25 words max) in Portuguese, no surrounding quotes' },
-          content: { type: 'string', description: 'Full HTML post body using only p, h2, h3, strong, em, blockquote>p, ul>li tags. Do NOT include the title.' }
+          content: { type: 'string', description: 'Full HTML post body using only p, h2, h3, strong, em, blockquote>p, ul>li tags. Do NOT include the title.' },
+          faq: {
+            type: 'array',
+            description: '2-3 short reader questions this post answers, each with a self-contained 1-2 sentence answer in Portuguese.',
+            items: {
+              type: 'object',
+              properties: {
+                question: { type: 'string' },
+                answer: { type: 'string' }
+              },
+              required: ['question', 'answer']
+            }
+          }
         },
-        required: ['title', 'excerpt', 'content']
+        required: ['title', 'excerpt', 'content', 'faq']
       }
     }],
     tool_choice: { type: 'tool', name: 'create_blog_post' },
@@ -663,6 +695,12 @@ Requirements:
   const title   = sanitizeEmDashes(parsed.title);
   const excerpt = sanitizeEmDashes(parsed.excerpt);
   const content = sanitizeEmDashes(parsed.content);
+  const faq = Array.isArray(parsed.faq)
+    ? parsed.faq.map(pair => ({
+        question: sanitizeEmDashes(pair.question),
+        answer: sanitizeEmDashes(pair.answer)
+      }))
+    : [];
   const date = new Date();
   const readTime = estimateReadTime(content);
   const slug = slugify(title);
@@ -672,7 +710,7 @@ Requirements:
   const imagePath = path.join(IMAGES_DIR, imageFilename);
   const imageUrl = `${SITE_URL}/blog/posts/images/${imageFilename}`;
 
-  const postHtml = buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl });
+  const postHtml = buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl, faq });
   const listItem = buildPostListItem({ title, pillar, date, excerpt, filename });
 
   if (dryRun) {
