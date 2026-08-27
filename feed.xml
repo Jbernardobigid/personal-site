@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Tue, 25 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 27 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>52% dos donos de negócio no Brasil são negros. Por que a riqueza não fica com eles?</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-27-52-dos-donos-de-negocio-no-brasil-sao-negros-por-que-a-rique.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-27-52-dos-donos-de-negocio-no-brasil-sao-negros-por-que-a-rique.html</guid>
+      <pubDate>Thu, 27 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Mulheres negras são maioria entre as empreendedoras brasileiras, mas 42,8% operam na informalidade, e esse número revela um sistema, não uma escolha.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-27-52-dos-donos-de-negocio-no-brasil-sao-negros-por-que-a-rique.png" length="1809486" type="image/png"/>
+    </item>
     <item>
       <title>Ceilândia tem algo a ensinar sobre como construir um negócio com identidade</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-25-ceilandia-tem-algo-a-ensinar-sobre-como-construir-um-negocio.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Tue, 21 Jul 2026 12:00:00 GMT</pubDate>
       <description>Um estudo recente revelou que modelos de IA aumentam em até 69% a associação de homens negros e latinos à criminalidade, e isso muda tudo sobre como pensamos em governança tecnológica.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-21-o-algoritmo-nao-e-neutro-quando-a-ia-aprende-a-suspeitar-de-.png" length="2240303" type="image/png"/>
-    </item>
-    <item>
-      <title>O conhecimento que as universidades ainda não sabem nomear</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-19-o-conhecimento-que-as-universidades-ainda-nao-sabem-nomear.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-19-o-conhecimento-que-as-universidades-ainda-nao-sabem-nomear.html</guid>
-      <pubDate>Sun, 19 Jul 2026 12:00:00 GMT</pubDate>
-      <description>A Escola Preta de Arte abre 8 formações gratuitas em artes cênicas afrocentradas, e nos lembra que aprender exige saber onde o saber foi guardado.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-19-o-conhecimento-que-as-universidades-ainda-nao-sabem-nomear.png" length="1834117" type="image/png"/>
     </item>
   </channel>
 </rss>

@@ -1,0 +1,71 @@
+{
+  "topic": "Pesquisa aponta que mulheres negras são maioria entre empreendedoras, mas informalidade limita negócios Mundo Negro Brasil",
+  "slug": "52-dos-donos-de-negocio-no-brasil-sao-negros-por-que-a-rique",
+  "generated_at": "2026-08-27T12:00:25.766Z",
+  "sources": [
+    "https://mundonegro.inf.br/pesquisa-aponta-que-mulheres-negras-sao-maioria-entre-empreendedoras-mas-informalidade-limita-negocios",
+    "https://revistapegn.globo.com/mulheres-empreendedoras/noticia/2026/07/apenas-456percent-das-empreendedoras-negras-tem-negocios-formalizados-no-brasil-diz-pesquisa.ghtml",
+    "https://noticiapreta.com.br/empreender-por-necessidade-o-brasil-negro-na-informalidade",
+    "https://almapreta.com.br/sessao/cotidiano/maioria-donas-brechos-negras-pesquisa",
+    "https://www.guetto.org/post/empowerafro-mulheres-negras-empreendedorismo-negro",
+    "https://www.redalyc.org/journal/4417/441780036009/html",
+    "https://agenciasebrae.com.br/dados/empreendedoras-negras-no-brasil-faturam-quase-60-menos-que-homens-brancos-aponta-sebrae",
+    "https://agenciabrasil.ebc.com.br/geral/noticia/2025-03/empreendedorismo-feminino-informalidade-desafia-politicas-publicas",
+    "https://www.itau.com.br/sustentabilidade/itaumulherempreendedora/plataforma/conteudos/mulheres-negras-e-empreendedorismo",
+    "https://revistapegn.globo.com/mulheres-empreendedoras/noticia/2026/08/solidao-e-sobrecarga-com-cuidado-impactam-mulheres-empreendedoras.ghtml"
+  ],
+  "insights": [
+    "Women of African descent represent 49% of entrepreneurs in Brazil, yet only 45.6% have formalized businesses.",
+    "42.8% of Black women entrepreneurs operate informally, compared to 24.5% of non-Black women, indicating a 75% higher rate of informal business among Black women.",
+    "Black women entrepreneurs earn 59% less than their white male counterparts, highlighting significant income disparities.",
+    "80.6% of Black women entrepreneurs are concentrated in low-value-added sectors like commerce.",
+    "71% of interviewed entrepreneurs use WhatsApp and Instagram as primary sales channels, indicating a shift towards digitalization."
+  ],
+  "stats": [
+    {
+      "value": "45.6%",
+      "context": "percentage of Black women entrepreneurs with formalized businesses",
+      "source": "Source 2"
+    },
+    {
+      "value": "42.8%",
+      "context": "percentage of Black women entrepreneurs in informal sectors",
+      "source": "Source 10"
+    },
+    {
+      "value": "59%",
+      "context": "income disparity of Black women entrepreneurs compared to white men",
+      "source": "Source 7"
+    },
+    {
+      "value": "80.6%",
+      "context": "percentage of Black women entrepreneurs in commerce",
+      "source": "Source 2"
+    },
+    {
+      "value": "52%",
+      "context": "percentage of business owners in Brazil who are Black",
+      "source": "Source 5"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Uma empreendedora negra fatura 59% a menos que um homem branco empreendedor.",
+      "attribution": "Fau Ferreira, Sebrae"
+    },
+    {
+      "text": "As barreiras raciais e de gênero persistem e se manifestam em rendimentos consideravelmente menores.",
+      "attribution": "Margarete Coelho, Sebrae"
+    }
+  ],
+  "time_series": [],
+  "summary": "Women of African descent are the majority of entrepreneurs in Brazil, yet they face significant barriers to formalization and access to credit. The informal sector predominates among Black women entrepreneurs, leading to lower earnings and limited growth opportunities.",
+  "pillar": "entrepreneurship",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-08-27-52-dos-donos-de-negocio-no-brasil-sao-negros-por-que-a-rique.html",
+  "signal": {
+    "title": "Pesquisa aponta que mulheres negras são maioria entre empreendedoras, mas informalidade limita negócios",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/pesquisa-aponta-que-mulheres-negras-sao-maioria-entre-empreendedoras-mas-informalidade-limita-negocios/",
+    "date": "2026-08-26T19:17:54.000Z"
+  }
+}
