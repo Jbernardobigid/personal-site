@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Thu, 27 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O que um anel inteligente não consegue medir sobre a sua carreira depois dos 40</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-29-o-que-um-anel-inteligente-nao-consegue-medir-sobre-a-sua-car.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-29-o-que-um-anel-inteligente-nao-consegue-medir-sobre-a-sua-car.html</guid>
+      <pubDate>Sat, 29 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Depois dos 40, os dados externos dizem cada vez menos sobre quem você é, e a pergunta que importa muda completamente de forma.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-29-o-que-um-anel-inteligente-nao-consegue-medir-sobre-a-sua-car.png" length="1903915" type="image/png"/>
+    </item>
     <item>
       <title>52% dos donos de negócio no Brasil são negros. Por que a riqueza não fica com eles?</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-27-52-dos-donos-de-negocio-no-brasil-sao-negros-por-que-a-rique.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Thu, 23 Jul 2026 12:00:00 GMT</pubDate>
       <description>Quando uma premiação de dermatologia reconhece pesquisas sobre pele negra e indígena, o gesto parece pequeno, mas o que ele revela sobre apagamento histórico é imenso.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-23-a-pele-que-a-ciencia-ignorou-por-decadas-finalmente-virou-ob.png" length="1918575" type="image/png"/>
-    </item>
-    <item>
-      <title>O algoritmo não é neutro: quando a IA aprende a suspeitar de você</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-21-o-algoritmo-nao-e-neutro-quando-a-ia-aprende-a-suspeitar-de-.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-21-o-algoritmo-nao-e-neutro-quando-a-ia-aprende-a-suspeitar-de-.html</guid>
-      <pubDate>Tue, 21 Jul 2026 12:00:00 GMT</pubDate>
-      <description>Um estudo recente revelou que modelos de IA aumentam em até 69% a associação de homens negros e latinos à criminalidade, e isso muda tudo sobre como pensamos em governança tecnológica.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-21-o-algoritmo-nao-e-neutro-quando-a-ia-aprende-a-suspeitar-de-.png" length="2240303" type="image/png"/>
     </item>
   </channel>
 </rss>
