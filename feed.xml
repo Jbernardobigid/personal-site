@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sat, 29 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Aprender é um ato político: o que o II Encontro Latino-Americano de Educação Étnico-Racial tem a nos dizer</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-31-aprender-e-um-ato-politico-o-que-o-ii-encontro-latino-americ.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-31-aprender-e-um-ato-politico-o-que-o-ii-encontro-latino-americ.html</guid>
+      <pubDate>Mon, 31 Aug 2026 12:00:00 GMT</pubDate>
+      <description>Entre os dias 25 e 27 de setembro de 2026, educadoras e educadores de toda a América Latina se reúnem no Rio para debater algo que vai muito além de sala de aula.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-31-aprender-e-um-ato-politico-o-que-o-ii-encontro-latino-americ.png" length="1869506" type="image/png"/>
+    </item>
     <item>
       <title>O que um anel inteligente não consegue medir sobre a sua carreira depois dos 40</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-29-o-que-um-anel-inteligente-nao-consegue-medir-sobre-a-sua-car.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Sat, 25 Jul 2026 12:00:00 GMT</pubDate>
       <description>Depois dos 40, a carreira deixa de ser sobre provar e começa a ser sobre construir algo que importa de verdade.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-25-recomecar-nao-e-fracasso-o-que-a-carreira-depois-dos-40-tem-.png" length="1850856" type="image/png"/>
-    </item>
-    <item>
-      <title>A pele que a ciência ignorou por décadas finalmente virou objeto de estudo</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-23-a-pele-que-a-ciencia-ignorou-por-decadas-finalmente-virou-ob.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-23-a-pele-que-a-ciencia-ignorou-por-decadas-finalmente-virou-ob.html</guid>
-      <pubDate>Thu, 23 Jul 2026 12:00:00 GMT</pubDate>
-      <description>Quando uma premiação de dermatologia reconhece pesquisas sobre pele negra e indígena, o gesto parece pequeno, mas o que ele revela sobre apagamento histórico é imenso.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-23-a-pele-que-a-ciencia-ignorou-por-decadas-finalmente-virou-ob.png" length="1918575" type="image/png"/>
     </item>
   </channel>
 </rss>
