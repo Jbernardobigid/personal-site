@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Mon, 31 Aug 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Quando o algoritmo não te vê: exclusão, audiovisual e o que os dados escondem sobre mães negras</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.html</guid>
+      <pubDate>Tue, 01 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Uma pesquisa com 646 mães negras revelou que 65,3% não conseguem entrar no audiovisual brasileiro, e isso diz muito sobre como sistemas, algoritmos e mercados perpetuam exclusão invisível.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.png" length="1938405" type="image/png"/>
+    </item>
     <item>
       <title>Aprender é um ato político: o que o II Encontro Latino-Americano de Educação Étnico-Racial tem a nos dizer</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-08-31-aprender-e-um-ato-politico-o-que-o-ii-encontro-latino-americ.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Mon, 27 Jul 2026 12:00:00 GMT</pubDate>
       <description>Quando um jovem da periferia aprende audiovisual, ele não está apenas aprendendo uma técnica, está reivindicando o direito de narrar a própria história.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-27-50-vagas-uma-camera-e-a-logica-de-quem-sempre-criou-do-zero.png" length="1874548" type="image/png"/>
-    </item>
-    <item>
-      <title>Recomeçar não é fracasso: o que a carreira depois dos 40 tem de diferente</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-25-recomecar-nao-e-fracasso-o-que-a-carreira-depois-dos-40-tem-.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-25-recomecar-nao-e-fracasso-o-que-a-carreira-depois-dos-40-tem-.html</guid>
-      <pubDate>Sat, 25 Jul 2026 12:00:00 GMT</pubDate>
-      <description>Depois dos 40, a carreira deixa de ser sobre provar e começa a ser sobre construir algo que importa de verdade.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-25-recomecar-nao-e-fracasso-o-que-a-carreira-depois-dos-40-tem-.png" length="1850856" type="image/png"/>
     </item>
   </channel>
 </rss>
