@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Tue, 01 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 03 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O que Nova York ensinou sobre o que a gente ainda não sabe que não sabe</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.html</guid>
+      <pubDate>Thu, 03 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Quando Nova York atualizou o currículo de cosmetologia para incluir cabelos crespos e cacheados, revelou algo maior: o que não está no currículo forma tanto quanto o que está.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.png" length="1867692" type="image/png"/>
+    </item>
     <item>
       <title>Quando o algoritmo não te vê: exclusão, audiovisual e o que os dados escondem sobre mães negras</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Wed, 29 Jul 2026 12:00:00 GMT</pubDate>
       <description>A N3 Notícias, de Nath Finanças, ultrapassa 5,9 milhões de views e prova que empreendedorismo negro não é nicho, é um novo centro de gravidade.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-29-quando-o-mercado-financeiro-fala-com-voce-nao-sobre-voce.png" length="2028240" type="image/png"/>
-    </item>
-    <item>
-      <title>50 Vagas, Uma Câmera e a Lógica de Quem Sempre Criou do Zero</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-27-50-vagas-uma-camera-e-a-logica-de-quem-sempre-criou-do-zero.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-27-50-vagas-uma-camera-e-a-logica-de-quem-sempre-criou-do-zero.html</guid>
-      <pubDate>Mon, 27 Jul 2026 12:00:00 GMT</pubDate>
-      <description>Quando um jovem da periferia aprende audiovisual, ele não está apenas aprendendo uma técnica, está reivindicando o direito de narrar a própria história.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-27-50-vagas-uma-camera-e-a-logica-de-quem-sempre-criou-do-zero.png" length="1874548" type="image/png"/>
     </item>
   </channel>
 </rss>
