@@ -24,6 +24,8 @@
     "video:prepare": "node prepare-video.mjs",
     "templates:generate": "node agent-templates.mjs",
     "templates:force": "node agent-templates.mjs --force",
+    "blob:recycle": "node blob-recycle.mjs",
+    "blob:recycle:apply": "node blob-recycle.mjs --apply",
     "ig:check": "node post-to-instagram.mjs check",
     "ig:stage": "node post-to-instagram.mjs stage",
     "ig:publish": "node post-to-instagram.mjs publish-carousel"
