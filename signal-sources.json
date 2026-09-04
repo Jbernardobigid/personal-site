@@ -1,16 +1,20 @@
 {
-  "_comment": "Signal sources for the content pipeline. Press feeds are curated Afro-Brazilian/Brazilian outlets (items tagged to a pillar by keyword match). Google News RSS queries are pillar-scoped and turned into news.google.com/rss/search feeds by signals.mjs (keyless, no manual setup). Edit freely — failed/empty feeds are skipped gracefully.",
+  "_comment": "Signal sources for the content pipeline. Press feeds are curated Afro-Brazilian/Brazilian outlets (items tagged to a pillar by keyword match, or pinned with an explicit \"pillar\" field). Google News queries are pillar-scoped and turned into news.google.com/rss/search feeds by signals.mjs (keyless, no manual setup). Each language accepts a single query string OR an array of them. Edit freely — failed/empty feeds are skipped gracefully.",
   "googleNews": {
     "ptTemplate": "https://news.google.com/rss/search?q={q}&hl=pt-BR&gl=BR&ceid=BR:pt-419",
     "enTemplate": "https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en",
     "freshness": "when:14d"
   },
   "_pressNote": "Alma Preta (almapreta.com.br/feed) is intentionally omitted — it sits behind Cloudflare bot protection that serves an HTML challenge to programmatic clients. Its articles still surface via the Google News queries below.",
+  "_cyclingNote": "Feeds verified 2026-09-04. There is no Afro-Brazilian cycling outlet with a working RSS feed: the collectives that cover this beat (Giro Preto, La Frida Bike, Negritude Cicloativista) publish on Instagram only. The three cycling feeds below are Brazilian cycling-advocacy organisations that publish real mobility data and policy work, which is where the racial angle actually surfaces (UCB's own finding: 'o Brasil que pedala é, majoritariamente, negro'). Rejected after testing: CicloVivo (feed is now Mercado Livre affiliate deals, not cycling), Vá de Bike (last post 383d old), Bike Magazine + Pedal.com.br (403 to programmatic clients), TSW Bike + Escola de Bicicleta (404), Bike Anjo (malformed XML).",
   "pressFeeds": [
     { "name": "Geledés", "url": "https://www.geledes.org.br/feed/", "tier": 1 },
     { "name": "Mundo Negro", "url": "https://mundonegro.inf.br/feed/", "tier": 1 },
     { "name": "Revista Raça", "url": "https://revistaraca.com.br/feed/", "tier": 1 },
-    { "name": "Notícia Preta", "url": "https://noticiapreta.com.br/feed/", "tier": 1 }
+    { "name": "Notícia Preta", "url": "https://noticiapreta.com.br/feed/", "tier": 1 },
+    { "name": "Ciclocidade", "url": "https://www.ciclocidade.org.br/feed/", "tier": 1, "pillar": "cycling" },
+    { "name": "Observatório da Bicicleta (UCB)", "url": "https://observatoriodabicicleta.org.br/feed/", "tier": 1, "pillar": "cycling" },
+    { "name": "Transporte Ativo", "url": "https://transporteativo.org.br/ta/?feed=rss2", "tier": 2, "pillar": "cycling" }
   ],
   "pillars": {
     "black-identity": {
@@ -21,10 +25,19 @@
       }
     },
     "cycling": {
-      "keywords": ["ciclismo", "ciclista", "bike", "bicicleta", "mobilidade urbana", "racismo no esporte", "pedal"],
+      "_note": "Item counts are from a 14-day window on 2026-09-04. The first PT query and both EN queries are the on-target Afro-cycling asks; the first returned 0 items that fortnight and is kept precisely because it fires when such news does exist. The rest are the adjacent beats that reliably carry the story (who cycles, who gets infrastructure, who is missing from the sport). The negative terms are load-bearing: without them 'ciclovia' returns mostly local car-crash reports, which are fresh enough to crowd every other pillar out of the screening batch and are then rejected one by one for centering on tragedy.",
+      "keywords": ["ciclismo", "ciclista", "bike", "bicicleta", "mobilidade urbana", "racismo no esporte", "pedal", "ciclovia", "cicloativismo"],
       "googleNews": {
-        "pt": "\"ciclismo urbano\" OR \"ciclistas negros\" OR \"ciclismo negro\"",
-        "en": "\"Black cyclists\" OR \"cycling diversity\" OR \"cycling activism\""
+        "pt": [
+          "\"ciclistas negros\" OR \"ciclismo negro\" OR \"cicloativismo negro\"",
+          "ciclismo mulheres OR inclusão OR representatividade OR diversidade -atropelamento -atropela -atropelou -atropelado -atropelar -morte -morreu -acidente -capota -capotamento -ferido -preso",
+          "bicicleta \"mobilidade urbana\" pesquisa OR estudo OR dados -atropelamento -atropela -atropelou -atropelado -atropelar -morte -morreu -acidente -capota -capotamento -ferido -preso",
+          "\"ciclismo urbano\" OR cicloativismo OR \"ciclovia\" -atropelamento -atropela -atropelou -atropelado -atropelar -morte -morreu -acidente -capota -capotamento -ferido -preso"
+        ],
+        "en": [
+          "cycling \"Major Taylor\" OR \"Black cyclist\" OR \"first Black\" bike racing",
+          "urban cycling equity OR access OR \"who bikes\" study"
+        ]
       }
     },
     "technology": {

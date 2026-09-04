@@ -22,7 +22,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { generatePostImage } from './generate-image.mjs';
 import { selectSignal, recordUsedSignal } from './signals.mjs';
-import { researchTopic } from './research.mjs';
+import { researchTopic, deriveResearchQuery } from './research.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR    = path.join(__dirname, 'blog');
@@ -110,6 +110,78 @@ function getNextPillar() {
   return PILLARS.reduce((least, p) => pillarCounts[p.id] < pillarCounts[least.id] ? p : least);
 }
 
+/* ── Recent-post memory (anti-repetition) ────────────────── */
+
+// 20, not 10: at a post every two days a 10-post window only reaches back three weeks,
+// and the repeats that prompted this ("depois dos 40", "pedalar enquanto negro") recur on
+// a scale of months. Twenty titles plus excerpts cost well under a thousand tokens.
+const RECENT_POSTS_WINDOW = 20;
+
+/**
+ * The last N posts, newest first, as {date, pillar, title, excerpt}.
+ *
+ * Fed to the writer as an explicit "do not repeat these" block. The signal feed is
+ * genuinely fresh, but nothing downstream used to tell the model what it had just
+ * published, so the same angles and the same title shapes kept coming round: "o que X
+ * revela sobre Y" three times in thirty posts, "depois dos 40 / recomeçar" four times.
+ * Filenames are date-prefixed, so a reverse name sort is a reverse chronological sort.
+ */
+function getRecentPosts(limit = RECENT_POSTS_WINDOW) {
+  if (!fs.existsSync(POSTS_DIR)) return [];
+  return fs.readdirSync(POSTS_DIR)
+    .filter(f => f.endsWith('.html'))
+    .sort()
+    .reverse()
+    .slice(0, limit)
+    .map(filename => {
+      let html = '';
+      try { html = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf8'); } catch { return null; }
+      const pillarMatch = html.match(/data-pillar="([^"]+)"/);
+      return {
+        date: (filename.match(/^(\d{4}-\d{2}-\d{2})/) || [, ''])[1],
+        pillar: pillarMatch ? pillarMatch[1] : '',
+        title: readMetaTag(html, 'og:title'),
+        excerpt: readMetaTag(html, 'og:description')
+      };
+    })
+    .filter(p => p && p.title);
+}
+
+/**
+ * The "already published, do not repeat" prompt block. Empty when there is no history.
+ *
+ * Two tiers, because they catch different failures. The recent window carries excerpts so
+ * the model can judge whether a THESIS is already taken; the full archive carries titles
+ * only, which is cheap enough to include in its entirety and is what stops a headline from
+ * coming back around months later. A 20-post window alone let "Pedalar enquanto negro"
+ * regenerate almost verbatim from a post 29 editions back.
+ */
+function buildRecentPostsBlock(recent, archiveTitles = []) {
+  if (!recent.length) return '';
+  const list = recent
+    .map(p => `- [${p.pillar}] ${decodeHtmlEntities(p.title)}${p.excerpt ? ` (${decodeHtmlEntities(p.excerpt)})` : ''}`)
+    .join('\n');
+
+  const recentTitleSet = new Set(recent.map(p => decodeHtmlEntities(p.title)));
+  const older = archiveTitles.map(decodeHtmlEntities).filter(t => !recentTitleSet.has(t));
+  const archiveBlock = older.length ? `
+
+TÍTULOS JÁ PUBLICADOS ANTES DISSO (arquivo completo, não repita nem reformule nenhum):
+${older.map(t => `- ${t}`).join('\n')}` : '';
+
+  return `
+
+JÁ PUBLICADO NAS ÚLTIMAS ${recent.length} EDIÇÕES (evite repetir):
+${list}${archiveBlock}
+
+REGRAS DE NÃO REPETIÇÃO (obrigatórias):
+- Não reescreva a tese de nenhum texto acima. Se o tema for próximo, entre por um ângulo que os textos acima NÃO cobrem, e torne essa diferença explícita já no lede.
+- Não reutilize a FORMA dos títulos acima. Em especial, estão proibidos agora: "O que X revela sobre Y", "Não é sobre X, é sobre Y", "X não é Y. É Z.", e qualquer título que comece com "O que".
+- Não repita as mesmas âncoras temáticas dos textos acima (por exemplo "depois dos 40", "recomeçar", "o que os dados revelam") a menos que o acontecimento atual exija.
+- Nenhum título novo pode ser uma variação de um título do arquivo. Se a sua primeira ideia de título ecoa algum deles, descarte e escreva outro.
+- Varie a forma do lede: se os títulos acima sugerem aberturas de cena, abra com um número, uma contradição, uma fala ou um objeto.`;
+}
+
 /* ── Existing posts (for sitemap) ────────────────────────── */
 
 // og:* rather than <title>/<meta name="description"> because og:title carries no
@@ -185,6 +257,15 @@ function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Inverse of escapeHtml, for reading og:* values back out of published posts and into a
+// prompt. &amp; is undone last so "&amp;lt;" round-trips to "&lt;" rather than to "<".
+function decodeHtmlEntities(str) {
+  return String(str)
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
 }
 
 function sanitizeContent(html) {
@@ -541,8 +622,18 @@ async function main() {
       if (signal) {
         pillar = PILLARS.find(p => p.id === signal.pillar) || resolvePillar();
         console.log(`Signal [${pillar.id}]: ${signal.title} — ${signal.source}`);
-        const query = `${signal.title} ${signal.source} Brasil`.trim();
-        console.log('Researching the signal (Tavily + synthesis)...');
+        // Ask for the DATA behind the story, not for the story again. The old query was
+        // `<headline> <outlet> Brasil`, which searched for the source article and averaged
+        // 1.3 stats per run against the newsletter's 3.1 from a derived query. The fallback
+        // drops the outlet name either way — naming it steered results back to that outlet.
+        const derived = await deriveResearchQuery({
+          title: signal.title,
+          summary: signal.summary,
+          source: signal.source,
+          pillarLabel: pillar.label
+        });
+        const query = derived || `${signal.title} Brasil`.trim();
+        console.log(`Researching the signal (Tavily + synthesis) — query ${derived ? 'derived' : 'fallback'}: "${query}"`);
         const r = await researchTopic(query);
         if (r.success) {
           research = r.data;
@@ -631,10 +722,18 @@ NEVER use the following — they are AI tells that break authenticity:
 - A concluding paragraph that summarizes what the post just said
 - Any phrase that sounds like a LinkedIn caption or a motivational slide${groundingSystemNote}`;
 
-  const userPrompt = `Write a blog post on the topic pillar: "${pillar.label}" — ${pillar.description}${signalBlock}${researchBlock}
+  // What was just published, so the writer stops re-running its own greatest hits.
+  const recentPosts = getRecentPosts();
+  const archiveTitles = getRecentPosts(Infinity).map(p => p.title);
+  const recentBlock = buildRecentPostsBlock(recentPosts, archiveTitles);
+  if (recentPosts.length) {
+    console.log(`Anti-repetition: ${recentPosts.length} recent post(s) with excerpts + ${archiveTitles.length} archive title(s) passed to the writer.`);
+  }
+
+  const userPrompt = `Write a blog post on the topic pillar: "${pillar.label}" — ${pillar.description}${signalBlock}${researchBlock}${recentBlock}
 
 Requirements:
-- Title: compelling, specific, not generic (in Portuguese)
+- Title: compelling, specific, not generic (in Portuguese), and structurally different from the recent titles listed above
 - Length: 600-900 words of body content
 - Structure: flowing prose with 2-3 H2 subheadings
 - Include at least one blockquote that captures a key insight
@@ -738,7 +837,11 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
 
   let savedImagePath = null;
   if (process.env.OPENAI_API_KEY) {
-    const imageBuffer = await generatePostImage(pillar.id, process.env.OPENAI_API_KEY);
+    // title/excerpt drive a post-specific scene; slug seeds the framing variation, so two
+    // posts in the same pillar no longer resolve to the same picture.
+    const imageBuffer = await generatePostImage(pillar.id, process.env.OPENAI_API_KEY, {
+      title, excerpt, seed: slug
+    });
     fs.writeFileSync(imagePath, imageBuffer);
     savedImagePath = imagePath;
     console.log(`OG image saved: blog/posts/images/${imageFilename}`);

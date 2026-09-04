@@ -37,14 +37,16 @@ const HASHTAGS = {
   'career-growth':    '#Carreira #CrescimentoProfissional #Reinvenção #Desenvolvimento'
 };
 
-async function getImageBuffer(imagePath, pillarId) {
+async function getImageBuffer(imagePath, pillarId, { title, excerpt } = {}) {
   if (imagePath && fs.existsSync(imagePath)) {
     console.log('Using pre-generated OG image.');
     return fs.readFileSync(imagePath);
   }
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('No pre-generated image found and OPENAI_API_KEY is not set.');
-  return generatePostImage(pillarId, apiKey);
+  // Same content-aware path as the blog, so the fallback image is not the generic
+  // pillar picture the blog itself stopped using.
+  return generatePostImage(pillarId, apiKey, { title, excerpt, seed: title });
 }
 
 async function getMemberUrn() {
@@ -169,7 +171,7 @@ async function main() {
   const personUrn   = await getMemberUrn();
   console.log('Member URN resolved.');
 
-  const imageBuffer = await getImageBuffer(imagePath, pillarId);
+  const imageBuffer = await getImageBuffer(imagePath, pillarId, { title, excerpt });
   const { uploadUrl, assetUrn } = await registerUpload(personUrn);
   await uploadImage(uploadUrl, imageBuffer);
   const postUrn = await createPost({ personUrn, assetUrn, title, excerpt, pillarId, postUrl });

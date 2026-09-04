@@ -30,8 +30,9 @@ const LEDGER_PATH  = path.join(__dirname, 'used-signals.json');
 
 const FRESHNESS_DAYS = 14;   // ignore anything older than this
 const DEDUP_DAYS     = 60;   // don't re-ground a story used within this window
-const SAFETY_BATCH   = 8;    // run the Claude safety/quality check on the top-N scored candidates
+const SAFETY_BATCH   = 8;    // run the Claude screening call on the top-N scored candidates
 const SAFETY_MODEL   = 'claude-haiku-4-5-20251001';
+const SEMANTIC_DEDUP_POSTS = 12; // recent posts shown to the screener as "already covered"
 
 const parser = new Parser({
   timeout: 15000,
@@ -97,6 +98,35 @@ function itemDate(it) {
 function withinFreshness(isoDate, days = FRESHNESS_DAYS) {
   if (!isoDate) return true; // keep when date unknown rather than silently dropping
   return (Date.now() - new Date(isoDate).getTime()) <= days * 86400_000;
+}
+
+/**
+ * The theses of the most recently published posts, newest first, as "title — excerpt".
+ *
+ * The ledger dedupe below is keyed on the article's own title string, so two DIFFERENT
+ * articles about the same underlying story both pass it. That is how the blog ran
+ * "o que a REPCONE revela sobre quem a tecnologia protege" and, three weeks later,
+ * "o que os dados de Pernambuco revelam sobre quem a tecnologia ainda não alcança".
+ * Passing these into the screening call lets it reject a signal that would produce a
+ * post the blog has effectively already published.
+ */
+function recentPostTheses(limit = SEMANTIC_DEDUP_POSTS) {
+  if (!fs.existsSync(POSTS_DIR)) return [];
+  return fs.readdirSync(POSTS_DIR)
+    .filter(f => f.endsWith('.html'))
+    .sort()
+    .reverse()
+    .slice(0, limit)
+    .map(f => {
+      let html = '';
+      try { html = fs.readFileSync(path.join(POSTS_DIR, f), 'utf8'); } catch { return ''; }
+      const title = (html.match(/<meta property="og:title" content="([^"]*)"/) || [, ''])[1];
+      const desc  = (html.match(/<meta property="og:description" content="([^"]*)"/) || [, ''])[1];
+      const decode = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+      return title ? `${decode(title)}${desc ? ` — ${decode(desc)}` : ''}` : '';
+    })
+    .filter(Boolean);
 }
 
 /** Count existing posts per pillar by scanning blog/posts/*.html for data-pillar. */
@@ -179,10 +209,17 @@ async function gatherCandidates(cfg) {
   for (const feed of cfg.pressFeeds || []) {
     tasks.push({ kind: 'press', feed });
   }
+  // A pillar may declare one query per language or an array of them. Single-string
+  // queries were the reason cycling starved: "ciclistas negros OR ciclismo negro" returns
+  // literally zero items in a 14-day window (verified 2026-09-04), and there was no room
+  // to also ask the adjacent questions that DO return items.
   for (const [pid, pc] of Object.entries(cfg.pillars)) {
     for (const lang of ['pt', 'en']) {
-      const query = pc.googleNews?.[lang];
-      if (query) tasks.push({ kind: 'news', pid, lang, url: buildGoogleNewsUrl(query, lang, cfg) });
+      const raw = pc.googleNews?.[lang];
+      const queries = Array.isArray(raw) ? raw : raw ? [raw] : [];
+      for (const query of queries) {
+        if (query) tasks.push({ kind: 'news', pid, lang, url: buildGoogleNewsUrl(query, lang, cfg) });
+      }
     }
   }
   const feeds = await Promise.all(tasks.map(t => fetchFeed(t.url || t.feed.url)));
@@ -196,7 +233,10 @@ async function gatherCandidates(cfg) {
       if (t.kind === 'press') {
         const title = cleanText(it.title);
         const summary = cleanText(it.contentSnippet || it.content || it.summary || '');
-        const pillar = matchPillar(`${title} ${summary}`, matchers);
+        // A single-subject outlet (a cycling advocacy org, say) can pin its pillar instead
+        // of relying on keyword inference, which otherwise silently drops any item that
+        // happens not to spell out one of the pillar keywords.
+        const pillar = t.feed.pillar || matchPillar(`${title} ${summary}`, matchers);
         if (!pillar) continue;
         out.push({ title, summary: summary.slice(0, 400), url: it.link || '', source: t.feed.name, pillar, date, tier: t.feed.tier || 2 });
       } else {
@@ -245,7 +285,7 @@ function scoreCandidate(c, counts, maxCount) {
 
 /* ── Claude safety / quality / on-brand check ────────────── */
 
-async function safetyCheck(items) {
+async function safetyCheck(items, recentTheses = []) {
   if (items.length === 0) return [];
   if (!process.env.ANTHROPIC_API_KEY) {
     console.warn('  ! ANTHROPIC_API_KEY not set — skipping safety check (treating all as OK)');
@@ -254,16 +294,27 @@ async function safetyCheck(items) {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const list = items.map((c, i) => `${i}. [${c.pillar}] ${c.title} — ${c.source}${c.summary ? `: ${c.summary}` : ''}`).join('\n');
 
+  // Semantic dedupe rides along on the screening call rather than adding a second one:
+  // same latency, same cost, and the screener already has the context to judge it.
+  const recentBlock = recentTheses.length ? `
+
+ALREADY PUBLISHED — the blog's last ${recentTheses.length} posts:
+${recentTheses.map((t, i) => `${i + 1}. ${t}`).join('\n')}` : '';
+
+  const dedupeRule = recentTheses.length ? `
+- REJECT items that would produce substantially the same post as anything in ALREADY PUBLISHED below. Judge the underlying thesis, not the wording: a different article about the same finding, the same report, the same policy, or the same argument is a duplicate even when the headline is new. A genuinely new development in an ongoing story is NOT a duplicate.
+- REJECT recurring bulletins, monthly roundups and numbered newsletter editions from an outlet, which repeat by nature.` : '';
+
   const prompt = `You screen news items as potential seeds for blog posts by Jorge Bernardo — a Black Brazilian man, cyclist, data-security/AI professional, and founder (DePretoPraPreto, afterALL). He writes thoughtful, constructive commentary in Brazilian Portuguese on identity, cycling, technology, entrepreneurship, fatherhood, learning, and career.
 
-For EACH item below decide ok=true only if it is a SAFE, ON-BRAND, COMMENTARY-WORTHY seed:
+For EACH item below decide ok=true only if it is a SAFE, ON-BRAND, COMMENTARY-WORTHY, NON-DUPLICATE seed:
 - REJECT items centered on tragedy, violence, death, crime victims, abuse, explicit hate/racist attacks, lawsuits-as-tragedy, disasters, or anything where commentary would be insensitive.
-- REJECT pure advertising/promotions, listicles with no substance, celebrity gossip, and items clearly off-brand for the pillars above.
+- REJECT pure advertising/promotions, listicles with no substance, celebrity gossip, and items clearly off-brand for the pillars above.${dedupeRule}
 - ACCEPT items with a constructive angle he can add perspective to: achievements, milestones, policy/data/studies, cultural trends, business/tech developments, education, sport.
 When in doubt, REJECT (the blog auto-publishes with no human review).
 
 Items:
-${list}
+${list}${recentBlock}
 
 Return ONLY a JSON array, one object per item in order: [{"index":0,"ok":true|false,"reason":"<short>"}]`;
 
@@ -306,9 +357,9 @@ export async function selectSignal({ forcePillar = null } = {}) {
   for (const c of candidates) c.score = scoreCandidate(c, counts, maxCount);
   candidates.sort((a, b) => b.score - a.score);
 
-  // Safety/quality gate on the strongest candidates; pick the first that passes.
+  // Safety/quality/duplicate gate on the strongest candidates; pick the first that passes.
   const topK = candidates.slice(0, SAFETY_BATCH);
-  const verdicts = await safetyCheck(topK);
+  const verdicts = await safetyCheck(topK, recentPostTheses());
   topK.forEach((c, i) => { c.safe = verdicts[i]?.ok; c.safetyReason = verdicts[i]?.reason; });
   const winner = topK.find(c => c.safe) || null;
 
