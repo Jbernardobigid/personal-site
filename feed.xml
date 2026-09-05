@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Thu, 03 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 05 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Setembro Amarelo Não Fala de Raça</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-05-setembro-amarelo-nao-fala-de-raca-mas-a-dor-negra-tem-endere.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-05-setembro-amarelo-nao-fala-de-raca-mas-a-dor-negra-tem-endere.html</guid>
+      <pubDate>Sat, 05 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Todo setembro o Brasil se pinta de amarelo, mas raramente faz a pergunta mais difícil: o que acontece quando a dor tem raça, e o cuidado disponível ignora isso?</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-05-setembro-amarelo-nao-fala-de-raca-mas-a-dor-negra-tem-endere.jpg" length="98166" type="image/jpeg"/>
+    </item>
     <item>
       <title>O que Nova York ensinou sobre o que a gente</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Fri, 31 Jul 2026 12:00:00 GMT</pubDate>
       <description>A taxa de desemprego chegou ao menor nível histórico, mas 38,5 milhões de brasileiros trabalham na informalidade, e a automação chega exatamente…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-31-o-brasil-tem-mais-emprego-mas-o-que-a-automacao-vai-fazer-co.jpg" length="201013" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Quando o mercado financeiro fala com você, não sobre você</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-07-29-quando-o-mercado-financeiro-fala-com-voce-nao-sobre-voce.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-07-29-quando-o-mercado-financeiro-fala-com-voce-nao-sobre-voce.html</guid>
-      <pubDate>Wed, 29 Jul 2026 12:00:00 GMT</pubDate>
-      <description>A N3 Notícias, de Nath Finanças, ultrapassa 5,9 milhões de views e prova que empreendedorismo negro não é nicho, é um novo centro de gravidade.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-07-29-quando-o-mercado-financeiro-fala-com-voce-nao-sobre-voce.jpg" length="134874" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

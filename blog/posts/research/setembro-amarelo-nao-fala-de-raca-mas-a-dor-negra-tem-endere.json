@@ -1,0 +1,62 @@
+{
+  "topic": "prevalência de transtornos mentais população negra Brasil dados epidemiológicos comparativo raça",
+  "slug": "setembro-amarelo-nao-fala-de-raca-mas-a-dor-negra-tem-endere",
+  "generated_at": "2026-09-05T12:00:40.591Z",
+  "sources": [
+    "https://pepsic.bvsalud.org/scielo.php?pid=S1679-44272024000100002&script=sci_arttext",
+    "https://sevenpubl.com.br/editora/article/download/6179/11248/24673",
+    "https://periodicorease.pro.br/rease/article/download/27467/18096",
+    "https://www.cut.org.br/noticias/racismo-e-discurso-de-odio-impactam-a-saude-mental-de-pessoas-negras-saiba-como-7746",
+    "https://ieps.org.br/desigualdades-raciais-cuidado-em-saude-mental-e-mortalidade-no-rio-de-janeiro",
+    "https://www.researchgate.net/publication/376292191_Saude_Mental_da_Populacao_Negra_no_Brasil_Revisao_Integrativa_Revisao_Integrativa",
+    "https://www.gov.br/saude/pt-br/assuntos/saude-sem-racismo/boletins-epidemiologicos",
+    "https://www.scielosp.org/article/csc/2024.v29n3/e05092023",
+    "https://www.scielo.br/j/csc/a/RJbPdTCPbgSFcMpMYjbh8Fv?lang=pt",
+    "https://respcientifica.com.br/index.php/resp/article/download/220/119/1198",
+    "https://www.vitalstrategies.org/estudo-inedito-revela-que-raca-e-o-principal-fator-de-discriminacao-no-brasil"
+  ],
+  "insights": [
+    "A população negra no Brasil apresenta maior vulnerabilidade a transtornos mentais como depressão e ansiedade.",
+    "Dados mostram que a prevalência de suicídio entre jovens negros é 45% maior do que entre brancos.",
+    "Não existem dados precisos sobre a prevalência dos transtornos mentais na população negra, mas a desigualdade no acesso a cuidados de saúde mental é evidente.",
+    "Os transtornos mentais mais comuns na população brasileira são ansiedade (9,3%) e depressão (5,8%).",
+    "Estudos demonstram que a prevalência de transtornos mentais é superior na população negra em comparação à população branca."
+  ],
+  "stats": [
+    {
+      "value": "45%",
+      "context": "índice de suicídio entre jovens negros é 45% maior do que entre brancos",
+      "source": "https://www.cut.org.br/noticias/racismo-e-discurso-de-odio-impactam-a-saude-mental-de-pessoas-negras-saiba-como-7746"
+    },
+    {
+      "value": "9,3%",
+      "context": "prevalência de transtornos de ansiedade na população brasileira",
+      "source": "https://sevenpubl.com.br/editora/article/download/6179/11248/24673"
+    },
+    {
+      "value": "5,8%",
+      "context": "prevalência de transtornos de depressão na população brasileira",
+      "source": "https://sevenpubl.com.br/editora/article/download/6179/11248/24673"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "No Brasil não existem dados precisos sobre a prevalência dos transtornos mentais na população negra.",
+      "attribution": "https://pepsic.bvsalud.org/scielo.php?pid=S1679-44272024000100002&script=sci_arttext"
+    },
+    {
+      "text": "A população negra no Brasil apresenta uma maior vulnerabilidade a transtornos mentais, como depressão, ansiedade e transtorno de estresse pós-traumático.",
+      "attribution": "https://periodicorease.pro.br/rease/article/download/27467/18096"
+    }
+  ],
+  "time_series": [],
+  "summary": "A população negra no Brasil enfrenta uma maior vulnerabilidade a transtornos mentais, com dados indicando uma prevalência alarmante de suicídio entre jovens. A desigualdade no acesso a cuidados de saúde mental e a falta de dados precisos sobre a prevalência desses transtornos complicam ainda mais a situação.",
+  "pillar": "black-identity",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-05-setembro-amarelo-nao-fala-de-raca-mas-a-dor-negra-tem-endere.html",
+  "signal": {
+    "title": "O racismo não dá alta: por que a saúde mental negra pede um cuidado próprio",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/saude-mental-negra-cuidado-proprio/",
+    "date": "2026-09-04T17:00:25.000Z"
+  }
+}
