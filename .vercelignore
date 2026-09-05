@@ -42,3 +42,15 @@
 
 # One-off project workspaces (dev only, never served).
 /projects/
+
+# Full-resolution photo masters. These are the SOURCE for optimize-images.mjs and stay
+# in git, but nothing on the site links to them any more: index.html serves the
+# responsive ladder in images/opt/ instead. Shipping them was 107 MB of deploy weight
+# for files no browser requested. Root-anchored with an extension glob so images/opt/
+# and the logo PNGs are untouched.
+/images/*.jpg
+/images/*.jpeg
+
+# Superseded blog art. Each post generated a ~1.94 MB PNG (105 MB across the archive)
+# that was only ever an og:image; posts now reference the .jpg/.webp pair beside it.
+/blog/posts/images/*.png

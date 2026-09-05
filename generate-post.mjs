@@ -19,6 +19,7 @@ import './load-env.mjs';
 import Anthropic from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 import { generatePostImage } from './generate-image.mjs';
 import { selectSignal, recordUsedSignal } from './signals.mjs';
@@ -140,7 +141,7 @@ function getRecentPosts(limit = RECENT_POSTS_WINDOW) {
       return {
         date: (filename.match(/^(\d{4}-\d{2}-\d{2})/) || [, ''])[1],
         pillar: pillarMatch ? pillarMatch[1] : '',
-        title: readMetaTag(html, 'og:title'),
+        title: readEditorialTitle(html),
         excerpt: readMetaTag(html, 'og:description')
       };
     })
@@ -179,6 +180,7 @@ REGRAS DE NÃO REPETIÇÃO (obrigatórias):
 - Não reutilize a FORMA dos títulos acima. Em especial, estão proibidos agora: "O que X revela sobre Y", "Não é sobre X, é sobre Y", "X não é Y. É Z.", e qualquer título que comece com "O que".
 - Não repita as mesmas âncoras temáticas dos textos acima (por exemplo "depois dos 40", "recomeçar", "o que os dados revelam") a menos que o acontecimento atual exija.
 - Nenhum título novo pode ser uma variação de um título do arquivo. Se a sua primeira ideia de título ecoa algum deles, descarte e escreva outro.
+- O seoTitle segue as mesmas proibições de forma e tem limite rígido de máximo 55 caracteres.
 - Varie a forma do lede: se os títulos acima sugerem aberturas de cena, abra com um número, uma contradição, uma fala ou um objeto.`;
 }
 
@@ -189,6 +191,14 @@ REGRAS DE NÃO REPETIÇÃO (obrigatórias):
 function readMetaTag(html, property) {
   const m = html.match(new RegExp(`<meta property="${property}" content="([^"]*)"`));
   return m ? m[1] : '';
+}
+
+// og:title now carries the SHORT seo title, so anti-repetition reads the <h1> instead —
+// it is the only place the full editorial title survives, and comparing short titles
+// would let a long headline shape come back around unnoticed. Falls back to og:title.
+function readEditorialTitle(html) {
+  const m = html.match(/<h1 class="post-title">([\s\S]*?)<\/h1>/);
+  return m ? m[1].trim() : readMetaTag(html, 'og:title');
 }
 
 function getAllPostMeta() {
@@ -213,6 +223,8 @@ function getAllPostMeta() {
         date: dateMatch ? dateMatch[1] : isoDate(new Date()),
         title: readMetaTag(html, 'og:title'),
         description: readMetaTag(html, 'og:description'),
+        // Pillar drives related-post selection; the badge is the only place it is stored.
+        pillar: (html.match(/data-pillar="([^"]+)"/) || [, ''])[1],
         image,
         imageBytes,
       };
@@ -222,14 +234,140 @@ function getAllPostMeta() {
 
 /* ── Utilities ───────────────────────────────────────────── */
 
+// A hard substring(0, 60) sliced mid-word, so live URLs read as broken in search results
+// ("...o-processo-que-te-destr", "...me-ensinaram-sob"). Cut at the last hyphen at or
+// before the limit instead. Already-published slugs are untouched; this shapes new ones.
+const SLUG_MAX = 60;
+
 function slugify(text) {
-  return text
+  const base = text
     .toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9\s-]/g, '')
     .trim()
-    .replace(/\s+/g, '-')
-    .substring(0, 60);
+    .replace(/\s+/g, '-');
+  if (base.length <= SLUG_MAX) return base.replace(/-+$/, '');
+  // A hyphen sitting exactly at the boundary means the cut is already on a word edge.
+  if (base[SLUG_MAX] === '-') return base.slice(0, SLUG_MAX).replace(/-+$/, '');
+  const head = base.slice(0, SLUG_MAX);
+  const lastDash = head.lastIndexOf('-');
+  return (lastDash > 0 ? head.slice(0, lastDash) : head).replace(/-+$/, '');
+}
+
+/* ── SEO title & description budgets ─────────────────────── */
+
+// Google cuts the SERP title around 60 characters and the snippet around 160. The
+// editorial title is deliberately long because it is the <h1>; before this, 48 of 63
+// pages shipped an over-budget <title> (worst 133) and 22 an out-of-range description
+// (worst 211). So a separate short title carries the <title>/og:title budget and the
+// excerpt is clamped on the way into the meta tags. The <h1> and the BlogPosting
+// headline keep the full editorial title.
+const SEO_TITLE_MAX = 55;
+const SEO_TITLE_MIN = 25;
+// A structural cut shorter than SEO_TITLE_MIN is still preferred over slicing through
+// the phrase after it: "Pedalar Enquanto Negro" (22) reads as a finished claim, while
+// the truncation it used to fall back to ended on a dangling pronoun ("...que Ninguem
+// Me"). Below this floor the stub really is too thin to stand alone.
+const SEO_TITLE_FLOOR = 18;
+const TITLE_SUFFIX = ' — Jorge Bernardo';
+const TITLE_TOTAL_MAX = 60;
+const META_DESC_MAX = 160;
+const META_DESC_MIN = 120;
+
+// Words that must never end a truncated line, or the snippet reads as a sentence
+// sheared off mid-thought ("...o que a gente chama de"). Compared accent-stripped.
+const DANGLING_WORDS = new Set([
+  'a', 'o', 'as', 'os', 'um', 'uma', 'uns', 'umas', 'de', 'da', 'do', 'das', 'dos',
+  'em', 'no', 'na', 'nos', 'nas', 'num', 'numa', 'dum', 'duma', 'ao', 'aos',
+  'por', 'pelo', 'pela', 'pelos', 'pelas', 'para', 'pra', 'com', 'sem', 'sob', 'sobre',
+  'entre', 'ate', 'apos', 'desde', 'contra', 'e', 'ou', 'mas', 'que', 'se', 'como',
+  'quando', 'onde', 'porque', 'meu', 'minha', 'seu', 'sua', 'nosso', 'nossa',
+  'este', 'esta', 'esse', 'essa', 'aquele', 'aquela', 'isso', 'isto',
+  'me', 'te', 'lhe', 'lhes', 'vos', 'mim', 'ti', 'si', 'nem', 'ja', 'so',
+  // Negations, pronouns and adverbs that read as a sentence sheared off when they
+  // land last: "...a gente ainda nao", "...recomecar depois", "...quando ele".
+  'nao', 'sim', 'ele', 'ela', 'eles', 'elas', 'depois', 'antes', 'ainda', 'mais',
+  'menos', 'muito', 'pouco', 'quase', 'tao', 'todo', 'toda', 'todos', 'todas',
+  'cada', 'algo', 'alguem', 'sempre', 'nunca', 'entao', 'assim', 'tambem', 'la', 'ca'
+]);
+
+function stripAccents(str) {
+  return String(str).normalize('NFD').replace(/\p{Diacritic}/gu, '');
+}
+
+// Drop trailing punctuation, then peel off dangling connectors one at a time.
+function trimDangling(text) {
+  let out = String(text).replace(/[\s,;:.!?…"'\-–]+$/u, '');
+  for (let guard = 0; guard < 6; guard++) {
+    const m = out.match(/\s+([\p{L}']+)$/u);
+    if (!m || !DANGLING_WORDS.has(stripAccents(m[1]).toLowerCase())) break;
+    out = out.slice(0, m.index).replace(/[\s,;:.!?…"'\-–]+$/u, '');
+  }
+  return out;
+}
+
+function truncateAtWord(text, max) {
+  const clean = String(text);
+  if (clean.length <= max) return clean;
+  const head = clean.slice(0, max + 1);
+  const lastSpace = head.lastIndexOf(' ');
+  return trimDangling(lastSpace > 0 ? head.slice(0, lastSpace) : clean.slice(0, max));
+}
+
+/**
+ * The short title that carries the <title>/og:title budget.
+ *
+ * Prefers the model's own seoTitle when it fits. Otherwise it derives one from the
+ * editorial title by cutting at the first structural boundary, since these titles are
+ * almost always "Claim: expansion" or "Claim. Expansion" and the claim alone is the SEO
+ * title. A boundary that leaves a stub shorter than SEO_TITLE_MIN is ignored, and
+ * anything still over budget is truncated on a word boundary.
+ */
+function deriveSeoTitle(editorialTitle, modelTitle) {
+  const candidate = String(modelTitle || '').replace(/\s+/g, ' ').trim();
+  if (candidate && candidate.length <= SEO_TITLE_MAX) return candidate;
+
+  const source = (candidate || String(editorialTitle || '')).replace(/\s+/g, ' ').trim();
+
+  // A title that already fits the whole 60-char tag is kept intact, brand suffix
+  // dropped. Truncating "O que os jovens nos ensinam sobre recomeçar depois dos 40"
+  // (57) to land under 55 threw away "dos 40", which was the entire claim, and bought
+  // nothing: the tag was never over budget in the first place.
+  if (source.length <= TITLE_TOTAL_MAX) return source;
+  const boundary = source.search(/[:—.?]/);
+  if (boundary > 0) {
+    const keepMark = source[boundary] === '?';
+    const head = source.slice(0, keepMark ? boundary + 1 : boundary).trim()
+      .replace(/[\s,;:.\-–]+$/u, '');
+    if (head.length >= SEO_TITLE_FLOOR && head.length <= SEO_TITLE_MAX) return head;
+  }
+  return truncateAtWord(source, SEO_TITLE_MAX);
+}
+
+// The brand suffix is dropped rather than allowed to push the tag over 60 characters.
+function buildPageTitle(seoTitle) {
+  return seoTitle.length + TITLE_SUFFIX.length <= TITLE_TOTAL_MAX
+    ? `${seoTitle}${TITLE_SUFFIX}`
+    : seoTitle;
+}
+
+/**
+ * The excerpt clamped into the snippet budget. Prefers a real sentence end inside the
+ * window; falls back to a word-boundary cut with dangling connectors peeled off and an
+ * ellipsis appended, so the meta description never ends mid-word or on a preposition.
+ * A short excerpt is passed through untouched: nothing here can invent copy.
+ */
+function clampDescription(text) {
+  const clean = String(text || '').replace(/\s+/g, ' ').trim();
+  if (clean.length <= META_DESC_MAX) return clean;
+
+  const window = clean.slice(0, META_DESC_MAX);
+  const sentenceEnd = Math.max(
+    window.lastIndexOf('. '), window.lastIndexOf('! '), window.lastIndexOf('? ')
+  );
+  if (sentenceEnd >= META_DESC_MIN - 1) return window.slice(0, sentenceEnd + 1).trim();
+
+  return `${truncateAtWord(clean, META_DESC_MAX - 1)}…`;
 }
 
 function formatDate(date) {
@@ -249,9 +387,11 @@ function escapeXml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function escapeJson(str) {
-  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-}
+/* escapeJson was removed. It escaped a double quote as \" , which is correct for a JSON
+ * string literal but closes a content="..." attribute early, and every one of its call
+ * sites was an HTML attribute. One published post had its meta description silently
+ * truncated to 'O audiobook de \"' that way. Attributes use escapeHtml; JSON-LD is
+ * built with JSON.stringify, which escapes correctly on its own. */
 
 function escapeHtml(str) {
   return String(str)
@@ -279,12 +419,76 @@ function sanitizeContent(html) {
     .replace(/javascript\s*:/gi, '');
 }
 
+/* ── Related posts ───────────────────────────────────────── */
+
+// Every post had exactly one inbound link (the blog index), so nothing in the archive
+// passed authority to anything else and readers hit a dead end at the footer. Three
+// links per post, shared pillar first, turns 56 orphans into a connected cluster.
+const RELATED_COUNT = 3;
+const PILLAR_LABELS = Object.fromEntries(PILLARS.map(p => [p.id, p.label]));
+
+/**
+ * Three related posts: same pillar first (newest first), then the newest of everything
+ * else. Candidates need a recognizable pillar and a title so the markup stays uniform.
+ * Returns [] below RELATED_COUNT rather than a short list, so an early archive emits
+ * nothing instead of a lopsided block.
+ */
+function selectRelatedPosts(allPosts, pillarId, currentFilename, limit = RELATED_COUNT) {
+  const pool = allPosts.filter(p =>
+    p.filename !== currentFilename && p.title && PILLAR_LABELS[p.pillar]);
+  const picked = [
+    ...pool.filter(p => p.pillar === pillarId),
+    ...pool.filter(p => p.pillar !== pillarId)
+  ].slice(0, limit);
+  return picked.length === limit ? picked : [];
+}
+
+function buildRelatedHtml(related) {
+  if (!related || related.length < RELATED_COUNT) return '';
+  const items = related.map(p =>
+    `      <li class="related-item"><a class="related-link" href="${escapeHtml(p.filename)}"><span class="related-pillar">${escapeHtml(PILLAR_LABELS[p.pillar])}</span><span class="related-title">${escapeHtml(decodeHtmlEntities(p.title))}</span></a></li>`
+  ).join('\n');
+
+  return `
+<aside class="related-posts" aria-labelledby="related-heading">
+  <div class="related-inner">
+    <h2 class="related-heading" id="related-heading">Leia também</h2>
+    <ul class="related-list">
+${items}
+    </ul>
+  </div>
+</aside>
+`;
+}
+
 /* ── Post HTML builder ───────────────────────────────────── */
 
-function buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl, faq = [] }) {
+function buildPostHtml({ title, seoTitle, excerpt, pillar, date, readTime, content, filename, imageUrl, faq = [], related = [] }) {
   const formattedDate = formatDate(date);
   const iso = isoDate(date);
   const postUrl = `${SITE_URL}/blog/posts/${filename}`;
+
+  // Short title carries the <title>/og:title budget; `title` stays the editorial <h1>.
+  const shortTitle = seoTitle || deriveSeoTitle(title, '');
+  const pageTitle = buildPageTitle(shortTitle);
+  const metaDescription = clampDescription(excerpt);
+
+  // The generated art was only ever an og:image, never rendered on the page. Posts live at
+  // blog/posts/*.html and images at blog/posts/images/, so the on-page src is relative.
+  // og:image stays on the JPEG: LinkedIn and WhatsApp render WebP OG images unreliably.
+  const imageBase = imageUrl ? imageUrl.split('/').pop().replace(/\.[a-z0-9]+$/i, '') : '';
+  const ogImageUrl = imageUrl ? imageUrl.replace(/\.[a-z0-9]+$/i, '.jpg') : '';
+
+  const heroHtml = imageBase ? `
+<figure class="post-hero">
+  <picture>
+    <source srcset="images/${imageBase}.webp" type="image/webp">
+    <img src="images/${imageBase}.jpg" alt="Ilustração editorial: ${escapeHtml(title)}" width="1536" height="1024" fetchpriority="high" decoding="async">
+  </picture>
+</figure>
+` : '';
+
+  const relatedHtml = buildRelatedHtml(related);
 
   const faqJsonLd = faq.length ? JSON.stringify({
     '@context': 'https://schema.org',
@@ -304,10 +508,10 @@ ${faq.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3>\n<p>${esca
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: title,
-    description: excerpt,
+    description: metaDescription,
     // Google wants image in the structured data, not only in the og: tags —
     // without it the post is not eligible for Article rich results.
-    image: imageUrl,
+    image: ogImageUrl,
     url: postUrl,
     datePublished: iso,
     dateModified: iso,
@@ -335,24 +539,25 @@ ${faq.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3>\n<p>${esca
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(title)} — Jorge Bernardo</title>
-<meta name="description" content="${escapeJson(excerpt)}">
+<title>${escapeHtml(pageTitle)}</title>
+<meta name="description" content="${escapeHtml(metaDescription)}">
 <link rel="canonical" href="${postUrl}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="${escapeJson(title)}">
-<meta property="og:description" content="${escapeJson(excerpt)}">
+<meta property="og:title" content="${escapeHtml(shortTitle)}">
+<meta property="og:description" content="${escapeHtml(metaDescription)}">
 <meta property="og:url" content="${postUrl}">
 <meta property="og:locale" content="pt_BR">
-${imageUrl ? `<meta property="og:image" content="${imageUrl}">
+${ogImageUrl ? `<meta property="og:image" content="${ogImageUrl}">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1536">
 <meta property="og:image:height" content="1024">` : ''}
-<meta name="twitter:card" content="${imageUrl ? 'summary_large_image' : 'summary'}">
-<meta name="twitter:image" content="${imageUrl ?? ''}">
+<meta name="twitter:card" content="${ogImageUrl ? 'summary_large_image' : 'summary'}">
+<meta name="twitter:image" content="${ogImageUrl}">
 <meta property="og:site_name" content="Jorge Bernardo">
 <meta property="article:author" content="Jorge Bernardo">
 <meta property="article:published_time" content="${iso}">
-<meta name="twitter:title" content="${escapeJson(title)}">
-<meta name="twitter:description" content="${escapeJson(excerpt)}">
+<meta name="twitter:title" content="${escapeHtml(shortTitle)}">
+<meta name="twitter:description" content="${escapeHtml(metaDescription)}">
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/rss+xml" title="Jorge Bernardo — Blog" href="/feed.xml">
@@ -403,12 +608,32 @@ nav{position:sticky;top:0;z-index:100;height:64px;display:flex;align-items:cente
 .post-body blockquote p{font-family:var(--font-display);font-size:clamp(18px,2.2vw,26px);font-weight:300;font-style:italic;color:var(--ash);margin:0}
 .post-body ul,.post-body ol{padding-left:28px;margin-bottom:28px}
 .post-body li{font-size:17px;line-height:1.78;color:var(--ash);margin-bottom:8px}
+.post-hero{max-width:820px;margin:44px auto 0;padding:0 52px}
+.post-hero picture{display:block;position:relative;overflow:hidden;border:1px solid var(--border-terra);border-radius:1px}
+.post-hero img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.post-hero picture::before{content:'';position:absolute;inset:0;background:var(--terra);mix-blend-mode:multiply;opacity:0.18;pointer-events:none;z-index:1}
+.post-hero picture::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(30,26,20,0.62),rgba(30,26,20,0) 58%),radial-gradient(120% 90% at 50% 112%,rgba(94,65,45,0.3),rgba(94,65,45,0) 62%);pointer-events:none;z-index:2}
 .audio-block{max-width:820px;margin:0 auto;padding:36px 52px 0}
 .audio-panel{border:1px solid var(--border-terra);background:rgba(94,65,45,0.07);padding:20px 24px;border-radius:1px}
 .audio-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra-light);margin-bottom:14px}
 .audio-panel audio{width:100%;height:36px;color-scheme:dark}
 .audio-spotify{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra-light);text-decoration:none;border-bottom:1px solid var(--border-terra);padding-bottom:2px;transition:color .2s,border-color .2s}
 .audio-spotify:hover{color:var(--white);border-color:rgba(255,255,255,0.3)}
+.related-posts{border-top:1px solid var(--border);background:rgba(94,65,45,0.06)}
+.related-inner{max-width:820px;margin:0 auto;padding:48px 52px 52px}
+.related-heading{font-family:var(--font-mono);font-size:10px;font-weight:400;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra-light);margin-bottom:8px}
+.related-list{list-style:none}
+.related-item{border-top:1px solid var(--border)}
+.related-link{display:block;padding:20px 0;text-decoration:none;color:var(--ash);transition:color .25s ease,transform .35s cubic-bezier(.16,1,.3,1)}
+.related-link:hover,.related-link:focus-visible{color:var(--white);transform:translateX(7px)}
+.related-link:focus-visible{outline:1px solid var(--terra-light);outline-offset:6px}
+.related-link:active{transform:translateX(3px)}
+.related-pillar{display:block;font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--terra-light);opacity:0.75;margin-bottom:9px}
+.related-title{display:block;font-family:var(--font-display);font-size:19px;font-weight:600;letter-spacing:-0.015em;line-height:1.32}
+@media(prefers-reduced-motion:reduce){
+  .related-link{transition:color .25s ease}
+  .related-link:hover,.related-link:focus-visible,.related-link:active{transform:none}
+}
 .post-footer{border-top:1px solid var(--border);padding:52px;max-width:820px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
 .author-block{display:flex;flex-direction:column;gap:6px}
 .author-name{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-0.01em}
@@ -425,6 +650,9 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
   nav{padding:0 24px}
   .post-header-inner,.post-body{padding-left:24px;padding-right:24px}
   .audio-block{padding-left:24px;padding-right:24px}
+  .post-hero{padding-left:24px;padding-right:24px;margin-top:32px}
+  .related-inner{padding:40px 24px 44px}
+  .related-title{font-size:18px}
   .post-footer{padding:40px 24px}
   footer{padding:20px 24px;flex-direction:column;gap:10px;text-align:center}
 }
@@ -447,14 +675,14 @@ footer{padding:28px 52px;border-top:1px solid var(--border);display:flex;align-i
     </div>
   </div>
 </header>
-
+${heroHtml}
 <!-- audio-player-slot -->
 
 <article class="post-body" itemscope itemtype="https://schema.org/BlogPosting">
 ${sanitizeContent(content)}
 ${faqHtml}
 </article>
-
+${relatedHtml}
 <div class="post-footer">
   <div class="author-block">
     <div class="author-name">Jorge Bernardo</div>
@@ -517,12 +745,25 @@ const STATIC_PAGES = [
   { path: '/privacidade/',                                changefreq: 'yearly',  priority: '0.3' },
 ];
 
+// The 56 post URLs carried <lastmod> and the 6 static ones did not, so crawlers had no
+// freshness signal for the home page, the blog index or either dossier. Read it off the
+// real file on disk rather than stamping a date: a hardcoded one goes stale silently.
+function staticPageLastmod(urlPath) {
+  const file = path.join(__dirname, urlPath.replace(/^\/+/, ''), 'index.html');
+  try { return isoDate(fs.statSync(file).mtime); }
+  catch { return ''; }
+}
+
 function generateSitemap(posts) {
-  const staticEntries = STATIC_PAGES.map(p => `  <url>
-    <loc>${SITE_URL}${p.path}</loc>
+  const staticEntries = STATIC_PAGES.map(p => {
+    const lastmod = staticPageLastmod(p.path);
+    return `  <url>
+    <loc>${SITE_URL}${p.path}</loc>${lastmod ? `
+    <lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>${p.changefreq}</changefreq>
     <priority>${p.priority}</priority>
-  </url>`).join('\n');
+  </url>`;
+  }).join('\n');
 
   const postEntries = posts.map(p => `  <url>
     <loc>${SITE_URL}/blog/posts/${escapeXml(p.filename)}</loc>
@@ -550,11 +791,17 @@ function rfc822(isoDay) {
   return new Date(`${isoDay}T12:00:00Z`).toUTCString();
 }
 
+// The enclosure type was hardcoded to image/png. og:image now points at the JPEG for new
+// posts while the archive is still PNG, so derive it from the extension or the feed ships
+// a mislabelled enclosure.
+const ENCLOSURE_MIME = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' };
+
 function generateFeed(posts) {
   const items = posts.slice(0, FEED_MAX_ITEMS).map((p) => {
     const url = `${SITE_URL}/blog/posts/${escapeXml(p.filename)}`;
+    const mime = ENCLOSURE_MIME[(p.image.split('.').pop() || '').toLowerCase()] || 'image/png';
     const image = (p.image && p.imageBytes)
-      ? `\n      <enclosure url="${escapeXml(p.image)}" length="${p.imageBytes}" type="image/png"/>`
+      ? `\n      <enclosure url="${escapeXml(p.image)}" length="${p.imageBytes}" type="${mime}"/>`
       : '';
     return `    <item>
       <title>${escapeXml(p.title || p.filename)}</title>
@@ -734,6 +981,8 @@ NEVER use the following — they are AI tells that break authenticity:
 
 Requirements:
 - Title: compelling, specific, not generic (in Portuguese), and structurally different from the recent titles listed above
+- seoTitle: versão curta do título, em português, com no MÁXIMO 55 caracteres (limite rígido, conte os caracteres). Sem aspas, sem dois-pontos com subtítulo, sem o nome "Jorge Bernardo". Ela aparece sozinha na página de resultados do Google, então precisa carregar a mesma afirmação do título, comprimida.
+- Excerpt: uma frase de resumo em português com entre 150 e 160 caracteres (limite rígido, conte os caracteres), sem aspas ao redor. Ela vira a meta description da página.
 - Length: 600-900 words of body content
 - Structure: flowing prose with 2-3 H2 subheadings
 - Include at least one blockquote that captures a key insight
@@ -759,8 +1008,9 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
       input_schema: {
         type: 'object',
         properties: {
-          title: { type: 'string', description: 'The blog post title in Portuguese' },
-          excerpt: { type: 'string', description: 'One sentence excerpt (~25 words max) in Portuguese, no surrounding quotes' },
+          title: { type: 'string', description: 'The blog post title in Portuguese. This is the editorial headline shown as the on-page H1, so it can be long.' },
+          seoTitle: { type: 'string', description: 'Short SEO title in Portuguese for the <title> tag. Hard limit: máximo 55 caracteres. No surrounding quotes, no subtitle after a colon, no brand name.' },
+          excerpt: { type: 'string', description: 'One sentence excerpt in Portuguese, entre 150 e 160 caracteres (hard limit), no surrounding quotes. Becomes the meta description.' },
           content: { type: 'string', description: 'Full HTML post body using only p, h2, h3, strong, em, blockquote>p, ul>li tags. Do NOT include the title.' },
           faq: {
             type: 'array',
@@ -775,7 +1025,7 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
             }
           }
         },
-        required: ['title', 'excerpt', 'content', 'faq']
+        required: ['title', 'seoTitle', 'excerpt', 'content', 'faq']
       }
     }],
     tool_choice: { type: 'tool', name: 'create_blog_post' },
@@ -792,6 +1042,9 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
   const parsed = toolUse.input;
 
   const title   = sanitizeEmDashes(parsed.title);
+  // deriveSeoTitle re-derives whenever the model overshoots the 55-char budget, so a
+  // missing or over-long seoTitle degrades to a clean cut instead of a 133-char <title>.
+  const seoTitle = deriveSeoTitle(title, sanitizeEmDashes(parsed.seoTitle));
   const excerpt = sanitizeEmDashes(parsed.excerpt);
   const content = sanitizeEmDashes(parsed.content);
   const faq = Array.isArray(parsed.faq)
@@ -805,18 +1058,36 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
   const slug = slugify(title);
   const filename = `${isoDate(date)}-${slug}.html`;
   const postPath = path.join(POSTS_DIR, filename);
-  const imageFilename = `${isoDate(date)}-${slug}.png`;
+  // JPEG, not PNG. These are photographic renders: the PNGs averaged 1.94 MB each and
+  // 105 MB across the archive, for art that is also the og:image. JPEG keeps every
+  // social platform happy (LinkedIn and WhatsApp are unreliable with WebP cards) and a
+  // WebP sibling is written next to it for the on-page <picture>.
+  const imageFilename = `${isoDate(date)}-${slug}.jpg`;
   const imagePath = path.join(IMAGES_DIR, imageFilename);
   const imageUrl = `${SITE_URL}/blog/posts/images/${imageFilename}`;
 
-  const postHtml = buildPostHtml({ title, excerpt, pillar, date, readTime, content, filename, imageUrl, faq });
+  // Read the archive before the new post is written, so it can never link to itself.
+  const related = selectRelatedPosts(getAllPostMeta(), pillar.id, filename);
+  if (related.length) {
+    console.log(`Related posts: ${related.map(p => p.filename).join(', ')}`);
+  } else {
+    console.log(`Related posts: fewer than ${RELATED_COUNT} candidates — block omitted.`);
+  }
+
+  const postHtml = buildPostHtml({ title, seoTitle, excerpt, pillar, date, readTime, content, filename, imageUrl, faq, related });
   const listItem = buildPostListItem({ title, pillar, date, excerpt, filename });
 
   if (dryRun) {
     console.log('\n--- DRY RUN: Title ---');
     console.log(title);
+    console.log('\n--- DRY RUN: <title> tag ---');
+    const pageTitle = buildPageTitle(seoTitle);
+    console.log(`${pageTitle}  [${pageTitle.length} chars]`);
     console.log('\n--- DRY RUN: Excerpt ---');
     console.log(excerpt);
+    console.log('\n--- DRY RUN: meta description ---');
+    const metaDescription = clampDescription(excerpt);
+    console.log(`${metaDescription}  [${metaDescription.length} chars]`);
     console.log('\n--- DRY RUN: Filename ---');
     console.log(filename);
     console.log('\n--- DRY RUN: Canonical URL ---');
@@ -842,9 +1113,16 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
     const imageBuffer = await generatePostImage(pillar.id, process.env.OPENAI_API_KEY, {
       title, excerpt, seed: slug
     });
-    fs.writeFileSync(imagePath, imageBuffer);
+    // The model returns PNG. Re-encode rather than store it: the JPEG is the og:image
+    // and the on-page fallback, the WebP is what <picture> actually serves.
+    await sharp(imageBuffer)
+      .jpeg({ quality: 82, progressive: true, mozjpeg: true })
+      .toFile(imagePath);
+    await sharp(imageBuffer)
+      .webp({ quality: 80 })
+      .toFile(imagePath.replace(/\.jpg$/i, '.webp'));
     savedImagePath = imagePath;
-    console.log(`OG image saved: blog/posts/images/${imageFilename}`);
+    console.log(`OG image saved: blog/posts/images/${imageFilename} (+ .webp)`);
   } else {
     console.log('OPENAI_API_KEY not set — skipping OG image generation.');
   }
@@ -888,7 +1166,18 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
   console.log('robots.txt updated.');
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+/* main() used to run on import, so merely importing this module published a post and
+ * spent a paid API call. That has bitten this repo before. Run it only when the file
+ * is the process entrypoint, which also lets the sitemap/feed builders be reused
+ * without generating anything. */
+const isEntrypoint = process.argv[1]
+  && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isEntrypoint) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+export { getAllPostMeta, generateSitemap, generateFeed, generateRobotsTxt };
