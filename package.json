@@ -28,7 +28,11 @@
     "blob:recycle:apply": "node blob-recycle.mjs --apply",
     "ig:check": "node post-to-instagram.mjs check",
     "ig:stage": "node post-to-instagram.mjs stage",
-    "ig:publish": "node post-to-instagram.mjs publish-carousel"
+    "ig:publish": "node post-to-instagram.mjs publish-carousel",
+    "images:optimize": "node optimize-images.mjs",
+    "images:blog": "node optimize-images.mjs --blog",
+    "content:regen": "node regen-feed-sitemap.mjs",
+    "test:seo": "node test-seo-helpers.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
