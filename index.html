@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jorge Bernardo — Empreendedor · Builder · Ciclista</title>
-<meta name="description" content="Jorge Bernardo — especialista em segurança de dados e governança por IA, fundador da DePretoPraPreto e afterALL. Builder, ciclista, empreendedor. Baseado em São Paulo, Brasil.">
+<meta name="description" content="Jorge Bernardo — especialista em segurança de dados e governança por IA, fundador da DePretoPraPreto e afterALL. Builder, ciclista e empreendedor em São Paulo.">
 <link rel="canonical" href="https://www.jorgebernardo.tech/">
 <link rel="alternate" hreflang="pt-BR" href="https://www.jorgebernardo.tech/">
 <link rel="alternate" hreflang="x-default" href="https://www.jorgebernardo.tech/">
@@ -16,8 +16,8 @@
 <meta name="geo.position" content="-23.550305;-46.633956">
 <meta name="ICBM" content="-23.550305, -46.633956">
 <meta property="og:title" content="Jorge Bernardo — Empreendedor · Builder · Ciclista">
-<meta property="og:description" content="Especialista em segurança de dados e governança por IA. Fundador da DePretoPraPreto e afterALL. Empreendedor · Builder · Ciclista. São Paulo, Brasil.">
-<meta property="og:image" content="https://www.jorgebernardo.tech/images/hero.jpg">
+<meta property="og:description" content="Jorge Bernardo — especialista em segurança de dados e governança por IA, fundador da DePretoPraPreto e afterALL. Builder, ciclista e empreendedor em São Paulo.">
+<meta property="og:image" content="https://www.jorgebernardo.tech/images/opt/og-home.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
@@ -26,15 +26,15 @@
 <meta property="og:site_name" content="Jorge Bernardo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Jorge Bernardo — Empreendedor · Builder · Ciclista">
-<meta name="twitter:description" content="Especialista em segurança de dados e governança por IA. Fundador da DePretoPraPreto e afterALL. São Paulo, Brasil.">
-<meta name="twitter:image" content="https://www.jorgebernardo.tech/images/hero.jpg">
+<meta name="twitter:description" content="Jorge Bernardo — especialista em segurança de dados e governança por IA, fundador da DePretoPraPreto e afterALL. Builder, ciclista e empreendedor em São Paulo.">
+<meta name="twitter:image" content="https://www.jorgebernardo.tech/images/opt/og-home.jpg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Jorge Bernardo",
   "url": "https://www.jorgebernardo.tech",
-  "image": "https://www.jorgebernardo.tech/images/hero.jpg",
+  "image": "https://www.jorgebernardo.tech/images/opt/og-home.jpg",
   "sameAs": [
     "https://www.linkedin.com/in/jorge-bernardo/",
     "https://www.depretoprapreto.com.br/",
@@ -237,6 +237,7 @@ nav.scrolled {
   text-decoration: none;
   flex-shrink: 0;
 }
+picture { display: contents; }
 .nav-logo-img {
   height: 48px;
   width: auto;
@@ -1882,7 +1883,7 @@ footer {
 <!-- ── Nav ─────────────────────────────────────────────── -->
 <nav id="mainNav">
   <a href="#" class="nav-logo">
-    <img class="nav-logo-img" src="images/logo-transparent.png" alt="Jorge Bernardo">
+    <img class="nav-logo-img" src="images/logo-transparent.png" alt="Jorge Bernardo" width="512" height="512" fetchpriority="high" decoding="async">
   </a>
   <ul class="nav-links">
     <li><a href="#sobre">Sobre</a></li>
@@ -1941,14 +1942,20 @@ footer {
     </div>
   </div>
   <div class="hero-right">
-    <img src="images/hero.jpg" alt="Jorge Bernardo">
+    <picture>
+      <source type="image/webp" srcset="images/opt/hero-480.webp 480w, images/opt/hero-960.webp 960w, images/opt/hero-1440.webp 1440w, images/opt/hero-1920.webp 1920w" sizes="(max-width: 960px) 100vw, 46vw">
+      <img src="images/opt/hero-960.jpg" srcset="images/opt/hero-480.jpg 480w, images/opt/hero-960.jpg 960w, images/opt/hero-1440.jpg 1440w, images/opt/hero-1920.jpg 1920w" sizes="(max-width: 960px) 100vw, 46vw" width="3308" height="5094" alt="Jorge Bernardo" fetchpriority="high" decoding="async">
+    </picture>
   </div>
 </section>
 
 <!-- ── Sobre ────────────────────────────────────────────── -->
 <section id="sobre">
   <div class="about-photo">
-    <img src="images/about.jpg" alt="Jorge Bernardo">
+    <picture>
+      <source type="image/webp" srcset="images/opt/about-480.webp 480w, images/opt/about-960.webp 960w, images/opt/about-1440.webp 1440w, images/opt/about-1920.webp 1920w" sizes="(max-width: 960px) 100vw, 44vw">
+      <img src="images/opt/about-960.jpg" srcset="images/opt/about-480.jpg 480w, images/opt/about-960.jpg 960w, images/opt/about-1440.jpg 1440w, images/opt/about-1920.jpg 1920w" sizes="(max-width: 960px) 100vw, 44vw" width="3840" height="5760" alt="Jorge Bernardo" loading="lazy" decoding="async">
+    </picture>
   </div>
   <div class="about-content">
     <div class="section-num gsap-hidden">— 01</div>
@@ -2165,13 +2172,22 @@ footer {
   </div>
   <div class="dppp-photos">
     <div class="dppp-photo-main">
-      <img src="images/dppp-main.jpg" alt="De Preto Pra Preto — Resistência">
+      <picture>
+        <source type="image/webp" srcset="images/opt/dppp-main-480.webp 480w, images/opt/dppp-main-960.webp 960w, images/opt/dppp-main-1440.webp 1440w" sizes="(max-width: 960px) 50vw, 25vw">
+        <img src="images/opt/dppp-main-960.jpg" srcset="images/opt/dppp-main-480.jpg 480w, images/opt/dppp-main-960.jpg 960w, images/opt/dppp-main-1440.jpg 1440w" sizes="(max-width: 960px) 50vw, 25vw" width="5760" height="3840" alt="De Preto Pra Preto — Resistência" loading="lazy" decoding="async">
+      </picture>
     </div>
     <div class="dppp-photo-sm">
-      <img src="images/feira-1.jpg" alt="DePretoPraPreto — Feira Preta 2022">
+      <picture>
+        <source type="image/webp" srcset="images/opt/feira-1-480.webp 480w, images/opt/feira-1-960.webp 960w, images/opt/feira-1-1440.webp 1440w" sizes="(max-width: 960px) 50vw, 25vw">
+        <img src="images/opt/feira-1-960.jpg" srcset="images/opt/feira-1-480.jpg 480w, images/opt/feira-1-960.jpg 960w, images/opt/feira-1-1440.jpg 1440w" sizes="(max-width: 960px) 50vw, 25vw" width="4000" height="3000" alt="DePretoPraPreto — Feira Preta 2022" loading="lazy" decoding="async">
+      </picture>
     </div>
     <div class="dppp-photo-sm">
-      <img src="images/feira-2.jpg" alt="DePretoPraPreto — Coleção jerseys">
+      <picture>
+        <source type="image/webp" srcset="images/opt/feira-2-480.webp 480w, images/opt/feira-2-960.webp 960w, images/opt/feira-2-1440.webp 1440w" sizes="(max-width: 960px) 50vw, 25vw">
+        <img src="images/opt/feira-2-960.jpg" srcset="images/opt/feira-2-480.jpg 480w, images/opt/feira-2-960.jpg 960w, images/opt/feira-2-1440.jpg 1440w" sizes="(max-width: 960px) 50vw, 25vw" width="4000" height="3000" alt="DePretoPraPreto — Coleção jerseys" loading="lazy" decoding="async">
+      </picture>
     </div>
   </div>
 </section>
@@ -2179,7 +2195,10 @@ footer {
 <!-- ── Ciclismo ──────────────────────────────────────────── -->
 <section id="ciclismo">
   <div class="cycling-hero-wrap">
-    <img src="images/cycling-hero.jpg" alt="Jorge Bernardo — ciclista em pista">
+    <picture>
+      <source type="image/webp" srcset="images/opt/cycling-hero-480.webp 480w, images/opt/cycling-hero-960.webp 960w, images/opt/cycling-hero-1440.webp 1440w, images/opt/cycling-hero-1920.webp 1920w, images/opt/cycling-hero-2560.webp 2560w" sizes="100vw">
+      <img src="images/opt/cycling-hero-960.jpg" srcset="images/opt/cycling-hero-480.jpg 480w, images/opt/cycling-hero-960.jpg 960w, images/opt/cycling-hero-1440.jpg 1440w, images/opt/cycling-hero-1920.jpg 1920w, images/opt/cycling-hero-2560.jpg 2560w" sizes="100vw" width="3340" height="4175" alt="Jorge Bernardo — ciclista em pista" loading="lazy" decoding="async">
+    </picture>
     <div class="cycling-hero-scrim" aria-hidden="true"></div>
     <div class="cycling-hero-text">
       <div class="section-num gsap-hidden">— 05</div>
@@ -2208,22 +2227,40 @@ footer {
 
   <div class="cycling-mosaic">
     <div class="cycling-mosaic-item cm-1 gsap-hidden">
-      <img src="images/cycling-1.jpg" alt="Jorge Bernardo — ciclista, jersey azul">
+      <picture>
+        <source type="image/webp" srcset="images/opt/cycling-1-480.webp 480w, images/opt/cycling-1-960.webp 960w, images/opt/cycling-1-1440.webp 1440w, images/opt/cycling-1-1920.webp 1920w" sizes="(max-width: 960px) 50vw, 33vw">
+        <img src="images/opt/cycling-1-960.jpg" srcset="images/opt/cycling-1-480.jpg 480w, images/opt/cycling-1-960.jpg 960w, images/opt/cycling-1-1440.jpg 1440w, images/opt/cycling-1-1920.jpg 1920w" sizes="(max-width: 960px) 50vw, 33vw" width="4128" height="5504" alt="Jorge Bernardo — ciclista, jersey azul" loading="lazy" decoding="async" data-full="images/opt/cycling-1-1440.webp">
+      </picture>
     </div>
     <div class="cycling-mosaic-item cm-2 gsap-hidden">
-      <img src="images/cycling-2.jpg" alt="Jorge Bernardo — estrada aberta, jersey laranja">
+      <picture>
+        <source type="image/webp" srcset="images/opt/cycling-2-480.webp 480w, images/opt/cycling-2-960.webp 960w, images/opt/cycling-2-1440.webp 1440w, images/opt/cycling-2-1920.webp 1920w" sizes="(max-width: 960px) 50vw, 66vw">
+        <img src="images/opt/cycling-2-960.jpg" srcset="images/opt/cycling-2-480.jpg 480w, images/opt/cycling-2-960.jpg 960w, images/opt/cycling-2-1440.jpg 1440w, images/opt/cycling-2-1920.jpg 1920w" sizes="(max-width: 960px) 50vw, 66vw" width="3943" height="4929" alt="Jorge Bernardo — estrada aberta, jersey laranja" loading="lazy" decoding="async" data-full="images/opt/cycling-2-1440.webp">
+      </picture>
     </div>
     <div class="cycling-mosaic-item cm-3 gsap-hidden">
-      <img src="images/cycling-3.jpg" alt="Jorge Bernardo — velocidade, jersey branco">
+      <picture>
+        <source type="image/webp" srcset="images/opt/cycling-3-480.webp 480w, images/opt/cycling-3-960.webp 960w, images/opt/cycling-3-1440.webp 1440w, images/opt/cycling-3-1920.webp 1920w" sizes="(max-width: 960px) 50vw, 66vw">
+        <img src="images/opt/cycling-3-960.jpg" srcset="images/opt/cycling-3-480.jpg 480w, images/opt/cycling-3-960.jpg 960w, images/opt/cycling-3-1440.jpg 1440w, images/opt/cycling-3-1920.jpg 1920w" sizes="(max-width: 960px) 50vw, 66vw" width="4128" height="5160" alt="Jorge Bernardo — velocidade, jersey branco" loading="lazy" decoding="async" data-full="images/opt/cycling-3-1440.webp">
+      </picture>
     </div>
     <div class="cycling-mosaic-item cm-4 gsap-hidden">
-      <img src="images/cycling-4.jpg" alt="Jorge Bernardo — posição aerodinâmica, jersey branco">
+      <picture>
+        <source type="image/webp" srcset="images/opt/cycling-4-480.webp 480w, images/opt/cycling-4-960.webp 960w, images/opt/cycling-4-1440.webp 1440w, images/opt/cycling-4-1920.webp 1920w" sizes="(max-width: 960px) 50vw, 33vw">
+        <img src="images/opt/cycling-4-960.jpg" srcset="images/opt/cycling-4-480.jpg 480w, images/opt/cycling-4-960.jpg 960w, images/opt/cycling-4-1440.jpg 1440w, images/opt/cycling-4-1920.jpg 1920w" sizes="(max-width: 960px) 50vw, 33vw" width="3951" height="4939" alt="Jorge Bernardo — posição aerodinâmica, jersey branco" loading="lazy" decoding="async" data-full="images/opt/cycling-4-1440.webp">
+      </picture>
     </div>
     <div class="cycling-mosaic-item cm-5 gsap-hidden">
-      <img src="images/cycling-5.jpg" alt="Jorge Bernardo — gravel, sorrindo">
+      <picture>
+        <source type="image/webp" srcset="images/opt/cycling-5-480.webp 480w, images/opt/cycling-5-960.webp 960w, images/opt/cycling-5-1440.webp 1440w, images/opt/cycling-5-1920.webp 1920w" sizes="(max-width: 960px) 50vw, 33vw">
+        <img src="images/opt/cycling-5-960.jpg" srcset="images/opt/cycling-5-480.jpg 480w, images/opt/cycling-5-960.jpg 960w, images/opt/cycling-5-1440.jpg 1440w, images/opt/cycling-5-1920.jpg 1920w" sizes="(max-width: 960px) 50vw, 33vw" width="4128" height="5504" alt="Jorge Bernardo — gravel, sorrindo" loading="lazy" decoding="async" data-full="images/opt/cycling-5-1440.webp">
+      </picture>
     </div>
     <div class="cycling-mosaic-item cm-6 gsap-hidden">
-      <img src="images/cycling-6.jpg" alt="Jorge Bernardo — estrada de terra, jersey laranja">
+      <picture>
+        <source type="image/webp" srcset="images/opt/cycling-6-480.webp 480w, images/opt/cycling-6-960.webp 960w, images/opt/cycling-6-1440.webp 1440w, images/opt/cycling-6-1920.webp 1920w" sizes="(max-width: 960px) 50vw, 66vw">
+        <img src="images/opt/cycling-6-960.jpg" srcset="images/opt/cycling-6-480.jpg 480w, images/opt/cycling-6-960.jpg 960w, images/opt/cycling-6-1440.jpg 1440w, images/opt/cycling-6-1920.jpg 1920w" sizes="(max-width: 960px) 50vw, 66vw" width="3690" height="5166" alt="Jorge Bernardo — estrada de terra, jersey laranja" loading="lazy" decoding="async" data-full="images/opt/cycling-6-1440.webp">
+      </picture>
     </div>
   </div>
 
@@ -3274,7 +3311,7 @@ function updateNav(activeId) {
 <!-- ── Photo viewer overlay ───────────────────────────────── -->
 <div id="photoViewer" role="dialog" aria-modal="true" aria-label="Visualizar foto">
   <div id="photoViewerBg"></div>
-  <img id="photoViewerImg" src="" alt="">
+  <img id="photoViewerImg" src="" alt="Foto ampliada" width="1440" height="1920" decoding="async">
   <button id="photoViewerClose" aria-label="Fechar visualizador">ESC</button>
   <div id="photoViewerNav"></div>
 </div>
@@ -3303,12 +3340,18 @@ function updateNav(activeId) {
 
   function getDots() { return navEl.querySelectorAll('.pv-dot'); }
 
+  /* photos[i].src is the srcset fallback, not what was painted. Prefer the
+     explicit full-frame variant, then whatever the browser actually chose. */
+  function fullSrc(el) {
+    return el.dataset.full || el.currentSrc || el.src;
+  }
+
   function showPhoto(idx) {
     currentIdx = (idx + photos.length) % photos.length;
     img.style.opacity = '0';
     img.style.transform = 'scale(0.92)';
     setTimeout(() => {
-      img.src = photos[currentIdx].src;
+      img.src = fullSrc(photos[currentIdx]);
       img.alt = photos[currentIdx].alt;
       img.style.opacity = '';
       img.style.transform = '';
@@ -3318,7 +3361,7 @@ function updateNav(activeId) {
 
   function openViewer(idx) {
     currentIdx = idx;
-    img.src = photos[idx].src;
+    img.src = fullSrc(photos[idx]);
     img.alt = photos[idx].alt;
     getDots().forEach((d, i) => d.classList.toggle('active', i === idx));
     viewer.classList.add('open');
