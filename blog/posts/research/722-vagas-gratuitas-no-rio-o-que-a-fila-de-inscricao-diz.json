@@ -1,0 +1,85 @@
+{
+  "topic": "demanda mercado de trabalho Rio de Janeiro capacitação profissional vulnerabilidade social estatísticas vagas",
+  "slug": "722-vagas-gratuitas-no-rio-o-que-a-fila-de-inscricao-diz",
+  "generated_at": "2026-09-07T12:00:33.798Z",
+  "sources": [
+    "https://observatorio3setor.org.br/projeto-impulsiona-rj-abre-250-vagas-de-capacitacao-profissional-gratuita-na-rocinha",
+    "https://prefeitura.rio/cidade/prefeitura-e-instituto-proa-ofertam-seis-mil-vagas-para-formar-e-preparar-jovens-para-o-mercado-de-trabalho",
+    "https://www.trabalhabrasil.com.br/vagas-de-emprego-em-rio-de-janeiro-rj/assistente-social/13089392",
+    "https://prefeitura.rio/tag/mercado-de-trabalho",
+    "https://www.autoindustria.com.br/2018/10/02/capacitacao-profissional-fca-abre-80-vagas-para-jovens",
+    "https://campmangueira.org.br/programas-desenvolvidos",
+    "https://www.tiktok.com/discover/como-contratar-as-do-job-no-rio-de-janeiro",
+    "https://www.rj.gov.br/ceperj/sites/default/files/arquivos-paginas/MERCADO%20DE%20TRABALHO%203%C2%BA%20tri.pdf",
+    "https://prefeitura.rio/cidade/estudo-mostra-que-170-mil-jovens-cariocas-entraram-no-mercado-de-trabalho-entre-2021-e-2024",
+    "https://www.econstor.eu/bitstream/10419/177580/1/td_2364.pdf",
+    "https://www.scielo.br/j/ea/a/GbtRWPdc95dJYQVnkN5cBNq?lang=",
+    "https://pantheon.ufrj.br/bitstream/11422/14335/1/FBMaciel.pdf"
+  ],
+  "insights": [
+    "O mercado de trabalho no Rio de Janeiro oferece milhares de vagas de capacitação profissional gratuitas para jovens e adultos, visando reduzir a vulnerabilidade social.",
+    "Programas como Impulsiona RJ e PROA estão em operação, com um total de 6.250 vagas disponíveis para capacitação e inserção no mercado de trabalho.",
+    "A taxa de jovens em situação de vulnerabilidade social tem diminuído, com 170 mil jovens cariocas entrando no mercado de trabalho entre 2021 e 2024."
+  ],
+  "stats": [
+    {
+      "value": "18,4%",
+      "context": "percentual de jovens que não estudam e nem trabalham, conhecido como 'nem-nem', em 2024, o menor percentual da série histórica.",
+      "source": "https://prefeitura.rio/cidade/estudo-mostra-que-170-mil-jovens-cariocas-entraram-no-mercado-de-trabalho-entre-2021-e-2024"
+    },
+    {
+      "value": "71,2%",
+      "context": "percentual de jovens que concluíram o ensino médio em 2024, um aumento significativo em relação a 2012.",
+      "source": "https://prefeitura.rio/cidade/estudo-mostra-que-170-mil-jovens-cariocas-entraram-no-mercado-de-trabalho-entre-2021-e-2024"
+    },
+    {
+      "value": "250",
+      "context": "vagas de capacitação profissional gratuitas abertas pelo projeto Impulsiona RJ na Rocinha.",
+      "source": "https://observatorio3setor.org.br/projeto-impulsiona-rj-abre-250-vagas-de-capacitacao-profissional-gratuita-na-rocinha"
+    },
+    {
+      "value": "6000",
+      "context": "o número de oportunidades de desenvolvimento e empregabilidade oferecidas pelo Instituto PROA para jovens de baixa renda.",
+      "source": "https://prefeitura.rio/cidade/prefeitura-e-instituto-proa-ofertam-seis-mil-vagas-para-formar-e-preparar-jovens-para-o-mercado-de-trabalho"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "O objetivo do curso é a construção de profissionais sólidos, que pensem em sua carreira de maneira clara e objetiva.",
+      "attribution": "Prefeitura da Cidade do Rio de Janeiro"
+    },
+    {
+      "text": "Os interessados devem ter mais de 18 anos e inscritos no CadÚnico têm prioridade no processo seletivo.",
+      "attribution": "Projeto Impulsiona RJ"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2021,
+      "value": 170000,
+      "unit": "jovens",
+      "label": "jovens cariocas que entraram no mercado de trabalho"
+    },
+    {
+      "year": 2012,
+      "value": 54.6,
+      "unit": "%",
+      "label": "percentual de jovens que concluíram o ensino médio"
+    },
+    {
+      "year": 2024,
+      "value": 71.2,
+      "unit": "%",
+      "label": "percentual de jovens que concluíram o ensino médio"
+    }
+  ],
+  "summary": "O mercado de trabalho no Rio de Janeiro está se expandindo com diversas iniciativas de capacitação profissional, especialmente voltadas para jovens em situação de vulnerabilidade social. Programas como Impulsiona RJ e PROA estão contribuindo para a inserção de milhares de jovens no mercado, refletindo uma melhoria nas taxas de escolaridade e emprego na região.",
+  "pillar": "learning",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-07-722-vagas-gratuitas-no-rio-o-que-a-fila-de-inscricao-diz.html",
+  "signal": {
+    "title": "Impulsiona RJ: Iniciativa Senac RJ e Sebrae Rio oferece mais de 720 vagas gratuitas em cursos de capacitação profissional nas Zonas Norte e Oeste do Rio",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/impulsiona-rj-iniciativa-senac-rj-e-sebrae-rio-oferece-mais-de-720-vagas-gratuitas-em-cursos-de-capacitacao-profissional-nas-zonas-norte-e-oeste-do-rio/?utm_source=rss&utm_medium=rss&utm_campaign=impulsiona-rj-iniciativa-senac-rj-e-sebrae-rio-oferece-mais-de-720-vagas-gratuitas-em-cursos-de-capacitacao-profissional-nas-zonas-norte-e-oeste-do-rio",
+    "date": "2026-09-06T18:00:00.000Z"
+  }
+}
