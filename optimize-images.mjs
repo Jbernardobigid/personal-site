@@ -17,10 +17,16 @@
  * --blog re-encodes each one to a JPEG (the og:image, because LinkedIn and WhatsApp
  * render WebP cards unreliably) plus a WebP sibling for the on-page <picture>.
  *
- *   node optimize-images.mjs            build missing/stale variants
- *   node optimize-images.mjs --blog     re-encode blog post art to jpg + webp
- *   node optimize-images.mjs --force    rebuild everything
- *   node optimize-images.mjs --report   report only, write nothing
+ * A third mode does the same for the relatórios, where the PNGs are worse: unlike the
+ * blog art they ARE rendered on the page, twelve of them at 2.2-2.6 MB each, so a
+ * reader of one dossier downloaded 29 MB. That is both the largest single block of
+ * deploy weight after social/ and a real LCP problem on a page meant to be read.
+ *
+ *   node optimize-images.mjs              build missing/stale variants
+ *   node optimize-images.mjs --blog       re-encode blog post art to jpg + webp
+ *   node optimize-images.mjs --relatorios re-encode relatório art to jpg + webp
+ *   node optimize-images.mjs --force      rebuild everything
+ *   node optimize-images.mjs --report     report only, write nothing
  */
 import fs from 'fs';
 import path from 'path';
@@ -135,44 +141,37 @@ async function buildOgCards() {
   return built;
 }
 
-/* ── Blog post art ───────────────────────────────────────── */
+/* ── Editorial art: PNG → jpg + webp pair ────────────────── */
 
-const BLOG_IMAGES_DIR = path.join(__dirname, 'blog', 'posts', 'images');
-const BLOG_WIDTH = 1536;   // the dimensions the posts already declare
-const BLOG_HEIGHT = 1024;
+/* Both the blog and the relatórios generate split-panel PNGs at the same size and
+ * use them the same way: a JPEG as the og:image (LinkedIn and WhatsApp render WebP
+ * cards unreliably) plus a WebP sibling for the on-page <picture>. Same conversion,
+ * same quality settings, so one function serves both. */
+const ART_WIDTH = 1536;    // the dimensions the pages already declare
+const ART_HEIGHT = 1024;
 
-async function convertBlogImages() {
-  if (!fs.existsSync(BLOG_IMAGES_DIR)) {
-    console.error(`Blog image directory not found: ${BLOG_IMAGES_DIR}`);
-    process.exit(1);
-  }
-  const pngs = fs.readdirSync(BLOG_IMAGES_DIR).filter(f => f.toLowerCase().endsWith('.png'));
-  if (!pngs.length) {
-    console.log('No PNG blog art left to convert.');
-    return;
-  }
-
-  let before = 0;
-  let after = 0;
-  let converted = 0;
+/** Convert every PNG in one directory to a jpg + webp pair. Returns byte totals. */
+async function convertArtDir(dir) {
+  const pngs = fs.readdirSync(dir).filter(f => f.toLowerCase().endsWith('.png'));
+  let before = 0, after = 0, converted = 0;
 
   for (const png of pngs) {
-    const srcPath = path.join(BLOG_IMAGES_DIR, png);
+    const srcPath = path.join(dir, png);
     const base = path.basename(png, '.png');
-    const jpgPath  = path.join(BLOG_IMAGES_DIR, `${base}.jpg`);
-    const webpPath = path.join(BLOG_IMAGES_DIR, `${base}.webp`);
+    const jpgPath  = path.join(dir, `${base}.jpg`);
+    const webpPath = path.join(dir, `${base}.webp`);
     before += fs.statSync(srcPath).size;
 
     if (isStale(srcPath, jpgPath) && !REPORT) {
       await sharp(srcPath)
-        .resize({ width: BLOG_WIDTH, height: BLOG_HEIGHT, fit: 'cover' })
+        .resize({ width: ART_WIDTH, height: ART_HEIGHT, fit: 'cover' })
         .jpeg({ quality: 82, progressive: true, mozjpeg: true })
         .toFile(jpgPath);
       converted++;
     }
     if (isStale(srcPath, webpPath) && !REPORT) {
       await sharp(srcPath)
-        .resize({ width: BLOG_WIDTH, height: BLOG_HEIGHT, fit: 'cover' })
+        .resize({ width: ART_WIDTH, height: ART_HEIGHT, fit: 'cover' })
         .webp({ quality: 80 })
         .toFile(webpPath);
     }
@@ -180,18 +179,76 @@ async function convertBlogImages() {
     if (fs.existsSync(jpgPath))  after += fs.statSync(jpgPath).size;
     if (fs.existsSync(webpPath)) after += fs.statSync(webpPath).size;
   }
+  return { count: pngs.length, before, after, converted };
+}
 
-  console.log(`blog art: ${pngs.length} PNG(s), ${converted} converted this run`);
+function reportArt(label, { count, before, after, converted }) {
+  console.log(`${label}: ${count} PNG(s), ${converted} converted this run`);
   console.log(`  before (png):        ${mb(before).padStart(7)} MB`);
   console.log(`  after  (jpg+webp):   ${mb(after).padStart(7)} MB`);
   console.log(`  reduction:           ${(100 - (after / before) * 100).toFixed(1)}%`);
+}
+
+const BLOG_IMAGES_DIR = path.join(__dirname, 'blog', 'posts', 'images');
+const RELATORIOS_DIR = path.join(__dirname, 'relatorios');
+
+async function convertBlogImages() {
+  if (!fs.existsSync(BLOG_IMAGES_DIR)) {
+    console.error(`Blog image directory not found: ${BLOG_IMAGES_DIR}`);
+    process.exit(1);
+  }
+  const stats = await convertArtDir(BLOG_IMAGES_DIR);
+  if (!stats.count) {
+    console.log('No PNG blog art left to convert.');
+    return;
+  }
+  reportArt('blog art', stats);
   console.log('\n  The PNGs are now unreferenced. Delete them once the posts point at');
   console.log('  the .jpg/.webp pair and the feed has been regenerated.');
+}
+
+/* The relatórios keep their art beside the dossier rather than in one shared folder,
+ * so this walks each relatorios/<slug>/images/ it finds instead of taking a fixed path.
+ * New dossiers are picked up without touching this file. */
+async function convertRelatorioImages() {
+  if (!fs.existsSync(RELATORIOS_DIR)) {
+    console.error(`Relatórios directory not found: ${RELATORIOS_DIR}`);
+    process.exit(1);
+  }
+  const dirs = fs.readdirSync(RELATORIOS_DIR, { withFileTypes: true })
+    .filter(e => e.isDirectory())
+    .map(e => path.join(RELATORIOS_DIR, e.name, 'images'))
+    .filter(d => fs.existsSync(d));
+
+  if (!dirs.length) {
+    console.log('No relatório image directories found.');
+    return;
+  }
+
+  const total = { count: 0, before: 0, after: 0, converted: 0 };
+  for (const dir of dirs) {
+    const stats = await convertArtDir(dir);
+    if (!stats.count) continue;
+    reportArt(path.relative(__dirname, dir).replace(/\\/g, '/'), stats);
+    for (const k of Object.keys(total)) total[k] += stats[k];
+  }
+  if (!total.count) {
+    console.log('No PNG relatório art left to convert.');
+    return;
+  }
+  console.log('');
+  reportArt('relatórios total', total);
+  console.log('\n  The PNGs stay on disk as the source of truth but are excluded from the');
+  console.log('  deployment by .vercelignore once the pages point at the .jpg/.webp pair.');
 }
 
 async function main() {
   if (process.argv.includes('--blog')) {
     await convertBlogImages();
+    return;
+  }
+  if (process.argv.includes('--relatorios')) {
+    await convertRelatorioImages();
     return;
   }
 

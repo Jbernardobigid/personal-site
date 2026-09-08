@@ -54,3 +54,9 @@
 # Superseded blog art. Each post generated a ~1.94 MB PNG (105 MB across the archive)
 # that was only ever an og:image; posts now reference the .jpg/.webp pair beside it.
 /blog/posts/images/*.png
+
+# Superseded relatório art, same deal but worse: these twelve PNGs were rendered on
+# the page, not just used as og:image, so a reader of one dossier downloaded 28 MB.
+# The pages now reference the .jpg/.webp pair (3.6 MB for the set). PNGs stay in git
+# as the source optimize-images.mjs --relatorios re-encodes from.
+/relatorios/*/images/*.png
