@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "ha negros na argentina",
-      "url": "https://www.geledes.org.br/ha-negros-na-argentina/",
-      "pillar": "black-identity",
-      "title": "Há negros na Argentina?",
-      "recordedAt": "2026-07-11T12:01:55.682Z"
-    },
-    {
       "titleKey": "chef flavia alves transformou almocos no quintal de casa em referencia da cultur",
       "url": "https://mundonegro.inf.br/flavia-alves-quintal-de-casa-empreendedorismo-maternidade/",
       "pillar": "entrepreneurship",
@@ -216,6 +209,13 @@
       "pillar": "learning",
       "title": "Impulsiona RJ: Iniciativa Senac RJ e Sebrae Rio oferece mais de 720 vagas gratuitas em cursos de capacitação profissional nas Zonas Norte e Oeste do Rio",
       "recordedAt": "2026-09-07T12:02:03.540Z"
+    },
+    {
+      "titleKey": "justica condena pais a indenizar filho expulso por orientacao sexual",
+      "url": "https://noticiapreta.com.br/justica-condena-pais-a-indenizar-filho-expulso-por-orientacao-sexual/?utm_source=rss&utm_medium=rss&utm_campaign=justica-condena-pais-a-indenizar-filho-expulso-por-orientacao-sexual",
+      "pillar": "fatherhood",
+      "title": "Justiça condena pais a indenizar filho expulso por orientação sexual",
+      "recordedAt": "2026-09-09T12:01:56.134Z"
     }
   ]
 }

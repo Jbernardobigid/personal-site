@@ -8,13 +8,13 @@
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/</loc>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/relatorios/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/relatorios/o-que-apagaram-dos-nossos-deuses/</loc>
-    <lastmod>2026-09-05</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -35,6 +35,12 @@
     <lastmod>2026-07-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.html</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-07-722-vagas-gratuitas-no-rio-o-que-a-fila-de-inscricao-diz.html</loc>

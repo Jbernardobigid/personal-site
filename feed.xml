@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Mon, 07 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Quando expulsar um filho vira condenação judicial</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.html</guid>
+      <pubDate>Wed, 09 Sep 2026 12:00:00 GMT</pubDate>
+      <description>A Justiça de Santa Catarina condenou pais por expulsarem o filho após ele revelar sua orientação sexual, e isso recoloca uma pergunta que toda paternidade…</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.jpg" length="126123" type="image/jpeg"/>
+    </item>
     <item>
       <title>722 vagas gratuitas no Rio e o desejo de aprender</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-07-722-vagas-gratuitas-no-rio-o-que-a-fila-de-inscricao-diz.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Mon, 03 Aug 2026 12:00:00 GMT</pubDate>
       <description>Quando mulheres negras, indígenas e quilombolas são as mais expostas à violência digital, ensinar cibersegurança vira ato político.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-03-seguranca-digital-nao-e-privilegio-o-que-a-repcone-revela-so.jpg" length="214157" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>O filho não espera o campeonato terminar</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-01-o-filho-nao-espera-o-campeonato-terminar.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-01-o-filho-nao-espera-o-campeonato-terminar.html</guid>
-      <pubDate>Sat, 01 Aug 2026 12:00:00 GMT</pubDate>
-      <description>Italo Ferreira, mamadeiras e a verdade que a paternidade ensina sobre prioridade, identidade e o tipo de legado que nenhum troféu carrega.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-01-o-filho-nao-espera-o-campeonato-terminar.jpg" length="114869" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
