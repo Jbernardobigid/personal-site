@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Wed, 09 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 11 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Recife paga quem pedala. Mas pedala quem?</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.html</guid>
+      <pubDate>Fri, 11 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Recife testa recompensas para quem anda de bicicleta, mas nenhuma tecnologia resolve sozinha a pergunta sobre quem tem permissão de ocupar o espaço urbano.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.jpg" length="180806" type="image/jpeg"/>
+    </item>
     <item>
       <title>Quando expulsar um filho vira condenação judicial</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Wed, 05 Aug 2026 12:00:00 GMT</pubDate>
       <description>A nomeação de Denis Tassitano como CEO da Swile Brasil levanta uma pergunta que vale para muito além das salas de reunião: o que a experiência realmente compra…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-05-depois-dos-40-o-jogo-muda-de-nome.jpg" length="105139" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Segurança digital não é privilégio</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-03-seguranca-digital-nao-e-privilegio-o-que-a-repcone-revela-so.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-03-seguranca-digital-nao-e-privilegio-o-que-a-repcone-revela-so.html</guid>
-      <pubDate>Mon, 03 Aug 2026 12:00:00 GMT</pubDate>
-      <description>Quando mulheres negras, indígenas e quilombolas são as mais expostas à violência digital, ensinar cibersegurança vira ato político.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-03-seguranca-digital-nao-e-privilegio-o-que-a-repcone-revela-so.jpg" length="214157" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

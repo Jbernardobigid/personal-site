@@ -1,0 +1,59 @@
+{
+  "topic": "mobilidade ativa Recife dados uso bicicleta transporte ativo percentual deslocamentos",
+  "slug": "recife-paga-quem-pedala-a-pergunta-e-pedala-quem",
+  "generated_at": "2026-09-11T12:00:35.049Z",
+  "sources": [
+    "https://transporteativo.org.br/ta?page_id-18114=&paged=75",
+    "https://repositorio.ipea.gov.br/bitstreams/9978caf8-6987-4dad-a781-35b9011f857b/download",
+    "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/mobilidade-urbana/programa-bicicleta-brasil/habilitadas/arquivos/5298196.pdf",
+    "https://observatoriodabicicleta.org.br/uploads/2023/02/4014-Texto-do-artigo-6857-1-10-20221120.pdf",
+    "https://www.liquidworks.com.br/a-importancia-da-mobilidade-ativa",
+    "https://www.ta.org.br/RPI5/docs/MBB.pdf",
+    "https://dialnet.unirioja.es/descarga/articulo/9507565.pdf",
+    "https://transporteativo.org.br/ta?author=0&paged=9",
+    "https://aliancabike.org.br/wp-content/uploads/2020/03/08_05_2015_15_19_a_bicicleta_no_brasil_2015_web.pdf",
+    "https://www.ameciclo.org/dados/documentos",
+    "https://observatoriodabicicleta.org.br/dados",
+    "https://www.ameciclo.org/dados/perfil"
+  ],
+  "insights": [
+    "Em Recife, mais de 80% das viagens curtas são realizadas de bicicleta.",
+    "A mobilidade ativa representa uma parte significativa dos deslocamentos diários na cidade.",
+    "A cidade promove o uso da bicicleta como uma solução para a mobilidade urbana sustentável.",
+    "83,6% das pessoas utilizam a bicicleta para deslocamentos de até 30 minutos.",
+    "O uso da bicicleta em Recife é impulsionado pela necessidade de infraestrutura adequada."
+  ],
+  "stats": [
+    {
+      "value": "80%",
+      "context": "percentual de viagens curtas realizadas de bicicleta em Recife",
+      "source": "https://transporteativo.org.br/ta?page_id-18114=&paged=75"
+    },
+    {
+      "value": "83,6%",
+      "context": "percentual de pessoas que utilizam a bicicleta para deslocamentos de até 30 minutos",
+      "source": "https://transporteativo.org.br/ta?page_id-18114=&paged=75"
+    },
+    {
+      "value": "13%",
+      "context": "percentual de deslocamentos realizados de bicicleta em Recife",
+      "source": "https://aliancabike.org.br/wp-content/uploads/2020/03/08_05_2015_15_19_a_bicicleta_no_brasil_2015_web.pdf"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A Transporte Ativo utiliza os dados coletados para sensibilizar gestores públicos sobre os benefícios da mobilidade.",
+      "attribution": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/mobilidade-urbana/programa-bicicleta-brasil/habilitadas/arquivos/5298196.pdf"
+    }
+  ],
+  "time_series": [],
+  "summary": "A mobilidade ativa em Recife tem se destacado, com um alto percentual de deslocamentos realizados de bicicleta. A cidade está investindo em infraestrutura e políticas públicas para promover o uso da bicicleta como meio de transporte sustentável.",
+  "pillar": "cycling",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.html",
+  "signal": {
+    "title": "Recife testa tecnologia que dá recompensas para quem anda a pé ou de bicicleta",
+    "source": "Portal NE9",
+    "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5WSUh3Z0FiWE4yaEJtZm8yN3VtcUxmTHp3bTJZRWJSOWxvQXBMWEtFbGZBRmxNZ3Z2VXVGdU1iNUtXUUJ2VGVqY2ZCaktwdHI3UmN1M3BJSzdoR0dMazRoWE8zdGxzeUtTWVg5dGhGQ0U?oc=5",
+    "date": "2026-09-11T10:39:05.000Z"
+  }
+}
