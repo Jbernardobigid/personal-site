@@ -1,0 +1,69 @@
+{
+  "topic": "PNAD IBGE insegurança alimentar domicílios idosos 60 anos 2023 2024 percentual queda",
+  "slug": "56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes",
+  "generated_at": "2026-09-13T12:00:41.442Z",
+  "sources": [
+    "https://www.folhape.com.br/noticia/amp/511879/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos",
+    "https://jornaldebrasilia.com.br/noticias/economia/inseguranca-alimentar-cai-entre-lares-com-idosos-no-brasil",
+    "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/44728-mais-de-dois-milhoes-de-lares-saem-da-inseguranca-alimentar-em-2024",
+    "https://www.instagram.com/p/DdKsuill5_t",
+    "https://www.acritica.com/geral/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos-1.414672",
+    "https://www.instagram.com/p/DdKU70OCoWX",
+    "https://www.facebook.com/girodenoticia.portal/posts/n%C3%BAmero-de-lares-com-idosos-em-inseguran%C3%A7a-alimentar-cai-em-dois-anosum-levantame/1708735414591219",
+    "https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/724f23c52823528787ba0ef28b7940e3.pdf",
+    "https://www.instagram.com/p/DdJemsmlkoo",
+    "https://www.correiobraziliense.com.br/brasil/2025/10/7268125-salto-em-um-ano-contra-inseguranca-alimentar.html"
+  ],
+  "insights": [
+    "Entre 2023 e 2024, o número de lares com idosos em insegurança alimentar caiu em 300 mil, passando de 5,9 milhões para 5,6 milhões.",
+    "A categoria de insegurança alimentar grave foi a que mais apresentou queda, reduzindo de 894 mil para 744 mil lares.",
+    "21,8% dos lares com idosos ainda enfrentam algum nível de insegurança alimentar em 2024."
+  ],
+  "stats": [
+    {
+      "value": "21,8%",
+      "context": "proporção de lares com idosos que ainda enfrentam insegurança alimentar em 2024",
+      "source": "https://www.folhape.com.br/noticia/amp/511879/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos"
+    },
+    {
+      "value": "5,6 milhões",
+      "context": "número de lares com idosos em insegurança alimentar em 2024",
+      "source": "https://www.folhape.com.br/noticia/amp/511879/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos"
+    },
+    {
+      "value": "5,9 milhões",
+      "context": "número de lares com idosos em insegurança alimentar em 2023",
+      "source": "https://www.folhape.com.br/noticia/amp/511879/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos"
+    },
+    {
+      "value": "894 mil",
+      "context": "número de lares com idosos em insegurança alimentar grave em 2023",
+      "source": "https://www.folhape.com.br/noticia/amp/511879/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos"
+    },
+    {
+      "value": "744 mil",
+      "context": "número de lares com idosos em insegurança alimentar grave em 2024",
+      "source": "https://www.folhape.com.br/noticia/amp/511879/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A redução na insegurança alimentar grave nos domicílios com brasileiros 60+ é uma notícia importante.",
+      "attribution": "Folha PE"
+    },
+    {
+      "text": "O Brasil registrou, em 2024, o menor nível de insegurança alimentar das últimas duas décadas.",
+      "attribution": "Agência de Notícias"
+    }
+  ],
+  "time_series": [],
+  "summary": "Entre 2023 e 2024, houve uma redução significativa no número de lares com idosos em insegurança alimentar no Brasil, caindo de 5,9 milhões para 5,6 milhões. Apesar dessa queda, 21,8% dos lares com idosos ainda enfrentam algum nível de insegurança alimentar, indicando que desafios estruturais permanecem.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.html",
+  "signal": {
+    "title": "Número de lares com idosos em insegurança alimentar cai em dois anos",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos/?utm_source=rss&utm_medium=rss&utm_campaign=numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos",
+    "date": "2026-09-13T12:00:00.000Z"
+  }
+}

@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Fri, 11 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 13 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>5,6 milhões de lares: quando os dados chegam antes</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.html</guid>
+      <pubDate>Sun, 13 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Em 2024, 5,6 milhões de lares com idosos ainda viviam em insegurança alimentar no Brasil. O número caiu, mas o que fazemos com ele diz mais do que qualquer…</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.jpg" length="138061" type="image/jpeg"/>
+    </item>
     <item>
       <title>Recife paga quem pedala. Mas pedala quem?</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Fri, 07 Aug 2026 12:00:00 GMT</pubDate>
       <description>O Brasil avançou nos indicadores de educação básica, mas os números revelam algo mais profundo: aprender nunca foi só tarefa de escola ou de criança.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-07-o-ideb-subiu-e-agora-o-que-fazemos-com-isso.jpg" length="109811" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Depois dos 40, o jogo muda de nome</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-05-depois-dos-40-o-jogo-muda-de-nome.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-05-depois-dos-40-o-jogo-muda-de-nome.html</guid>
-      <pubDate>Wed, 05 Aug 2026 12:00:00 GMT</pubDate>
-      <description>A nomeação de Denis Tassitano como CEO da Swile Brasil levanta uma pergunta que vale para muito além das salas de reunião: o que a experiência realmente compra…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-05-depois-dos-40-o-jogo-muda-de-nome.jpg" length="105139" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -35,6 +35,12 @@
     <lastmod>2026-07-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.html</loc>
