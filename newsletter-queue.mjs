@@ -4,13 +4,21 @@
  * After the Python engine builds the newsletter (build_from_latest_blog.py), this:
  *   1. reads the newest build in $NEWSLETTER_DIR/.tmp (email-safe HTML + newsletter.json),
  *   2. builds the LinkedIn-paste HTML from the SAME newsletter content (one source, two channels),
- *   3. emails Jorge: the email preview (what subscribers get) + LinkedIn-paste + cover image,
+ *   3. uploads the LinkedIn paste to Vercel Blob and emails Jorge: the email preview
+ *      (what subscribers get) + a LINK to the paste + the cover image,
  *   4. creates a Notion "Newsletter Approvals" row (Status=Pending) to gate the broadcast.
+ *
+ * The paste is linked, never attached. Gmail accepted-then-silently-discarded the
+ * 2026-09-04 and 2026-09-11 previews (Resend logged both as "delivered"; neither
+ * reached inbox, spam or trash), and the one thing separating them from the
+ * broadcasts that did arrive was the .html file attachment. A Pending row then sat
+ * unnoticed for three days, which is what newsletter-pending-check.mjs now catches.
  *
  * Dedupe via newsletter-queue-state.json so re-runs don't re-queue the same issue.
  *
  * Env: NEWSLETTER_DIR (engine repo root), NOTION_API_KEY, NOTION_NEWSLETTER_DB_ID,
- *      RESEND_API_KEY, NEWSLETTER_FROM, CAROUSEL_NOTIFY_EMAIL, NEWSLETTER_URL, PUBLIC_SITE_URL
+ *      RESEND_API_KEY, NEWSLETTER_FROM, CAROUSEL_NOTIFY_EMAIL, NEWSLETTER_URL,
+ *      PUBLIC_SITE_URL, BLOB_READ_WRITE_TOKEN
  * Flags: --force (re-queue even if handled), --slug <stem> (target a specific build)
  */
 
@@ -18,6 +26,7 @@ import './load-env.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { put } from '@vercel/blob';
 import { createPage, queryDatabase, prop } from './notion-api.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -116,10 +125,35 @@ async function sendEmail(subject, html, attachments) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: FROM_EMAIL, to: [NOTIFY_EMAIL], subject, html, attachments })
+    body: JSON.stringify({
+      from: FROM_EMAIL, to: [NOTIFY_EMAIL], subject, html,
+      attachments: attachments.length ? attachments : undefined,
+    })
   });
   if (!res.ok) fail(`Resend failed (HTTP ${res.status}): ${(await res.text()).slice(0, 300)}`);
   return (await res.json()).id;
+}
+
+/**
+ * Host the LinkedIn paste on Vercel Blob and return its public URL.
+ *
+ * Never throws: a missing paste link is worth a degraded email, not a lost issue.
+ * The failure is surfaced in the email banner and in the JSON output rather than
+ * swallowed, and the file still exists on the VPS either way.
+ */
+async function uploadPaste(slug, html) {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) return { url: null, error: 'BLOB_READ_WRITE_TOKEN not set' };
+  try {
+    const blob = await put(`newsletter-linkedin/${slug}.html`, html, {
+      access: 'public',
+      addRandomSuffix: false,
+      contentType: 'text/html; charset=utf-8',
+      allowOverwrite: true,
+    });
+    return { url: blob.url, error: null };
+  } catch (err) {
+    return { url: null, error: err?.message || String(err) };
+  }
 }
 
 async function main() {
@@ -150,13 +184,19 @@ async function main() {
   const liHtml = buildLinkedInPaste(nl, slug);
   fs.writeFileSync(liPath, liHtml, 'utf8');
 
-  // 2. Email: preview (the broadcast itself) + LinkedIn paste + cover image.
-  const attachments = [{ filename: `linkedin-${slug}.html`, content: Buffer.from(liHtml, 'utf8').toString('base64') }];
+  // 2. Email: preview (the broadcast itself) + a LINK to the LinkedIn paste + cover image.
+  //    The paste is linked, never attached — see the file header for why.
+  const paste = await uploadPaste(slug, liHtml);
+  const attachments = [];
   const coverPath = path.join(__dirname, 'blog', 'posts', 'images', `${slug}.png`);
   if (fs.existsSync(coverPath)) {
     attachments.push({ filename: `cover-${slug}.png`, content: fs.readFileSync(coverPath).toString('base64') });
   }
-  const previewBanner = `<div style="background:#f3ede6;border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;margin:16px;font:14px/1.5 -apple-system,sans-serif;color:#5e412d">✅ <strong>A Interseção</strong> — prévia do email para a lista. Aprove no Notion para enviar. 📋 Para o LinkedIn: anexo <code>linkedin-*.html</code> + a imagem de capa anexa.</div>`;
+  const pasteLine = paste.url
+    ? `📋 Para o LinkedIn: <a href="${paste.url}" style="color:#1c314a;font-weight:600">abra o texto do LinkedIn</a>, selecione tudo (Ctrl/Cmd+A) e cole no editor de artigo.`
+    : `⚠️ O texto do LinkedIn não subiu (${escapeHtml(paste.error)}). Ele está no VPS em <code>linkedin-newsletter/${escapeHtml(slug)}-linkedin.html</code>.`;
+  const coverLine = attachments.length ? ' A imagem de capa vai anexa.' : '';
+  const previewBanner = `<div style="background:#f3ede6;border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;margin:16px;font:14px/1.5 -apple-system,sans-serif;color:#5e412d">✅ <strong>A Interseção</strong> — prévia do email para a lista. Aprove no Notion para enviar.<br>${pasteLine}${coverLine}</div>`;
   const previewHtml = fs.readFileSync(builtHtmlPath, 'utf8').replace(/(<body[^>]*>)/i, `$1${previewBanner}`);
   const emailId = await sendEmail(`📰 A Interseção — revisar e aprovar: ${manifest.subject}`, previewHtml, attachments);
 
@@ -167,7 +207,10 @@ async function main() {
     Subject: prop.richText(manifest.subject || nl.title || slug),
     Preview: prop.richText(manifest.preview_text || nl.preview_text || ''),
     'Source Post': prop.url(`${PUBLIC_SITE_URL}/blog/posts/${slug}.html`),
-    Notes: prop.richText('Revise a prévia no email. Aprove definindo Status = "Approved" para enviar à lista.'),
+    Notes: prop.richText(
+      'Revise a prévia no email. Aprove definindo Status = "Approved" para enviar à lista.'
+      + (paste.url ? ` | LinkedIn: ${paste.url}` : '')
+    ),
   };
   const dateMatch = /^(\d{4}-\d{2}-\d{2})/.exec(slug);
   if (dateMatch) properties['Built At'] = prop.date(dateMatch[1]);
@@ -176,7 +219,11 @@ async function main() {
 
   state.handled.push(slug);
   writeState(state);
-  out({ success: true, slug, subject: manifest.subject, emailId, linkedinPaste: liPath, cover: fs.existsSync(coverPath) });
+  out({
+    success: true, slug, subject: manifest.subject, emailId,
+    linkedinPaste: liPath, linkedinUrl: paste.url, pasteError: paste.error,
+    cover: fs.existsSync(coverPath),
+  });
 }
 
 main().catch(err => fail(err?.message || String(err)));
