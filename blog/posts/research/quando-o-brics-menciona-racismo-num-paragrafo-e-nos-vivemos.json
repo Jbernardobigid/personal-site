@@ -1,0 +1,73 @@
+{
+  "topic": "disparidade racial renda educação Brasil IBGE dados desigualdade negros brancos",
+  "slug": "quando-o-brics-menciona-racismo-num-paragrafo-e-nos-vivemos",
+  "generated_at": "2026-09-15T12:00:42.017Z",
+  "sources": [
+    "https://www.youtube.com/watch?v=gXYkHki4LsM",
+    "https://www.youtube.com/watch?v=d45Woc456DY",
+    "https://www.fcc.org.br/fcc-noticia/raca-genero-educacao-somente-50-das-pessoas-pretas-concluiram-o-ensino-basico-no-brasil-segundo-ibge",
+    "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao",
+    "https://www.cnnbrasil.com.br/economia/macroeconomia/negros-e-pardos-sao-maioria-no-mercado-de-trabalho-mas-rendimentos-de-brancos-sao-614-maiores-aponta-ibge",
+    "https://www.ipea.gov.br/portal/retrato/indicadores/renda-pobreza-e-desigualdade/apresentacao",
+    "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/35467-pessoas-pretas-e-pardas-continuam-com-menor-acesso-a-emprego-educacao-seguranca-e-saneamento",
+    "https://iree.org.br/desigualdade-racial-no-mercado-de-trabalho",
+    "https://123ecos.com.br/docs/desigualdade-racial",
+    "https://familiaamparada.com.br/2025/03/21/trabalho/desigualdade-racial-renda",
+    "https://tvbrasil.ebc.com.br/reporter-brasil-tarde/2025/03/desigualdade-de-renda-entre-negros-e-brancos-aumentou-em-10-anos",
+    "https://oglobo.globo.com/brasil/noticia/2022/11/ibge-queda-de-renda-familiar-amplia-desigualdade-racial-no-brasil.ghtml"
+  ],
+  "insights": [
+    "Os negros e pardos têm, em média, dois anos a menos de estudos do que a população branca.",
+    "Em 2022, a renda de trabalho dos brancos era 87,6% maior que a dos negros.",
+    "40,0% da população preta ou parda era considerada pobre em 2022, em comparação a 21% da população branca.",
+    "Somente 50% das pessoas pretas concluíram o ensino básico no Brasil, segundo dados do IBGE.",
+    "A renda das mulheres negras representava apenas 86,1% da renda das mulheres brancas em 2022."
+  ],
+  "stats": [
+    {
+      "value": "40%",
+      "context": "percentual da população preta ou parda considerada pobre em 2022",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "87,6%",
+      "context": "diferença na renda de trabalho entre brancos e negros em 2022",
+      "source": "https://www.cnnbrasil.com.br/economia/macroeconomia/negros-e-pardos-sao-maioria-no-mercado-de-trabalho-mas-rendimentos-de-brancos-sao-614-maiores-aponta-ibge"
+    },
+    {
+      "value": "50%",
+      "context": "percentual de pessoas pretas que concluíram o ensino básico no Brasil",
+      "source": "https://www.fcc.org.br/fcc-noticia/raca-genero-educacao-somente-50-das-pessoas-pretas-concluiram-o-ensino-basico-no-brasil-segundo-ibge"
+    },
+    {
+      "value": "2 anos",
+      "context": "diferença média de anos de estudo entre negros e brancos",
+      "source": "https://www.youtube.com/watch?v=gXYkHki4LsM"
+    },
+    {
+      "value": "86,1%",
+      "context": "percentual da renda das mulheres negras em relação à renda das mulheres brancas em 2022",
+      "source": "https://familiaamparada.com.br/2025/03/21/trabalho/desigualdade-racial-renda"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A desigualdade racial no Brasil tem caráter estrutural e sistêmico.",
+      "attribution": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "text": "Os homens negros brasileiros também têm menos anos de estudo, maiores taxas de analfabetismo e menor acesso ao ensino superior.",
+      "attribution": "https://www.fcc.org.br/fcc-noticia/raca-genero-educacao-somente-50-das-pessoas-pretas-concluiram-o-ensino-basico-no-brasil-segundo-ibge"
+    }
+  ],
+  "time_series": [],
+  "summary": "As disparidades raciais no Brasil em educação e renda são alarmantes, com negros e pardos enfrentando desigualdades significativas em anos de estudo e rendimento. Dados do IBGE mostram que a população negra continua a ser marginalizada em diversos aspectos sociais e econômicos.",
+  "pillar": "black-identity",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-15-quando-o-brics-menciona-racismo-num-paragrafo-e-nos-vivemos.html",
+  "signal": {
+    "title": "Racismo, reparação e poder: o desafio do BRICS para o Sul Global",
+    "source": "Geledés",
+    "url": "https://www.geledes.org.br/racismo-reparacao-e-poder-o-desafio-do-brics-para-o-sul-global/",
+    "date": "2026-09-14T21:08:32.000Z"
+  }
+}
