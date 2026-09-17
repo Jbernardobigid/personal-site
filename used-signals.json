@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "escola preta de arte abre inscricao com 8 formacoes gratuitas em artes cenicas",
-      "url": "https://noticiapreta.com.br/escola-preta-de-arte-abre-inscricao-com-8-formacoes-gratuitas-em-artes-cenicas/?utm_source=rss&utm_medium=rss&utm_campaign=escola-preta-de-arte-abre-inscricao-com-8-formacoes-gratuitas-em-artes-cenicas",
-      "pillar": "learning",
-      "title": "Escola Preta de Arte abre inscrição com 8 formações gratuitas em artes cênicas",
-      "recordedAt": "2026-07-19T12:01:44.561Z"
-    },
-    {
       "titleKey": "racismo algoritmico estudo aponta que ia aumenta em ate 69 associacao de homens ",
       "url": "https://noticiapreta.com.br/racismo-algoritmico-estudo-aponta-que-ia-aumenta-em-ate-69-associacao-de-homens-negros-e-latinos-a-criminalidade/?utm_source=rss&utm_medium=rss&utm_campaign=racismo-algoritmico-estudo-aponta-que-ia-aumenta-em-ate-69-associacao-de-homens-negros-e-latinos-a-criminalidade",
       "pillar": "technology",
@@ -216,6 +209,13 @@
       "pillar": "black-identity",
       "title": "Racismo, reparação e poder: o desafio do BRICS para o Sul Global",
       "recordedAt": "2026-09-15T12:02:03.410Z"
+    },
+    {
+      "titleKey": "valladolid traffic surges after city rolls back bike and bus lanes",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQRmxaT3g1ckFBTENJUTczbUFkY2pyWHp6UXVhMDIta0h0Skt3QjhGbjlHbnZFb25uT18xME1SSUFJNmtNM1BUOHhuVFMwVzMwaUd3M0hlR0Z0QkVaMWxZbW10dnZtaHBKUVZ6M2ozYk1Uby1ycHBLbTFZRW8yakR2T0IyNGRQMkEzbXZpTXNWQTRIWFEzZ3ptcGhVQ1h1QnJY?oc=5",
+      "pillar": "cycling",
+      "title": "Valladolid Traffic Surges After City Rolls Back Bike and Bus Lanes",
+      "recordedAt": "2026-09-17T12:02:12.402Z"
     }
   ]
 }
