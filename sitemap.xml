@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -35,6 +35,12 @@
     <lastmod>2026-07-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-19-lamine-yamal-disse-mil-vezes-eu-perdi-a-conta-ha-muito-tempo.html</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-17-valladolid-derrubou-as-ciclovias-e-o-transito-explodiu-por.html</loc>
