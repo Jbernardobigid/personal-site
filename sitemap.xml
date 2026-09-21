@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-09-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -35,6 +35,12 @@
     <lastmod>2026-07-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-21-6-mil-vagas-gratuitas-e-ainda-assim-a-fila-esta-vazia-o.html</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/posts/2026-09-19-lamine-yamal-disse-mil-vezes-eu-perdi-a-conta-ha-muito-tempo.html</loc>

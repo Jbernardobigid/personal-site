@@ -1,0 +1,51 @@
+{
+  "topic": "quantos jovens no Rio de Janeiro concluem ensino médio anualmente e qual taxa acesso educação profissional técnica",
+  "slug": "6-mil-vagas-gratuitas-e-ainda-assim-a-fila-esta-vazia-o",
+  "generated_at": "2026-09-21T12:00:37.395Z",
+  "sources": [
+    "https://www.instagram.com/p/DaHSdYEDj8F",
+    "https://www.itaueducacaoetrabalho.org.br/acontece/meio-milhao-de-jovens-abandonam-o-ensino-medio-anualmente",
+    "https://www.gov.br/mec/pt-br/media/publicacoes/setec/proeja_medio.pdf",
+    "https://www.facebook.com/cnnbrasil/videos/500-mil-jovens-abandonam-ensino-m%C3%A9dio-todo-ano/588844456533391",
+    "https://bibliotecadigital.gestao.gov.br/bitstream/123456789/280/2/Educa%C3%A7%C3%A3o%20Profissional%20e%20T%C3%A9cnica%20de%20N%C3%ADvel%20M%C3%A9dio%20Integrada%20ao%20Ensino%20M%C3%A9dio%20Documento%20Base.pdf",
+    "https://www1.folha.uol.com.br/educacao/2025/10/so-15-dos-jovens-concluem-ensino-medio-na-idade-certa-e-com-aprendizado-esperado.shtml",
+    "https://www.undp.org/pt/brazil/news/evasao-escolar-no-ensino-medio-atinge-meio-milhao-de-jovens-por-ano-e-perpetua-desigualdade-alerta-estudo-do-pnud-e-firjan-sesi",
+    "https://download.inep.gov.br/publicacoes/institucionais/estatisticas_e_indicadores/2021/resumo_tecnico_do_estado_do_rio_de_janeiro_censo_escolar_da_educacao_basica_2021.pdf",
+    "https://www.firjan.com.br/data/files/BA/A4/10/A3/7CD5B810506B68A8D41909C2/estudo_combate_a_evasao_no_ensino_medio.pdf",
+    "https://www.institutonatura.org/n/apenas-155-dos-jovens-brasileiros-concluem-o-ensino-medio-na-idade-certa-e-com-aprendizagem-adequada-revela-indice-de-inclusao-educacional-iie",
+    "https://www.moderna.com.br/anuario-educacao-basica/2021/estados-rio-de-janeiro.html"
+  ],
+  "insights": [
+    "Cerca de 500 mil jovens abandonam o ensino médio anualmente no Rio de Janeiro.",
+    "A taxa de acesso à educação profissional técnica é considerada baixa, com muitos jovens optando por não continuar os estudos.",
+    "Apenas 15,5% dos jovens brasileiros conseguem concluir o ensino médio na idade certa e com aprendizado adequado."
+  ],
+  "stats": [
+    {
+      "value": "500000",
+      "context": "número de jovens que abandonam o ensino médio anualmente no Rio de Janeiro",
+      "source": "https://www.itaueducacaoetrabalho.org.br/acontece/meio-milhao-de-jovens-abandonam-o-ensino-medio-anualmente"
+    },
+    {
+      "value": "15,5%",
+      "context": "percentual de jovens que concluem o ensino médio na idade certa e com aprendizado adequado",
+      "source": "https://www.institutonatura.org/n/apenas-155-dos-jovens-brasileiros-concluem-o-ensino-medio-na-idade-certa-e-com-aprendizagem-adequada-revela-indice-de-inclusao-educacional-iie"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A evasão escolar é uma âncora que prende esses jovens em um ambiente de pobreza.",
+      "attribution": "Eduardo Eugenio Gouvêa Vieira, presidente da Firjan"
+    }
+  ],
+  "time_series": [],
+  "summary": "Anualmente, o Rio de Janeiro enfrenta um alto índice de abandono escolar, com cerca de 500 mil jovens deixando o ensino médio. A baixa taxa de acesso à educação profissional técnica agrava a situação, resultando em apenas 15,5% dos jovens concluindo o ensino médio na idade adequada.",
+  "pillar": "learning",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-21-6-mil-vagas-gratuitas-e-ainda-assim-a-fila-esta-vazia-o.html",
+  "signal": {
+    "title": "Senac RJ abre mais de 6 mil vagas gratuitas em cursos Técnicos para quem já concluiu o Ensino Médio",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/senac-rj-abre-mais-de-6-mil-vagas-gratuitas-em-cursos-tecnicos-para-quem-ja-concluiu-o-ensino-medio/?utm_source=rss&utm_medium=rss&utm_campaign=senac-rj-abre-mais-de-6-mil-vagas-gratuitas-em-cursos-tecnicos-para-quem-ja-concluiu-o-ensino-medio",
+    "date": "2026-09-20T16:00:00.000Z"
+  }
+}
