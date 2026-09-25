@@ -1,0 +1,86 @@
+{
+  "topic": "Diagnóstico Equidade Racial 2026 MEC Secadi formação equidade racial redes municipais percentual dados",
+  "slug": "de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira",
+  "generated_at": "2026-09-25T12:00:46.269Z",
+  "sources": [
+    "https://www.instagram.com/p/DdrmAqxDCwr",
+    "http://agenciagov.ebc.com.br/noticias/202609/equidade-racial-cresce-e-fortalece-inclusao-nas-escolas",
+    "https://www.instagram.com/p/DctM20-n5hM",
+    "https://www.facebook.com/brasilforadacaverna/posts/o-minist%C3%A9rio-da-educa%C3%A7%C3%A3o-mec-divulgou-os-dados-do-diagn%C3%B3stico-equidade-2026-leva/1050743404389598",
+    "https://www.instagram.com/p/Dadx7y4D4sy?hl=en",
+    "https://www.instagram.com/p/DcwIJW7R9RI",
+    "https://www.facebook.com/clubenoticia/posts/evento-os-dados-do-diagn%C3%B3stico-de-equidade-racial-de-2026-elaborado-pela-secreta/1512848297547530",
+    "https://jornaldovale.com/diagnostico-equidade-2026-mostra-avanco-das-politicas-de-educacao-etnico-racial",
+    "https://www.gov.br/mec/pt-br/assuntos/noticias/2026/agosto/diagnostico-equidade-2026-mostra-avanco-das-politicas-de-educacao-etnico-racial",
+    "https://www1.folha.uol.com.br/educacao/2026/08/educacao-etnico-racial-avanca-mas-formacao-de-professores-e-entrave-aponta-levantamento.shtml",
+    "https://minutomt.com.br/educacao/decreto-altera-regras-para-beneficiar-cotistas-do-prouni"
+  ],
+  "insights": [
+    "O percentual de redes municipais de ensino que ofereceram formações sobre equidade racial aumentou significativamente entre 2024 e 2026.",
+    "A gestão de ações de equidade racial em municípios passou de 15% para 42% no mesmo período, indicando um avanço nas políticas de inclusão.",
+    "A participação das redes estaduais no diagnóstico foi de 100%, enquanto as redes municipais alcançaram 97%."
+  ],
+  "stats": [
+    {
+      "value": "69.2%",
+      "context": "percentual de redes municipais de ensino que ofereceram oficinas e palestras sobre equidade racial em 2026",
+      "source": "http://agenciagov.ebc.com.br/noticias/202609/equidade-racial-cresce-e-fortalece-inclusao-nas-escolas"
+    },
+    {
+      "value": "42%",
+      "context": "percentual de municípios com áreas dedicadas à gestão de ações de equidade racial em 2026",
+      "source": "https://www.gov.br/mec/pt-br/assuntos/noticias/2026/agosto/diagnostico-equidade-2026-mostra-avanco-das-politicas-de-educacao-etnico-racial"
+    },
+    {
+      "value": "15%",
+      "context": "percentual de municípios com áreas dedicadas à gestão de ações de equidade racial em 2024",
+      "source": "https://www.gov.br/mec/pt-br/assuntos/noticias/2026/agosto/diagnostico-equidade-2026-mostra-avanco-das-politicas-de-educacao-etnico-racial"
+    },
+    {
+      "value": "48.1%",
+      "context": "percentual de redes municipais de ensino que ofereceram formações sobre equidade racial em 2024",
+      "source": "https://www.instagram.com/p/DdrmAqxDCwr"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "O Diagnóstico Equidade 2026 aponta que o percentual de redes municipais de ensino que ofereceram formações sobre relações étnico-raciais.",
+      "attribution": "http://agenciagov.ebc.com.br/noticias/202609/equidade-racial-cresce-e-fortalece-inclusao-nas-escolas"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2024,
+      "value": 48.1,
+      "unit": "%",
+      "label": "percentual de redes municipais de ensino que ofereceram formações sobre equidade racial"
+    },
+    {
+      "year": 2026,
+      "value": 69.2,
+      "unit": "%",
+      "label": "percentual de redes municipais de ensino que ofereceram formações sobre equidade racial"
+    },
+    {
+      "year": 2024,
+      "value": 15,
+      "unit": "%",
+      "label": "percentual de municípios com áreas dedicadas à gestão de ações de equidade racial"
+    },
+    {
+      "year": 2026,
+      "value": 42,
+      "unit": "%",
+      "label": "percentual de municípios com áreas dedicadas à gestão de ações de equidade racial"
+    }
+  ],
+  "summary": "O Diagnóstico de Equidade Racial de 2026 revela avanços significativos nas políticas de inclusão e formação em relações étnico-raciais nas escolas municipais. O percentual de redes municipais que oferecem treinamentos sobre equidade racial subiu para 69,2%, enquanto a gestão de ações de equidade racial em municípios aumentou de 15% para 42% entre 2024 e 2026.",
+  "pillar": "learning",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.html",
+  "signal": {
+    "title": "Formação sobre equidade racial avança nas escolas e passa de 48% para 69% das redes municipais em dois anos",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/formacao-sobre-equidade-racial-avanca-nas-escolas-e-passa-de-48-para-69-das-redes-municipais-em-dois-anos/",
+    "date": "2026-09-24T15:13:57.000Z"
+  }
+}

@@ -5,8 +5,23 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Mon, 21 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 25 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Equidade racial nas escolas: o que os 69% revelam</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.html</guid>
+      <pubDate>Fri, 25 Sep 2026 12:00:00 GMT</pubDate>
+      <description>O Diagnóstico Equidade 2026 mostra avanço real nas escolas brasileiras, mas o dado mais importante não é o percentual: é o que acontece depois da formação.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.jpg" length="185901" type="image/jpeg"/>
+    </item>
+    <item>
+      <title>Paternidade negra é transmissão, não ausência</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-23-wesley-cresceu-no-morro-do-sapo-carregando-o-nome-do-pai-e.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-23-wesley-cresceu-no-morro-do-sapo-carregando-o-nome-do-pai-e.html</guid>
+      <pubDate>Wed, 23 Sep 2026 12:00:00 GMT</pubDate>
+      <description>65% dos pais negros já sofreram discriminação ao cuidar dos filhos, mas 83% se sentem plenamente capazes. O que isso revela sobre herança, presença…</description>
+    </item>
     <item>
       <title>6 mil vagas gratuitas e a fila que não existe</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-21-6-mil-vagas-gratuitas-e-ainda-assim-a-fila-esta-vazia-o.html</link>
@@ -150,22 +165,6 @@
       <pubDate>Wed, 19 Aug 2026 12:00:00 GMT</pubDate>
       <description>Quando 292 organizações do movimento negro se levantam juntas, é porque o que está em jogo não é só uma lei, é a própria narrativa de quem somos.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.jpg" length="102402" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Aprender no meio do jogo</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-17-aprender-no-meio-do-jogo-o-que-um-projeto-em-pernambuco-reve.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-17-aprender-no-meio-do-jogo-o-que-um-projeto-em-pernambuco-reve.html</guid>
-      <pubDate>Mon, 17 Aug 2026 12:00:00 GMT</pubDate>
-      <description>Uma iniciativa gratuita de empreendedorismo cultural na Zona da Mata Norte de Pernambuco levanta uma pergunta que vale para todos: o que significa aprender…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-17-aprender-no-meio-do-jogo-o-que-um-projeto-em-pernambuco-reve.jpg" length="101505" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>O que um pai herda, o que um pai passa</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-15-o-que-um-pai-herda-o-que-um-pai-passa-sobre-presenca-identid.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-15-o-que-um-pai-herda-o-que-um-pai-passa-sobre-presenca-identid.html</guid>
-      <pubDate>Sat, 15 Aug 2026 12:00:00 GMT</pubDate>
-      <description>Ser pai não é uma função de suporte, é um ato de transmissão cultural, e o que escolhemos passar adiante diz tudo sobre quem somos.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-15-o-que-um-pai-herda-o-que-um-pai-passa-sobre-presenca-identid.jpg" length="119674" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

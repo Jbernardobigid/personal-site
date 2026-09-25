@@ -1,20 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "25 de julho a luta das mulheres negras latinoamericanas e caribenhas e o futuro ",
-      "url": "https://mundonegro.inf.br/mulheres-negras-futuro-trabalho/",
-      "pillar": "career-growth",
-      "title": "25 de julho: a luta das mulheres negras latino-americanas e caribenhas e o futuro do trabalho",
-      "recordedAt": "2026-07-25T12:01:45.282Z"
-    },
-    {
-      "titleKey": "museu das favelas e ey brasil anunciam inscricoes para curso gratuito de audiovi",
-      "url": "https://noticiapreta.com.br/museu-das-favelas-e-ey-brasil-anunciam-inscricoes-para-curso-gratuito-de-audiovisual/?utm_source=rss&utm_medium=rss&utm_campaign=museu-das-favelas-e-ey-brasil-anunciam-inscricoes-para-curso-gratuito-de-audiovisual",
-      "pillar": "entrepreneurship",
-      "title": "Museu das Favelas e EY Brasil anunciam inscrições para curso gratuito de audiovisual",
-      "recordedAt": "2026-07-27T12:01:39.013Z"
-    },
-    {
       "titleKey": "nath financas lanca canal de noticias sobre economia",
       "url": "https://mundonegro.inf.br/nath-financas-lanca-n3-noticias-economia/",
       "pillar": "entrepreneurship",
@@ -216,6 +202,13 @@
       "pillar": "learning",
       "title": "Senac RJ abre mais de 6 mil vagas gratuitas em cursos Técnicos para quem já concluiu o Ensino Médio",
       "recordedAt": "2026-09-21T12:01:56.666Z"
+    },
+    {
+      "titleKey": "formacao sobre equidade racial avanca nas escolas e passa de 48 para 69 das rede",
+      "url": "https://mundonegro.inf.br/formacao-sobre-equidade-racial-avanca-nas-escolas-e-passa-de-48-para-69-das-redes-municipais-em-dois-anos/",
+      "pillar": "learning",
+      "title": "Formação sobre equidade racial avança nas escolas e passa de 48% para 69% das redes municipais em dois anos",
+      "recordedAt": "2026-09-25T12:02:22.529Z"
     }
   ]
 }
