@@ -1,0 +1,85 @@
+{
+  "topic": "demanda por cursos inteligência artificial Brasil desenvolvedores mercado de trabalho",
+  "slug": "600-vagas-gratuitas-de-ia-e-o-gargalo-nao-e-a-falta-de-curso",
+  "generated_at": "2026-09-27T12:00:30.751Z",
+  "sources": [
+    "https://cursos.cruzeirodosulvirtual.com.br/grad-inteligencia-artificial-cruzeiro-do-sul-virtual/p",
+    "https://olhardigital.com.br/2024/07/04/dicas-e-tutoriais/10-melhores-cursos-de-ia-do-brasil",
+    "https://experienceclub.com.br/vagas-com-competencias-em-ia-quase-triplicam-no-brasil",
+    "https://jornaluniao.com.br/noticias/ia/vagas-que-exigem-inteligencia-artificial-disparam-no-mercado-brasileiro",
+    "https://prepara.com.br/blog/ia/ia-no-brasil-mercado-de-trabalho",
+    "https://www.moneytimes.com.br/inteligencia-artificial-ia-mercado-trabalho-barometro-pwc-rsgp",
+    "https://www.alura.com.br/artigos/mercado-de-ia",
+    "https://ufem.com.br/ia-inteligencia-artificial",
+    "https://agenciabrasil.ebc.com.br/geral/noticia/2020-08/inteligencia-artificial-e-o-impacto-nos-empregos-e-profissoes",
+    "https://exame.com/colunistas/empreender-liberta/crescimento-da-demanda-por-profissionais-de-inteligencia-artificial-no-brasil",
+    "https://prepara.com.br/blog/ia/curso-de-ia"
+  ],
+  "insights": [
+    "A demanda por profissionais especializados em Inteligência Artificial cresce 21% ao ano no Brasil, com uma escassez de talentos que representa um desafio para as empresas.",
+    "O número de vagas que exigem conhecimentos em IA saltou de 63 mil para 182 mil em um ano, representando 3,6% do total de vagas no país.",
+    "O mercado de TI brasileiro cresceu 18,5% em 2025, superando a média mundial.",
+    "A busca por profissionais com conhecimento em IA cresceu 306% no último ano.",
+    "Salários em funções especializadas em IA crescem em média 11% ao ano, podendo chegar a 56% em cargos mais especializados."
+  ],
+  "stats": [
+    {
+      "value": "306%",
+      "context": "crescimento na busca por profissionais com conhecimento em IA no último ano",
+      "source": "https://www.alura.com.br/artigos/mercado-de-ia"
+    },
+    {
+      "value": "21%",
+      "context": "crescimento anual da demanda por profissionais especializados em IA",
+      "source": "https://cursos.cruzeirodosulvirtual.com.br/grad-inteligencia-artificial-cruzeiro-do-sul-virtual/p"
+    },
+    {
+      "value": "182 mil",
+      "context": "número de vagas que exigem conhecimentos em IA em 2025",
+      "source": "https://experienceclub.com.br/vagas-com-competencias-em-ia-quase-triplicam-no-brasil"
+    },
+    {
+      "value": "18,5%",
+      "context": "crescimento do mercado de TI brasileiro em 2025",
+      "source": "https://prepara.com.br/blog/ia/ia-no-brasil-mercado-de-trabalho"
+    },
+    {
+      "value": "11%",
+      "context": "crescimento médio dos salários em funções especializadas em IA",
+      "source": "https://jornaluniao.com.br/noticias/ia/vagas-que-exigem-inteligencia-artificial-disparam-no-mercado-brasileiro"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A IA no Brasil não está eliminando o mercado de trabalho — está reorganizando ele.",
+      "attribution": "https://prepara.com.br/blog/ia/ia-no-brasil-mercado-de-trabalho"
+    },
+    {
+      "text": "A demanda por profissionais com competências em inteligência artificial acelerou no mercado de trabalho brasileiro.",
+      "attribution": "https://jornaluniao.com.br/noticias/ia/vagas-que-exigem-inteligencia-artificial-disparam-no-mercado-brasileiro"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2024,
+      "value": 1.1,
+      "unit": "%",
+      "label": "participação de vagas que exigem competências em IA"
+    },
+    {
+      "year": 2025,
+      "value": 3.6,
+      "unit": "%",
+      "label": "participação de vagas que exigem competências em IA"
+    }
+  ],
+  "summary": "A demanda por cursos de Inteligência Artificial no Brasil está em alta, com um crescimento significativo no número de vagas e uma escassez de profissionais qualificados. O mercado está se expandindo rapidamente, refletindo a necessidade de integração de soluções de IA em diversos setores.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-27-600-vagas-gratuitas-de-ia-e-o-gargalo-nao-e-a-falta-de-curso.html",
+  "signal": {
+    "title": "KODIE Academy abre inscrições para formação gratuita em Inteligência Artificial para Desenvolvedores",
+    "source": "Notícia Preta",
+    "url": "https://noticiapreta.com.br/kodie-academy-abre-inscricoes-para-formacao-gratuita-em-inteligencia-artificial-para-desenvolvedores/?utm_source=rss&utm_medium=rss&utm_campaign=kodie-academy-abre-inscricoes-para-formacao-gratuita-em-inteligencia-artificial-para-desenvolvedores",
+    "date": "2026-09-26T20:00:00.000Z"
+  }
+}

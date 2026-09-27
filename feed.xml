@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Fri, 25 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 27 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>600 vagas gratuitas de IA e o gargalo real</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-27-600-vagas-gratuitas-de-ia-e-o-gargalo-nao-e-a-falta-de-curso.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-27-600-vagas-gratuitas-de-ia-e-o-gargalo-nao-e-a-falta-de-curso.html</guid>
+      <pubDate>Sun, 27 Sep 2026 12:00:00 GMT</pubDate>
+      <description>A KODIE Academy abriu 600 vagas gratuitas em IA, mas o problema nunca foi o acesso ao curso. É saber o que fazer com o conhecimento depois que a aula acaba.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-27-600-vagas-gratuitas-de-ia-e-o-gargalo-nao-e-a-falta-de-curso.jpg" length="100615" type="image/jpeg"/>
+    </item>
     <item>
       <title>Equidade racial nas escolas: o que os 69% revelam</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Fri, 21 Aug 2026 12:00:00 GMT</pubDate>
       <description>Quando a política descobre o eleitor negro a cada quatro anos mas esquece o cidadão negro nos outros três, algo fundamental sobre identidade e poder está sendo…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.jpg" length="120329" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Nenhum Direito a Menos</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.html</guid>
-      <pubDate>Wed, 19 Aug 2026 12:00:00 GMT</pubDate>
-      <description>Quando 292 organizações do movimento negro se levantam juntas, é porque o que está em jogo não é só uma lei, é a própria narrativa de quem somos.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-19-nenhum-direito-a-menos-o-que-esta-em-jogo-quando-mexem-na-le.jpg" length="102402" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
