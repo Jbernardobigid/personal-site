@@ -25,6 +25,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
+import { stalestIdeas } from './topic-rotation.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BANK_PATH = path.join(__dirname, 'cycling-topics-bank.json');
@@ -100,16 +101,15 @@ function loadSimPredictions() {
 }
 
 // Unused ideas, spread across categories so one category can't dominate a run's
-// candidate list. When the whole bank has been used, the cycle restarts clean.
+// candidate list. When the whole bank has been used, only its stalest half is
+// eligible (topic-rotation.mjs) — a clean restart let fresh repeats through.
 // Diversity floor: the previous run's category is excluded outright (when
 // alternatives exist) so the feed can't collapse into one winning category —
 // same philosophy as the old carousel anti-streak guard, applied upstream.
 function pickCandidates(ideas, usedIds, lastCategory = null) {
-  let pool = ideas.filter(i => !usedIds.includes(i.id));
-  if (pool.length === 0) {
-    console.log('  (bank fully cycled — restarting usage)');
-    pool = ideas;
-  }
+  const { eligible, cycled } = stalestIdeas(ideas, usedIds);
+  let pool = eligible;
+  if (cycled) console.log('  (bank fully cycled — stalest half only)');
   if (lastCategory) {
     const withoutLast = pool.filter(i => i.category !== lastCategory);
     if (withoutLast.length > 0) pool = withoutLast;
@@ -130,7 +130,7 @@ function pickCandidates(ideas, usedIds, lastCategory = null) {
     }
     rank++;
   }
-  return { candidates: picked, cycled: pool === ideas };
+  return { candidates: picked, cycled };
 }
 
 /* ── Strava (optional, fail-soft) ────────────────────────── */

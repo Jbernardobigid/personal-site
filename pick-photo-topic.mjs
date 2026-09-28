@@ -21,6 +21,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { predictedShape, routeFormat, shapeOfFormat } from './photo-day-format.mjs';
+import { stalestIdeas } from './topic-rotation.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BANK_PATH = path.join(__dirname, 'cycling-topics-bank.json');
@@ -70,12 +71,9 @@ function saveUsed(used, pickedId, title, category, shape) {
 // evenly across categories (not a uniform pick over the pool) so identity's
 // larger idea count doesn't dominate every draw.
 function pickIdea(ideas, usedIds, lastCategory, lastShape) {
-  let pool = ideas.filter(i => PHOTO_DAY_CATEGORIES.includes(i.category) && !usedIds.includes(i.id));
-  let cycled = false;
-  if (pool.length === 0) {
-    pool = ideas.filter(i => PHOTO_DAY_CATEGORIES.includes(i.category));
-    cycled = true;
-  }
+  const rotation = stalestIdeas(ideas.filter(i => PHOTO_DAY_CATEGORIES.includes(i.category)), usedIds);
+  let pool = rotation.eligible;
+  const { cycled } = rotation;
   if (lastCategory) {
     const withoutLast = pool.filter(i => i.category !== lastCategory);
     if (withoutLast.length > 0) pool = withoutLast;
@@ -115,7 +113,7 @@ function main() {
   // photo-day.mjs consumes the decision instead of recomputing it.
   const { format, why } = routeFormat(idea, lastShape);
   const shape = shapeOfFormat(format);
-  console.log(`Picked: [${idea.id}] (${idea.category}) ${idea.idea}${cycled ? ' (photo-day pool cycled — restarted)' : ''}`);
+  console.log(`Picked: [${idea.id}] (${idea.category}) ${idea.idea}${cycled ? ' (photo-day pool cycled — stalest half only)' : ''}`);
   console.log(`  Shape: ${format ?? 'undecided (editorial filter)'} — ${why}${lastShape ? ` | last post was ${lastShape}` : ''}`);
   if (idea.photo) console.log(`  Photo pin: ${idea.photo}`);
 
