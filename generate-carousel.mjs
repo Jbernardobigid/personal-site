@@ -172,9 +172,24 @@ function loadUsage() {
 }
 
 function saveUsage(record) {
-  const { posts } = loadUsage();
-  const updated = [...posts, record].slice(-HISTORY_LIMIT);
-  fs.writeFileSync(USAGE_PATH, JSON.stringify({ lastRun: isoDate(), posts: updated }, null, 2), 'utf8');
+  const data = loadUsage();
+  const updated = [...data.posts, record].slice(-HISTORY_LIMIT);
+  const photos = record.photo
+    ? [...photoLedger(data), record.photo].slice(-PHOTO_HISTORY_LIMIT)
+    : photoLedger(data);
+  fs.writeFileSync(USAGE_PATH, JSON.stringify({ lastRun: isoDate(), posts: updated, photos }, null, 2), 'utf8');
+}
+
+// Photo rotation memory, oldest → newest. Deliberately much longer than the
+// 8-post history: with a daily cadence an 8-post window let Claude cycle the
+// same ~12 FAST PICK hero frames, each one coming back right after it aged out
+// (DSC00412 headlined 4 posts in 6 weeks). Ledgers written before this field
+// existed are seeded from the per-post photo fields.
+const PHOTO_HISTORY_LIMIT = 40;
+
+function photoLedger(data) {
+  if (Array.isArray(data.photos)) return data.photos;
+  return (data.posts ?? []).map(p => p.photo).filter(Boolean);
 }
 
 // Human-readable recap of recent posts, most recent first, for the prompt.
@@ -189,12 +204,10 @@ function buildHistorySummary(posts, count = HISTORY_PROMPT_COUNT) {
   }).join('\n');
 }
 
-// Photos used across the whole stored history (all HISTORY_LIMIT posts, not
-// just the prompt window) — hard exclusion list so the same image can't
-// headline two nearby posts. Records written before photo tracking existed
-// have no photo field and are skipped.
-function recentPhotoBasenames(posts) {
-  return [...new Set(posts.map(p => p.photo).filter(Boolean))];
+// Distinct recently used photos, most recent first — shown to Claude as the
+// do-not-pick list. The resolver enforces it; the prompt only steers.
+function recentPhotoBasenames(ledger) {
+  return [...new Set([...ledger].reverse())];
 }
 
 // The old anti-streak guard (force-alternating carousel/single) is gone: since
@@ -224,26 +237,56 @@ function splitFrameName(stem) {
   return m ? { prefix: m[1], num: parseInt(m[2], 10) } : null;
 }
 
-function nearestPhoto(photoDir, stem, excluded) {
-  const want = splitFrameName(stem);
-  if (!want) return null;
-  const best = fs.readdirSync(photoDir)
-    .filter(f => /\.(jpg|jpeg|png)$/i.test(f) && !excluded.has(f.toLowerCase()))
-    .map(f => {
-      const got = splitFrameName(path.basename(f, path.extname(f)));
-      return got && got.prefix === want.prefix
-        ? { f, dist: Math.abs(got.num - want.num) }
-        : null;
-    })
-    .filter(c => c && c.dist <= NEAREST_FRAME_WINDOW)
-    .sort((a, b) => a.dist - b.dist)[0];
-  return best ? path.join(photoDir, best.f) : null;
+// Burst shots a frame or two apart read as the same picture on the feed, so
+// using a frame also spends its immediate neighbours.
+const BURST_WINDOW = 2;
+
+const stemOf = (f) => path.basename(f, path.extname(f));
+
+// How recently a frame, or one of its burst neighbours, was used: its index in
+// the ledger (higher = more recent), or -1 when it is fresh.
+function frameRecency(file, ledger) {
+  const self = splitFrameName(stemOf(file));
+  let rank = -1;
+  ledger.forEach((used, i) => {
+    if (stemOf(used).toLowerCase() === stemOf(file).toLowerCase()) { rank = i; return; }
+    const u = splitFrameName(stemOf(used));
+    if (self && u && u.prefix === self.prefix && Math.abs(u.num - self.num) <= BURST_WINDOW) rank = i;
+  });
+  return rank;
 }
 
-function resolvePhoto(preferredName, excludeBasenames = []) {
+// Pure choice over a file list, so it is testable without the photo folder.
+// Keeps the scene Claude chose, but never hands back a recently used frame
+// while a fresh one exists in that scene. When the whole scene is spent it
+// takes the least recently used frame there, rather than jumping to a random
+// photo from an unrelated shoot.
+function pickPhoto(files, preferredStem, ledger) {
+  const recency = new Map(files.map(f => [f, frameRecency(f, ledger)]));
+  const exact = preferredStem
+    ? files.find(f => stemOf(f).toLowerCase() === preferredStem.toLowerCase())
+    : null;
+  if (exact && recency.get(exact) === -1) return exact;
+
+  const want = preferredStem ? splitFrameName(preferredStem) : null;
+  if (want) {
+    const scene = files
+      .map(f => ({ f, got: splitFrameName(stemOf(f)) }))
+      .filter(({ got }) => got && got.prefix === want.prefix && Math.abs(got.num - want.num) <= NEAREST_FRAME_WINDOW)
+      .map(({ f, got }) => ({ f, dist: Math.abs(got.num - want.num), rank: recency.get(f) }))
+      .sort((a, b) => a.rank - b.rank || a.dist - b.dist);
+    if (scene.length > 0) return scene[0].f;
+  }
+
+  // No usable scene: random fresh frame, or the least recently used overall.
+  const fresh = files.filter(f => recency.get(f) === -1);
+  if (fresh.length > 0) return fresh[Math.floor(Math.random() * fresh.length)];
+  return [...files].sort((a, b) => recency.get(a) - recency.get(b))[0] ?? null;
+}
+
+function resolvePhoto(preferredName, ledger = []) {
   const photoDir = path.join(__dirname, 'brand_assets', 'Fotos');
   if (!fs.existsSync(photoDir)) return null;
-  const excluded = new Set(excludeBasenames.map(b => b.toLowerCase()));
 
   // Resolve a name that may be a bare basename ("DSC00412") or full filename.
   const tryName = (raw) => {
@@ -265,29 +308,15 @@ function resolvePhoto(preferredName, excludeBasenames = []) {
   const envHit = tryName(process.env.JORGE_CAROUSEL_PHOTO);
   if (envHit) return envHit;
 
-  // 2. Inventory-recommended photo (chosen by Claude from INVENTORY.md).
-  // A recently used pick counts as a miss: the prompt already forbids repeats,
-  // but enforce it here too — same philosophy as the format streak guard,
-  // determinism over prompt self-correction.
-  const prefHit = tryName(preferredName);
-  if (prefHit && !excluded.has(path.basename(prefHit).toLowerCase())) return prefHit;
-
-  // 2b. Gap in the range or a recent repeat: nearest surviving neighbor
-  // from the same shoot keeps the scene the model chose.
+  // 2. Inventory-recommended photo (chosen by Claude from INVENTORY.md),
+  // rotated in code: the prompt forbids repeats but Claude still gravitates
+  // to the same hero frames — determinism over prompt self-correction.
   const stem = typeof preferredName === 'string'
     ? path.basename(preferredName.trim()).replace(/\.(jpg|jpeg|png|webp)$/i, '').replace(/[^A-Za-z0-9_-]/g, '')
     : '';
-  if (stem) {
-    const near = nearestPhoto(photoDir, stem, excluded);
-    if (near) return near;
-  }
-
-  // 3. Random fallback for variety (still avoiding recent repeats)
-  const jpgs = fs.readdirSync(photoDir).filter(f => /\.(jpg|jpeg|png)$/i.test(f));
-  const fresh = jpgs.filter(f => !excluded.has(f.toLowerCase()));
-  const pool = fresh.length > 0 ? fresh : jpgs;
-  if (pool.length === 0) return null;
-  return path.join(photoDir, pool[Math.floor(Math.random() * pool.length)]);
+  const files = fs.readdirSync(photoDir).filter(f => /\.(jpg|jpeg|png)$/i.test(f));
+  const picked = pickPhoto(files, stem, ledger);
+  return picked ? path.join(photoDir, picked) : null;
 }
 
 /* ── Blog post reader ──────────────────────────────────────── */
@@ -428,7 +457,8 @@ Choose ONE photo for this post from the inventory below and return its exact fil
 - Community / family / event / culture topics, use the 20221203 event portraits.
 - Activism / resistance themes, use the yellow fist-raised frames.
 - You may pick ANY frame number inside a listed range (e.g. "7B7A0110" from the range 7B7A0097–0132) — the "hero frames" are quality anchors, NOT the only choices. Vary your picks so the feed never settles on the same few images.
-- NEVER pick a photo from this recently-used list (a nearby frame number from the same scene is fine):
+- The FAST PICK frames are the most used ones. Prefer a less obvious frame from the same range.
+- NEVER pick a photo from this recently-used list, nor a frame within ${BURST_WINDOW} numbers of one (burst shots look identical on the feed):
 ${recentPhotos.length ? recentPhotos.join(', ') : '(none on record)'}
 
 PHOTO INVENTORY:
@@ -761,9 +791,10 @@ async function main() {
 
   console.log('Deciding format and extracting content with Claude...');
   const inventoryText = loadInventory();
-  const usagePosts = loadUsage().posts;
-  const historySummary = buildHistorySummary(usagePosts);
-  const recentPhotos = recentPhotoBasenames(usagePosts);
+  const usage = loadUsage();
+  const historySummary = buildHistorySummary(usage.posts);
+  const ledger = photoLedger(usage);
+  const recentPhotos = recentPhotoBasenames(ledger);
   // Only the explicit --format flag forces a shape; otherwise the editorial
   // filter in the prompt decides reframe vs single.
   const forcedFormat = explicitFormat;
@@ -775,8 +806,8 @@ async function main() {
   console.log(`  Format: ${format} | Slides: ${slides.length}`);
   console.log(`  Types: ${slides.map(s => s.contentType).join(', ')}`);
 
-  const photoPath = resolvePhoto(photo, recentPhotos);
-  if (photoPath) console.log(`  Photo: ${path.basename(photoPath)}${photo ? ` (recommended: ${photo})` : ' (random fallback)'}`);
+  const photoPath = resolvePhoto(photo, ledger);
+  if (photoPath) console.log(`  Photo: ${path.basename(photoPath)}${photo ? ` (recommended: ${photo})` : ' (fallback)'}`);
   else console.warn('  Warning: No photos found in brand_assets/Fotos/');
 
   // --photo-required is a hard contract, not a hint: fail before touching the
@@ -901,7 +932,7 @@ async function main() {
 // Only run when invoked directly. Importing this module used to fire main() —
 // the same trap generate-video.mjs carries — which makes the extractor
 // impossible to test without doing a full paid build.
-export { extractPostStructure };
+export { extractPostStructure, pickPhoto, photoLedger };
 
 const isDirectRun = process.argv[1]
   && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));

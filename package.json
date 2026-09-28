@@ -35,7 +35,8 @@
     "images:blog": "node optimize-images.mjs --blog",
     "images:relatorios": "node optimize-images.mjs --relatorios",
     "content:regen": "node regen-feed-sitemap.mjs",
-    "test:seo": "node test-seo-helpers.mjs"
+    "test:seo": "node test-seo-helpers.mjs",
+    "test:photos": "node test-photo-rotation.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
