@@ -1,0 +1,62 @@
+{
+  "topic": "acidentes ciclovia Portugal EN118 Samora Correia estatísticas segurança iluminação ciclovias",
+  "slug": "uma-lampada-na-ciclovia-nao-e-infraestrutura-e-uma",
+  "generated_at": "2026-09-29T12:00:40.092Z",
+  "sources": [
+    "https://noticiasdosorraia.sapo.pt/samora-correia-instala-iluminacao-na-ciclovia-da-en118-para-reforcar-seguranca",
+    "https://multivix.edu.br/wp-content/uploads/2022/04/impactos-da-falta-de-ciclovias-na-seguranca-e-bem-estar-dos-ciclistas.pdf",
+    "https://www.cm-benavente.pt/index.php/portfolio/rede-ciclavel-e-pedonal-de-samora-correia",
+    "https://www.facebook.com/OSMONHACAS/posts/-atualiza%C3%A7%C3%A3o-en118-samora-correiaa-en118-encontra-se-com-tr%C3%A2nsito-alternado-por-/1756843413113442",
+    "https://visaozero2030.pt/wp-content/uploads/FASE2-Fundamentos_Tecnico_Cientificos_Estrategia_SR2030_Situacao_Atual_Desafios_Emergentes.pdf",
+    "https://www.cmjornal.pt/maissobre/bombeiros-de-samora-correia",
+    "https://sicnoticias.pt/pais/2017-03-14-Ciclovias-em-Portugal-tem-problemas-com-consequencias-para-a-seguranca-rodoviaria",
+    "https://www.facebook.com/carrilho.bruno.3/videos/%EF%B8%8Facidente-%EF%B8%8F/637658292290866",
+    "https://partidolivre.pt/wp-content/uploads/2025/02/CML-Mocao-SegurancaRodoviaria.pdf",
+    "https://op.europa.eu/o/opportal-service/download-handler?identifier=789760e5-5e2a-11f1-aa6d-01aa75ed71a1&format=PDF&language=en&productionSystem=cellar"
+  ],
+  "insights": [
+    "Samora Correia instalou iluminação na ciclovia da EN118 para melhorar a segurança dos ciclistas, devido às condições de iluminação inadequadas na área.",
+    "A infraestrutura cicloviária, incluindo iluminação, é essencial para a segurança dos ciclistas, especialmente em áreas urbanas.",
+    "Entre 2015 e 2019, houve um aumento nos acidentes envolvendo pedestres e ciclistas em áreas urbanas de Portugal.",
+    "Portugal tem como meta reduzir em 50% os acidentes envolvendo pedestres e ciclistas até 2030.",
+    "Não foram encontrados dados específicos sobre acidentes na ciclovia da EN118 em Samora Correia."
+  ],
+  "stats": [
+    {
+      "value": "3,4%",
+      "context": "Aumento no número de mortos em arruamentos entre 2015 e 2019.",
+      "source": "https://visaozero2030.pt/wp-content/uploads/FASE2-Fundamentos_Tecnico_Cientificos_Estrategia_SR2030_Situacao_Atual_Desafios_Emergentes.pdf"
+    },
+    {
+      "value": "2,6%",
+      "context": "Aumento no número de mortos em estradas nacionais entre 2015 e 2019.",
+      "source": "https://visaozero2030.pt/wp-content/uploads/FASE2-Fundamentos_Tecnico_Cientificos_Estrategia_SR2030_Situacao_Atual_Desafios_Emergentes.pdf"
+    },
+    {
+      "value": "7%",
+      "context": "Aumento no número de mortos em Itinerários Principais interurbanos e Itinerários Complementares entre 2015 e 2019.",
+      "source": "https://visaozero2030.pt/wp-content/uploads/FASE2-Fundamentos_Tecnico_Cientificos_Estrategia_SR2030_Situacao_Atual_Desafios_Emergentes.pdf"
+    },
+    {
+      "value": "50%",
+      "context": "Meta de redução de acidentes envolvendo pedestres e ciclistas até 2030.",
+      "source": "https://visaozero2030.pt/wp-content/uploads/FASE2-Fundamentos_Tecnico_Cientificos_Estrategia_SR2030_Situacao_Atual_Desafios_Emergentes.pdf"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Aquela zona apresentava reduzidas condições de iluminação, situação considerada especialmente relevante por existir no.",
+      "attribution": "https://noticiasdosorraia.sapo.pt/samora-correia-instala-iluminacao-na-ciclovia-da-en118-para-reforcar-seguranca"
+    }
+  ],
+  "time_series": [],
+  "summary": "A segurança dos ciclistas em Samora Correia está sendo reforçada com a instalação de iluminação na ciclovia da EN118, em resposta a condições de iluminação inadequadas. Apesar do aumento de acidentes envolvendo ciclistas e pedestres em áreas urbanas de Portugal entre 2015 e 2019, a cidade busca melhorar a infraestrutura cicloviária e tem como meta reduzir esses acidentes em 50% até 2030.",
+  "pillar": "cycling",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-09-29-uma-lampada-na-ciclovia-nao-e-infraestrutura-e-uma.html",
+  "signal": {
+    "title": "Samora Correia instala iluminação na ciclovia da EN118 para reforçar segurança",
+    "source": "SAPO",
+    "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPalFWbmd4OUVIQzFYV3ZFOFRpTmszZTN3RjJiYjZLNDhsZktHX2NpZkc3V1hTWkxwY2xlWV9ZZ2haM0JKZk9Sa0NZa1pVeTFfZHFUVV9iZk5LemVpTHF0Yk9FeTVCbGxkUEdHQlc1ZjRESHpSVndKcmNQTUVwTTh4dU5Wa25XYWt5SjlFSE01U0Y1NUNPN2FWWExZLVIxdS04bTR4ZmlaMmxRWXcyVmtsdHB0eXhXUW1lUzREQXgyU0x2cW5w?oc=5",
+    "date": "2026-09-29T06:40:00.000Z"
+  }
+}

@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sun, 27 Sep 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 29 Sep 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Uma Lâmpada na Ciclovia é uma Declaração</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-29-uma-lampada-na-ciclovia-nao-e-infraestrutura-e-uma.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-29-uma-lampada-na-ciclovia-nao-e-infraestrutura-e-uma.html</guid>
+      <pubDate>Tue, 29 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Quando Samora Correia instalou iluminação na ciclovia da EN118, fez mais do que melhorar a segurança: afirmou que ciclistas merecem existir no espaço público.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-29-uma-lampada-na-ciclovia-nao-e-infraestrutura-e-uma.jpg" length="160935" type="image/jpeg"/>
+    </item>
     <item>
       <title>600 vagas gratuitas de IA e o gargalo real</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-09-27-600-vagas-gratuitas-de-ia-e-o-gargalo-nao-e-a-falta-de-curso.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Sun, 23 Aug 2026 12:00:00 GMT</pubDate>
       <description>Pessoas negras são 62,3% dos empreendedores em Pernambuco, mas ganham 78% menos que brancos, e a tecnologia, sozinha, não resolve o que o racismo estrutural…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-23-maioria-no-mercado-minoria-na-renda-o-que-os-dados-de-pernam.jpg" length="182880" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Eleitorado ou Sujeito?</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.html</guid>
-      <pubDate>Fri, 21 Aug 2026 12:00:00 GMT</pubDate>
-      <description>Quando a política descobre o eleitor negro a cada quatro anos mas esquece o cidadão negro nos outros três, algo fundamental sobre identidade e poder está sendo…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-21-eleitorado-ou-sujeito-o-que-o-brasil-ainda-nao-entendeu-sobr.jpg" length="120329" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

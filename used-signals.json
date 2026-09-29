@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "nath financas lanca canal de noticias sobre economia",
-      "url": "https://mundonegro.inf.br/nath-financas-lanca-n3-noticias-economia/",
-      "pillar": "entrepreneurship",
-      "title": "Nath Finanças lança canal de notícias sobre economia",
-      "recordedAt": "2026-07-29T12:01:52.963Z"
-    },
-    {
       "titleKey": "desemprego fica em 54 em junho mas com 385 milhoes de trabalhadores informais",
       "url": "https://noticiapreta.com.br/desemprego-fica-em-54-em-junho-mas-com-385-milhoes-de-trabalhadores-informais/?utm_source=rss&utm_medium=rss&utm_campaign=desemprego-fica-em-54-em-junho-mas-com-385-milhoes-de-trabalhadores-informais",
       "pillar": "technology",
@@ -216,6 +209,13 @@
       "pillar": "technology",
       "title": "KODIE Academy abre inscrições para formação gratuita em Inteligência Artificial para Desenvolvedores",
       "recordedAt": "2026-09-27T12:01:37.068Z"
+    },
+    {
+      "titleKey": "samora correia instala iluminacao na ciclovia da en118 para reforcar seguranca",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPalFWbmd4OUVIQzFYV3ZFOFRpTmszZTN3RjJiYjZLNDhsZktHX2NpZkc3V1hTWkxwY2xlWV9ZZ2haM0JKZk9Sa0NZa1pVeTFfZHFUVV9iZk5LemVpTHF0Yk9FeTVCbGxkUEdHQlc1ZjRESHpSVndKcmNQTUVwTTh4dU5Wa25XYWt5SjlFSE01U0Y1NUNPN2FWWExZLVIxdS04bTR4ZmlaMmxRWXcyVmtsdHB0eXhXUW1lUzREQXgyU0x2cW5w?oc=5",
+      "pillar": "cycling",
+      "title": "Samora Correia instala iluminação na ciclovia da EN118 para reforçar segurança",
+      "recordedAt": "2026-09-29T12:01:49.771Z"
     }
   ]
 }
