@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Thu, 01 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 03 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>A IA é decidida em outro lugar, e isso importa</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-03-a-ia-e-decidida-em-outro-lugar-e-isso-nao-e-metafora.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-03-a-ia-e-decidida-em-outro-lugar-e-isso-nao-e-metafora.html</guid>
+      <pubDate>Sat, 03 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Uma empresa na Califórnia desenha o chip. Outra, em Taiwan, fabrica. Sem terceira opção em escala. O que isso significa para eleições, dados e soberania.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-03-a-ia-e-decidida-em-outro-lugar-e-isso-nao-e-metafora.jpg" length="94051" type="image/jpeg"/>
+    </item>
     <item>
       <title>Carreira após os 40 e o custo de chegar lá</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-01-jayane-borges-aprendeu-a-sonhar-o-sistema-aprendeu-a-contar.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Thu, 27 Aug 2026 12:00:00 GMT</pubDate>
       <description>Mulheres negras são maioria entre as empreendedoras brasileiras, mas 42,8% operam na informalidade, e esse número revela um sistema, não uma escolha.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-27-52-dos-donos-de-negocio-no-brasil-sao-negros-por-que-a-rique.jpg" length="108766" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Ceilândia tem algo a ensinar sobre como construir</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-25-ceilandia-tem-algo-a-ensinar-sobre-como-construir-um-negocio.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-25-ceilandia-tem-algo-a-ensinar-sobre-como-construir-um-negocio.html</guid>
-      <pubDate>Tue, 25 Aug 2026 12:00:00 GMT</pubDate>
-      <description>O Festival Elemento em Movimento mostra que cultura preta e periférica não é nicho, é infraestrutura para um novo modelo de empreendedorismo.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-25-ceilandia-tem-algo-a-ensinar-sobre-como-construir-um-negocio.jpg" length="131345" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

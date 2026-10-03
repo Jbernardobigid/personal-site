@@ -1,0 +1,108 @@
+{
+  "topic": "domínio mercado IA NVIDIA TSMC chips semicondutores participação de mercado global 2024",
+  "slug": "a-ia-e-decidida-em-outro-lugar-e-isso-nao-e-metafora",
+  "generated_at": "2026-10-03T12:00:49.527Z",
+  "sources": [
+    "https://www.linkedin.com/posts/robertquinn2020_semiconductors-ai-nvidia-activity-7307558857864593408-QsRS",
+    "https://teletime.com.br/14/01/2026/em-2025-mercado-de-semicondutores-atingiu-us-793-bilhoes-em-receita",
+    "https://www.semiconductorthings.com/p/tsmc-nears-1-trillion-market-cap",
+    "https://blocktrends.com.br/guerra-chips-ia-quem-lidera-corrida-2025",
+    "https://www.tudocelular.com/mercado/noticias/n216706/nvidia-dobro-capitalizacao-mercado-tsmc-2024.html",
+    "https://oespecialista.safra.com.br/ia-fase-seletiva-mercado-global",
+    "https://www.gomarkets.com/pt-latam/articles/top-5-semiconductor-stocks-in-asia-ais-biggest-beneficiaries",
+    "https://www.slkoric.com/pt/newDetail/31484",
+    "https://inforchannel.com.br/2024/12/16/mercado-global-de-semicondutores-crescera-15-em-2025-impulsionado-pela-ia",
+    "https://fenati.org.br/o-monopolio-ia-como-poucas-empresas-dominam-mercado"
+  ],
+  "insights": [
+    "Em 2024, a NVIDIA dominou o mercado de chips fabless com uma participação de 50%, gerando US$ 124,4 bilhões em receita.",
+    "O mercado global de semicondutores atingiu US$ 793 bilhões em 2025, impulsionado principalmente pela infraestrutura de IA.",
+    "A TSMC fabrica mais de 60% de todos os chips contratados e detém mais de 60% do mercado global de fabricação de semicondutores.",
+    "A receita da NVIDIA em 2025 foi de US$ 125,703 bilhões, representando 15,8% do mercado global de semicondutores.",
+    "A Apple foi o maior cliente da TSMC em 2024, representando cerca de 24-25% de sua receita."
+  ],
+  "stats": [
+    {
+      "value": "50%",
+      "context": "participação de mercado da NVIDIA no mercado de chips fabless em 2024",
+      "source": "https://www.linkedin.com/posts/robertquinn2020_semiconductors-ai-nvidia-activity-7307558857864593408-QsRS"
+    },
+    {
+      "value": "793 bilhões",
+      "context": "valor do mercado global de semicondutores em 2025",
+      "source": "https://teletime.com.br/14/01/2026/em-2025-mercado-de-semicondutores-atingiu-us-793-bilhoes-em-receita"
+    },
+    {
+      "value": "60%",
+      "context": "participação de mercado da TSMC na fabricação de semicondutores",
+      "source": "https://blocktrends.com.br/guerra-chips-ia-quem-lidera-corrida-2025"
+    },
+    {
+      "value": "125,703 bilhões",
+      "context": "receita da NVIDIA em 2025",
+      "source": "https://teletime.com.br/14/01/2026/em-2025-mercado-de-semicondutores-atingiu-us-793-bilhoes-em-receita"
+    },
+    {
+      "value": "24-25%",
+      "context": "participação da Apple na receita da TSMC em 2024",
+      "source": "https://www.linkedin.com/posts/robertquinn2020_semiconductors-ai-nvidia-activity-7307558857864593408-QsRS"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A NVIDIA dominou o mercado de chips fabless com uma participação de 50%.",
+      "attribution": "TrendForce"
+    },
+    {
+      "text": "O mercado global de semicondutores atingiu a marca histórica de US$ 793 bilhões em 2025.",
+      "attribution": "TELETIME News"
+    },
+    {
+      "text": "A TSMC detém mais de 60% do mercado global de fabricação de semicondutores.",
+      "attribution": "BlockTrends"
+    },
+    {
+      "text": "A receita da NVIDIA em 2025 foi de US$ 125,703 bilhões.",
+      "attribution": "TELETIME News"
+    },
+    {
+      "text": "A Apple foi o maior cliente da TSMC em 2024, representando cerca de 24-25% de sua receita.",
+      "attribution": "LinkedIn"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2024,
+      "value": 50,
+      "unit": "%",
+      "label": "participação de mercado da NVIDIA no mercado de chips fabless"
+    },
+    {
+      "year": 2025,
+      "value": 793,
+      "unit": "bilhões",
+      "label": "valor do mercado global de semicondutores"
+    },
+    {
+      "year": 2025,
+      "value": 125.703,
+      "unit": "bilhões",
+      "label": "receita da NVIDIA"
+    },
+    {
+      "year": 2024,
+      "value": 24,
+      "unit": "%",
+      "label": "participação da Apple na receita da TSMC"
+    }
+  ],
+  "summary": "Em 2024, a NVIDIA se destacou no mercado de semicondutores, dominando o setor de chips fabless com uma participação significativa. A TSMC, como principal fabricante, continua a desempenhar um papel crucial, enquanto o mercado global de semicondutores experimenta um crescimento robusto impulsionado pela demanda por infraestrutura de IA.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-03-a-ia-e-decidida-em-outro-lugar-e-isso-nao-e-metafora.html",
+  "signal": {
+    "title": "Inteligência artificial e o que está em jogo nas eleições",
+    "source": "Geledés",
+    "url": "https://www.geledes.org.br/inteligencia-artificial-e-o-que-esta-em-jogo-nas-eleicoes/",
+    "date": "2026-10-02T17:31:56.000Z"
+  }
+}
