@@ -15,6 +15,17 @@
     <itunes:category text="Society &amp; Culture"/>
     <itunes:explicit>false</itunes:explicit>
     <item>
+      <title>Ciclismo, risco e política nas ruas do Brasil</title>
+      <description>David Mendes pedalou de Portugal até a Turquia para chegar à COP31. No Brasil, quase 15 mil ciclistas morreram em dez anos.</description>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-05-david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de.html</link>
+      <guid isPermaLink="false">https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-10-05-david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de.mp3</guid>
+      <pubDate>Mon, 05 Oct 2026 12:00:00 GMT</pubDate>
+      <enclosure url="https://r8oygszkrjermjs7.public.blob.vercel-storage.com/podcast/2026-10-05-david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de.mp3" length="6017402" type="audio/mpeg"/>
+      <itunes:duration>6:16</itunes:duration>
+      <itunes:author>Jorge Bernardo</itunes:author>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
       <title>A IA é decidida em outro lugar, e isso importa</title>
       <description>Uma empresa na Califórnia desenha o chip. Outra, em Taiwan, fabrica. Sem terceira opção em escala. O que isso significa para eleições, dados e soberania.</description>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-03-a-ia-e-decidida-em-outro-lugar-e-isso-nao-e-metafora.html</link>
