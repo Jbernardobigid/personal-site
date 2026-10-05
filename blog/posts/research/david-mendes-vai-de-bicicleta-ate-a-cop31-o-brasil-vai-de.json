@@ -1,0 +1,97 @@
+{
+  "topic": "acidentes de trânsito ciclistas mortes ferimentos Brasil estatísticas dados IBGE DIEESE",
+  "slug": "david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de",
+  "generated_at": "2026-10-05T12:00:50.821Z",
+  "sources": [
+    "https://www.scielo.br/j/csp/a/pzQdJwPLZF9bBJwCYgYY8sk",
+    "https://www.scielo.br/j/csp/a/pzQdJwPLZF9bBJwCYgYY8sk?lang=pt",
+    "https://www.portaldotransito.com.br/noticias/fiscalizacao-e-legislacao/estatisticas/page/15",
+    "https://rbsp.sesab.ba.gov.br/index.php/rbsp/article/view/2404/2356",
+    "https://www.scielo.br/j/csc/a/pWtNX5LNZRTqYHgh4wbZf7F?lang=pt",
+    "https://www.linkedin.com/news/story/ciclistas-s%C3%A3o-5-das-v%C3%ADtimas-dos-acidentes-no-tr%C3%A2nsito-6298970",
+    "https://www.gov.br/previdencia/pt-br/outros/imagens/2016/12/sausegtrabestprod72.pdf",
+    "https://bikeregistrada.com.br/blog/analise-dos-ultimos-10-anos-quase-15-mil-mortes-de-ciclistas-no-brasil",
+    "https://www.portaldotransito.com.br/noticias/fiscalizacao-e-legislacao/estatisticas/page/37",
+    "https://bnewssaopaulo.com.br/noticias/policia/mortes-no-transito-despencam-em-sp-e-ciclistas-lideram-queda-historica-em-janeiro.html",
+    "https://portalhortolandia.com.br/noticias/campinas/campinas-fecha-semestre-sem-mortes-de-ciclistas-e-reduz-fatalidades-no-transito-230672"
+  ],
+  "insights": [
+    "Entre 2000 e 2010, 32.422 ciclistas morreram em acidentes de trânsito no Brasil, representando 8,3% do total de mortes por acidentes.",
+    "Em um período específico, 14.381 mortes de ciclistas foram registradas, com maior frequência entre homens.",
+    "Em 2021, 33.813 mortes em acidentes de trânsito foram registradas no Brasil, com ciclistas representando 5% desse total.",
+    "Os estados de São Paulo, Bahia e Pernambuco lideram o número de mortes de ciclistas, refletindo um problema generalizado de segurança no trânsito.",
+    "Entre 2014 e 2024, quase 15 mil mortes de ciclistas foram contabilizadas, destacando a necessidade urgente de medidas de segurança."
+  ],
+  "stats": [
+    {
+      "value": "30%",
+      "context": "em 1988, 30% das mortes por causas externas no Brasil foram atribuídas a acidentes de trânsito.",
+      "source": "https://www.scielo.br/j/csp/a/pzQdJwPLZF9bBJwCYgYY8sk"
+    },
+    {
+      "value": "8,3%",
+      "context": "de 2000 a 2010, ciclistas representaram 8,3% do total de mortes em acidentes de trânsito.",
+      "source": "https://www.scielo.br/j/csc/a/pWtNX5LNZRTqYHgh4wbZf7F?lang=pt"
+    },
+    {
+      "value": "5%",
+      "context": "em 2021, ciclistas foram responsáveis por 5% das mortes em acidentes de trânsito no Brasil.",
+      "source": "https://www.linkedin.com/news/story/ciclistas-s%C3%A3o-5-das-v%C3%ADtimas-dos-acidentes-no-tr%C3%A2nsito-6298970"
+    },
+    {
+      "value": "14.381",
+      "context": "número de mortes de ciclistas em um período específico, com maior incidência entre homens.",
+      "source": "https://rbsp.sesab.ba.gov.br/index.php/rbsp/article/view/2404/2356"
+    },
+    {
+      "value": "15.000",
+      "context": "quase 15 mil mortes de ciclistas foram registradas entre 2014 e 2024.",
+      "source": "https://bikeregistrada.com.br/blog/analise-dos-ultimos-10-anos-quase-15-mil-mortes-de-ciclistas-no-brasil"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A mortalidade por acidentes de trânsito corresponde a quase metade das causas externas em muitos municípios.",
+      "attribution": "https://www.scielo.br/j/csp/a/pzQdJwPLZF9bBJwCYgYY8sk"
+    },
+    {
+      "text": "O uso da bicicleta representa apenas uma fração das fatalidades, mas a segurança é uma questão crítica.",
+      "attribution": "https://bikeregistrada.com.br/blog/analise-dos-ultimos-10-anos-quase-15-mil-mortes-de-ciclistas-no-brasil"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 1988,
+      "value": 30,
+      "unit": "%",
+      "label": "percentual de mortes por acidentes de trânsito em relação às causas externas"
+    },
+    {
+      "year": 2000,
+      "value": 32.422,
+      "unit": "thousands",
+      "label": "número de mortes de ciclistas em acidentes de trânsito"
+    },
+    {
+      "year": 2021,
+      "value": 33.813,
+      "unit": "thousands",
+      "label": "número total de mortes em acidentes de trânsito"
+    },
+    {
+      "year": 2014,
+      "value": 14.834,
+      "unit": "thousands",
+      "label": "número de mortes de ciclistas entre 2014 e 2024"
+    }
+  ],
+  "summary": "O Brasil enfrenta um aumento alarmante nas mortes por acidentes de trânsito, com ciclistas representando uma parte significativa das fatalidades. Entre 2000 e 2010, mais de 32 mil ciclistas perderam a vida, e em 2021, 5% das mortes no trânsito foram de ciclistas. A segurança no trânsito continua sendo uma questão crítica, especialmente em estados como São Paulo e Bahia.",
+  "pillar": "cycling",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-05-david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de.html",
+  "signal": {
+    "title": "​De Viana do Castelo à COP31 de bicicleta: David Mendes leva à Turquia um apelo por cidades mais seguras",
+    "source": "Renascença",
+    "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNUEpQcFVldVhQSWxrT0I2bHNpcEdxMzNwbXI4aGl5ellVWFJwS0hSZi1ZVmZPanZhX1hXbGlCZjFKaTdOeFVuQnotZ3NRRmUtSGVreC1mcjNLMkJ2SG9pUGhJSldkY0VfbHBhdGRyb0JlWWlaaGZyNHVhUDhCbDZHV3BRTXpFTW03aHNjaTFONG1HY0FDbU0teW80dWkwSEhxd1Y0a0lLemM4WF9iZV9xamlQZDlqVXFjbDJPcU5mOE5BTk5PNHZUMmVIT2h0aDloak1IdDZNWkRNWlJkT0RoUU51eFk5cjjSAecBQVVfeXFMTVBKUHBVZXVYUElsa09CNmxzaXBHcTMzcG1yOGhpeXpZVVhScEtIUmYtWVZmT2p2YV9YV2xpQmYxSmk3TnhVbkJ6LWdzUUZlLUhla3gtZnIzSzJCdkhvaVBoSUpXZGNFX2xwYXRkcm9CZVlpWmhmcjR1YVA4Qmw2R1dwUU16RU1tN2hzY2kxTjRtR2NBQ21NLXlvNHVpMEhIcXdWNGtJS3pjOFhfYmVfcWppUGQ5alVxY2wyT3FOZjhOQU5OTzR2VDJlSE9odGg5aGpNSHQ2TVpETVpSZE9EaFFOdXhZOXI4?oc=5",
+    "date": "2026-10-05T08:00:00.000Z"
+  }
+}
