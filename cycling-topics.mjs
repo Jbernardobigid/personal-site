@@ -15,7 +15,9 @@
  * Usage:
  *   node cycling-topics.mjs              (pick + develop a concept, mark used)
  *   node cycling-topics.mjs --dry-run    (print concept, don't mark used)
- *   node cycling-topics.mjs --seed "..." (develop this idea instead of the bank's)
+ *   node cycling-topics.mjs --seed "..." (develop this idea instead of the bank's; logs
+ *                                         category "seed", which disables the next run's
+ *                                         diversity floor)
  *
  * Requires: ANTHROPIC_API_KEY. Optional: STRAVA_* trio.
  */

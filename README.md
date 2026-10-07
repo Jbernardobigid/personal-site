@@ -17,6 +17,8 @@ Live site: <https://jorgebernardo.tech> (deployed on Vercel, served from the rep
 
 All pipelines are plain Node scripts (`node <script>.mjs`), with secrets in a local `.env` loaded by [load-env.mjs](load-env.mjs). Deterministic logic lives in code; n8n and GitHub Actions only trigger it.
 
+Every Claude prompt that writes publishable copy (blog post, Reel concept and script, carousel slides and caption) opens with `promptDateBlock()` from [prompt-date.mjs](prompt-date.mjs): today's date in São Paulo time plus "anything dated before today already happened". Without it the model writes from its training-era "now": on 2026-10-07 a Reel narrated the Kigali 2025 Worlds as still to come. New generators must include it too.
+
 ### Blog (fully automated)
 
 [.github/workflows/blog-post.yml](.github/workflows/blog-post.yml) runs every 2 days at 09:00 UTC:
@@ -48,6 +50,7 @@ Setup guide: [docs/setup-meta-and-notion.md](docs/setup-meta-and-notion.md) · o
 
 ### Educational videos (Reels format)
 
+- [cycling-topics.mjs](cycling-topics.mjs) — Phase 4 cycling Reel concept (no blog post): picks from [cycling-topics-bank.json](cycling-topics-bank.json) (rotation rule in [topic-rotation.mjs](topic-rotation.mjs), usage in the VPS-only `cycling-topics-used.json`), optionally grounds it in recent Strava rides (each passed as "2026-10-03 (sábado, há 4 dias)" so the model never works out weekdays itself), writes `cycling-topic.json` for `generate-video.mjs --topic-file`. `--seed "<idea>"` re-develops a given idea, but it logs category `seed`, which turns off the next run's diversity floor; when rebuilding an idea already logged, back up the ledger and restore it afterwards.
 - [generate-video.mjs](generate-video.mjs) — blog post (or a `--topic-file` cycling concept) → ~45–55s 9:16 video: Claude script (5 scenes), ElevenLabs voice-clone voiceover (shared [tts.mjs](tts.mjs)), typographic b-roll by default (image/mixed/real/KIE modes behind flags), Puppeteer kinetic-text layers ([templates/video/](templates/video/)), ffmpeg compositing, Whisper word-level karaoke captions, music bed ([assets/music/](assets/music/)). Output: `videos/{date}-{slug}/video.mp4`.
   - The per-scene TTS calls are **stitched** (each conditioned on the neighbouring narration + prior request IDs) so the read builds across the 5 scenes instead of restarting flat on each one. Scenes stay separate files — per-scene durations drive the video timing.
   - Voice A/B: every run saves the exact spoken text to `script.json`; `--script-file <json>` replays it verbatim so two voice settings can be compared on identical narration. `--no-stitch` renders the pre-stitching read, `--keep-audio` keeps the bare VO (the final mix buries it under captions + music), `--out-suffix` disambiguates output dirs.
@@ -69,8 +72,9 @@ Setup guide: [docs/setup-meta-and-notion.md](docs/setup-meta-and-notion.md) · o
 | `node build-montages.mjs` | Contact-sheet montages of `brand_assets/Fotos` for the photo inventory |
 | `node remove-bg.mjs <in> <out>` | Edge flood-fill background removal for logos |
 | `node validate-content.mjs` | Asserts `sitemap.xml`/`robots.txt`/`feed.xml`/`blog/index.html` agree with what's on disk (`npm run content:check`) — run after touching `generate-post.mjs` or either commit step |
+| `npm run test:seo` · `test:photos` · `test:topics` · `test:dates` | Unit tests for the SEO helpers, photo rotation, idea-bank rotation, and the prompt date block ([prompt-date.mjs](prompt-date.mjs)) |
 
-All npm script aliases are in [package.json](package.json) (`blog:*`, `signals:fetch`, `carousel:*`, `video:*`, `templates:*`, `ig:*`, `content:check`).
+All npm script aliases are in [package.json](package.json) (`blog:*`, `signals:fetch`, `carousel:*`, `video:*`, `templates:*`, `ig:*`, `content:check`, `test:*`).
 
 ## Deployment & security
 
