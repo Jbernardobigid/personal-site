@@ -26,7 +26,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
 import { stalestIdeas } from './topic-rotation.mjs';
-import { promptDateBlock } from './prompt-date.mjs';
+import { describeDay, promptDateBlock } from './prompt-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BANK_PATH = path.join(__dirname, 'cycling-topics-bank.json');
@@ -183,7 +183,7 @@ async function developConcept(client, { candidates, seed, rides, recentTitles, p
     : `BANCO DE IDEIAS (escolha UMA — a que rende o melhor Reel HOJE, considerando o material do Strava e o desempenho real se houver):\n${candidates.map(c => `- [${c.id}] (${c.category}) ${c.idea}`).join('\n')}`;
 
   const stravaBlock = rides
-    ? `\nPEDAIS REAIS RECENTES DO JORGE (Strava — use como material concreto quando encaixar; números reais valem mais que generalidades):\n${rides.map(r => `- ${r.date} "${r.name}": ${r.km}km, ${r.elevationM}m de subida, ${r.movingMin}min${r.avgKmh ? `, ${r.avgKmh}km/h média` : ''}`).join('\n')}\n`
+    ? `\nPEDAIS REAIS RECENTES DO JORGE (Strava — use como material concreto quando encaixar; números reais valem mais que generalidades):\n${rides.map(r => `- ${r.date} (${describeDay(r.date)}) "${r.name}": ${r.km}km, ${r.elevationM}m de subida, ${r.movingMin}min${r.avgKmh ? `, ${r.avgKmh}km/h média` : ''}`).join('\n')}\n`
     : '';
 
   const perfBlock = perf
