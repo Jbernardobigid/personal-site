@@ -37,7 +37,8 @@
     "content:regen": "node regen-feed-sitemap.mjs",
     "test:seo": "node test-seo-helpers.mjs",
     "test:photos": "node test-photo-rotation.mjs",
-    "test:topics": "node test-topic-rotation.mjs"
+    "test:topics": "node test-topic-rotation.mjs",
+    "test:dates": "node test-prompt-date.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

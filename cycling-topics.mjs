@@ -26,6 +26,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
 import { stalestIdeas } from './topic-rotation.mjs';
+import { promptDateBlock } from './prompt-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BANK_PATH = path.join(__dirname, 'cycling-topics-bank.json');
@@ -230,7 +231,9 @@ async function developConcept(client, { candidates, seed, rides, recentTitles, p
     tool_choice: { type: 'tool', name: 'create_reel_concept' },
     messages: [{
       role: 'user',
-      content: `Desenvolva UMA pauta de Reel vertical de ciclismo (~45-50s) para hoje.
+      content: `${promptDateBlock()}
+
+Desenvolva UMA pauta de Reel vertical de ciclismo (~45-50s) para hoje.
 
 ${source}
 ${stravaBlock}${perfBlock}${simBlock}

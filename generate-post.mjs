@@ -24,6 +24,7 @@ import { fileURLToPath } from 'url';
 import { generatePostImage } from './generate-image.mjs';
 import { selectSignal, recordUsedSignal } from './signals.mjs';
 import { researchTopic, deriveResearchQuery } from './research.mjs';
+import { promptDateBlock } from './prompt-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR    = path.join(__dirname, 'blog');
@@ -977,7 +978,9 @@ NEVER use the following — they are AI tells that break authenticity:
     console.log(`Anti-repetition: ${recentPosts.length} recent post(s) with excerpts + ${archiveTitles.length} archive title(s) passed to the writer.`);
   }
 
-  const userPrompt = `Write a blog post on the topic pillar: "${pillar.label}" — ${pillar.description}${signalBlock}${researchBlock}${recentBlock}
+  const userPrompt = `${promptDateBlock()}
+
+Write a blog post on the topic pillar: "${pillar.label}" — ${pillar.description}${signalBlock}${researchBlock}${recentBlock}
 
 Requirements:
 - Title: compelling, specific, not generic (in Portuguese), and structurally different from the recent titles listed above

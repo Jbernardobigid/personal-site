@@ -52,6 +52,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import puppeteer from 'puppeteer-core';
 import { expandSpokenUnits, fixOrthographyLines, tts } from './tts.mjs';
+import { promptDateBlock } from './prompt-date.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CHROME = process.env.CHROME_PATH || 'C:/Users/Jorge Bernardo/.cache/puppeteer/chrome/win64-148.0.7778.167/chrome-win64/chrome.exe';
@@ -211,7 +212,9 @@ async function generateScript(client, post, seconds) {
     tool_choice: { type: 'tool', name: 'create_video_script' },
     messages: [{
       role: 'user',
-      content: `A partir ${post.kind === 'topic' ? 'desta pauta de Reel' : 'deste post do blog'}, escreva o roteiro de um vídeo educativo vertical de ~${seconds}s.
+      content: `${promptDateBlock()}
+
+A partir ${post.kind === 'topic' ? 'desta pauta de Reel' : 'deste post do blog'}, escreva o roteiro de um vídeo educativo vertical de ~${seconds}s.
 Regras RÍGIDAS de tamanho (o vídeo NÃO pode passar de ~${seconds}s):
 - Exatamente 5 cenas.
 - Cada "narration": 1 ou 2 frases curtas, NO MÁXIMO ~22 palavras.

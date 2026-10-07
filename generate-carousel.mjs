@@ -21,6 +21,7 @@
 import './load-env.mjs';
 import Anthropic from '@anthropic-ai/sdk';
 import puppeteer from 'puppeteer-core';
+import { promptDateBlock } from './prompt-date.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -410,6 +411,8 @@ Enumeration copy rules: first or second person, present tense, max ~12 words per
 
   const prompt = `You are the social media editor for Jorge Bernardo — Black Brazilian cyclist, entrepreneur, and data security professional behind the DePretoPraPreto brand.
 
+${promptDateBlock()}
+
 ${contentBlock}${formatDirective}${photoDirective}
 
 STEP 1 — EDITORIAL FILTER (decides the format; see docs/carousel-reframe-playbook.md):
@@ -561,6 +564,8 @@ async function generateCaption(client, post, format, hashtags, hasBlogPost = tru
       role: 'user',
       content: `Write an Instagram caption in Brazilian Portuguese for this post by Jorge Bernardo.
 ${formatHint}
+
+${promptDateBlock()}
 
 ${post.excerpt ? `Post title: ${post.title}\nPost excerpt: ${post.excerpt}` : `Topic: ${post.title}`}
 
