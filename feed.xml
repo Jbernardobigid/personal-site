@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Wed, 07 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 09 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Aprender pelo corpo: o que a residência artística ensina</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-09-cinco-artistas-45-dias-e-a-unica-forma-de-aprendizado-que.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-09-cinco-artistas-45-dias-e-a-unica-forma-de-aprendizado-que.html</guid>
+      <pubDate>Fri, 09 Oct 2026 12:00:00 GMT</pubDate>
+      <description>O LABDicró selecionou cinco projetos de danças negras no Rio, e o que eles revelam sobre aprendizado real vai muito além da sala de aula ou do certificado.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-09-cinco-artistas-45-dias-e-a-unica-forma-de-aprendizado-que.jpg" length="190508" type="image/jpeg"/>
+    </item>
     <item>
       <title>Filmar a mãe é um ato de paternidade às avessas</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-07-clementino-junior-filmou-a-mae-e-disse-mais-sobre.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Tue, 01 Sep 2026 12:00:00 GMT</pubDate>
       <description>Uma pesquisa com 646 mães negras revelou que 65,3% não conseguem entrar no audiovisual brasileiro, e isso diz muito sobre como sistemas, algoritmos e mercados…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.jpg" length="164831" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Aprender é um ato político</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-08-31-aprender-e-um-ato-politico-o-que-o-ii-encontro-latino-americ.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-08-31-aprender-e-um-ato-politico-o-que-o-ii-encontro-latino-americ.html</guid>
-      <pubDate>Mon, 31 Aug 2026 12:00:00 GMT</pubDate>
-      <description>Entre os dias 25 e 27 de setembro de 2026, educadoras e educadores de toda a América Latina se reúnem no Rio para debater algo que vai muito além de sala…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-08-31-aprender-e-um-ato-politico-o-que-o-ii-encontro-latino-americ.jpg" length="96817" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
