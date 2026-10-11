@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Fri, 09 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 11 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Herança, presença e o que um pai passa adiante</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-11-sergio-malheiros-tem-27-anos-de-carreira-e-33-de-idade-isso.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-11-sergio-malheiros-tem-27-anos-de-carreira-e-33-de-idade-isso.html</guid>
+      <pubDate>Sun, 11 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Sérgio Malheiros estreou antes de completar 10 anos. Aos 33, protagoniza uma série. O que isso revela sobre herança, representação e o legado que um pai…</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-11-sergio-malheiros-tem-27-anos-de-carreira-e-33-de-idade-isso.jpg" length="144320" type="image/jpeg"/>
+    </item>
     <item>
       <title>Aprender pelo corpo: o que a residência artística ensina</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-09-cinco-artistas-45-dias-e-a-unica-forma-de-aprendizado-que.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Thu, 03 Sep 2026 12:00:00 GMT</pubDate>
       <description>Quando Nova York atualizou o currículo de cosmetologia para incluir cabelos crespos e cacheados, revelou algo maior: o que não está no currículo forma tanto…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.jpg" length="94960" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Quando o algoritmo não te vê</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.html</guid>
-      <pubDate>Tue, 01 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Uma pesquisa com 646 mães negras revelou que 65,3% não conseguem entrar no audiovisual brasileiro, e isso diz muito sobre como sistemas, algoritmos e mercados…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-01-quando-o-algoritmo-nao-te-ve-exclusao-audiovisual-e-o-que-os.jpg" length="164831" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
