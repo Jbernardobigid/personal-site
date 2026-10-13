@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sun, 11 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 13 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Ciclovia na Beira-Mar e quem tem direito de pedalar</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-13-vitoria-abriu-uma-ciclovia-na-beira-mar-a-pergunta-que-fica.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-13-vitoria-abriu-uma-ciclovia-na-beira-mar-a-pergunta-que-fica.html</guid>
+      <pubDate>Tue, 13 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A ciclovia provisória de Vitória abriu hoje na Beira-Mar. A infraestrutura cresceu, mas a pergunta sobre quem ocupa esse espaço continua sem resposta.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-13-vitoria-abriu-uma-ciclovia-na-beira-mar-a-pergunta-que-fica.jpg" length="197599" type="image/jpeg"/>
+    </item>
     <item>
       <title>Herança, presença e o que um pai passa adiante</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-11-sergio-malheiros-tem-27-anos-de-carreira-e-33-de-idade-isso.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Sat, 05 Sep 2026 12:00:00 GMT</pubDate>
       <description>Todo setembro o Brasil se pinta de amarelo, mas raramente faz a pergunta mais difícil: o que acontece quando a dor tem raça, e o cuidado disponível ignora isso?</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-05-setembro-amarelo-nao-fala-de-raca-mas-a-dor-negra-tem-endere.jpg" length="98166" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>O que Nova York ensinou sobre o que a gente</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.html</guid>
-      <pubDate>Thu, 03 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Quando Nova York atualizou o currículo de cosmetologia para incluir cabelos crespos e cacheados, revelou algo maior: o que não está no currículo forma tanto…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-03-o-que-nova-york-ensinou-sobre-o-que-a-gente-ainda-nao-sabe-q.jpg" length="94960" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
