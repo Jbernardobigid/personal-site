@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "bolsa familia pode ser antecipado em agosto para familias de cidades em emergenc",
-      "url": "https://noticiapreta.com.br/bolsa-familia-pode-ser-antecipado-em-agosto-para-familias-de-cidades-em-emergencia/?utm_source=rss&utm_medium=rss&utm_campaign=bolsa-familia-pode-ser-antecipado-em-agosto-para-familias-de-cidades-em-emergencia",
-      "pillar": "fatherhood",
-      "title": "Bolsa Família pode ser antecipado em agosto para famílias de cidades em emergência",
-      "recordedAt": "2026-08-15T12:01:53.987Z"
-    },
-    {
       "titleKey": "inscricoes abertas para formacao gratuita em empreendedorismo cultural da liga c",
       "url": "https://noticiapreta.com.br/inscricoes-abertas-para-formacao-gratuita-em-empreendedorismo-cultural-da-liga-criativa-em-condado/?utm_source=rss&utm_medium=rss&utm_campaign=inscricoes-abertas-para-formacao-gratuita-em-empreendedorismo-cultural-da-liga-criativa-em-condado",
       "pillar": "learning",
@@ -209,6 +202,13 @@
       "pillar": "cycling",
       "title": "Ciclovia provisória na Beira-Mar começa a funcionar em Vitória",
       "recordedAt": "2026-10-13T12:01:52.876Z"
+    },
+    {
+      "titleKey": "sernegra 2026 recebe trabalhos sobre populacao negra esporte e desigualdade",
+      "url": "https://revistaraca.com.br/sernegra-2026-recebe-trabalhos-sobre-populacao-negra-esporte-e-desigualdade/",
+      "pillar": "black-identity",
+      "title": "Sernegra 2026 recebe trabalhos sobre população negra, esporte e desigualdade",
+      "recordedAt": "2026-10-15T12:02:04.149Z"
     }
   ]
 }

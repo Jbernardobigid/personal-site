@@ -1,0 +1,70 @@
+{
+  "topic": "população negra Brasil educação desigualdade esportes estatísticas IBGE censo",
+  "slug": "a-sernegra-recebe-pesquisas-o-pais-ainda-recusa-as-perguntas",
+  "generated_at": "2026-10-15T12:00:45.816Z",
+  "sources": [
+    "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao",
+    "https://www.ibge.gov.br/biblioteca/visualizacao/livros/livp11777.pdf",
+    "https://www.youtube.com/watch?v=9K6mbtuB-IU&xstg=CAMSBhUDzO3xHw%3D%3D",
+    "https://ojs.ufgd.edu.br/anpege/article/view/15735",
+    "https://repositorio.usp.br/item/003001449",
+    "https://www.synergiaconsultoria.com.br/fique-por-dentro/populacao-negra-no-brasil",
+    "https://www.fcc.org.br/fcc-noticia/raca-genero-educacao-somente-50-das-pessoas-pretas-concluiram-o-ensino-basico-no-brasil-segundo-ibge",
+    "https://www.geledes.org.br/como-estao-os-direitos-humanos-da-populacao-negra-uma-analise-dos-dados-do-censo-2022-ibge",
+    "https://www.gov.br/igualdaderacial/pt-br/composicao/secretaria-de-gestao-do-sistema-nacional-de-promocao-da-igualdade-racial/diretoria-de-avaliacao-monitoramento-e-gestao-da-informacao/hub-igualdade-racial/populacao"
+  ],
+  "insights": [
+    "A população negra (pretos e pardos) representava 55,7% da população brasileira em 2022, mas 70,3% dos que vivem abaixo da linha da pobreza são desse grupo.",
+    "A desigualdade racial é evidente, com 73% das pessoas em situação de extrema pobreza sendo negras, em comparação a 26% de brancos.",
+    "Entre a população negra, 40% eram considerados pobres em 2022, enquanto apenas 21% da população branca se encontrava nessa condição.",
+    "A taxa de conclusão do ensino básico entre pessoas pretas é de apenas 50%, refletindo a desigualdade educacional.",
+    "As mulheres negras têm uma taxa de conclusão do ensino superior de apenas 16,75%, evidenciando a exclusão educacional."
+  ],
+  "stats": [
+    {
+      "value": "70,3%",
+      "context": "proporção da população negra vivendo abaixo da linha da pobreza em 2022",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "73%",
+      "context": "percentual de negros em situação de extrema pobreza em 2022",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "40%",
+      "context": "percentual de pessoas negras consideradas pobres em 2022",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "50%",
+      "context": "taxa de conclusão do ensino básico entre pessoas pretas",
+      "source": "https://www.fcc.org.br/fcc-noticia/raca-genero-educacao-somente-50-das-pessoas-pretas-concluiram-o-ensino-basico-no-brasil-segundo-ibge"
+    },
+    {
+      "value": "16,75%",
+      "context": "taxa de conclusão do ensino superior entre a população negra",
+      "source": "https://www.geledes.org.br/como-estao-os-direitos-humanos-da-populacao-negra-uma-analise-dos-dados-do-censo-2022-ibge"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A desigualdade racial é caracterizada pelas diferenças sociais entre brancos e negros.",
+      "attribution": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "text": "A população negra possui severas desvantagens em relação à população branca.",
+      "attribution": "https://www.ibge.gov.br/biblioteca/visualizacao/livros/livp11777.pdf"
+    }
+  ],
+  "time_series": [],
+  "summary": "A desigualdade racial no Brasil é alarmante, com a população negra enfrentando desafios significativos em termos de pobreza e educação. Apesar de serem a maioria da população, os negros continuam a ser desproporcionalmente afetados por condições socioeconômicas adversas.",
+  "pillar": "black-identity",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-15-a-sernegra-recebe-pesquisas-o-pais-ainda-recusa-as-perguntas.html",
+  "signal": {
+    "title": "Sernegra 2026 recebe trabalhos sobre população negra, esporte e desigualdade",
+    "source": "Revista Raça",
+    "url": "https://revistaraca.com.br/sernegra-2026-recebe-trabalhos-sobre-populacao-negra-esporte-e-desigualdade/",
+    "date": "2026-10-13T20:00:19.000Z"
+  }
+}
