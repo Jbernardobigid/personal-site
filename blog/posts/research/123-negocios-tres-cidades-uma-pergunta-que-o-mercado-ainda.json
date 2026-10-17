@@ -1,0 +1,82 @@
+{
+  "topic": "empreendedorismo negro Brasil restaurantes bares negócios alimentação dados estatísticas",
+  "slug": "123-negocios-tres-cidades-uma-pergunta-que-o-mercado-ainda",
+  "generated_at": "2026-10-17T12:00:44.532Z",
+  "sources": [
+    "https://agenciaabrasel.com.br/brasil/empreender-consciencia-negra",
+    "https://abrasel.com.br/noticias/noticias/empreendedorismo-negro-ganha-forca-no-setor-amplia-representatividade",
+    "https://al.abrasel.com.br/noticias/noticias/empreendedorismo-negro-ganha-forca-no-setor-amplia-representatividade251119060443",
+    "https://www.instagram.com/p/DTJIJnPgMjQ",
+    "https://sebraepr.com.br/impulsiona/empreendedorismo-negro-no-brasil-um-retrato-de-desafios-e-conquistas",
+    "https://www.youtube.com/watch?v=RTpbwnT8Qs4",
+    "https://pretahub.com/wp-content/uploads/2023/11/2018_-_O_Brasil_Negro_Consumo_e_Empreendedorismo.pdf",
+    "https://cntdrs.com.br/menu/boletim/noticias_nova/not.php?id_cliente=1&id=4672998"
+  ],
+  "insights": [
+    "O setor de alimentação fora do lar é um dos mais estratégicos para a economia brasileira, com 85% dos negócios sendo bares e restaurantes.",
+    "Mais de 16 milhões de empreendedores negros estão ativos no Brasil, representando 52,7% do total de empreendedores no país.",
+    "O crescimento de empreendedores negros foi de 22,1% entre 2014 e 2024, destacando a crescente presença no setor de alimentação.",
+    "O Brasil possui cerca de 1,5 milhão de estabelecimentos no setor de alojamento e alimentação, muitos dos quais são de propriedade de empreendedores negros.",
+    "61% dos trabalhadores em bares e restaurantes no Brasil são negros, evidenciando a importância desse grupo na indústria alimentícia."
+  ],
+  "stats": [
+    {
+      "value": "22,1%",
+      "context": "crescimento de empreendedores negros entre 2014 e 2024",
+      "source": "https://abrasel.com.br/noticias/noticias/empreendedorismo-negro-ganha-forca-no-setor-amplia-representatividade"
+    },
+    {
+      "value": "52,7%",
+      "context": "percentual de empreendedores negros no Brasil",
+      "source": "https://abrasel.com.br/noticias/noticias/empreendedorismo-negro-ganha-forca-no-setor-amplia-representatividade"
+    },
+    {
+      "value": "1,5 milhões",
+      "context": "número de estabelecimentos no setor de alojamento e alimentação no Brasil",
+      "source": "https://agenciaabrasel.com.br/brasil/empreender-consciencia-negra"
+    },
+    {
+      "value": "16 milhões",
+      "context": "número total de empreendedores negros no Brasil",
+      "source": "https://abrasel.com.br/noticias/noticias/empreendedorismo-negro-ganha-forca-no-setor-amplia-representatividade"
+    },
+    {
+      "value": "85%",
+      "context": "percentual de negócios de bares e restaurantes no setor de alojamento e alimentação",
+      "source": "https://agenciaabrasel.com.br/brasil/empreender-consciencia-negra"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "O levantamento do Sebrae aponta que o segundo segmento que mais tem empreendedores negros é o de alojamento e alimentação.",
+      "attribution": "https://abrasel.com.br/noticias/noticias/empreendedorismo-negro-ganha-forca-no-setor-amplia-representatividade"
+    },
+    {
+      "text": "Mais de 16 milhões de empreendedores negros movimentam a economia brasileira.",
+      "attribution": "https://abrasel.com.br/noticias/noticias/empreendedorismo-negro-ganha-forca-no-setor-amplia-representatividade"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2014,
+      "value": 0,
+      "unit": "%",
+      "label": "percentual de crescimento de empreendedores negros até 2024"
+    },
+    {
+      "year": 2024,
+      "value": 22.1,
+      "unit": "%",
+      "label": "crescimento de empreendedores negros em relação a 2014"
+    }
+  ],
+  "summary": "O empreendedorismo negro no Brasil está crescendo rapidamente, especialmente no setor de alimentação, onde bares e restaurantes dominam. Com mais de 16 milhões de empreendedores negros, esse segmento representa uma parte significativa da economia, promovendo diversidade e geração de empregos.",
+  "pillar": "entrepreneurship",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-17-123-negocios-tres-cidades-uma-pergunta-que-o-mercado-ainda.html",
+  "signal": {
+    "title": "Conheça os 123 negócios na disputa do Prêmio Black Chefs 2026 antes da votação",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/conheca-os-123-negocios-na-disputa-do-premio-black-chefs-2026-antes-da-votacao/",
+    "date": "2026-10-16T21:00:42.000Z"
+  }
+}
