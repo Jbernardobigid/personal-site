@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sat, 17 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 19 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Empreendedorismo negro além das feiras e dos dados</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-19-porto-alegre-teve-uma-feira-o-que-ela-diz-sobre.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-19-porto-alegre-teve-uma-feira-o-que-ela-diz-sobre.html</guid>
+      <pubDate>Mon, 19 Oct 2026 12:00:00 GMT</pubDate>
+      <description>O BatukBaile reuniu marcas negras em Porto Alegre e revelou algo que os dados sobre empreendedorismo negro ainda não conseguem capturar direito.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-19-porto-alegre-teve-uma-feira-o-que-ela-diz-sobre.jpg" length="138961" type="image/jpeg"/>
+    </item>
     <item>
       <title>Empreendedorismo negro e o Prêmio Black Chefs 2026</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-17-123-negocios-tres-cidades-uma-pergunta-que-o-mercado-ainda.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Fri, 11 Sep 2026 12:00:00 GMT</pubDate>
       <description>Recife testa recompensas para quem anda de bicicleta, mas nenhuma tecnologia resolve sozinha a pergunta sobre quem tem permissão de ocupar o espaço urbano.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.jpg" length="180806" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Quando expulsar um filho vira condenação judicial</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.html</guid>
-      <pubDate>Wed, 09 Sep 2026 12:00:00 GMT</pubDate>
-      <description>A Justiça de Santa Catarina condenou pais por expulsarem o filho após ele revelar sua orientação sexual, e isso recoloca uma pergunta que toda paternidade…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-09-expulsar-um-filho-de-casa-nao-e-uma-falha-parental-e-uma.jpg" length="126123" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

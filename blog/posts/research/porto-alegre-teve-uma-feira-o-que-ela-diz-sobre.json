@@ -1,0 +1,94 @@
+{
+  "topic": "empreendedorismo negro Brasil taxa participação negros em negócios estatísticas",
+  "slug": "porto-alegre-teve-uma-feira-o-que-ela-diz-sobre",
+  "generated_at": "2026-10-19T12:00:49.127Z",
+  "sources": [
+    "https://almapreta.com.br/sessao/cotidiano/donos-pequenos-negocios-negros",
+    "https://sebraepr.com.br/impulsiona/empreendedorismo-negro-no-brasil-um-retrato-de-desafios-e-conquistas",
+    "https://blog.nubank.com.br/10-negocios-empreendedorismo-negro",
+    "https://sebraerj.com.br/impacto-social/empreendedorismo-social/afroempreendedorismo",
+    "https://datasebrae.com.br/empreendedorismo-negro",
+    "https://agenciasebrae.com.br/dados/negros-sao-maioria-dos-empreendedores-brasileiros",
+    "https://cndl.org.br/varejosa/negros-sao-maioria-dos-empreendedores-brasileiros",
+    "https://revistapegn.globo.com/empreendedorismo/noticia/2026/05/escolaridade-maior-avanco-dos-60-e-alta-no-rendimento-medio-veja-perfil-do-empreendedor-negro-no-brasil.ghtml"
+  ],
+  "insights": [
+    "Mais de 15,8 milhões de negros são donos de negócios no Brasil, representando 52,3% do total de empreendedores.",
+    "O empreendedorismo negro cresceu 28% entre 2012 e 2023.",
+    "Os empreendedores negros enfrentam rendimentos 32% inferiores aos empreendedores brancos.",
+    "A formalização dos negócios entre empreendedores negros é de apenas 24,2%.",
+    "46% dos empreendedores negros iniciaram seus negócios por necessidade, em comparação com 32% entre homens brancos."
+  ],
+  "stats": [
+    {
+      "value": "52,3%",
+      "context": "representa a porcentagem de empreendedores negros no Brasil",
+      "source": "https://almapreta.com.br/sessao/cotidiano/donos-pequenos-negocios-negros"
+    },
+    {
+      "value": "28%",
+      "context": "crescimento do número de empreendedores negros entre 2012 e 2023",
+      "source": "https://sebraepr.com.br/impulsiona/empreendedorismo-negro-no-brasil-um-retrato-de-desafios-e-conquistas"
+    },
+    {
+      "value": "32%",
+      "context": "diferença de rendimento entre empreendedores negros e brancos",
+      "source": "https://sebraerj.com.br/impacto-social/empreendedorismo-social/afroempreendedorismo"
+    },
+    {
+      "value": "24,2%",
+      "context": "percentual de formalização dos negócios entre empreendedores negros",
+      "source": "https://sebraepr.com.br/impulsiona/empreendedorismo-negro-no-brasil-um-retrato-de-desafios-e-conquistas"
+    },
+    {
+      "value": "46%",
+      "context": "percentual de empreendedores negros que começaram seus negócios por necessidade",
+      "source": "https://blog.nubank.com.br/10-negocios-empreendedorismo-negro"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Apesar do crescimento, os empreendedores negros ainda recebem 56% da renda dos brancos.",
+      "attribution": "https://almapreta.com.br/sessao/cotidiano/donos-pequenos-negocios-negros"
+    },
+    {
+      "text": "O empreendedorismo negro no Brasil é uma força incontestável, apenas esperando para ser plenamente liberada.",
+      "attribution": "https://sebraerj.com.br/impacto-social/empreendedorismo-social/afroempreendedorismo"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2012,
+      "value": 12.3,
+      "unit": "milhões",
+      "label": "número de empreendedores negros"
+    },
+    {
+      "year": 2023,
+      "value": 15.6,
+      "unit": "milhões",
+      "label": "número de empreendedores negros"
+    },
+    {
+      "year": 2012,
+      "value": 14,
+      "unit": "milhões",
+      "label": "número de empreendedores brancos"
+    },
+    {
+      "year": 2025,
+      "value": 15.8,
+      "unit": "milhões",
+      "label": "número de empreendedores negros"
+    }
+  ],
+  "summary": "O empreendedorismo negro no Brasil tem mostrado um crescimento significativo, com mais de 15,8 milhões de negros liderando negócios, representando 52,3% do total de empreendedores. No entanto, desafios como desigualdade de renda e baixa formalização ainda persistem, refletindo desigualdades estruturais no setor.",
+  "pillar": "entrepreneurship",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-19-porto-alegre-teve-uma-feira-o-que-ela-diz-sobre.html",
+  "signal": {
+    "title": "BatukBaile promove feira de empreendedores negros em Porto Alegre",
+    "source": "Revista Raça",
+    "url": "https://revistaraca.com.br/batukbaile-promove-feira-de-empreendedores-negros-em-porto-alegre/",
+    "date": "2026-10-18T12:00:59.000Z"
+  }
+}
