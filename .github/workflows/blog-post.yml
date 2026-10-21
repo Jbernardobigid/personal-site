@@ -55,7 +55,10 @@ jobs:
             node generate-post.mjs --with-signals
           fi
 
+      # LinkedIn posting paused 2026-10-21 (no measurable return). Mirrors the disabled
+      # "Post to LinkedIn" node in the VPS workflow. Delete this `if` to resume.
       - name: Post to LinkedIn
+        if: ${{ false }}
         env:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
