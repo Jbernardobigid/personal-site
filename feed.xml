@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Mon, 19 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 23 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Quando a IA da Meta apaga jornalismo negro</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-23-um-video-jornalistico-sumiu-do-instagram-por-24-horas-a.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-23-um-video-jornalistico-sumiu-do-instagram-por-24-horas-a.html</guid>
+      <pubDate>Fri, 23 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A Meta removeu um vídeo do projeto Revelando, com MC Cabelinho, alegando uso de IA. A decisão foi revertida, mas a pergunta sobre quem a plataforma protege…</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-23-um-video-jornalistico-sumiu-do-instagram-por-24-horas-a.jpg" length="144139" type="image/jpeg"/>
+    </item>
     <item>
       <title>Empreendedorismo negro além das feiras e dos dados</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-19-porto-alegre-teve-uma-feira-o-que-ela-diz-sobre.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Sun, 13 Sep 2026 12:00:00 GMT</pubDate>
       <description>Em 2024, 5,6 milhões de lares com idosos ainda viviam em insegurança alimentar no Brasil. O número caiu, mas o que fazemos com ele diz mais do que qualquer…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.jpg" length="138061" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Recife paga quem pedala. Mas pedala quem?</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.html</guid>
-      <pubDate>Fri, 11 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Recife testa recompensas para quem anda de bicicleta, mas nenhuma tecnologia resolve sozinha a pergunta sobre quem tem permissão de ocupar o espaço urbano.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-11-recife-paga-quem-pedala-a-pergunta-e-pedala-quem.jpg" length="180806" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

@@ -1,0 +1,85 @@
+{
+  "topic": "remoção conteúdo IA inteligência artificial Meta Instagram políticas 2024 estatísticas",
+  "slug": "um-video-jornalistico-sumiu-do-instagram-por-24-horas-a",
+  "generated_at": "2026-10-23T12:00:50.297Z",
+  "sources": [
+    "https://www.robertodiasduarte.com.br/penalidades-do-instagram-para-conteudo-de-ia-sem-rotulagem",
+    "https://transparency.meta.com/pt-br/enforcement/taking-action/taking-down-violating-content",
+    "https://www.poder360.com.br/poder-tech/meta-remove-recurso-de-ia-no-instagram-apos-criticas-de-usuarios",
+    "https://www.youtube.com/watch?v=mE6kXPN8n7w",
+    "https://www.instagram.com/reel/Da0Q8tVsUZL",
+    "https://www.canalmeio.com.br/2024/04/05/meta-vai-atualizar-politica-de-rotulos-de-conteudos-gerados-por-ia",
+    "https://about.fb.com/br/news/2024/02/rotulando-imagens-geradas-por-inteligencia-artificial-no-facebook-instagram-e-threads",
+    "https://thunderbit.com/pt/blog/essential-instagram-statistics",
+    "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos"
+  ],
+  "insights": [
+    "A Meta começou a rotular conteúdo gerado por IA no Instagram em maio de 2024, visando equilibrar liberdade de expressão e prevenção de desinformação.",
+    "Em julho de 2024, o rótulo foi atualizado de 'Feito com IA' para 'Informações de IA' para fornecer um contexto mais detalhado aos usuários.",
+    "Em julho de 2026, a Meta descontinuou o recurso Muse Spark Image após críticas dos usuários.",
+    "A Meta anunciou uma política para usar dados públicos de perfis do Instagram para treinar sua IA, com um prazo para objeções até 15 de dezembro de 2025.",
+    "A Meta prioriza a adição de rótulos informativos em vez da remoção imediata de conteúdos, mantendo o compromisso com a integridade das informações."
+  ],
+  "stats": [
+    {
+      "value": "3 bilhões",
+      "context": "número de usuários ativos mensais no Instagram",
+      "source": "https://thunderbit.com/pt/blog/essential-instagram-statistics"
+    },
+    {
+      "value": "500 milhões",
+      "context": "número de usuários ativos diários no Instagram",
+      "source": "https://thunderbit.com/pt/blog/essential-instagram-statistics"
+    },
+    {
+      "value": "66,9 bilhões",
+      "context": "receita anual com anúncios do Instagram em 2024",
+      "source": "https://thunderbit.com/pt/blog/essential-instagram-statistics"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A Meta usará dados públicos de postagens para treinar sua inteligência artificial, e os usuários têm até 15 de dezembro de 2025 para se opor a isso.",
+      "attribution": "https://www.youtube.com/watch?v=mE6kXPN8n7w"
+    },
+    {
+      "text": "A mudança no rótulo de 'Feito com IA' para 'Informações de IA' foi motivada pelo feedback dos consumidores.",
+      "attribution": "https://www.robertodiasduarte.com.br/penalidades-do-instagram-para-conteudo-de-ia-sem-rotulagem"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2024,
+      "value": 0,
+      "unit": "%",
+      "label": "início da rotulagem de conteúdo gerado por IA"
+    },
+    {
+      "year": 2024,
+      "value": 0,
+      "unit": "%",
+      "label": "atualização do rótulo para 'Informações de IA'"
+    },
+    {
+      "year": 2026,
+      "value": 0,
+      "unit": "%",
+      "label": "descontinuação do recurso Muse Spark Image"
+    },
+    {
+      "year": 2025,
+      "value": 0,
+      "unit": "%",
+      "label": "prazo para objeções ao uso de dados públicos"
+    }
+  ],
+  "summary": "Em 2024, a Meta implementou rótulos para conteúdo gerado por IA no Instagram, buscando equilibrar liberdade de expressão e combate à desinformação. A empresa também anunciou o uso de dados públicos para treinar sua IA, com um prazo para objeções estabelecido até dezembro de 2025.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-23-um-video-jornalistico-sumiu-do-instagram-por-24-horas-a.html",
+  "signal": {
+    "title": "Meta remove vídeo de MC Cabelinho no projeto Revelando e depois restaura publicação",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/meta-remove-video-de-mc-cabelinho-no-projeto-revelando-e-depois-restaura-publicacao/",
+    "date": "2026-10-22T18:51:13.000Z"
+  }
+}
