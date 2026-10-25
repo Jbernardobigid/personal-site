@@ -1,0 +1,94 @@
+{
+  "topic": "tamanho do mercado creator economy Brasil faturamento influenciadores 2023 2024 estatísticas",
+  "slug": "a-creator-economy-cresceu-a-fatia-que-chega-aos-criadores",
+  "generated_at": "2026-10-25T12:00:46.418Z",
+  "sources": [
+    "https://mundodomarketing.com.br/creator-economy-entra-em-fase-de-institucionalizacao-e-projeta-us-33-5-bilhoes-no-brasil-ate-2034",
+    "https://publicacoes.estadao.com.br/marcasmais-2023/mercado-de-influencia-deve-movimentar-us-500-bi-ate-2027-brasil-e-2o-em-numero-de-influenciadores",
+    "https://inbeat.agency/blog/creator-economy-statistics",
+    "https://forbes.com.br/forbes-tech/2024/12/creator-economy-quanto-ganham-o-que-fazem-e-quem-sao-os-influenciadores-brasileiros",
+    "https://www.instagram.com/p/DUoVxtvly4v?hl=en",
+    "https://www.meioemensagem.com.br/midia/brasil-ja-soma-2-milhoes-de-influenciadores",
+    "https://www.ecommercebrasil.com.br/noticias/creator-economy-brasil-e-2o-maior-mercado-de-influenciadores-do-mundo",
+    "https://timesbrasil.com.br/colunas/felipe-machado/creator-economy-cresce-e-deve-movimentar-ate-us-525-bilhoes-ate-2030-aponta-pesquisa"
+  ],
+  "insights": [
+    "O mercado de influência e criação de conteúdo no Brasil movimentou aproximadamente R$ 2,330 bilhões em 2023.",
+    "O Brasil representa 45% do total do mercado de influência na América Latina e Caribe, que movimentou cerca de US$ 1 bilhão em 2023.",
+    "O número de influenciadores no Brasil cresceu 67% em um ano, passando de 1,2 milhão em março de 2024 para 2 milhões em março de 2025.",
+    "As projeções indicam que o mercado de influência deve movimentar US$ 500 bilhões até 2027.",
+    "Em 2024, 66,3% da população brasileira utilizava mídias sociais, consolidando o país como o segundo maior mercado mundial em número de criadores de conteúdo."
+  ],
+  "stats": [
+    {
+      "value": "45%",
+      "context": "representa a fatia do Brasil no mercado de influência na América Latina e Caribe",
+      "source": "https://publicacoes.estadao.com.br/marcasmais-2023/mercado-de-influencia-deve-movimentar-us-500-bi-ate-2027-brasil-e-2o-em-numero-de-influenciadores"
+    },
+    {
+      "value": "67%",
+      "context": "crescimento do número de influenciadores no Brasil em um ano",
+      "source": "https://www.meioemensagem.com.br/midia/brasil-ja-soma-2-milhoes-de-influenciadores"
+    },
+    {
+      "value": "500 bilhões",
+      "context": "projeção de movimentação do mercado de influência até 2027",
+      "source": "https://publicacoes.estadao.com.br/marcasmais-2023/mercado-de-influencia-deve-movimentar-us-500-bi-ate-2027-brasil-e-2o-em-numero-de-influenciadores"
+    },
+    {
+      "value": "1 bilhão",
+      "context": "movimentação total do mercado de influência na América Latina e Caribe em 2023",
+      "source": "https://publicacoes.estadao.com.br/marcasmais-2023/mercado-de-influencia-deve-movimentar-us-500-bi-ate-2027-brasil-e-2o-em-numero-de-influenciadores"
+    },
+    {
+      "value": "66,3%",
+      "context": "porcentagem da população brasileira que utilizava mídias sociais em 2024",
+      "source": "https://timesbrasil.com.br/colunas/felipe-machado/creator-economy-cresce-e-deve-movimentar-ate-us-525-bilhoes-ate-2030-aponta-pesquisa"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A inversão de investimentos também é clara, com o digital assumindo a liderança em 2024, superando a televisão aberta.",
+      "attribution": "Mundo do Marketing"
+    },
+    {
+      "text": "Cerca de 82% dos líderes de Marketing ainda relatam dificuldades em medir o impacto real das campanhas de influência.",
+      "attribution": "Mundo do Marketing"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2023,
+      "value": 2330,
+      "unit": "milhões",
+      "label": "movimentação do mercado de influência no Brasil"
+    },
+    {
+      "year": 2024,
+      "value": 2000000,
+      "unit": "influenciadores",
+      "label": "número de influenciadores no Brasil"
+    },
+    {
+      "year": 2025,
+      "value": 2000000,
+      "unit": "influenciadores",
+      "label": "número de influenciadores no Brasil"
+    },
+    {
+      "year": 2027,
+      "value": 500000000000,
+      "unit": "dólares",
+      "label": "projeção de movimentação do mercado de influência"
+    }
+  ],
+  "summary": "O mercado de influência e criação de conteúdo no Brasil está em franca expansão, com movimentações significativas e um aumento no número de influenciadores. Projeções indicam que o Brasil continuará a ser um dos principais mercados na economia dos criadores, representando uma fatia considerável do total na América Latina.",
+  "pillar": "entrepreneurship",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-25-a-creator-economy-cresceu-a-fatia-que-chega-aos-criadores.html",
+  "signal": {
+    "title": "Marketing de influência no Brasil: quem está faturando com o crescimento da creator economy?",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/marketing-de-influencia-no-brasil-quem-esta-faturando-com-o-crescimento-da-creator-economy/",
+    "date": "2026-10-23T21:55:04.000Z"
+  }
+}

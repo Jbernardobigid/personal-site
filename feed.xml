@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Fri, 23 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 25 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Creator economy cresce, mas criadores negros ficam de fora</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-25-a-creator-economy-cresceu-a-fatia-que-chega-aos-criadores.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-25-a-creator-economy-cresceu-a-fatia-que-chega-aos-criadores.html</guid>
+      <pubDate>Sun, 25 Oct 2026 12:00:00 GMT</pubDate>
+      <description>O Brasil domina 45% do mercado de influência na América Latina, mas a renda desse mercado não chega igualmente a quem constrói a cultura que ele vende.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-25-a-creator-economy-cresceu-a-fatia-que-chega-aos-criadores.jpg" length="129645" type="image/jpeg"/>
+    </item>
     <item>
       <title>Quando a IA da Meta apaga jornalismo negro</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-23-um-video-jornalistico-sumiu-do-instagram-por-24-horas-a.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Tue, 15 Sep 2026 12:00:00 GMT</pubDate>
       <description>Na cúpula do BRICS, o racismo entrou num parágrafo de declaração final. Para milhões de brasileiros negros, ele nunca foi parágrafo: sempre foi endereço.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-15-quando-o-brics-menciona-racismo-num-paragrafo-e-nos-vivemos.jpg" length="78207" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>5,6 milhões de lares: quando os dados chegam antes</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.html</guid>
-      <pubDate>Sun, 13 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Em 2024, 5,6 milhões de lares com idosos ainda viviam em insegurança alimentar no Brasil. O número caiu, mas o que fazemos com ele diz mais do que qualquer…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-13-56-milhoes-de-lares-quando-os-dados-sobre-fome-chegam-antes.jpg" length="138061" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
