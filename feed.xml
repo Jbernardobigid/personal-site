@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sun, 25 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 27 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Protetor solar para pele negra e representatividade</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-27-um-protetor-solar-com-a-sua-cor-nao-e-luxo-e-o-minimo-que-a.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-27-um-protetor-solar-com-a-sua-cor-nao-e-luxo-e-o-minimo-que-a.html</guid>
+      <pubDate>Tue, 27 Oct 2026 12:00:00 GMT</pubDate>
+      <description>A Revista Raça mostrou em outubro de 2026 que a ampliação de protetores solares para pele negra ainda é pauta. Mas a questão vai muito além do FPS.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-27-um-protetor-solar-com-a-sua-cor-nao-e-luxo-e-o-minimo-que-a.jpg" length="106926" type="image/jpeg"/>
+    </item>
     <item>
       <title>Creator economy cresce, mas criadores negros ficam de fora</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-25-a-creator-economy-cresceu-a-fatia-que-chega-aos-criadores.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Thu, 17 Sep 2026 12:00:00 GMT</pubDate>
       <description>Valladolid removeu faixas de ônibus e ciclovias, o trânsito piorou, e o mundo fingiu espanto. O que a cidade espanhola revela sobre quem a rua foi feita…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-17-valladolid-derrubou-as-ciclovias-e-o-transito-explodiu-por.jpg" length="142454" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>O BRICS citou racismo. Nós vivemos dentro dele.</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-15-quando-o-brics-menciona-racismo-num-paragrafo-e-nos-vivemos.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-15-quando-o-brics-menciona-racismo-num-paragrafo-e-nos-vivemos.html</guid>
-      <pubDate>Tue, 15 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Na cúpula do BRICS, o racismo entrou num parágrafo de declaração final. Para milhões de brasileiros negros, ele nunca foi parágrafo: sempre foi endereço.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-15-quando-o-brics-menciona-racismo-num-paragrafo-e-nos-vivemos.jpg" length="78207" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
