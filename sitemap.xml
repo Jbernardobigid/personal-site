@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -35,6 +35,12 @@
     <lastmod>2026-07-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.jorgebernardo.tech/blog/posts/2026-10-29-125-vagas-239-milhoes-de-fora-a-contradicao-que-o-mercado-de.html</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.jorgebernardo.tech/blog/posts/2026-10-27-um-protetor-solar-com-a-sua-cor-nao-e-luxo-e-o-minimo-que-a.html</loc>

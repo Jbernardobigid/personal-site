@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Tue, 27 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 29 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Mulheres negras, carreira e a lacuna que persiste</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-29-125-vagas-239-milhoes-de-fora-a-contradicao-que-o-mercado-de.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-29-125-vagas-239-milhoes-de-fora-a-contradicao-que-o-mercado-de.html</guid>
+      <pubDate>Thu, 29 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Um programa gratuito para mulheres negras expõe uma contradição brutal: o mercado celebra diversidade, mas os números mostram quem ele ainda empurra para fora.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-29-125-vagas-239-milhoes-de-fora-a-contradicao-que-o-mercado-de.jpg" length="125288" type="image/jpeg"/>
+    </item>
     <item>
       <title>Protetor solar para pele negra e representatividade</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-27-um-protetor-solar-com-a-sua-cor-nao-e-luxo-e-o-minimo-que-a.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Sat, 19 Sep 2026 12:00:00 GMT</pubDate>
       <description>Yamal nomeou o racismo velado que a maioria prefere ignorar. Para quem vive dentro dele, o problema nunca foi reconhecer, foi sobreviver ao que ninguém admite…</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-19-lamine-yamal-disse-mil-vezes-eu-perdi-a-conta-ha-muito-tempo.jpg" length="102603" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Valladolid derrubou ciclovias e o trânsito explodiu</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-17-valladolid-derrubou-as-ciclovias-e-o-transito-explodiu-por.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-17-valladolid-derrubou-as-ciclovias-e-o-transito-explodiu-por.html</guid>
-      <pubDate>Thu, 17 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Valladolid removeu faixas de ônibus e ciclovias, o trânsito piorou, e o mundo fingiu espanto. O que a cidade espanhola revela sobre quem a rua foi feita…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-17-valladolid-derrubou-as-ciclovias-e-o-transito-explodiu-por.jpg" length="142454" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

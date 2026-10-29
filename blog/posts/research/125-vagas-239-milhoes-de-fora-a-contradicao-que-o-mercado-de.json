@@ -1,0 +1,102 @@
+{
+  "topic": "mulheres negras desemprego taxa inserção mercado trabalho Brasil 2024 2025 IBGE DIEESE",
+  "slug": "125-vagas-239-milhoes-de-fora-a-contradicao-que-o-mercado-de",
+  "generated_at": "2026-10-29T12:00:47.352Z",
+  "sources": [
+    "https://outraspalavras.net/trabalhoeprecariado/nos-ombros-de-mulheres-e-negros-o-peso-da-precarizacao",
+    "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/acoes-e-programas/programas-projetos-acoes-obras-e-atividades/estatisticas-trabalho/o-pdet/boletim-desigualdade-racial/BoletimsobreadesigualdaderacialnomercadodetrabalhoVF.pdf",
+    "https://www.dieese.org.br/infografico/2024/mulheresBrasilRegioes.pdf",
+    "https://dossies.agenciapatriciagalvao.org.br/dados-e-fontes/pesquisa/brasil-a-insercao-da-populacao-negra-no-mercado-de-trabalho-dieese-2022",
+    "https://www.dieese.org.br/boletimespecial/2025/conscienciaNegra.pdf",
+    "https://www.gov.br/trabalho-e-emprego/pt-br/pdfs/1806_revista-3_dieeese_2025.pdf",
+    "https://www.dieese.org.br/infografico/2024/conscienciaNegraInfo.pdf",
+    "https://www.dieese.org.br/infografico/2025/conscienciaNegraInfo.pdf",
+    "https://www.dieese.org.br/boletimespecial/2024/conscienciaNegra/index.html?page=3",
+    "https://www.dieese.org.br/boletimespecial/2025/mulheres2025/index.html?page=1"
+  ],
+  "insights": [
+    "A taxa de desemprego para mulheres negras no Brasil foi de 10,8% no segundo trimestre de 2024, mais do que o dobro da taxa para mulheres não negras.",
+    "Em 2025, 23,9 milhões de mulheres negras estavam completamente fora do mercado de trabalho, enquanto 2 milhões estavam desempregadas.",
+    "A taxa de desemprego feminina em geral foi de 7,6% no segundo trimestre de 2024, comparada a 5,1% entre os homens.",
+    "A população negra representava 56,4% da população brasileira em 2025, com mulheres negras e homens negros sendo a maioria entre os desempregados.",
+    "A taxa de desocupação para mulheres negras em 2025 foi de 8,0%, superior à média nacional de 5,8%."
+  ],
+  "stats": [
+    {
+      "value": "10.8%",
+      "context": "taxa de desemprego para mulheres negras no Brasil no 2º trimestre de 2024",
+      "source": "https://outraspalavras.net/trabalhoeprecariado/nos-ombros-de-mulheres-e-negros-o-peso-da-precarizacao"
+    },
+    {
+      "value": "7.6%",
+      "context": "taxa de desemprego feminina no Brasil no 2º trimestre de 2024",
+      "source": "https://outraspalavras.net/trabalhoeprecariado/nos-ombros-de-mulheres-e-negros-o-peso-da-precarizacao"
+    },
+    {
+      "value": "23.9 milhões",
+      "context": "número de mulheres negras fora do mercado de trabalho em 2025",
+      "source": "https://www.dieese.org.br/boletimespecial/2025/conscienciaNegra.pdf"
+    },
+    {
+      "value": "2 milhões",
+      "context": "número de mulheres negras desempregadas em 2025",
+      "source": "https://www.dieese.org.br/boletimespecial/2025/conscienciaNegra.pdf"
+    },
+    {
+      "value": "8.0%",
+      "context": "taxa de desocupação para mulheres negras em 2025",
+      "source": "https://www.dieese.org.br/boletimespecial/2025/conscienciaNegra.pdf"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Entre as mulheres negras, o indicador ficou em 13,9%.",
+      "attribution": "https://www.dieese.org.br/boletimespecial/2025/conscienciaNegra.pdf"
+    },
+    {
+      "text": "A taxa de desemprego varia significativamente tanto por idade quanto por raça.",
+      "attribution": "https://www.gov.br/trabalho-e-emprego/pt-br/pdfs/1806_revista-3_dieeese_2025.pdf"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2024,
+      "value": 10.8,
+      "unit": "%",
+      "label": "taxa de desemprego para mulheres negras"
+    },
+    {
+      "year": 2024,
+      "value": 7.6,
+      "unit": "%",
+      "label": "taxa de desemprego feminina"
+    },
+    {
+      "year": 2025,
+      "value": 23900000,
+      "unit": "milhões",
+      "label": "número de mulheres negras fora do mercado de trabalho"
+    },
+    {
+      "year": 2025,
+      "value": 2000000,
+      "unit": "milhões",
+      "label": "número de mulheres negras desempregadas"
+    },
+    {
+      "year": 2025,
+      "value": 8,
+      "unit": "%",
+      "label": "taxa de desocupação para mulheres negras"
+    }
+  ],
+  "summary": "As mulheres negras no Brasil enfrentam taxas de desemprego significativamente mais altas do que suas contrapartes não negras, com 10,8% de desemprego em 2024. Em 2025, a situação se agravou, com 23,9 milhões de mulheres negras fora do mercado de trabalho e 2 milhões desempregadas, refletindo as desigualdades raciais persistentes no mercado de trabalho.",
+  "pillar": "career-growth",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-10-29-125-vagas-239-milhoes-de-fora-a-contradicao-que-o-mercado-de.html",
+  "signal": {
+    "title": "Mulheres negras têm 125 vagas gratuitas para fortalecer suas carreiras",
+    "source": "Revista Raça",
+    "url": "https://revistaraca.com.br/mulheres-negras-tem-125-vagas-gratuitas-para-fortalecer-suas-carreiras/",
+    "date": "2026-10-28T18:00:38.000Z"
+  }
+}
