@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Thu, 29 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 31 Oct 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Carreira negra aos 40: o que custa chegar ao topo</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-31-valeria-conceicao-disse-carreguem-suas-origens-com-muito.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-31-valeria-conceicao-disse-carreguem-suas-origens-com-muito.html</guid>
+      <pubDate>Sat, 31 Oct 2026 12:00:00 GMT</pubDate>
+      <description>Valéria Conceição tem 20 anos no mercado da beleza. A trajetória dela revela algo que os dados sobre liderança negra ainda não sabem nomear direito.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-31-valeria-conceicao-disse-carreguem-suas-origens-com-muito.jpg" length="78968" type="image/jpeg"/>
+    </item>
     <item>
       <title>Mulheres negras, carreira e a lacuna que persiste</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-10-29-125-vagas-239-milhoes-de-fora-a-contradicao-que-o-mercado-de.html</link>
@@ -157,14 +165,6 @@
       <pubDate>Mon, 21 Sep 2026 12:00:00 GMT</pubDate>
       <description>O Senac RJ abriu 6 mil vagas técnicas gratuitas no Rio. Com 500 mil jovens fora da escola todo ano, o gargalo não é a oferta de vagas, é outra coisa.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-21-6-mil-vagas-gratuitas-e-ainda-assim-a-fila-esta-vazia-o.jpg" length="199454" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Racismo velado: quando &amp;quot;mil vezes&amp;quot; é pouco</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-19-lamine-yamal-disse-mil-vezes-eu-perdi-a-conta-ha-muito-tempo.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-19-lamine-yamal-disse-mil-vezes-eu-perdi-a-conta-ha-muito-tempo.html</guid>
-      <pubDate>Sat, 19 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Yamal nomeou o racismo velado que a maioria prefere ignorar. Para quem vive dentro dele, o problema nunca foi reconhecer, foi sobreviver ao que ninguém admite…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-19-lamine-yamal-disse-mil-vezes-eu-perdi-a-conta-ha-muito-tempo.jpg" length="102603" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
