@@ -1,0 +1,52 @@
+{
+  "topic": "mobilidade cicloviária São Paulo dados estatísticas desigualdade territorial acesso bicicleta",
+  "slug": "territorios-completos-quando-a-dificuldade-de-pedalar-vira",
+  "generated_at": "2026-11-03T12:00:44.241Z",
+  "sources": [
+    "https://thedocs.worldbank.org/en/doc/a4ac32c00ecde94c5e0d2ce3b8292a9f-0090012023/original/A6-4-Resumo-conte-do-Formata-o-Final-com-Links.pdf",
+    "https://www.gov.br/cidades/pt-br/central-de-conteudos/publicacoes/mobilidade-urbana/copy_of_CTR_Bicicleta.pdf",
+    "http://www.wwc2017.eventos.dype.com.br/resources/anais/1499492915_ARQUIVO_HARKOT_LEMOS_SANTORO_MobilidadeegeneroemSaoPaulo,Brasil.pdf",
+    "https://pp.nexojornal.com.br/opiniao/2020/11/12/desigualdades-na-oferta-de-infraestrutura-cicloviaria",
+    "https://www.academia.edu/36988577/A_Bicicleta_e_as_Mulheres_mobilidade_ativa_g%C3%AAnero_e_desigualdades_socioterritoriais_em_S%C3%A3o_Paulo",
+    "https://www.wribrasil.org.br/noticias/3-acoes-que-podem-promover-bicicleta-e-equidade-no-acesso-cidade-no-brasil",
+    "https://www.mobilize.org.br/midias/pesquisas/extensao-da-rede-cicloviaria-e-o-uso-da-bicicleta.pdf",
+    "https://observatoriodabicicleta.org.br/uploads/2020/02/Mulheres-Bici-SP-Let%C3%ADcia-Lemos-et.pdf",
+    "https://www.cetsp.com.br/media/1100812/Plano-Ciclovia%CC%81rio_2020.pdf",
+    "https://teses.usp.br/teses/disponiveis/3/3138/tde-08032019-103112/publico/LeonardoGoncalvesFecchioCorr19.pdf"
+  ],
+  "insights": [
+    "A infraestrutura cicloviária em São Paulo é distribuída de forma desigual, contribuindo para a desigualdade territorial.",
+    "30% da população vive a até 300 metros de uma ciclovia, mas o acesso é desigual entre diferentes grupos raciais e de renda.",
+    "A rede cicloviária possui 105 sub-redes desconectadas, indicando fragmentação.",
+    "Apenas 12% dos ciclistas em São Paulo são mulheres, evidenciando barreiras significativas para o uso da bicicleta por esse grupo.",
+    "A desigualdade de acesso à infraestrutura cicloviária tende a reforçar padrões de segregação socioespacial."
+  ],
+  "stats": [
+    {
+      "value": "30%",
+      "context": "percentual da população que vive a até 300 metros de uma ciclovia, indicando acesso desigual",
+      "source": "https://thedocs.worldbank.org/en/doc/a4ac32c00ecde94c5e0d2ce3b8292a9f-0090012023/original/A6-4-Resumo-conte-do-Formata-o-Final-com-Links.pdf"
+    },
+    {
+      "value": "12%",
+      "context": "percentual de ciclistas que são mulheres, sugerindo barreiras para o uso da bicicleta",
+      "source": "http://www.wwc2017.eventos.dype.com.br/resources/anais/1499492915_ARQUIVO_HARKOT_LEMOS_SANTORO_MobilidadeegeneroemSaoPaulo,Brasil.pdf"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A desigualdade de distribuição da infraestrutura para bicicletas tende a reforçar os padrões de segregação socioespacial das cidades.",
+      "attribution": "https://pp.nexojornal.com.br/opiniao/2020/11/12/desigualdades-na-oferta-de-infraestrutura-cicloviaria"
+    }
+  ],
+  "time_series": [],
+  "summary": "A pesquisa revela que a infraestrutura cicloviária em São Paulo é marcada por desigualdades significativas, afetando principalmente grupos raciais e de renda mais baixos. Além disso, a baixa participação feminina no uso de bicicletas destaca a necessidade de planejamento mais inclusivo para enfrentar essas barreiras.",
+  "pillar": "cycling",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-03-territorios-completos-quando-a-dificuldade-de-pedalar-vira.html",
+  "signal": {
+    "title": "Territórios Completos conecta mobilidade e participação política na sexta formação da Ciclocidade",
+    "source": "Ciclocidade",
+    "url": "https://www.ciclocidade.org.br/formacao-ciclomobilidade/formacao-ciclomobilidade-territorios-completos-2026/",
+    "date": "2026-11-02T14:41:03.000Z"
+  }
+}

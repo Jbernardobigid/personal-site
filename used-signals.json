@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "nova york atualiza formacao de cosmetologia para incluir cabelos crespos e cache",
-      "url": "https://mundonegro.inf.br/nova-york-atualiza-formacao-de-cosmetologia-para-incluir-todos-os-tipos-e-texturas-de-cabelo/",
-      "pillar": "learning",
-      "title": "Nova York atualiza formação de cosmetologia para incluir cabelos crespos e cacheados",
-      "recordedAt": "2026-09-03T12:01:42.343Z"
-    },
-    {
       "titleKey": "o racismo nao da alta por que a saude mental negra pede um cuidado proprio",
       "url": "https://mundonegro.inf.br/saude-mental-negra-cuidado-proprio/",
       "pillar": "black-identity",
@@ -202,6 +195,13 @@
       "pillar": "career-growth",
       "title": "Aline Chermoula transforma a gastronomia afrodiaspórica em ferramenta de memória e valorização da cultura negra",
       "recordedAt": "2026-11-01T12:01:51.176Z"
+    },
+    {
+      "titleKey": "territorios completos conecta mobilidade e participacao politica na sexta formac",
+      "url": "https://www.ciclocidade.org.br/formacao-ciclomobilidade/formacao-ciclomobilidade-territorios-completos-2026/",
+      "pillar": "cycling",
+      "title": "Territórios Completos conecta mobilidade e participação política na sexta formação da Ciclocidade",
+      "recordedAt": "2026-11-03T12:01:58.662Z"
     }
   ]
 }
