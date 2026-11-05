@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "o racismo nao da alta por que a saude mental negra pede um cuidado proprio",
-      "url": "https://mundonegro.inf.br/saude-mental-negra-cuidado-proprio/",
-      "pillar": "black-identity",
-      "title": "O racismo não dá alta: por que a saúde mental negra pede um cuidado próprio",
-      "recordedAt": "2026-09-05T12:01:57.543Z"
-    },
-    {
       "titleKey": "impulsiona rj iniciativa senac rj e sebrae rio oferece mais de 720 vagas gratuit",
       "url": "https://noticiapreta.com.br/impulsiona-rj-iniciativa-senac-rj-e-sebrae-rio-oferece-mais-de-720-vagas-gratuitas-em-cursos-de-capacitacao-profissional-nas-zonas-norte-e-oeste-do-rio/?utm_source=rss&utm_medium=rss&utm_campaign=impulsiona-rj-iniciativa-senac-rj-e-sebrae-rio-oferece-mais-de-720-vagas-gratuitas-em-cursos-de-capacitacao-profissional-nas-zonas-norte-e-oeste-do-rio",
       "pillar": "learning",
@@ -202,6 +195,13 @@
       "pillar": "cycling",
       "title": "Territórios Completos conecta mobilidade e participação política na sexta formação da Ciclocidade",
       "recordedAt": "2026-11-03T12:01:58.662Z"
+    },
+    {
+      "titleKey": "ibge prepara novo estudo para revelar desigualdades enfrentadas pela populacao n",
+      "url": "https://revistaraca.com.br/ibge-prepara-novo-estudo-para-revelar-desigualdades-enfrentadas-pela-populacao-negra-no-brasil/",
+      "pillar": "black-identity",
+      "title": "IBGE prepara novo estudo para revelar desigualdades enfrentadas pela população negra no Brasil",
+      "recordedAt": "2026-11-05T12:02:03.182Z"
     }
   ]
 }

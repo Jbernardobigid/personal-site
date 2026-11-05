@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Tue, 03 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>O IBGE vai medir o que o Brasil recusa admitir</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-11-05-o-ibge-vai-medir-o-que-o-brasil-ja-sabe-e-recusa-admitir.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-11-05-o-ibge-vai-medir-o-que-o-brasil-ja-sabe-e-recusa-admitir.html</guid>
+      <pubDate>Thu, 05 Nov 2026 12:00:00 GMT</pubDate>
+      <description>No dia 18 de novembro de 2026, o IBGE publica dados sobre desigualdade racial. Os números vão confirmar o que a população negra vive há séculos sem precisar…</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-11-05-o-ibge-vai-medir-o-que-o-brasil-ja-sabe-e-recusa-admitir.jpg" length="146572" type="image/jpeg"/>
+    </item>
     <item>
       <title>Ciclismo negro e incidência política em SP</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-11-03-territorios-completos-quando-a-dificuldade-de-pedalar-vira.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Sun, 27 Sep 2026 12:00:00 GMT</pubDate>
       <description>A KODIE Academy abriu 600 vagas gratuitas em IA, mas o problema nunca foi o acesso ao curso. É saber o que fazer com o conhecimento depois que a aula acaba.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-27-600-vagas-gratuitas-de-ia-e-o-gargalo-nao-e-a-falta-de-curso.jpg" length="100615" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Equidade racial nas escolas: o que os 69% revelam</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.html</guid>
-      <pubDate>Fri, 25 Sep 2026 12:00:00 GMT</pubDate>
-      <description>O Diagnóstico Equidade 2026 mostra avanço real nas escolas brasileiras, mas o dado mais importante não é o percentual: é o que acontece depois da formação.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-09-25-de-48-para-69-em-dois-anos-quando-aprender-sobre-raca-vira.jpg" length="185901" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
