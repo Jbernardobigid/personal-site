@@ -743,6 +743,7 @@ const STATIC_PAGES = [
   { path: '/relatorios/',                                 changefreq: 'monthly', priority: '0.7' },
   { path: '/relatorios/censo-de-nomes-ligados-a-escravidao/', changefreq: 'yearly', priority: '0.6' },
   { path: '/relatorios/o-que-apagaram-dos-nossos-deuses/',    changefreq: 'yearly', priority: '0.6' },
+  { path: '/relatorios/o-topo-e-branco/',                     changefreq: 'yearly', priority: '0.6' },
   { path: '/privacidade/',                                changefreq: 'yearly',  priority: '0.3' },
 ];
 

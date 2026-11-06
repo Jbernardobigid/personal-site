@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O topo é branco: quantas pessoas negras há entre os ricos do Brasil</title>
+<meta name="description" content="Pessoas negras são 55,5% do Brasil e 18,9% do 1% mais rico. Degrau por degrau, com fonte e ano em cada número, e o que ninguém mede no topo.">
+<link rel="canonical" href="https://www.jorgebernardo.tech/relatorios/o-topo-e-branco/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="O topo é branco: quantas pessoas negras há entre os ricos do Brasil">
+<meta property="og:description" content="Pessoas negras são 55,5% do Brasil e 18,9% do 1% mais rico. Degrau por degrau, com fonte e ano em cada número.">
+<meta property="og:url" content="https://www.jorgebernardo.tech/relatorios/o-topo-e-branco/">
+<meta property="og:image" content="https://www.jorgebernardo.tech/relatorios/o-topo-e-branco/images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Jorge Bernardo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="O topo é branco: quantas pessoas negras há entre os ricos do Brasil">
+<meta name="twitter:description" content="Pessoas negras são 55,5% do Brasil e 18,9% do 1% mais rico. Degrau por degrau, com fonte e ano em cada número.">
+<meta name="twitter:image" content="https://www.jorgebernardo.tech/relatorios/o-topo-e-branco/images/og.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "O topo é branco: quantas pessoas negras há entre os ricos do Brasil",
+  "description": "Pessoas negras são 55,5% do Brasil e 18,9% do 1% mais rico. Degrau por degrau, com fonte e ano em cada número, e o que ninguém mede no topo.",
+  "image": "https://www.jorgebernardo.tech/relatorios/o-topo-e-branco/images/og.jpg",
+  "url": "https://www.jorgebernardo.tech/relatorios/o-topo-e-branco/",
+  "datePublished": "2026-11-06",
+  "dateModified": "2026-11-06",
+  "inLanguage": "pt-BR",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.jorgebernardo.tech/relatorios/o-topo-e-branco/"
+  },
+  "isPartOf": {
+    "@type": "CreativeWorkSeries",
+    "name": "Relatórios",
+    "url": "https://www.jorgebernardo.tech/relatorios/"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Jorge Bernardo",
+    "url": "https://www.jorgebernardo.tech",
+    "sameAs": [
+      "https://www.linkedin.com/in/jorge-bernardo/",
+      "https://www.depretoprapreto.com.br/"
+    ]
+  },
+  "citation": [
+    { "@type": "Book", "name": "Coisa de rico: a vida dos endinheirados brasileiros", "author": "Michel Alcoforado", "publisher": "Todavia", "datePublished": "2025" },
+    { "@type": "Report", "name": "Relatório da Distribuição Pessoal da Renda e da Riqueza da População Brasileira: dados do IRPF 2023", "publisher": "Ministério da Fazenda", "datePublished": "2025-12-01" },
+    { "@type": "Report", "name": "Desigualdades sociais por cor ou raça no Brasil, 2ª edição", "publisher": "IBGE", "datePublished": "2022-11-11" },
+    { "@type": "Dataset", "name": "Censo Demográfico 2022, SIDRA tabela 10296", "publisher": "IBGE" },
+    { "@type": "Dataset", "name": "Candidatos e bens de candidatos, Eleições Municipais 2024", "publisher": "Tribunal Superior Eleitoral" },
+    { "@type": "Report", "name": "Global Wealth Report 2026", "publisher": "UBS" }
+  ]
+}
+</script>
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Relatórios design system (shared with the other dossiers in /relatorios/).
+     Chart encoding: gold = pessoas negras no grupo, paper = população inteira,
+     hatched muted = ninguém mede. Every bar is direct-labeled and has a table view. */
+  :root{
+    --bg: #14110d;
+    --bg-elev: #1c1813;
+    --bg-elev-2: #221c15;
+    --paper: #f1e7d6;
+    --paper-dim: #cdc0a4;
+    --muted: #8d8170;
+    --rule: rgba(241,231,214,0.14);
+    --rule-strong: rgba(241,231,214,0.3);
+    --accent: #c1532f;
+    --accent-soft: rgba(193,83,47,0.16);
+    --gold: #c6a02f;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --space-section: clamp(4rem, 3rem + 5vw, 7rem);
+    --measure: 40rem;
+    --label-col: minmax(8.5rem, 15rem);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: clip;
+  }
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight: 600; margin: 0; color: var(--paper); text-wrap: balance; }
+  p{ margin: 0; }
+  a{ color: var(--gold); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover{ color: var(--accent); }
+  a:focus-visible, [tabindex]:focus-visible, summary:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+  sup a{ font-family: var(--font-mono); font-size: 0.7em; font-weight: 600; text-decoration: none; padding: 0 1px; }
+
+  .wrap{ max-width: 72rem; margin: 0 auto; padding: 0 clamp(1rem, 0.75rem + 2vw, 3rem); }
+  .stack{ display: flex; flex-direction: column; gap: 1.15rem; }
+  .measure{ max-width: var(--measure); }
+  .num{ font-variant-numeric: tabular-nums; }
+  .muted{ color: var(--muted); }
+
+  /* ---------- NAV ---------- */
+  .report-nav{ position: relative; z-index: 30; padding: 1.25rem clamp(1rem, 0.75rem + 2vw, 3rem) 0; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .report-nav a{ font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper-dim); text-decoration: none; }
+  .report-nav a:hover{ color: var(--gold); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: clamp(3.5rem, 3rem + 6vw, 7rem) 0 clamp(2.5rem, 2rem + 3vw, 4rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 20% -10%, rgba(193,83,47,0.18), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 100% 0%, rgba(198,160,47,0.10), transparent 55%),
+      var(--bg);
+    overflow: hidden;
+  }
+  .kicker{
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem;
+    opacity: 0; animation: rise 0.7s 0.05s ease-out forwards;
+  }
+  .kicker::before{ content: ""; width: 2.25rem; height: 1px; background: var(--gold); display: inline-block; flex: none; }
+  .hero h1{
+    font-size: clamp(3rem, 2rem + 5.5vw, 6.4rem); line-height: 0.98; letter-spacing: -0.03em; max-width: 12ch;
+    opacity: 0; animation: rise 0.8s 0.15s ease-out forwards;
+  }
+  .hero h1 em{
+    font-style: italic; font-weight: 500; color: transparent;
+    background: linear-gradient(95deg, var(--accent), var(--gold));
+    -webkit-background-clip: text; background-clip: text;
+    padding-right: 0.08em;
+  }
+  .hero-lede{
+    margin-top: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem); max-width: 40rem;
+    font-size: clamp(1.08rem, 1rem + 0.3vw, 1.3rem); color: var(--paper-dim);
+    opacity: 0; animation: rise 0.8s 0.3s ease-out forwards;
+  }
+  .hero-meta{
+    margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1.75rem;
+    font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted);
+    border-top: 1px solid var(--rule); padding-top: 1.25rem;
+    opacity: 0; animation: rise 0.8s 0.45s ease-out forwards;
+  }
+  @keyframes rise{ from{ opacity: 0; transform: translateY(14px); } to{ opacity: 1; transform: translateY(0); } }
+
+  /* ---------- THESIS BAND ---------- */
+  .band{
+    background:
+      radial-gradient(ellipse 80% 120% at 0% 0%, rgba(241,231,214,0.10), transparent 60%),
+      var(--accent);
+    color: var(--paper);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.4), 0 30px 60px -30px rgba(193,83,47,0.45);
+  }
+  .band .wrap{ padding-block: clamp(2.5rem, 2rem + 3vw, 4.25rem); }
+  .band .duo{ display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.5rem 3rem; align-items: end; }
+  .band .big{ font-family: var(--font-display); font-weight: 300; font-size: clamp(4rem, 2.4rem + 7vw, 8.5rem); line-height: 0.85; letter-spacing: -0.04em; }
+  .band .cap{ margin-top: 0.9rem; font-size: 1.05rem; max-width: 20rem; line-height: 1.45; }
+  .band .cap small{ display: block; margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.85; }
+  .band a{ color: var(--paper); }
+  .band .arrow{ font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: clamp(3rem, 2rem + 4vw, 5.5rem); line-height: 1; opacity: 0.75; }
+  @media (max-width: 40rem){
+    .band .duo{ grid-template-columns: 1fr; }
+    .band .arrow{ transform: rotate(90deg); width: max-content; }
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: var(--space-section) 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type{ border-bottom: none; }
+  .eyebrow{ font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+  h2{ font-size: clamp(1.7rem, 1.4rem + 1.5vw, 2.6rem); line-height: 1.08; letter-spacing: -0.015em; max-width: 26ch; }
+  h3{ font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem); line-height: 1.2; font-weight: 500; }
+  .section-intro{ color: var(--paper-dim); max-width: var(--measure); }
+  .note{ font-size: 0.9rem; color: var(--muted); max-width: var(--measure); line-height: 1.6; }
+
+  /* quote */
+  figure{ margin: 0.5rem 0; padding-left: clamp(1rem, 0.5rem + 2vw, 2rem); border-left: 2px solid var(--accent); max-width: var(--measure); }
+  blockquote{ margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(1.4rem, 1.1rem + 1.3vw, 2rem); line-height: 1.25; letter-spacing: -0.01em; }
+  figcaption{ margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* ---------- TABLES ---------- */
+  .scroll{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table{ border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+  th, td{ text-align: left; vertical-align: top; padding: 0.8rem 1rem 0.8rem 0; border-bottom: 1px solid var(--rule); }
+  th{ font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 500; border-bottom-color: var(--rule-strong); }
+  td{ color: var(--paper-dim); }
+  td.n{ font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tiers{ min-width: 44rem; }
+  .tiers td:first-child{ font-family: var(--font-display); font-weight: 600; color: var(--paper); white-space: nowrap; font-size: 1rem; }
+  .tiers .neg{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .tiers .unk{ font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--paper); border: 1px dashed var(--muted); padding: 0.1rem 0.45rem; white-space: nowrap; }
+
+  /* ---------- BAR CHARTS ---------- */
+  .chart{ display: flex; flex-direction: column; gap: 0.35rem; padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); background: var(--bg-elev); border: 1px solid var(--rule); }
+  .chart-head{ display: flex; justify-content: space-between; gap: 0.75rem 1.5rem; flex-wrap: wrap; align-items: baseline; }
+  .legend{ display: flex; gap: 0.5rem 1.2rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+  .legend span{ display: inline-flex; align-items: center; gap: 0.45rem; }
+  .sw{ width: 0.8rem; height: 0.8rem; border-radius: 2px; display: inline-block; }
+  .sw.neg{ background: var(--gold); }
+  .sw.ref{ width: 2px; height: 0.95rem; background: var(--paper); border-radius: 0; }
+  .sw.hatch{ background: repeating-linear-gradient(45deg, var(--muted) 0 2px, transparent 2px 6px); border: 1px solid var(--muted); }
+  .rows{ display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.9rem; }
+  .row{ display: grid; grid-template-columns: var(--label-col) 1fr; gap: 1rem; align-items: center; padding-block: 0.35rem; }
+  .lab{ font-family: var(--font-display); font-size: 0.98rem; font-weight: 500; line-height: 1.25; min-width: 0; color: var(--paper); }
+  .lab small{ display: block; margin-top: 0.15rem; font-family: var(--font-mono); font-weight: 400; color: var(--muted); font-size: 0.68rem; letter-spacing: 0.03em; }
+  .track{ position: relative; height: 1.9rem; }
+  .track .grid{ position: absolute; inset: 0; background-image: linear-gradient(to right, var(--rule) 1px, transparent 1px); background-size: calc(100% / 3) 100%; }
+  .track .refline{ position: absolute; top: -0.35rem; bottom: -0.35rem; width: 2px; background: var(--paper); left: calc(55.5 / 60 * 100%); }
+  .bar{ position: absolute; left: 0; top: 0.2rem; bottom: 0.2rem; background: var(--gold); border-radius: 0 4px 4px 0; cursor: default; outline: none; }
+  .bar.pop{ background: var(--paper); }
+  .bar.unk{ background: repeating-linear-gradient(45deg, var(--muted) 0 2px, transparent 2px 7px); border: 1px dashed var(--muted); border-left: 0; width: 100%; }
+  .bar .v{ position: absolute; left: calc(100% + 0.5rem); top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-weight: 600; font-size: 0.85rem; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--paper); }
+  .bar.pop .v{ left: auto; right: 0.6rem; color: var(--bg); }
+  .bar.unk .v{ left: 0.6rem; background: var(--bg-elev); padding: 0 0.45rem; font-weight: 500; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .bar[data-tip]:hover::after, .bar[data-tip]:focus-visible::after{
+    content: attr(data-tip); position: absolute; left: 0; bottom: calc(100% + 0.55rem); z-index: 3;
+    background: var(--paper); color: var(--bg); font-family: var(--font-body); font-size: 0.82rem; line-height: 1.4;
+    padding: 0.55rem 0.7rem; border-radius: 4px; width: max-content; max-width: min(20rem, 70vw); white-space: normal;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 12px 28px -8px rgba(0,0,0,0.55);
+  }
+  .axis{ display: grid; grid-template-columns: var(--label-col) 1fr; gap: 1rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); }
+  .axis .ticks{ display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+
+  /* stacked composition */
+  .comp{ gap: 1.2rem; }
+  .comp .crow{ display: grid; grid-template-columns: var(--label-col) 1fr; gap: 1rem; align-items: center; }
+  .stackbar{ display: flex; height: 2.4rem; gap: 2px; }
+  .seg{ position: relative; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--bg); min-width: 0; overflow: visible; }
+  .seg.b{ background: var(--muted); border-radius: 4px 0 0 4px; }
+  .seg.pa{ background: var(--paper-dim); }
+  .seg.pr{ background: var(--gold); border-radius: 0 4px 4px 0; }
+  .seg.out{ background: transparent; }
+  .seg .ol{ position: absolute; top: calc(100% + 0.25rem); right: 0; color: var(--paper); white-space: nowrap; }
+  .sw.b{ background: var(--muted); } .sw.pa{ background: var(--paper-dim); } .sw.pr{ background: var(--gold); }
+
+  details{ border-top: 1px solid var(--rule); padding-top: 0.8rem; margin-top: 0.9rem; }
+  summary{ cursor: pointer; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+  details[open] summary{ margin-bottom: 0.6rem; }
+
+  /* ---------- CALLOUT ---------- */
+  .callout{ max-width: var(--measure); padding: 1.4rem 1.5rem; background: var(--accent-soft); border-left: 3px solid var(--accent); display: flex; flex-direction: column; gap: 0.7rem; }
+  .callout strong{ font-family: var(--font-mono); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-right: 0.35rem; }
+
+  /* ---------- GAPS ---------- */
+  .gaps{ display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .gap{ background: var(--bg); padding: 1.6rem 1.4rem; display: flex; flex-direction: column; gap: 0.8rem; min-width: 0; transition: background 0.35s ease; }
+  .gap:hover{ background: var(--bg-elev); }
+  .gap .q{ font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.5rem; line-height: 1.15; color: var(--paper); }
+  .gap .q::first-letter{ color: var(--accent); }
+  .gap p:not(.q){ font-size: 0.95rem; color: var(--paper-dim); line-height: 1.6; }
+
+  /* ---------- FACTS ---------- */
+  .facts{ display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2.25rem 2.75rem; }
+  .fact{ display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; padding-top: 1rem; border-top: 1px solid var(--rule-strong); }
+  .fact .k{ font-family: var(--font-display); font-weight: 300; font-size: clamp(2.2rem, 1.7rem + 1.8vw, 3.1rem); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: var(--gold); }
+  .fact p{ font-size: 0.95rem; color: var(--paper-dim); line-height: 1.6; }
+
+  /* ---------- METHOD + SOURCES ---------- */
+  .method dl{ display: grid; grid-template-columns: minmax(7rem, 11rem) 1fr; gap: 1rem 1.5rem; margin: 0.5rem 0 0; font-size: 0.95rem; max-width: 52rem; }
+  .method dt{ font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); padding-top: 0.2rem; }
+  .method dd{ margin: 0; min-width: 0; color: var(--paper-dim); }
+  ol.fontes{ margin: 0.5rem 0 0; padding-left: 1.6rem; max-width: 52rem; }
+  ol.fontes li{ padding: 0.8rem 0 0.8rem 0.4rem; border-bottom: 1px dotted var(--rule); color: var(--paper-dim); font-size: 0.92rem; overflow-wrap: anywhere; }
+  ol.fontes li::marker{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+  ol.fontes li:target{ background: var(--accent-soft); }
+  ol.fontes em{ color: var(--paper); }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: clamp(2.5rem, 2rem + 3vw, 4rem) 0 3rem; }
+  footer .foot-grid{ display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; border-top: 1px solid var(--rule); padding-top: 2rem; }
+  footer h4{ font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin: 0 0 0.75rem; }
+  footer p{ color: var(--muted); font-size: 0.86rem; max-width: 26rem; margin: 0; }
+  footer .colophon{ margin-top: 2.5rem; font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+  @media (max-width: 34rem){
+    .row, .axis, .comp .crow{ grid-template-columns: 1fr; gap: 0.3rem; }
+    .axis > span:first-child{ display: none; }
+    .method dl{ grid-template-columns: 1fr; gap: 0.2rem 0; }
+    .method dd{ margin-bottom: 0.8rem; }
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .bar{ transition: filter 150ms ease-out; }
+    .bar:hover{ filter: brightness(1.1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *, *::before, *::after{ animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-fill-mode: forwards !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="report-nav" aria-label="Navegação">
+  <a href="/">← jorgebernardo.tech</a>
+  <a href="/relatorios/">Relatórios</a>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Relatório 03 · Riqueza e raça</div>
+    <h1>O topo é <em>branco</em>.</h1>
+    <p class="hero-lede">Pessoas negras são 55,5% de quem vive no Brasil. No 1% mais rico, são 18,9%. Quanto mais alto o degrau, menos preto ele fica. No último degrau, ninguém sequer conta.</p>
+    <div class="hero-meta">
+      <span>A partir de <em>Coisa de rico</em>, de Michel Alcoforado</span>
+      <span>IBGE · Fazenda · Receita · TSE</span>
+      <span>06.11.2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="band" role="region" aria-label="Os dois números principais">
+  <div class="wrap duo">
+    <div>
+      <div class="big num">55,5%</div>
+      <p class="cap">da população brasileira é negra (preta ou parda).<small>IBGE, Censo 2022<sup><a href="#f9">9</a></sup></small></p>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div>
+      <div class="big num">18,9%</div>
+      <p class="cap">do 1% com maior renda é negro.<small>Ministério da Fazenda, dados de 2023<sup><a href="#f4">4</a></sup></small></p>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section aria-labelledby="s-livro">
+    <div class="wrap stack">
+      <p class="eyebrow">1 · O livro</p>
+      <h2 id="s-livro">Quinze anos entre os endinheirados</h2>
+      <p class="section-intro"><em>Coisa de rico: a vida dos endinheirados brasileiros</em> (Todavia, 2025) é o resultado de 15 anos de trabalho de campo do antropólogo Michel Alcoforado entre o que a Folha de S.Paulo chamou de "esse 0,01% dos brasileiros"<sup><a href="#f1">1</a></sup>. Ele frequentou jantares, iates e salas de estar para entender como a elite se distingue do resto do país.</p>
+      <p class="section-intro">O livro separa os ricos em dois mundos. De um lado, os nascidos em berço de ouro, com sobrenome e luxo discreto. Do outro, os emergentes, que exibem o que compram<sup><a href="#f1">1</a></sup>. Para Alcoforado, renda e patrimônio sozinhos não dizem quem é rico. Ser rico no Brasil é dominar códigos. Mesmo assim, quando a BBC pediu uma régua, ele deu uma: patrimônio de um apartamento de classe média em bairro nobre de São Paulo e "renda acima de R$ 26 mil" bastam para estar no 1% mais rico<sup><a href="#f2">2</a></sup>.</p>
+      <p class="section-intro">Raça ficou de fora do livro, por escolha do autor. Alcoforado, que é negro, disse que evitou o tema para que ninguém usasse o livro para dizer que os ricos são mais racistas que o resto do país<sup><a href="#f2">2</a></sup>. Mas registrou o que viu.</p>
+      <figure>
+        <blockquote>“O fato de não ter nenhum negro entre meus interlocutores, dado que eram super-ricos, revela o racismo da sociedade brasileira.”</blockquote>
+        <figcaption>Michel Alcoforado à BBC News Brasil, 8 de outubro de 2025<sup><a href="#f2">2</a></sup><sup><a href="#f3">3</a></sup></figcaption>
+      </figure>
+      <p class="section-intro">O livro conta o topo por dentro. Este relatório faz a conta por fora: quantas pessoas negras existem em cada degrau da riqueza brasileira, segundo quem mede.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-escada">
+    <div class="wrap stack">
+      <p class="eyebrow">2 · A escada</p>
+      <h2 id="s-escada">Quem conta como rico</h2>
+      <p class="section-intro">Não existe uma definição oficial de rico. Cada instituição usa a sua régua: renda por pessoa da casa (IBGE), renda declarada ao fisco (Receita), patrimônio (bancos e revistas). A tabela junta as réguas, do degrau mais baixo ao mais alto.</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Tabela dos degraus da riqueza">
+        <table class="tiers">
+          <thead>
+            <tr><th scope="col">Degrau</th><th scope="col">Régua</th><th scope="col">Quantos</th><th scope="col">Negros no degrau</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>10% mais ricos</td><td>Renda acima de R$ 4.609 por mês por pessoa da casa (2025)<sup><a href="#f7">7</a></sup></td><td class="n">1 em 10</td><td><span class="neg">28,2%</span> <span class="muted">(2021)</span><sup><a href="#f5">5</a></sup></td></tr>
+            <tr><td>1% mais rico</td><td>Renda acima de R$ 15.214 por mês por pessoa da casa (2025). A média do grupo é R$ 24.973<sup><a href="#f6">6</a></sup><sup><a href="#f7">7</a></sup></td><td class="n">1 em 100</td><td><span class="neg">18,9%</span> <span class="muted">(2023)</span><sup><a href="#f4">4</a></sup></td></tr>
+            <tr><td>Cerca de 0,14%</td><td>Renda acima de 20 salários mínimos por pessoa da casa, R$ 24.240 em 2022<sup><a href="#f8">8</a></sup></td><td class="n">291.833 pessoas</td><td><span class="neg">16,1%</span> <span class="muted">(2022)</span><sup><a href="#f8">8</a></sup></td></tr>
+            <tr><td>0,01% mais rico</td><td>Renda média declarada de R$ 2,5 milhões por mês (2023). É o grupo que Alcoforado estudou<sup><a href="#f10">10</a></sup><sup><a href="#f1">1</a></sup></td><td class="n">1 em 10 mil</td><td><span class="unk">não medido</span></td></tr>
+            <tr><td>Milionários em dólar</td><td>Patrimônio acima de US$ 1 milhão (fim de 2025)<sup><a href="#f11">11</a></sup></td><td class="n">≈ 386 mil adultos</td><td><span class="unk">não medido</span></td></tr>
+            <tr><td>Ultra-ricos</td><td>Patrimônio entre US$ 5 milhões e US$ 100 milhões<sup><a href="#f11">11</a></sup></td><td class="n">≈ 43 mil adultos</td><td><span class="unk">não medido</span></td></tr>
+            <tr><td>Bilionários</td><td>Patrimônio acima de R$ 1 bilhão (2025)<sup><a href="#f12">12</a></sup></td><td class="n">300 pessoas</td><td><span class="unk">não medido</span> <span class="muted">· em 2020: nenhum</span><sup><a href="#f13">13</a></sup></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">E os R$ 26 mil de Alcoforado? Se for renda por pessoa da casa, está acima da linha de entrada do 1% em 2025 (R$ 15.214). Se for a renda da casa inteira, uma família de quatro pessoas ficaria bem abaixo dela, porque para entrar no 1% essa família precisaria de mais de R$ 60 mil por mês<sup><a href="#f7">7</a></sup>. Ele não disse qual das duas.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-degraus">
+    <div class="wrap stack">
+      <p class="eyebrow">3 · Degrau por degrau</p>
+      <h2 id="s-degraus">Quanto mais alto, menos preto</h2>
+      <p class="section-intro">Cada barra mostra a parcela de pessoas negras (pretas e pardas) em um grupo de renda. A linha clara marca o peso delas na população inteira. Se o Brasil fosse justo, todas as barras chegariam até ela.</p>
+
+      <div class="chart" role="figure" aria-labelledby="c1-title">
+        <div class="chart-head">
+          <h3 id="c1-title">Parcela de pessoas negras em cada degrau de renda</h3>
+          <div class="legend" aria-hidden="true">
+            <span><i class="sw neg"></i>Pessoas negras no grupo</span>
+            <span><i class="sw ref"></i>Peso na população (55,5%)</span>
+            <span><i class="sw hatch"></i>Ninguém mede</span>
+          </div>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <div class="lab">População inteira<small>Censo 2022</small></div>
+            <div class="track"><div class="grid"></div><div class="bar pop" style="width:calc(55.5/60*100%)" tabindex="0" data-tip="Censo 2022: 112,7 milhões de pessoas pretas ou pardas em 203,1 milhões de residentes."><span class="v">55,5%</span></div><div class="refline"></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">10% mais ricos<small>IBGE, PNAD 2021</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(28.2/60*100%)" tabindex="0" data-tip="IBGE, 2021: 4,3% pretos e 23,9% pardos entre os 10% com maior renda domiciliar por pessoa."><span class="v">28,2%</span></div><div class="refline"></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">1% mais rico<small>Fazenda, IRPF + PNAD 2023</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(18.9/60*100%)" tabindex="0" data-tip="Ministério da Fazenda, 2023: 15,8% pardos e 3,1% pretos no centésimo mais rico de renda individual. Intervalo de confiança de cada grupo na fonte."><span class="v">18,9%</span></div><div class="refline"></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">Acima de 10 salários mínimos<small>Censo 2022 · cerca de 0,9%</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(18.7/60*100%)" tabindex="0" data-tip="Censo 2022: 1.823.274 pessoas com renda acima de R$ 12.120 por pessoa da casa; 18,7% pretas ou pardas."><span class="v">18,7%</span></div><div class="refline"></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">Acima de 15 salários mínimos<small>Censo 2022 · cerca de 0,3%</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(17.2/60*100%)" tabindex="0" data-tip="Censo 2022: 651.248 pessoas com renda acima de R$ 18.180 por pessoa da casa; 17,2% pretas ou pardas."><span class="v">17,2%</span></div><div class="refline"></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">Acima de 20 salários mínimos<small>Censo 2022 · cerca de 0,14%</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(16.1/60*100%)" tabindex="0" data-tip="Censo 2022: 291.833 pessoas com renda acima de R$ 24.240 por pessoa da casa; 16,1% pretas ou pardas (2,2% pretas)."><span class="v">16,1%</span></div><div class="refline"></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">0,01% mais rico<small>Receita, sem dado de raça</small></div>
+            <div class="track"><div class="grid"></div><div class="bar unk" tabindex="0" data-tip="A declaração do Imposto de Renda não perguntava raça até 2026. Não existe medição pública deste grupo."><span class="v">ninguém mede</span></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">Bilionários<small>Forbes, sem dado de raça</small></div>
+            <div class="track"><div class="grid"></div><div class="bar unk" tabindex="0" data-tip="A Forbes publica o gênero dos bilionários, não a raça. Em 2020, a Forbes Brasil escreveu que o país não tinha um único bilionário negro."><span class="v">ninguém mede · 2020: zero</span></div></div>
+          </div>
+        </div>
+        <div class="axis" aria-hidden="true"><span></span><div class="ticks"><span>0%</span><span>20%</span><span>40%</span><span>60%</span></div></div>
+        <details>
+          <summary>Ver os dados em tabela</summary>
+          <div class="scroll">
+            <table>
+              <thead><tr><th scope="col">Grupo</th><th scope="col">Pessoas negras</th><th scope="col">Ano</th><th scope="col">Fonte</th></tr></thead>
+              <tbody>
+                <tr><td>População inteira</td><td class="n">55,5%</td><td>2022</td><td>IBGE, Censo<sup><a href="#f9">9</a></sup></td></tr>
+                <tr><td>10% mais ricos</td><td class="n">28,2%</td><td>2021</td><td>IBGE, PNAD Contínua<sup><a href="#f5">5</a></sup></td></tr>
+                <tr><td>1% mais rico</td><td class="n">18,9%</td><td>2023</td><td>Ministério da Fazenda<sup><a href="#f4">4</a></sup></td></tr>
+                <tr><td>Acima de 10 salários mínimos por pessoa</td><td class="n">18,7%</td><td>2022</td><td>IBGE, Censo<sup><a href="#f8">8</a></sup></td></tr>
+                <tr><td>Acima de 15 salários mínimos por pessoa</td><td class="n">17,2%</td><td>2022</td><td>IBGE, Censo<sup><a href="#f8">8</a></sup></td></tr>
+                <tr><td>Acima de 20 salários mínimos por pessoa</td><td class="n">16,1%</td><td>2022</td><td>IBGE, Censo<sup><a href="#f8">8</a></sup></td></tr>
+                <tr><td>0,01% mais rico</td><td>não medido</td><td>—</td><td>—</td></tr>
+                <tr><td>Bilionários</td><td>não medido (2020: nenhum)</td><td>2020</td><td>Forbes Brasil<sup><a href="#f13">13</a></sup></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+
+      <p class="section-intro">Duas medições independentes chegam ao mesmo lugar. O Ministério da Fazenda juntou a pesquisa do IBGE com as declarações de Imposto de Renda e encontrou 18,9% de pessoas negras no 1% mais rico. O Censo 2022, com outro método, encontra 18,7% no grupo que ganha acima de 10 salários mínimos por pessoa, que tem quase o mesmo tamanho. A população negra é três vezes maior do que a sua fatia no topo.</p>
+
+      <div class="chart comp" role="figure" aria-labelledby="c2-title">
+        <div class="chart-head">
+          <h3 id="c2-title">Quem ocupa o topo, por cor</h3>
+          <div class="legend" aria-hidden="true">
+            <span><i class="sw b"></i>Brancas</span>
+            <span><i class="sw pa"></i>Pardas</span>
+            <span><i class="sw pr"></i>Pretas</span>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="lab">População adulta<small>Fazenda, 2023</small></div>
+          <div class="stackbar" aria-label="Brancas 43,9%, pardas 44,0%, pretas 11,0%">
+            <div class="seg b" style="flex:43.9">43,9</div><div class="seg pa" style="flex:44.0">44,0</div><div class="seg pr" style="flex:11.0">11,0</div><div class="seg out" style="flex:1.1"></div>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="lab">1% mais rico<small>Fazenda, 2023</small></div>
+          <div class="stackbar" aria-label="Brancas 78,6%, pardas 15,8%, pretas 3,1%">
+            <div class="seg b" style="flex:78.6">78,6</div><div class="seg pa" style="flex:15.8">15,8</div><div class="seg pr" style="flex:3.1"><span class="ol">3,1</span></div><div class="seg out" style="flex:2.5"></div>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="lab">Acima de 20 salários mínimos<small>Censo, 2022</small></div>
+          <div class="stackbar" aria-label="Brancas 81,8%, pardas 13,9%, pretas 2,2%">
+            <div class="seg b" style="flex:81.8">81,8</div><div class="seg pa" style="flex:13.9">13,9</div><div class="seg pr" style="flex:2.2"><span class="ol">2,2</span></div><div class="seg out" style="flex:2.1"></div>
+          </div>
+        </div>
+        <p class="note">Valores em %. O que falta para 100% são pessoas amarelas, indígenas e sem resposta.<sup><a href="#f4">4</a></sup><sup><a href="#f8">8</a></sup></p>
+      </div>
+
+      <div class="callout">
+        <p><strong>Correção</strong>Parte da imprensa noticiou que "pretos e pardos somam 3,1%" do 1% mais rico. A conta está errada. No relatório da Fazenda, 3,1% são só as pessoas pretas. Somando as pardas (15,8%), as pessoas negras chegam a 18,9%<sup><a href="#f4">4</a></sup>.</p>
+        <p>O dado das pessoas pretas, separado, é o mais duro: são 11% dos adultos e 3,1% do 1% mais rico. Entre os 2% mais ricos, a Fazenda registra menos de 4%<sup><a href="#f4">4</a></sup>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-patrimonio">
+    <div class="wrap stack">
+      <p class="eyebrow">4 · Patrimônio</p>
+      <h2 id="s-patrimonio">O que dá para ver da riqueza</h2>
+      <p class="section-intro">Renda é o que entra por mês. Patrimônio é o que se acumula: imóveis, empresas, aplicações. No Brasil, nenhuma pesquisa oficial mede patrimônio por cor para a população inteira. O retrato mais amplo que existe vem das declarações de bens de quem se candidata a um cargo público.</p>
+
+      <div class="chart" role="figure" aria-labelledby="c3-title">
+        <div class="chart-head">
+          <h3 id="c3-title">Pessoas negras entre os candidatos das eleições municipais de 2024, por bens declarados</h3>
+          <div class="legend" aria-hidden="true">
+            <span><i class="sw neg"></i>Pessoas negras no grupo</span>
+          </div>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <div class="lab">Todos os candidatos<small>463.394 pessoas</small></div>
+            <div class="track"><div class="grid"></div><div class="bar pop" style="width:calc(51.6/60*100%)" tabindex="0" data-tip="239.197 candidatos pretos ou pardos entre 463.394."><span class="v">51,6%</span></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">Bens acima de R$ 1 milhão<small>17.894 pessoas</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(29.6/60*100%)" tabindex="0" data-tip="5.295 candidatos pretos ou pardos entre 17.894 com bens declarados acima de R$ 1 milhão."><span class="v">29,6%</span></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">Bens acima de R$ 10 milhões<small>628 pessoas</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(20.9/60*100%)" tabindex="0" data-tip="131 candidatos pretos ou pardos entre 628 com bens declarados acima de R$ 10 milhões."><span class="v">20,9%</span></div></div>
+          </div>
+          <div class="row">
+            <div class="lab">Eleitos com bens acima de R$ 10 milhões<small>255 pessoas</small></div>
+            <div class="track"><div class="grid"></div><div class="bar" style="width:calc(17.6/60*100%)" tabindex="0" data-tip="45 eleitos pretos ou pardos entre 255 com bens declarados acima de R$ 10 milhões."><span class="v">17,6%</span></div></div>
+          </div>
+        </div>
+        <div class="axis" aria-hidden="true"><span></span><div class="ticks"><span>0%</span><span>20%</span><span>40%</span><span>60%</span></div></div>
+        <details>
+          <summary>Ver os dados em tabela</summary>
+          <div class="scroll">
+            <table>
+              <thead><tr><th scope="col">Grupo</th><th scope="col">Pessoas</th><th scope="col">Brancas</th><th scope="col">Pretas</th><th scope="col">Pardas</th><th scope="col">Negras</th></tr></thead>
+              <tbody>
+                <tr><td>Todos os candidatos</td><td class="n">463.394</td><td class="n">46,8%</td><td class="n">11,3%</td><td class="n">40,3%</td><td class="n">51,6%</td></tr>
+                <tr><td>Bens acima de R$ 1 milhão</td><td class="n">17.894</td><td class="n">69,4%</td><td class="n">3,6%</td><td class="n">26,0%</td><td class="n">29,6%</td></tr>
+                <tr><td>Bens acima de R$ 10 milhões</td><td class="n">628</td><td class="n">78,0%</td><td class="n">2,5%</td><td class="n">18,3%</td><td class="n">20,9%</td></tr>
+                <tr><td>Eleitos (todos)</td><td class="n">69.116</td><td class="n">54,6%</td><td class="n">6,4%</td><td class="n">37,8%</td><td class="n">44,1%</td></tr>
+                <tr><td>Eleitos com bens acima de R$ 1 milhão</td><td class="n">5.226</td><td class="n">70,7%</td><td class="n">3,0%</td><td class="n">25,4%</td><td class="n">28,4%</td></tr>
+                <tr><td>Eleitos com bens acima de R$ 10 milhões</td><td class="n">255</td><td class="n">80,4%</td><td class="n">0,8%</td><td class="n">16,9%</td><td class="n">17,6%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+      <p class="note">Conta feita para este relatório com os microdados abertos do TSE<sup><a href="#f14">14</a></sup>. Candidatos não são uma amostra da população, e os bens são declarados em geral pelo valor de compra, sem descontar dívidas. Deixamos de fora a faixa acima de R$ 100 milhões, porque ela tem erros evidentes de digitação (uma chácara declarada por R$ 1,4 bilhão, por exemplo). A faixa acima de R$ 10 milhões também pode conter alguns.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-lacunas">
+    <div class="wrap stack">
+      <p class="eyebrow">5 · O que ninguém mede</p>
+      <h2 id="s-lacunas">A falta de dado também é um dado</h2>
+      <p class="section-intro">O Brasil sabe quanto o 0,01% ganha, quanto paga de imposto e de onde vem a renda dele. Não sabe a cor de quem está lá. Três perguntas ficam sem resposta oficial.</p>
+      <div class="gaps">
+        <div class="gap">
+          <p class="q">Quantos pretos estão no 0,01%?</p>
+          <p>A declaração do Imposto de Renda nunca perguntou raça. Em 2026, a Receita incluiu um campo de raça e cor, de preenchimento voluntário, segundo o Diário do Nordeste<sup><a href="#f17">17</a></sup>. Até 6 de novembro de 2026, nenhum resultado foi publicado.</p>
+        </div>
+        <div class="gap">
+          <p class="q">Existe bilionário negro no Brasil?</p>
+          <p>A lista da Forbes informa quantos bilionários são homens e quantos são mulheres. Não informa a cor<sup><a href="#f12">12</a></sup>. A última vez que alguém olhou, em 2020, a Forbes Brasil escreveu que o país "não possui um único bilionário negro"<sup><a href="#f13">13</a></sup>.</p>
+        </div>
+        <div class="gap">
+          <p class="q">Qual o patrimônio de uma família negra?</p>
+          <p>Nos Estados Unidos, o banco central mede: em 2022, a família branca típica tinha US$ 285 mil e a família negra típica, US$ 44,9 mil, cerca de seis vezes menos<sup><a href="#f16">16</a></sup>. No Brasil, essa conta não existe para a população.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-contexto">
+    <div class="wrap stack">
+      <p class="eyebrow">6 · O tamanho do topo</p>
+      <h2 id="s-contexto">Para dimensionar</h2>
+      <div class="facts">
+        <div class="fact"><div class="k num">37,3%</div><p>de toda a riqueza declarada ao Imposto de Renda pertence ao 1% de maior renda (2023)<sup><a href="#f4">4</a></sup>.</p></div>
+        <div class="fact"><div class="k num">R$ 2,5 mi</div><p>por mês é a renda média declarada do 0,01% mais rico. A pesquisa domiciliar do IBGE enxerga pouco mais de R$ 200 mil para o mesmo grupo (2023)<sup><a href="#f10">10</a></sup>.</p></div>
+        <div class="fact"><div class="k num">4,6%</div><p>é a alíquota efetiva de Imposto de Renda do 0,01% mais rico, a mesma de quem está no centésimo 64 da pirâmide de renda (2023)<sup><a href="#f4">4</a></sup>.</p></div>
+        <div class="fact"><div class="k num">R$ 54,8 mil</div><p>por ano é a renda média de um adulto branco. A de um adulto preto é R$ 26,6 mil, e a de um pardo, R$ 26,2 mil (2023)<sup><a href="#f4">4</a></sup>.</p></div>
+        <div class="fact"><div class="k num">14,6%</div><p>das pessoas em cargos de gerência de mais alta renda eram pretas ou pardas em 2021<sup><a href="#f5">5</a></sup>.</p></div>
+        <div class="fact"><div class="k num">4,7%</div><p>dos cargos executivos nas 500 maiores empresas do país eram ocupados por pessoas negras, na pesquisa mais recente do Instituto Ethos (dados de 2014 e 2015)<sup><a href="#f15">15</a></sup>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-metodo" class="method">
+    <div class="wrap stack">
+      <p class="eyebrow">7 · Método</p>
+      <h2 id="s-metodo">Como este relatório foi feito</h2>
+      <p class="section-intro">Nenhum número aqui foi estimado por nós. Todos vêm de uma fonte pública, lida na origem. Os que foram calculados para este relatório usam dados oficiais abertos, com a conta descrita abaixo.</p>
+      <dl>
+        <dt>Pessoas negras</dt><dd>Segue o IBGE: a cor é autodeclarada em cinco categorias (branca, preta, parda, amarela, indígena). Pessoas negras são a soma de pretas e pardas. Quando a fonte separa as duas, mostramos as duas.</dd>
+        <dt>Renda e patrimônio</dt><dd>Renda é o que a pessoa recebe. Patrimônio é o que ela possui. Os dados de cor no topo existem só para renda. Para patrimônio, a única pista ampla são os bens declarados por candidatos.</dd>
+        <dt>Por pessoa da casa</dt><dd>O IBGE soma a renda de todos os moradores e divide pelo número de pessoas. A Fazenda usa a renda de cada adulto. Por isso os cortes em reais não são comparáveis entre fontes, mas as parcelas por cor são.</dd>
+        <dt>Contas nossas</dt><dd>Os recortes do Censo 2022 por faixa de salário mínimo vêm da tabela 10296 do SIDRA, consultada pela API do IBGE; a parcela negra é (pretas + pardas) ÷ total da faixa. Os dados do TSE vêm dos arquivos de candidatos e de bens de 2024, com um registro por candidato e os bens somados. A soma 15,8% + 3,1% = 18,9% usa as estimativas pontuais da Fazenda; a fonte informa o intervalo de confiança de cada grupo.</dd>
+        <dt>O que ficou de fora</dt><dd>Números sem fonte rastreável, contagens de entrevistas do livro que divergem entre veículos e a faixa de patrimônio acima de R$ 100 milhões do TSE.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-fontes">
+    <div class="wrap stack">
+      <p class="eyebrow">8 · Fontes</p>
+      <h2 id="s-fontes">Fontes</h2>
+      <ol class="fontes">
+        <li id="f1">Gabriela Caseff, "Raio-X de como se portam os muito ricos", <em>Folha de S.Paulo</em>, 27 ago. 2025. Cópia: <a href="https://www.bresserpereira.org.br/25.08-raio_x_dos_muito_ricos.pdf" target="_blank" rel="noopener">bresserpereira.org.br</a></li>
+        <li id="f2">Rute Pina, "Ricos no Brasil: 'brasileiro é obcecado por ricos por crença ilusória na mobilidade social'", <em>BBC News Brasil</em>, 8 out. 2025. <a href="https://www.bbc.com/portuguese/articles/c62nr1z19q7o" target="_blank" rel="noopener">bbc.com/portuguese</a></li>
+        <li id="f3">"'Racismo entre elites é o mesmo do resto da sociedade', diz Michel Alcoforado", <em>BBC News Brasil</em> (vídeo), 21 out. 2025. <a href="https://www.bbc.com/portuguese/articles/c4gw34g0gv4o" target="_blank" rel="noopener">bbc.com/portuguese</a></li>
+        <li id="f4">Ministério da Fazenda, Secretaria de Política Econômica, <em>Relatório da Distribuição Pessoal da Renda e da Riqueza da População Brasileira: dados do IRPF 2023</em>, 1º dez. 2025, seções 2.1 e 5.4, Tabela 4. <a href="https://www.reformatributaria.com/wp-content/uploads/2025/12/relatorio-distribuicao-renda-2025.pdf" target="_blank" rel="noopener">Relatório</a> · <a href="https://www.gov.br/fazenda/pt-br/central-de-conteudo/publicacoes/conjuntura-economica/estudos-economicos/2025/apresentacao-desigualdade-renda-2023-dirpf-versao-lancamento-estudo.pdf" target="_blank" rel="noopener">Apresentação oficial</a></li>
+        <li id="f5">IBGE, <em>Desigualdades sociais por cor ou raça no Brasil</em>, 2ª edição, 11 nov. 2022 (PNAD Contínua 2021). <a href="https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/ded2949e6fb4ddf386c7e61f06afcd73.pdf" target="_blank" rel="noopener">agenciadenoticias.ibge.gov.br</a></li>
+        <li id="f6">IBGE, <em>PNAD Contínua: Rendimento de todas as fontes 2025</em>, 8 maio 2026. <a href="https://biblioteca.ibge.gov.br/visualizacao/livros/liv102275_informativo.pdf" target="_blank" rel="noopener">biblioteca.ibge.gov.br</a></li>
+        <li id="f7">IBGE, SIDRA, tabela 7438: limites superiores das classes de percentual de rendimento domiciliar per capita, 2025. <a href="https://sidra.ibge.gov.br/tabela/7438" target="_blank" rel="noopener">sidra.ibge.gov.br/tabela/7438</a></li>
+        <li id="f8">IBGE, Censo Demográfico 2022, <em>Trabalho e rendimento: resultados preliminares da amostra</em>, 9 out. 2025; SIDRA, tabela 10296 (salário mínimo de referência: R$ 1.212). <a href="https://sidra.ibge.gov.br/tabela/10296" target="_blank" rel="noopener">sidra.ibge.gov.br/tabela/10296</a> · <a href="https://biblioteca.ibge.gov.br/visualizacao/livros/liv102211.pdf" target="_blank" rel="noopener">Publicação</a></li>
+        <li id="f9">IBGE, Censo Demográfico 2022, população residente por cor ou raça; SIDRA, tabela 9605. <a href="https://sidra.ibge.gov.br/tabela/9605" target="_blank" rel="noopener">sidra.ibge.gov.br/tabela/9605</a></li>
+        <li id="f10">Frederico N. Dutra, Priscila K. Monteiro e Sérgio W. Gobetti, "Concentração de renda no Brasil: o que os dados do IRPF revelam?", nota técnica, 14 ago. 2025, Tabela 1. <a href="https://static.poder360.com.br/2025/08/Concentracao-de-renda-no-Brasil-o-que-os-dados-do-IRPF-revelam-14-ago-2025.pdf" target="_blank" rel="noopener">Cópia em poder360.com.br</a></li>
+        <li id="f11">UBS, <em>Global Wealth Report 2026</em>. <a href="https://advisors.ubs.com/mediahandler/media/817144/global-wealth-report-en-2026.pdf" target="_blank" rel="noopener">ubs.com</a></li>
+        <li id="f12">Forbes Brasil, "Lista Forbes: os 10 maiores bilionários do Brasil em 2025", ago. 2025. <a href="https://forbes.com.br/listas/2025/08/lista-forbes-os-10-maiores-bilionarios-do-brasil-em-2025" target="_blank" rel="noopener">forbes.com.br</a></li>
+        <li id="f13">Juliana Andrade, "Número de negros na lista de bilionários do mundo sobe para 16", <em>Forbes Brasil</em>, 19 ago. 2020. <a href="https://forbes.com.br/listas/2020/08/numero-de-negros-na-lista-de-bilionarios-do-mundo-sobe-para-16/" target="_blank" rel="noopener">forbes.com.br</a></li>
+        <li id="f14">Tribunal Superior Eleitoral, Portal de Dados Abertos: candidatos e bens de candidatos, Eleições Municipais 2024 (arquivos gerados em 6 nov. 2026). <a href="https://dadosabertos.tse.jus.br/" target="_blank" rel="noopener">dadosabertos.tse.jus.br</a></li>
+        <li id="f15">Instituto Ethos e BID, <em>Perfil social, racial e de gênero das 500 maiores empresas do Brasil e suas ações afirmativas</em>, sumário executivo, 2016. <a href="https://publications.iadb.org/pt/perfil-social-racial-e-de-genero-das-500-maiores-empresas-do-brasil-e-suas-acoes-afirmativas" target="_blank" rel="noopener">publications.iadb.org</a></li>
+        <li id="f16">Aditya Aladangady, Andrew C. Chang e Jacob Krimmel, "Greater Wealth, Greater Uncertainty: Changes in Racial Inequality in the Survey of Consumer Finances", <em>FEDS Notes</em>, Federal Reserve, 18 out. 2023. <a href="https://www.federalreserve.gov/econres/notes/feds-notes/greater-wealth-greater-uncertainty-changes-in-racial-inequality-in-the-survey-of-consumer-finances-20231018.html" target="_blank" rel="noopener">federalreserve.gov</a></li>
+        <li id="f17">"Pela primeira vez, dados do IR podem mostrar por que negros pagam mais impostos que brancos", <em>Diário do Nordeste</em>, 10 maio 2026. <a href="https://diariodonordeste.verdesmares.com.br/negocios/pela-primeira-vez-dados-do-ir-podem-mostrar-por-que-negros-pagam-mais-impostos-que-brancos-1.3762825" target="_blank" rel="noopener">diariodonordeste.verdesmares.com.br</a></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Sobre este relatório</h4>
+        <p>Terceiro de uma série sobre o que o Brasil herdou e não conta. Pesquisa a partir do livro <em>Coisa de rico</em>, de Michel Alcoforado (Todavia, 2025). Não é afiliada ao autor nem à editora.</p>
+      </div>
+      <div>
+        <h4>Correções</h4>
+        <p>Achou um erro, uma fonte melhor ou um dado novo sobre cor no topo? Escreva. Correção pública é parte do método.</p>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>Jorge Bernardo · jorgebernardo.tech</span>
+      <span>Dados levantados em 06.11.2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
