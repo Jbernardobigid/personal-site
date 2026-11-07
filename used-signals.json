@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "impulsiona rj iniciativa senac rj e sebrae rio oferece mais de 720 vagas gratuit",
-      "url": "https://noticiapreta.com.br/impulsiona-rj-iniciativa-senac-rj-e-sebrae-rio-oferece-mais-de-720-vagas-gratuitas-em-cursos-de-capacitacao-profissional-nas-zonas-norte-e-oeste-do-rio/?utm_source=rss&utm_medium=rss&utm_campaign=impulsiona-rj-iniciativa-senac-rj-e-sebrae-rio-oferece-mais-de-720-vagas-gratuitas-em-cursos-de-capacitacao-profissional-nas-zonas-norte-e-oeste-do-rio",
-      "pillar": "learning",
-      "title": "Impulsiona RJ: Iniciativa Senac RJ e Sebrae Rio oferece mais de 720 vagas gratuitas em cursos de capacitação profissional nas Zonas Norte e Oeste do Rio",
-      "recordedAt": "2026-09-07T12:02:03.540Z"
-    },
-    {
       "titleKey": "justica condena pais a indenizar filho expulso por orientacao sexual",
       "url": "https://noticiapreta.com.br/justica-condena-pais-a-indenizar-filho-expulso-por-orientacao-sexual/?utm_source=rss&utm_medium=rss&utm_campaign=justica-condena-pais-a-indenizar-filho-expulso-por-orientacao-sexual",
       "pillar": "fatherhood",
@@ -202,6 +195,13 @@
       "pillar": "black-identity",
       "title": "IBGE prepara novo estudo para revelar desigualdades enfrentadas pela população negra no Brasil",
       "recordedAt": "2026-11-05T12:02:03.182Z"
+    },
+    {
+      "titleKey": "novembro negro festival infantil omode no sesc bom retiro tem circo teatro samba",
+      "url": "https://www.geledes.org.br/novembro-negro-festival-infantil-omode-no-sesc-bom-retiro-tem-circo-teatro-samba-com-prettos-e-rap-de-rashid/",
+      "pillar": "fatherhood",
+      "title": "Novembro Negro: Festival infantil ỌmỌdé no Sesc Bom Retiro tem circo, teatro, samba com Prettos e rap de Rashid",
+      "recordedAt": "2026-11-07T12:02:00.376Z"
     }
   ]
 }

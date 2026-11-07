@@ -1,0 +1,64 @@
+{
+  "topic": "acesso de crianças negras a atividades culturais e artísticas no Brasil estatísticas IBGE",
+  "slug": "levo-meu-filho-ao-omode-e-entendo-que-presenca-tambem-e",
+  "generated_at": "2026-11-07T12:00:46.124Z",
+  "sources": [
+    "https://educacaoeterritorio.org.br/reportagens/como-esta-o-acesso-da-populacao-negra-a-cultura-nas-cidades",
+    "https://g1.globo.com/jornal-nacional/noticia/2019/12/10/pesquisa-do-ibge-mostra-como-e-desigual-o-acesso-a-cultura-e-ao-lazer.ghtml",
+    "https://www.meioemensagem.com.br/marketing/desigualdade-marca-acesso-a-cultura-no-brasil",
+    "https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/ecf9ac7b96205d8c5179a9727b77a055.pdf",
+    "https://noticiapreta.com.br/criancas-negras-realizam-66-do-trabalho-infantil-aponta-dados-do-ibge",
+    "https://www.cnnbrasil.com.br/nacional/brasil/ibge-67-das-criancas-e-adolescentes-em-trabalho-infantil-sao-negras",
+    "https://www.facebook.com/cnnbrasil/posts/ibge-67-das-crian%C3%A7as-e-adolescentes-em-trabalho-infantil-s%C3%A3o-negras/1212584401434859",
+    "https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/b6c6d2b70f490c4eba9e52403fcec31b.pdf",
+    "https://biblioteca.ibge.gov.br/visualizacao/livros/liv101687.pdf"
+  ],
+  "insights": [
+    "44% dos indivíduos negros e pardos vivem em cidades sem cinemas, em comparação com 34% da população branca.",
+    "37% da população negra vive em cidades sem museus, enquanto apenas 25% da população branca enfrenta essa situação.",
+    "Mais de um terço das crianças e adolescentes com menos de 14 anos não têm acesso a atividades de lazer cultural."
+  ],
+  "stats": [
+    {
+      "value": "44%",
+      "context": "percentual de indivíduos negros e pardos que vivem em cidades sem cinemas",
+      "source": "https://g1.globo.com/jornal-nacional/noticia/2019/12/10/pesquisa-do-ibge-mostra-como-e-desigual-o-acesso-a-cultura-e-ao-lazer.ghtml"
+    },
+    {
+      "value": "37%",
+      "context": "percentual de indivíduos negros que vivem em cidades sem museus",
+      "source": "https://g1.globo.com/jornal-nacional/noticia/2019/12/10/pesquisa-do-ibge-mostra-como-e-desigual-o-acesso-a-cultura-e-ao-lazer.ghtml"
+    },
+    {
+      "value": "34%",
+      "context": "percentual de indivíduos brancos que vivem em cidades sem cinemas",
+      "source": "https://g1.globo.com/jornal-nacional/noticia/2019/12/10/pesquisa-do-ibge-mostra-como-e-desigual-o-acesso-a-cultura-e-ao-lazer.ghtml"
+    },
+    {
+      "value": "25%",
+      "context": "percentual de indivíduos brancos que vivem em cidades sem museus",
+      "source": "https://g1.globo.com/jornal-nacional/noticia/2019/12/10/pesquisa-do-ibge-mostra-como-e-desigual-o-acesso-a-cultura-e-ao-lazer.ghtml"
+    },
+    {
+      "value": "1/3",
+      "context": "proporção de crianças e adolescentes até 14 anos sem acesso a lazer cultural",
+      "source": "https://g1.globo.com/jornal-nacional/noticia/2019/12/10/pesquisa-do-ibge-mostra-como-e-desigual-o-acesso-a-cultura-e-ao-lazer.ghtml"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A população de baixa renda, população jovem, pessoas negras, de uma forma geral pessoas que residem em locais menos privilegiados",
+      "attribution": "Jefferson Mariano, analista socioeconômico do IBGE"
+    }
+  ],
+  "time_series": [],
+  "summary": "A pesquisa do IBGE revela disparidades significativas no acesso a atividades culturais para crianças negras no Brasil. A maioria das crianças e adolescentes negros enfrenta barreiras substanciais para acessar cinemas, museus e outras atividades de lazer cultural.",
+  "pillar": "fatherhood",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-07-levo-meu-filho-ao-omode-e-entendo-que-presenca-tambem-e.html",
+  "signal": {
+    "title": "Novembro Negro: Festival infantil ỌmỌdé no Sesc Bom Retiro tem circo, teatro, samba com Prettos e rap de Rashid",
+    "source": "Geledés",
+    "url": "https://www.geledes.org.br/novembro-negro-festival-infantil-omode-no-sesc-bom-retiro-tem-circo-teatro-samba-com-prettos-e-rap-de-rashid/",
+    "date": "2026-11-06T15:08:02.000Z"
+  }
+}
