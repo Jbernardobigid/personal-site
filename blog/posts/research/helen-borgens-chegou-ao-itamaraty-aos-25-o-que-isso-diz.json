@@ -1,0 +1,72 @@
+{
+  "topic": "diversidade carreira diplomática Itamaraty dados demográficos ingresso diplomatas mulheres negros quilombolas estatísticas",
+  "slug": "helen-borgens-chegou-ao-itamaraty-aos-25-o-que-isso-diz",
+  "generated_at": "2026-11-09T12:00:52.587Z",
+  "sources": [
+    "https://www.instagram.com/reel/DfYDhaxu9XG",
+    "https://adufg.org.br/conteudo/17665/itamaraty-diplomatas-indigenas-e-quilombolas-tomam-posse-pela-1-vez",
+    "https://almapreta.com.br/sessao/politica/indigenas-quilombolas-posse-itamaraty",
+    "https://g1.globo.com/df/distrito-federal/noticia/2026/11/04/diplomatas-indigenas-e-quilombola-tomam-posse-no-itamaraty-turma-tem-27-representantes-de-minorias.ghtml",
+    "https://www.cnnbrasil.com.br/nacional/em-busca-de-diversidade-itamaraty-promove-mais-mulheres-e-negros",
+    "https://almapreta.com.br/sessao/politica/racismo-e-desigualdade-social-dificultam-a-entrada-de-diplomatas-negros-no-itamaraty",
+    "https://sinditamaraty.org.br/noticias/por-dentro-do-itamaraty-veja-as-atribuies-o-ingresso-e-a-qualificao-da-carreira-de-diplomata",
+    "https://adb.org.br/images/old/uploads/2023/11/PESQUISA-PERFIL-SOCIOGRAFICO-E-ESTUDO-DE-CARREIRA.pdf"
+  ],
+  "insights": [
+    "A turma de diplomatas de 2026 é a mais diversa da história do Itamaraty, com 27 dos 60 novos diplomatas pertencendo a grupos historicamente sub-representados.",
+    "Dentre os novos diplomatas, 17 são pessoas de ascendência africana, 7 têm deficiência, 2 são indígenas e 1 é quilombola.",
+    "A proporção de mulheres na nova turma é de 45%, a maior já registrada no Instituto Rio Branco."
+  ],
+  "stats": [
+    {
+      "value": "45%",
+      "context": "representa a maior participação feminina na história do Instituto Rio Branco",
+      "source": "https://g1.globo.com/df/distrito-federal/noticia/2026/11/04/diplomatas-indigenas-e-quilombola-tomam-posse-no-itamaraty-turma-tem-27-representantes-de-minorias.ghtml"
+    },
+    {
+      "value": "27",
+      "context": "número de diplomatas de grupos historicamente sub-representados na turma de 2026",
+      "source": "https://adufg.org.br/conteudo/17665/itamaraty-diplomatas-indigenas-e-quilombolas-tomam-posse-pela-1-vez"
+    },
+    {
+      "value": "17",
+      "context": "número de diplomatas negros na turma de 2026",
+      "source": "https://almapreta.com.br/sessao/politica/indigenas-quilombolas-posse-itamaraty"
+    },
+    {
+      "value": "7",
+      "context": "número de diplomatas com deficiência na turma de 2026",
+      "source": "https://g1.globo.com/df/distrito-federal/noticia/2026/11/04/diplomatas-indigenas-e-quilombola-tomam-posse-no-itamaraty-turma-tem-27-representantes-de-minorias.ghtml"
+    },
+    {
+      "value": "2",
+      "context": "número de diplomatas indígenas na turma de 2026",
+      "source": "https://g1.globo.com/df/distrito-federal/noticia/2026/11/04/diplomatas-indigenas-e-quilombola-tomam-posse-no-itamaraty-turma-tem-27-representantes-de-minorias.ghtml"
+    },
+    {
+      "value": "1",
+      "context": "número de diplomatas quilombolas na turma de 2026",
+      "source": "https://almapreta.com.br/sessao/politica/indigenas-quilombolas-posse-itamaraty"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A nova turma é considerada a mais diversa da história do Itamaraty.",
+      "attribution": "https://adufg.org.br/conteudo/17665/itamaraty-diplomatas-indigenas-e-quilombolas-tomam-posse-pela-1-vez"
+    },
+    {
+      "text": "O edital reservou vagas específicas para esses grupos.",
+      "attribution": "https://g1.globo.com/df/distrito-federal/noticia/2026/11/04/diplomatas-indigenas-e-quilombola-tomam-posse-no-itamaraty-turma-tem-27-representantes-de-minorias.ghtml"
+    }
+  ],
+  "time_series": [],
+  "summary": "A turma de diplomatas de 2026 do Itamaraty representa um marco histórico em diversidade, com a inclusão de grupos tradicionalmente sub-representados, como negros, indígenas e quilombolas. Além disso, a participação feminina atinge um recorde, refletindo os esforços do Ministério das Relações Exteriores para promover a inclusão e a representatividade na carreira diplomática.",
+  "pillar": "career-growth",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-09-helen-borgens-chegou-ao-itamaraty-aos-25-o-que-isso-diz.html",
+  "signal": {
+    "title": "Primeira quilombola a ingressar na carreira diplomática toma posse no Itamaraty",
+    "source": "Revista Raça",
+    "url": "https://revistaraca.com.br/primeira-quilombola-a-ingressar-na-carreira-diplomatica-toma-posse-no-itamaraty/",
+    "date": "2026-11-07T16:00:59.000Z"
+  }
+}
