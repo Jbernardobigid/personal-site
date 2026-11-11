@@ -1,0 +1,71 @@
+{
+  "topic": "empreendedorismo negro Brasil dados estatísticas IBGE percentual negros empreendedores",
+  "slug": "15-vagas-na-virada-da-consciencia-visibilidade-nao-e-o-teto",
+  "generated_at": "2026-11-11T12:00:50.951Z",
+  "sources": [
+    "https://timesbrasil.com.br/brasil/negros-representam-52-dos-empreendedores-no-pais",
+    "https://www.em.com.br/app/noticia/economia/2021/01/03/internas_economia,1225483/empreendedorismo-negro-no-brasil-vem-ganhando-forca-diz-ibge.shtml",
+    "https://www.brasildefato.com.br/2026/05/29/brasil-que-empreende-e-uma-mulher-negra",
+    "https://www.redalyc.org/pdf/5707/570765358002.pdf",
+    "https://www.quilombodesaotome.com.br/empreendedorismo-negro-dados-desafios-e-potencia-no-brasil",
+    "https://afrocultura.com.br/empreendedorismo-negro-no-brasil-dados-desafios-e-o-mercado-de-beleza-afro",
+    "https://pretahub.com/wp-content/uploads/2023/11/2018_-_O_Brasil_Negro_Consumo_e_Empreendedorismo.pdf",
+    "https://oglobo.globo.com/blogs/miriam-leitao/post/2026/05/empreendedorismo-negro-cresce-mais-de-30percent-em-13-anos-e-ja-e-maioria-nos-pequenos-negocios.ghtml",
+    "https://blogs.correiobraziliense.com.br/servidor/populacao-negra-movimenta-r-17-trilhao-no-brasil-revela-pesquisa-do-instituto-locomotiva",
+    "https://datasebrae.com.br/empreendedorismo-negro"
+  ],
+  "insights": [
+    "Pessoas negras representam mais de 52% dos donos de negócios no Brasil, com cerca de 16 milhões de afroempreendedores.",
+    "No Rio Grande do Norte, o percentual de empreendedores negros chega a 60,5%.",
+    "O crescimento do empreendedorismo negro foi de 28% entre 2012 e 2023.",
+    "As mulheres negras representam 52% dos empreendedores negros no Brasil.",
+    "Os empreendedores negros movimentam aproximadamente R$ 1,7 trilhão por ano."
+  ],
+  "stats": [
+    {
+      "value": "52%",
+      "context": "representa a porcentagem de empreendedores negros no Brasil",
+      "source": "https://timesbrasil.com.br/brasil/negros-representam-52-dos-empreendedores-no-pais"
+    },
+    {
+      "value": "60,5%",
+      "context": "percentual de empreendedores negros no Rio Grande do Norte",
+      "source": "https://timesbrasil.com.br/brasil/negros-representam-52-dos-empreendedores-no-pais"
+    },
+    {
+      "value": "28%",
+      "context": "crescimento do empreendedorismo negro entre 2012 e 2023",
+      "source": "https://timesbrasil.com.br/brasil/negros-representam-52-dos-empreendedores-no-pais"
+    },
+    {
+      "value": "1,7 trilhões",
+      "context": "valor movimentado anualmente pelos empreendedores negros",
+      "source": "https://www.em.com.br/app/noticia/economia/2021/01/03/internas_economia,1225483/empreendedorismo-negro-no-brasil-vem-ganhando-forca-diz-ibge.shtml"
+    },
+    {
+      "value": "52%",
+      "context": "percentual de mulheres entre os empreendedores negros",
+      "source": "https://www.em.com.br/app/noticia/economia/2021/01/03/internas_economia,1225483/empreendedorismo-negro-no-brasil-vem-ganhando-forca-diz-ibge.shtml"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "O afroempreendedorismo brasileiro deixou de ser apenas um movimento de enfrentamento econômico para se consolidar como uma das maiores forças produtivas do país.",
+      "attribution": "https://www.brasildefato.com.br/2026/05/29/brasil-que-empreende-e-uma-mulher-negra"
+    },
+    {
+      "text": "Essa trajetória de crescimento é significativa.",
+      "attribution": "https://timesbrasil.com.br/brasil/negros-representam-52-dos-empreendedores-no-pais"
+    }
+  ],
+  "time_series": [],
+  "summary": "O empreendedorismo negro no Brasil tem crescido significativamente, com mais de 52% dos donos de negócios se autodeclarando negros. Este crescimento reflete não apenas uma mudança econômica, mas também um avanço social importante, especialmente entre as mulheres negras, que representam uma parte significativa desse grupo.",
+  "pillar": "entrepreneurship",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-11-15-vagas-na-virada-da-consciencia-visibilidade-nao-e-o-teto.html",
+  "signal": {
+    "title": "PREFEITURA DE SP ABRE 15 VAGAS PARA AFROEMPREENDEDORES NA VIRADA DA CONSCIÊNCIA",
+    "source": "Revista Raça",
+    "url": "https://revistaraca.com.br/prefeitura-de-sp-abre-15-vagas-para-afroempreendedores-na-virada-da-consciencia/",
+    "date": "2026-11-10T12:00:57.000Z"
+  }
+}

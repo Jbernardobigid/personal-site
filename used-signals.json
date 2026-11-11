@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "recife testa tecnologia que da recompensas para quem anda a pe ou de bicicleta",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5WSUh3Z0FiWE4yaEJtZm8yN3VtcUxmTHp3bTJZRWJSOWxvQXBMWEtFbGZBRmxNZ3Z2VXVGdU1iNUtXUUJ2VGVqY2ZCaktwdHI3UmN1M3BJSzdoR0dMazRoWE8zdGxzeUtTWVg5dGhGQ0U?oc=5",
-      "pillar": "cycling",
-      "title": "Recife testa tecnologia que dá recompensas para quem anda a pé ou de bicicleta",
-      "recordedAt": "2026-09-11T12:01:59.847Z"
-    },
-    {
       "titleKey": "numero de lares com idosos em inseguranca alimentar cai em dois anos",
       "url": "https://noticiapreta.com.br/numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos/?utm_source=rss&utm_medium=rss&utm_campaign=numero-de-lares-com-idosos-em-inseguranca-alimentar-cai-em-dois-anos",
       "pillar": "technology",
@@ -202,6 +195,13 @@
       "pillar": "career-growth",
       "title": "Primeira quilombola a ingressar na carreira diplomática toma posse no Itamaraty",
       "recordedAt": "2026-11-09T12:02:10.051Z"
+    },
+    {
+      "titleKey": "prefeitura de sp abre 15 vagas para afroempreendedores na virada da consciencia",
+      "url": "https://revistaraca.com.br/prefeitura-de-sp-abre-15-vagas-para-afroempreendedores-na-virada-da-consciencia/",
+      "pillar": "entrepreneurship",
+      "title": "PREFEITURA DE SP ABRE 15 VAGAS PARA AFROEMPREENDEDORES NA VIRADA DA CONSCIÊNCIA",
+      "recordedAt": "2026-11-11T12:02:06.415Z"
     }
   ]
 }

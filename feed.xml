@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Mon, 09 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 11 Nov 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Empreendedorismo negro além da visibilidade</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-11-11-15-vagas-na-virada-da-consciencia-visibilidade-nao-e-o-teto.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-11-11-15-vagas-na-virada-da-consciencia-visibilidade-nao-e-o-teto.html</guid>
+      <pubDate>Wed, 11 Nov 2026 12:00:00 GMT</pubDate>
+      <description>São Paulo abriu 15 vagas para afroempreendedores na Virada da Consciência. É um gesto real, mas o gargalo nunca foi aparecer: foi acumular.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-11-11-15-vagas-na-virada-da-consciencia-visibilidade-nao-e-o-teto.jpg" length="138110" type="image/jpeg"/>
+    </item>
     <item>
       <title>Quando, afinal, começa uma carreira de verdade?</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-11-09-helen-borgens-chegou-ao-itamaraty-aos-25-o-que-isso-diz.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Sat, 03 Oct 2026 12:00:00 GMT</pubDate>
       <description>Uma empresa na Califórnia desenha o chip. Outra, em Taiwan, fabrica. Sem terceira opção em escala. O que isso significa para eleições, dados e soberania.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-03-a-ia-e-decidida-em-outro-lugar-e-isso-nao-e-metafora.jpg" length="94051" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Carreira após os 40 e o custo de chegar lá</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-01-jayane-borges-aprendeu-a-sonhar-o-sistema-aprendeu-a-contar.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-01-jayane-borges-aprendeu-a-sonhar-o-sistema-aprendeu-a-contar.html</guid>
-      <pubDate>Thu, 01 Oct 2026 12:00:00 GMT</pubDate>
-      <description>Jayane Borges saiu do interior do Piauí e chegou à liderança na Natura. Mas o dado que acompanha a trajetória dela diz mais do que qualquer currículo.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-01-jayane-borges-aprendeu-a-sonhar-o-sistema-aprendeu-a-contar.jpg" length="99286" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
