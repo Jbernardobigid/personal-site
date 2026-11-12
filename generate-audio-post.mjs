@@ -33,6 +33,7 @@ import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
+import { writeJson } from './claude-models.mjs';
 import { put } from '@vercel/blob';
 import { expandSpokenUnits, fixOrthographyLines, tts } from './tts.mjs';
 
@@ -98,21 +99,19 @@ function extractPost(file) {
 /* ── Claude adaptation: written essay → spoken script ────── */
 
 async function adaptToSpoken(client, post) {
-  const res = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 8000,
-    tools: [{
-      name: 'spoken_script',
-      description: 'O roteiro falado do episódio, parágrafo a parágrafo.',
-      input_schema: {
-        type: 'object',
-        properties: {
-          paragraphs: { type: 'array', items: { type: 'string' }, description: 'Parágrafos do roteiro falado, em ordem.' }
-        },
-        required: ['paragraphs']
-      }
-    }],
-    tool_choice: { type: 'tool', name: 'spoken_script' },
+  // A faithful written-to-spoken adaptation of an existing essay: medium effort is enough.
+  const script = await writeJson(client, {
+    label: 'spoken script',
+    effort: 'medium',
+    // O roteiro falado do episódio, parágrafo a parágrafo.
+    schema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        paragraphs: { type: 'array', items: { type: 'string' }, description: 'Parágrafos do roteiro falado, em ordem.' }
+      },
+      required: ['paragraphs']
+    },
     messages: [{
       role: 'user',
       content: `Adapte o ensaio abaixo, escrito por Jorge Bernardo para o blog dele, em um roteiro FALADO em português do Brasil para o podcast "A Interseção" — narrado pelo próprio Jorge em primeira pessoa.
@@ -131,11 +130,10 @@ ENSAIO — "${post.title}":
 ${post.paragraphs.join('\n\n')}`
     }]
   });
-  const tool = res.content.find(b => b.type === 'tool_use');
-  if (!tool || !Array.isArray(tool.input.paragraphs) || tool.input.paragraphs.length === 0) {
+  if (!Array.isArray(script.paragraphs) || script.paragraphs.length === 0) {
     throw new Error('no spoken script returned');
   }
-  return tool.input.paragraphs.map(p => String(p).replace(/\s*[—–]\s*/g, ', ').replace(/\s+/g, ' ').trim()).filter(Boolean);
+  return script.paragraphs.map(p => String(p).replace(/\s*[—–]\s*/g, ', ').replace(/\s+/g, ' ').trim()).filter(Boolean);
 }
 
 /* ── Ledger + feed ───────────────────────────────────────── */

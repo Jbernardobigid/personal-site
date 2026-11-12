@@ -25,6 +25,7 @@ import { generatePostImage } from './generate-image.mjs';
 import { selectSignal, recordUsedSignal } from './signals.mjs';
 import { researchTopic, deriveResearchQuery } from './research.mjs';
 import { promptDateBlock } from './prompt-date.mjs';
+import { writeJson } from './claude-models.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR    = path.join(__dirname, 'blog');
@@ -1003,47 +1004,38 @@ Requirements:
 
 Also provide 2-3 FAQ pairs: short reader questions this post answers, each with a direct, self-contained answer (1-2 sentences, in Portuguese, no em dashes). These run as a visible FAQ block at the end of the post, so each answer must stand alone without the reader having read the body.`;
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 2048,
-    tools: [{
-      name: 'create_blog_post',
-      description: 'Create a blog post with title, excerpt, and HTML content',
-      input_schema: {
-        type: 'object',
-        properties: {
-          title: { type: 'string', description: 'The blog post title in Portuguese. This is the editorial headline shown as the on-page H1, so it can be long.' },
-          seoTitle: { type: 'string', description: 'Short SEO title in Portuguese for the <title> tag. Hard limit: máximo 55 caracteres. No surrounding quotes, no subtitle after a colon, no brand name.' },
-          excerpt: { type: 'string', description: 'One sentence excerpt in Portuguese, entre 150 e 160 caracteres (hard limit), no surrounding quotes. Becomes the meta description.' },
-          content: { type: 'string', description: 'Full HTML post body using only p, h2, h3, strong, em, blockquote>p, ul>li tags. Do NOT include the title.' },
-          faq: {
-            type: 'array',
-            description: '2-3 short reader questions this post answers, each with a self-contained 1-2 sentence answer in Portuguese.',
-            items: {
-              type: 'object',
-              properties: {
-                question: { type: 'string' },
-                answer: { type: 'string' }
-              },
-              required: ['question', 'answer']
-            }
+  // Schema-constrained JSON on the writer model (see claude-models.mjs). Throws on a
+  // refusal, a truncated reply or unparseable JSON; main().catch exits non-zero.
+  const parsed = await writeJson(client, {
+    label: 'blog post',
+    effort: 'high',
+    schema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        title: { type: 'string', description: 'The blog post title in Portuguese. This is the editorial headline shown as the on-page H1, so it can be long.' },
+        seoTitle: { type: 'string', description: 'Short SEO title in Portuguese for the <title> tag. Hard limit: máximo 55 caracteres. No surrounding quotes, no subtitle after a colon, no brand name.' },
+        excerpt: { type: 'string', description: 'One sentence excerpt in Portuguese, entre 150 e 160 caracteres (hard limit), no surrounding quotes. Becomes the meta description.' },
+        content: { type: 'string', description: 'Full HTML post body using only p, h2, h3, strong, em, blockquote>p, ul>li tags. Do NOT include the title.' },
+        faq: {
+          type: 'array',
+          description: '2-3 short reader questions this post answers, each with a self-contained 1-2 sentence answer in Portuguese.',
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              question: { type: 'string' },
+              answer: { type: 'string' }
+            },
+            required: ['question', 'answer']
           }
-        },
-        required: ['title', 'seoTitle', 'excerpt', 'content', 'faq']
-      }
-    }],
-    tool_choice: { type: 'tool', name: 'create_blog_post' },
+        }
+      },
+      required: ['title', 'seoTitle', 'excerpt', 'content', 'faq']
+    },
     messages: [{ role: 'user', content: userPrompt }],
     system: systemPrompt,
   });
-
-  const toolUse = response.content.find(b => b.type === 'tool_use');
-  if (!toolUse) {
-    console.error('Claude did not return a tool_use block.');
-    console.error(JSON.stringify(response.content, null, 2));
-    process.exit(1);
-  }
-  const parsed = toolUse.input;
 
   const title   = sanitizeEmDashes(parsed.title);
   // deriveSeoTitle re-derives whenever the model overshoots the 55-char budget, so a

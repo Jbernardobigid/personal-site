@@ -22,6 +22,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Parser from 'rss-parser';
 import Anthropic from '@anthropic-ai/sdk';
+import { UTILITY_MODEL } from './claude-models.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR    = path.join(__dirname, 'blog', 'posts');
@@ -31,7 +32,7 @@ const LEDGER_PATH  = path.join(__dirname, 'used-signals.json');
 const FRESHNESS_DAYS = 14;   // ignore anything older than this
 const DEDUP_DAYS     = 60;   // don't re-ground a story used within this window
 const SAFETY_BATCH   = 8;    // run the Claude screening call on the top-N scored candidates
-const SAFETY_MODEL   = 'claude-haiku-4-5-20251001';
+const SAFETY_MODEL   = UTILITY_MODEL;
 const SEMANTIC_DEDUP_POSTS = 12; // recent posts shown to the screener as "already covered"
 
 const parser = new Parser({
@@ -321,7 +322,9 @@ Return ONLY a JSON array, one object per item in order: [{"index":0,"ok":true|fa
   try {
     const res = await client.messages.create({
       model: SAFETY_MODEL,
-      max_tokens: 1024,
+      // Haiku 5.5 thinks by default and thinking counts toward max_tokens; 1024 left
+      // too little room for the verdict array.
+      max_tokens: 4096,
       messages: [{ role: 'user', content: prompt }]
     });
     const text = res.content.map(b => b.text || '').join('');

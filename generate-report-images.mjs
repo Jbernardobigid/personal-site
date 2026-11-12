@@ -1,6 +1,7 @@
 /**
  * generate-report-images.mjs
- * Generates the split-panel artwork for a /reports dossier via gpt-image-2.
+ * Generates the split-panel artwork for a /reports dossier via the OpenAI image
+ * model set in image-model.mjs.
  *
  *   node generate-report-images.mjs                 (all panels, skips existing)
  *   node generate-report-images.mjs 01-thoth-hermes (specific panels)
@@ -12,6 +13,7 @@ import './load-env.mjs';
 import fs from 'fs';
 import path from 'path';
 import OpenAI from 'openai';
+import { OPENAI_IMAGE_MODEL } from './image-model.mjs';
 import { PANELS } from './relatorios/o-que-apagaram-dos-nossos-deuses/panels.mjs';
 
 const OUT_DIR = path.join(import.meta.dirname, 'relatorios', 'o-que-apagaram-dos-nossos-deuses', 'images');
@@ -44,7 +46,7 @@ for (const panel of queue) {
   process.stdout.write(`gen   ${panel.id} ... `);
   try {
     const res = await openai.images.generate({
-      model: 'gpt-image-2',
+      model: OPENAI_IMAGE_MODEL,
       prompt: panel.prompt,
       n: 1,
       size: '1536x1024',

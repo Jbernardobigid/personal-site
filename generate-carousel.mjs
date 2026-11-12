@@ -20,6 +20,7 @@
 
 import './load-env.mjs';
 import Anthropic from '@anthropic-ai/sdk';
+import { writeText } from './claude-models.mjs';
 import puppeteer from 'puppeteer-core';
 import { promptDateBlock } from './prompt-date.mjs';
 import fs from 'fs';
@@ -498,23 +499,22 @@ ${legacyCta}
   // in the final message so the next failure is diagnosable from the n8n log.
   let lastErr = null;
   let lastRaw = '';
+  let lastContent = null;
   for (let attempt = 1; attempt <= EXTRACT_ATTEMPTS; attempt++) {
     const messages = [{ role: 'user', content: prompt }];
     if (attempt > 1) {
-      messages.push({ role: 'assistant', content: lastRaw });
+      // Echo the full previous reply (thinking blocks included), not just its text:
+      // the writer model expects its thinking blocks passed back unchanged.
+      messages.push({ role: 'assistant', content: lastContent });
       messages.push({
         role: 'user',
         content: `That response was not valid JSON — JSON.parse failed with: ${lastErr.message}\n\nReturn the SAME post, corrected, as strictly valid JSON. Escape every double quote inside a string value as \\", and return only the JSON object with no markdown fences or commentary.`,
       });
     }
 
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 2500,
-      messages,
-    });
-
-    lastRaw = response.content[0].text.trim();
+    const { res, text } = await writeText(client, { label: 'carousel content', effort: 'high', messages });
+    lastContent = res.content;
+    lastRaw = text.trim();
     const start = lastRaw.indexOf('{');
     const end = lastRaw.lastIndexOf('}');
     if (start === -1 || end === -1) {
@@ -557,9 +557,12 @@ async function generateCaption(client, post, format, hashtags, hasBlogPost = tru
     ? `- ${pickCrossChannelCta()}${format === 'reframe' ? ' (before the hashtag line)' : ''}`
     : '- This post is NOT a blog post: do NOT write "Link na bio" or mention reading a post anywhere. End with a short engagement line on its own line, e.g. "Salva esse post 📌" or "Compartilha com quem precisa ver isso"';
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 400,
+  // The old 400-token cap would now be eaten by thinking; a 280-400 char caption at
+  // medium effort fits easily in 8000.
+  const { text: captionRaw } = await writeText(client, {
+    label: 'carousel caption',
+    effort: 'medium',
+    max_tokens: 8000,
     messages: [{
       role: 'user',
       content: `Write an Instagram caption in Brazilian Portuguese for this post by Jorge Bernardo.
@@ -593,7 +596,7 @@ Factual accuracy is non-negotiable: if the topic references real people, races, 
     }],
   });
 
-  const text = sanitizeEmDashes(response.content[0].text.trim());
+  const text = sanitizeEmDashes(captionRaw.trim());
 
   // Reframe posts carry their own tag set on the final line; peel it off so the
   // caller can use it instead of the generic pillar block. Anything else (or a
@@ -937,7 +940,7 @@ async function main() {
 // Only run when invoked directly. Importing this module used to fire main() —
 // the same trap generate-video.mjs carries — which makes the extractor
 // impossible to test without doing a full paid build.
-export { extractPostStructure, pickPhoto, photoLedger };
+export { extractPostStructure, generateCaption, pickPhoto, photoLedger };
 
 const isDirectRun = process.argv[1]
   && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));

@@ -6,6 +6,7 @@
  * and the same text-fix guarantees.
  */
 
+import { writeText } from './claude-models.mjs';
 import fs from 'fs';
 
 // TTS reads unit abbreviations literally ("32 km/h" → letter-by-letter, caught on
@@ -30,13 +31,15 @@ export function expandSpokenUnits(text) {
 export async function fixOrthographyLines(client, lines) {
   const originals = lines.map(v => String(v || '').replace(/\s+/g, ' ').trim());
   const numbered = originals.map((v, i) => `${i + 1}. ${v}`).join('\n');
-  const res = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: Math.min(16000, Math.max(1500, Math.ceil(numbered.length / 2))),
+  // Mechanical accent restoration: low effort. +4000 leaves room for thinking on top of
+  // the echoed lines; the cap stays under SDK 0.39's non-streaming limit (~21k).
+  const { text } = await writeText(client, {
+    label: 'orthography fix',
+    effort: 'low',
+    max_tokens: Math.min(20000, Math.max(1500, Math.ceil(numbered.length / 2)) + 4000),
     system: 'Você é um revisor ortográfico de português do Brasil. Corrija APENAS acentos e cedilhas faltando ou errados. NÃO altere palavras, ordem, pontuação ou conteúdo. Responda SOMENTE com as linhas numeradas corrigidas, uma por linha, no mesmo formato.',
     messages: [{ role: 'user', content: numbered }]
   });
-  const text = res.content.find(b => b.type === 'text')?.text || '';
   const bare = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
   const out = [...originals];
   for (const m of text.matchAll(/^(\d+)\.\s*(.+)$/gm)) {

@@ -20,8 +20,8 @@
  * Usage:
  *   node generate-video.mjs <post.html>               (typographic b-roll; default)
  *   node generate-video.mjs --topic-file <json>       (Reel from a cycling-topics.mjs concept, no blog post)
- *   node generate-video.mjs <post.html> --image-broll (gpt-image-2 stills, Ken Burns)
- *   node generate-video.mjs <post.html> --mixed-broll (real cycling photos interleaved with gpt-image-2 stills — Phase 4 cycling default)
+ *   node generate-video.mjs <post.html> --image-broll (AI image stills, Ken Burns)
+ *   node generate-video.mjs <post.html> --mixed-broll (real cycling photos interleaved with AI image stills — Phase 4 cycling default)
  *   node generate-video.mjs <post.html> --kie-broll   (AI video b-roll via KIE — DROPPED from the plan 2026-07-07, flag kept)
  *   node generate-video.mjs <post.html> --real-broll  (real-footage photos only, Ken Burns)
  *   node generate-video.mjs <post.html> --seconds 50 | --dry-run
@@ -39,7 +39,7 @@
  * produces the input for run B's --script-file.
  *
  * Requires: ANTHROPIC_API_KEY, ELEVENLABS_API_KEY + ELEVENLABS_VOICE_ID (voiceover),
- * OPENAI_API_KEY (Whisper caption timestamps + gpt-image-2 stills). b-roll: kIE_API_KEY
+ * OPENAI_API_KEY (Whisper caption timestamps + AI image stills). b-roll: kIE_API_KEY
  * only for --kie-broll. Music: assets/music/bed.mp3 (optional). ffmpeg+ffprobe on PATH.
  */
 
@@ -49,7 +49,9 @@ import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath, pathToFileURL } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
+import { writeJson } from './claude-models.mjs';
 import OpenAI from 'openai';
+import { OPENAI_IMAGE_MODEL } from './image-model.mjs';
 import puppeteer from 'puppeteer-core';
 import { expandSpokenUnits, fixOrthographyLines, tts } from './tts.mjs';
 import { promptDateBlock } from './prompt-date.mjs';
@@ -174,42 +176,39 @@ function pickVideoCta(hasBlogPost) {
 async function generateScript(client, post, seconds) {
   const wordBudget = Math.round(seconds * 2.2);
   const ctaInstruction = pickVideoCta(post.kind === 'post');
-  const res = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    // 1500 was occasionally too tight for 5 scenes + long English broll descriptions:
-    // a truncated response leaves "scenes" as the raw unclosed-JSON string instead of
-    // an array, which blows up downstream with a cryptic "Cannot create property
-    // 'label' on string '['" once fixOrthography() iterates its characters.
-    max_tokens: 3000,
+  // writeJson throws on a truncated reply (stop_reason max_tokens) instead of handing
+  // back half-built JSON: a truncated forced-tool response once left "scenes" as a raw
+  // unclosed string and blew up later in fixOrthography() with a cryptic error.
+  const script = await writeJson(client, {
+    label: 'video script',
+    effort: 'high',
     system: `Você roteiriza vídeos educativos curtos para o Instagram na voz de Jorge Bernardo: homem negro brasileiro, ciclista, profissional de tecnologia e segurança de dados, fundador da DePretoPraPreto. Primeira pessoa, português do Brasil, direto e reflexivo, sem clichê motivacional, SEM travessões (—), sem emojis. Ortografia e acentuação IMPECÁVEIS em todos os campos (ã, ç, é, í, ó, ô etc.) — o texto vira narração de voz e legenda na tela.`,
-    tools: [{
-      name: 'create_video_script',
-      description: 'Roteiro de um vídeo vertical educativo com narração e texto na tela.',
-      input_schema: {
-        type: 'object',
-        properties: {
-          title: { type: 'string', description: 'Título curto do vídeo (PT-BR)' },
-          caption: { type: 'string', description: 'Legenda de Instagram em PT-BR, voz do Jorge, ~70 palavras, SEM hashtags. O fechamento segue a instrução de CTA dada abaixo.' },
-          scenes: {
-            type: 'array',
-            description: 'Exatamente 5 cenas: a primeira é o gancho, a última fecha com reflexão.',
-            items: {
-              type: 'object',
-              properties: {
-                label: { type: 'string', description: 'Eyebrow de 1 a 3 palavras (vira maiúsculas na tela)' },
-                headline: { type: 'string', description: 'Frase-chave curta na tela, no máximo 8 palavras, PT-BR' },
-                narration: { type: 'string', description: 'O que a locução fala nesta cena, 1 a 2 frases naturais em PT-BR' },
-                broll: { type: 'string', description: 'Descrição visual em INGLÊS de um b-roll abstrato e faceless que combine com a cena (ex: "close-up of bicycle wheel spinning at dawn, warm light")' }
-              },
-              required: ['label', 'headline', 'narration', 'broll']
-            }
-          },
-          hashtags: { type: 'array', items: { type: 'string' } }
+    // Roteiro de um vídeo vertical educativo com narração e texto na tela.
+    schema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        title: { type: 'string', description: 'Título curto do vídeo (PT-BR)' },
+        caption: { type: 'string', description: 'Legenda de Instagram em PT-BR, voz do Jorge, ~70 palavras, SEM hashtags. O fechamento segue a instrução de CTA dada abaixo.' },
+        scenes: {
+          type: 'array',
+          description: 'Exatamente 5 cenas: a primeira é o gancho, a última fecha com reflexão.',
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              label: { type: 'string', description: 'Eyebrow de 1 a 3 palavras (vira maiúsculas na tela)' },
+              headline: { type: 'string', description: 'Frase-chave curta na tela, no máximo 8 palavras, PT-BR' },
+              narration: { type: 'string', description: 'O que a locução fala nesta cena, 1 a 2 frases naturais em PT-BR' },
+              broll: { type: 'string', description: 'Descrição visual em INGLÊS de um b-roll abstrato e faceless que combine com a cena (ex: "close-up of bicycle wheel spinning at dawn, warm light")' }
+            },
+            required: ['label', 'headline', 'narration', 'broll']
+          }
         },
-        required: ['title', 'caption', 'scenes', 'hashtags']
-      }
-    }],
-    tool_choice: { type: 'tool', name: 'create_video_script' },
+        hashtags: { type: 'array', items: { type: 'string' } }
+      },
+      required: ['title', 'caption', 'scenes', 'hashtags']
+    },
     messages: [{
       role: 'user',
       content: `${promptDateBlock()}
@@ -228,15 +227,10 @@ ${post.kind === 'topic' ? 'PAUTA' : 'POST'}:
 ${post.plain.slice(0, 4000)}`
     }]
   });
-  const tool = res.content.find(b => b.type === 'tool_use');
-  if (!tool) throw new Error('no script returned');
-  if (res.stop_reason === 'max_tokens') {
-    throw new Error('script generation hit max_tokens (response truncated mid-JSON) — raise max_tokens in generateScript()');
+  if (!Array.isArray(script.scenes) || script.scenes.some(s => typeof s !== 'object' || s === null)) {
+    throw new Error(`script generation returned malformed scenes (expected array of objects, got ${JSON.stringify(script.scenes).slice(0, 200)})`);
   }
-  if (!Array.isArray(tool.input.scenes) || tool.input.scenes.some(s => typeof s !== 'object' || s === null)) {
-    throw new Error(`script generation returned malformed scenes (expected array of objects, got ${JSON.stringify(tool.input.scenes).slice(0, 200)}) — likely a truncated tool-use response`);
-  }
-  return tool.input;
+  return script;
 }
 
 // Spoken-unit expansion applied to narration ONLY — on-screen headlines keep
@@ -342,7 +336,7 @@ async function generateBrollAll(scenes, outDir) {
   }));
 }
 
-/* ── 4b. gpt-image-2 still b-roll (parallel, per scene) ──── */
+/* ── 4b. AI image still b-roll (parallel, per scene) ──── */
 
 // Editorial still per scene, Ken Burns'd by the existing 'photo' branch in
 // buildSceneClip. Faceless by prompt: when mixed with Jorge's REAL photos, an
@@ -354,7 +348,7 @@ function imageBrollPrompt(scene) {
 }
 
 async function generateImageStill(prompt, outPath, openai) {
-  const res = await openai.images.generate({ model: 'gpt-image-2', prompt, n: 1, size: '1024x1536', quality: 'medium' });
+  const res = await openai.images.generate({ model: OPENAI_IMAGE_MODEL, prompt, n: 1, size: '1024x1536', quality: 'medium' });
   const item = res.data[0];
   const buf = item.b64_json
     ? Buffer.from(item.b64_json, 'base64')
@@ -635,7 +629,7 @@ async function main() {
   }
 
   // Typographic is the default (Direction A) — everything else only when forced.
-  // 'mixed' = real cycling photos interleaved with gpt-image-2 stills (Phase 4).
+  // 'mixed' = real cycling photos interleaved with AI image stills (Phase 4).
   const brollMode = forceKie ? 'kie' : forceReal ? 'real' : forceMixed ? 'mixed' : forceImage ? 'image' : 'design';
   console.log(`b-roll mode: ${brollMode}`);
 
@@ -705,17 +699,17 @@ async function main() {
     brolls = pickRealPhotos(script.scenes.length).map(p => p ? { type: 'photo', path: p, temp: false } : null);
     console.log(`     ${brolls.filter(Boolean).length}/${brolls.length} photos selected`);
   } else if (brollMode === 'image') {
-    console.log(`3/7 b-roll: gpt-image-2 stills ×${script.scenes.length} (parallel)...`);
+    console.log(`3/7 b-roll: ${OPENAI_IMAGE_MODEL} stills ×${script.scenes.length} (parallel)...`);
     const imgs = await generateImageBrollAll(script.scenes, outDir, openai);
     brolls = imgs.map(p => p ? { type: 'photo', path: p, temp: true } : null);
     console.log(`     ${brolls.filter(Boolean).length}/${brolls.length} stills ready`);
   } else if (brollMode === 'mixed') {
     // Real photos carry the human presence (scenes 1,3,5 — hook opens on real
-    // footage); gpt-image-2 fills the alternating scenes with faceless editorial
+    // footage); the AI image model fills the alternating scenes with faceless editorial
     // stills so an AI-generated "someone" never sits next to the real Jorge.
     const realIdx = script.scenes.map((_, i) => i).filter(i => i % 2 === 0);
     const aiIdx = script.scenes.map((_, i) => i).filter(i => i % 2 === 1);
-    console.log(`3/7 b-roll: mixed — ${realIdx.length} real photos + ${aiIdx.length} gpt-image-2 stills...`);
+    console.log(`3/7 b-roll: mixed — ${realIdx.length} real photos + ${aiIdx.length} ${OPENAI_IMAGE_MODEL} stills...`);
     const realPicks = pickRealPhotos(realIdx.length);
     const haveReal = realPicks.some(Boolean);
     const imgs = await generateImageBrollAll(script.scenes, outDir, openai, haveReal ? aiIdx : script.scenes.map((_, i) => i));

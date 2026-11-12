@@ -27,6 +27,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
+import { writeJson } from './claude-models.mjs';
 import { stalestIdeas } from './topic-rotation.mjs';
 import { describeDay, promptDateBlock } from './prompt-date.mjs';
 
@@ -205,32 +206,29 @@ async function developConcept(client, { candidates, seed, rides, recentTitles, p
       `Isto é só mais um vento, mais fraco que o desempenho real da conta acima — nunca vença uma ideia concreta e viva, e nunca vença o desempenho real quando os dois discordarem.\n`
     : '';
 
-  const res = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 1200,
+  const concept = await writeJson(client, {
+    label: 'reel concept',
+    effort: 'high',
     system: `Você desenvolve pautas de Reels de ciclismo para o Instagram pessoal de Jorge Bernardo: homem negro brasileiro, ciclista amador dedicado, profissional de tecnologia, fundador da DePretoPraPreto (pode ser citada naturalmente, mas o tom é PESSOAL, nunca institucional). Voz: primeira pessoa, direto, reflexivo, zero clichê motivacional, SEM travessões (—), sem emojis. Ortografia impecável.`,
-    tools: [{
-      name: 'create_reel_concept',
-      description: 'Uma pauta de Reel de ciclismo pronta para roteirização.',
-      input_schema: {
-        type: 'object',
-        properties: {
-          bankId: { type: 'string', description: 'O [id] da ideia escolhida do banco, ou "seed" se veio da ideia-semente' },
-          title: { type: 'string', description: 'Título curto da pauta (PT-BR)' },
-          hook: { type: 'string', description: 'O gancho dos 2 primeiros segundos: uma frase concreta que para o dedo' },
-          angle: { type: 'string', description: 'O ângulo específico: qual é A ideia deste Reel em uma frase (não o tema, o ponto de vista)' },
-          beats: {
-            type: 'array',
-            description: '3 a 4 batidas do meio: o que cada trecho do vídeo entrega, uma frase cada',
-            items: { type: 'string' }
-          },
-          close: { type: 'string', description: 'O fechamento: imagem final ou pergunta aberta (não CTA)' },
-          usesStrava: { type: 'boolean', description: 'true se a pauta usa números/fatos dos pedais reais listados' }
+    // Uma pauta de Reel de ciclismo pronta para roteirização.
+    schema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        bankId: { type: 'string', description: 'O [id] da ideia escolhida do banco, ou "seed" se veio da ideia-semente' },
+        title: { type: 'string', description: 'Título curto da pauta (PT-BR)' },
+        hook: { type: 'string', description: 'O gancho dos 2 primeiros segundos: uma frase concreta que para o dedo' },
+        angle: { type: 'string', description: 'O ângulo específico: qual é A ideia deste Reel em uma frase (não o tema, o ponto de vista)' },
+        beats: {
+          type: 'array',
+          description: '3 a 4 batidas do meio: o que cada trecho do vídeo entrega, uma frase cada',
+          items: { type: 'string' }
         },
-        required: ['bankId', 'title', 'hook', 'angle', 'beats', 'close', 'usesStrava']
-      }
-    }],
-    tool_choice: { type: 'tool', name: 'create_reel_concept' },
+        close: { type: 'string', description: 'O fechamento: imagem final ou pergunta aberta (não CTA)' },
+        usesStrava: { type: 'boolean', description: 'true se a pauta usa números/fatos dos pedais reais listados' }
+      },
+      required: ['bankId', 'title', 'hook', 'angle', 'beats', 'close', 'usesStrava']
+    },
     messages: [{
       role: 'user',
       content: `${promptDateBlock()}
@@ -251,9 +249,7 @@ Regras:
     }],
   });
 
-  const tool = res.content.find(b => b.type === 'tool_use');
-  if (!tool) fail('no concept returned');
-  return tool.input;
+  return concept;
 }
 
 /* ── Main ────────────────────────────────────────────────── */

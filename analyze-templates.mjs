@@ -13,6 +13,7 @@
 
 import './load-env.mjs';
 import Anthropic from '@anthropic-ai/sdk';
+import { writeText } from './claude-models.mjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -97,9 +98,10 @@ async function analyzeTemplate(filename) {
   const imageBuffer = fs.readFileSync(filepath);
   const base64 = imageBuffer.toString('base64');
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 1500,
+  const { text } = await writeText(client, {
+    label: `analyze ${filename}`,
+    effort: 'medium',
+    max_tokens: 8000,
     system: SYSTEM_PROMPT,
     messages: [
       {
@@ -115,7 +117,7 @@ async function analyzeTemplate(filename) {
     ],
   });
 
-  const raw = response.content[0].text.trim();
+  const raw = text.trim();
   const jsonStart = raw.indexOf('{');
   const jsonEnd = raw.lastIndexOf('}');
   if (jsonStart === -1 || jsonEnd === -1) throw new Error('No JSON object found in response');

@@ -1,12 +1,13 @@
 /**
  * sim/lib.mjs — shared helpers for the MiroFish-style audience simulation.
- * Provider abstraction (Kimi K3 default, Haiku 4.5 fallback via SIM_AGENT_MODEL=haiku),
+ * Provider abstraction (Kimi K3 default, Haiku fallback (UTILITY_MODEL) via SIM_AGENT_MODEL=haiku),
  * personas/variants loaders, and the sim-state.json round ledger.
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
+import { UTILITY_MODEL } from '../claude-models.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -18,7 +19,7 @@ export const REPORT_PATH = path.join(path.dirname(__dirname), 'docs', 'audience-
 
 const KIMI_ENDPOINT = 'https://api.moonshot.ai/v1/chat/completions';
 const KIMI_MODEL = 'kimi-k3';
-const HAIKU_MODEL = 'claude-haiku-4-5-20251001';
+const HAIKU_MODEL = UTILITY_MODEL;
 
 export function loadPersonas() {
   return JSON.parse(fs.readFileSync(PERSONAS_PATH, 'utf8'));
@@ -87,7 +88,10 @@ async function callHaiku({ system, user, maxTokens }) {
   const client = new Anthropic({ apiKey });
   const res = await client.messages.create({
     model: HAIKU_MODEL,
-    max_tokens: maxTokens,
+    // Thinking counts toward max_tokens on Haiku 5.5; low effort + headroom keeps the
+    // caller's answer budget intact.
+    max_tokens: maxTokens + 4000,
+    output_config: { effort: 'low' },
     system,
     messages: [{ role: 'user', content: user }],
   });

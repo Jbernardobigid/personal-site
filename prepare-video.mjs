@@ -10,10 +10,10 @@
  * Usage:
  *   node prepare-video.mjs                 (build + upload + queue in Notion, then mark prepared)
  *   node prepare-video.mjs --cycling       (Phase 4: cycling-topics.mjs concept → Reel with mixed
- *                                           real-photo + gpt-image-2 b-roll; no blog post involved)
+ *                                           real-photo + AI image b-roll; no blog post involved)
  *   node prepare-video.mjs --kie-broll     (AI video b-roll via KIE — dropped from the plan, flag kept)
  *   node prepare-video.mjs --real-broll    (real-footage photo b-roll, Ken Burns)
- *   node prepare-video.mjs --image-broll   (gpt-image-2 still b-roll, Ken Burns)
+ *   node prepare-video.mjs --image-broll   (AI image still b-roll, Ken Burns)
  *   node prepare-video.mjs --skip-generate (queue the most recent already-built video)
  *   node prepare-video.mjs --dry-run       (build/find + upload, print the card; don't create/mark)
  *   node prepare-video.mjs --force         (re-prepare even if this post was already done)

@@ -23,6 +23,7 @@
 
 import './load-env.mjs';
 import Anthropic from '@anthropic-ai/sdk';
+import { writeText } from './claude-models.mjs';
 import fs from 'fs';
 import path from 'path';
 import https from 'https';
@@ -209,9 +210,9 @@ async function generateTemplate(client, contentType) {
 
   process.stdout.write(`  Generating ${contentType} (page ${pageNum})... `);
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 8000,
+  const { text: raw } = await writeText(client, {
+    label: `template ${contentType}`,
+    effort: 'medium',
     messages: [
       {
         role: 'user',
@@ -226,7 +227,6 @@ async function generateTemplate(client, contentType) {
     ],
   });
 
-  const raw = response.content[0].text ?? '';
   const html = extractHtml(raw);
   if (!html) throw new Error('No valid HTML returned');
 

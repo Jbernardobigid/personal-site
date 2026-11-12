@@ -16,10 +16,11 @@ import './load-env.mjs';
 import { pathToFileURL } from 'url';
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
+import { UTILITY_MODEL } from './claude-models.mjs';
 
 const TAVILY_URL = 'https://api.tavily.com/search';
 const SYNTH_MODEL = 'gpt-4o-mini';                   // cheap + fast for JSON synthesis
-const QUERY_MODEL = 'claude-haiku-4-5-20251001';     // cheap + fast for query derivation
+const QUERY_MODEL = UTILITY_MODEL;                   // cheap + fast; the forced tool call skips thinking
 
 function slugify(text) {
   return text.toLowerCase().trim()

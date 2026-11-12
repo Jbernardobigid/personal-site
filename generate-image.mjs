@@ -20,6 +20,8 @@
 
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
+import { UTILITY_MODEL } from './claude-models.mjs';
+import { OPENAI_IMAGE_MODEL } from './image-model.mjs';
 
 // INVARIANT: any human depicted in a generated image must be a Black Brazilian person.
 // Image models default to white subjects when ethnicity is unspecified, so every
@@ -105,7 +107,9 @@ async function deriveScene({ title, excerpt, pillarId, apiKey }) {
   try {
     const client = new Anthropic({ apiKey });
     const res = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      // Haiku 5.5 still accepts a forced tool_choice; the forced call skips thinking,
+      // so max_tokens: 300 stays enough for one sentence.
+      model: UTILITY_MODEL,
       max_tokens: 300,
       tools: [{
         name: 'describe_scene',
@@ -173,7 +177,7 @@ export async function generatePostImage(pillarId, apiKey, opts = {}) {
 
   const openai = new OpenAI({ apiKey });
   const response = await openai.images.generate({
-    model: 'gpt-image-2',
+    model: OPENAI_IMAGE_MODEL,
     prompt,
     n: 1,
     size: '1536x1024',
