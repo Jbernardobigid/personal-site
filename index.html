@@ -2452,13 +2452,23 @@ footer {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, company: '' })
     })
-      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (r) {
+        // The body is not always ours: a rate-limited request is answered by the Vercel
+        // Firewall before it reaches the function, with its own JSON (or none at all).
+        return r.json().catch(function () { return null; })
+          .then(function (d) { return { ok: r.ok, status: r.status, d: d }; });
+      })
       .then(function (res) {
         if (res.ok && res.d && res.d.ok) {
           setStatus(res.d.already ? 'Você já está na lista. Obrigado!' : 'Pronto! Você está na lista. 🖤', 'success');
           form.reset();
         } else {
-          setStatus((res.d && res.d.error) || 'Não foi possível inscrever agora.', 'error');
+          // Only show an error the function wrote. The Firewall's 429 carries an object
+          // in "error", which would otherwise render as "[object Object]".
+          var message = res.status === 429
+            ? 'Muitas tentativas. Tente de novo em alguns minutos.'
+            : (res.d && typeof res.d.error === 'string' && res.d.error) || 'Não foi possível inscrever agora.';
+          setStatus(message, 'error');
           btn.disabled = false;
         }
       })

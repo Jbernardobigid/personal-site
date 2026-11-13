@@ -7,15 +7,28 @@
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// BEST EFFORT ONLY. This counter lives in one function instance's memory: it resets on
+// every cold start and is not shared between instances, so a caller spread across
+// instances is never limited. The enforced limit is the Vercel Firewall rate-limit rule
+// on POST /api/subscribe (Vercel dashboard → Firewall), which runs at the edge before
+// this code. Keep that rule in place; this only slows a burst that lands on one warm
+// instance.
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 15 * 60 * 1000;
+const MAX_TRACKED_IPS = 5000;
 const ipHits = new Map();
 
 function isRateLimited(ip) {
   const now = Date.now();
-  const entry = ipHits.get(ip) || { count: 0, resetAt: now + RATE_WINDOW_MS };
-  if (now > entry.resetAt) { entry.count = 0; entry.resetAt = now + RATE_WINDOW_MS; }
-  entry.count += 1;
+  // Bound the map so a flood of distinct addresses cannot grow a warm instance's memory.
+  if (ipHits.size >= MAX_TRACKED_IPS && !ipHits.has(ip)) {
+    for (const [key, entry] of ipHits) if (now > entry.resetAt) ipHits.delete(key);
+    if (ipHits.size >= MAX_TRACKED_IPS) ipHits.clear();
+  }
+  const previous = ipHits.get(ip);
+  const entry = previous && now <= previous.resetAt
+    ? { count: previous.count + 1, resetAt: previous.resetAt }
+    : { count: 1, resetAt: now + RATE_WINDOW_MS };
   ipHits.set(ip, entry);
   return entry.count > RATE_LIMIT;
 }
