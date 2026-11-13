@@ -135,7 +135,13 @@ export function readCaption(dir, captionFileArg) {
   return raw.trim();
 }
 
-export async function cmdPublishCarousel(id, { dryRun, captionFile } = {}) {
+/**
+ * @param {string} id staged folder name under social/
+ * @param {{ dryRun?: boolean, captionFile?: string, caption?: string }} [options]
+ *   caption: publish this text instead of reading caption.txt. The approval poller
+ *   passes the Notion card's caption, so edits made during review are what goes live.
+ */
+export async function cmdPublishCarousel(id, { dryRun, captionFile, caption: captionOverride } = {}) {
   const { token, igUserId } = requireEnv();
   if (!SITE_URL) {
     console.error('SITE_URL missing from .env — needed to build public media URLs.');
@@ -157,7 +163,7 @@ export async function cmdPublishCarousel(id, { dryRun, captionFile } = {}) {
     process.exit(1);
   }
 
-  const caption = readCaption(dir, captionFile);
+  const caption = captionOverride ?? readCaption(dir, captionFile);
   const urls = pngs.map((f) => `${SITE_URL}/social/${id}/${f}`);
 
   if (dryRun) {

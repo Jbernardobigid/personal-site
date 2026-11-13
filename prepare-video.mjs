@@ -90,7 +90,8 @@ async function queueReel(id, meta, url, series = 'Blog-derived') {
     Status: prop.select('Draft'),
     Type: prop.select('Reel'),
     Series: prop.select(series),
-    Caption: prop.richText(meta.caption),
+    // longText: richText cuts at 2000 characters, and this caption is published as is.
+    Caption: prop.longText(meta.caption),
     'Media URL': prop.url(url),
     Preview: prop.files([url]),
     Notes: prop.richText(`Reel ${Math.round(meta.durationSec)}s · 9:16 · voz PT-BR. Approve by setting Status = "Approved For Publishing".`),

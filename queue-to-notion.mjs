@@ -106,7 +106,9 @@ async function queueCarousel(dbId, id) {
     Status: prop.select('Draft'),
     Type: prop.select(meta.type),
     Series: prop.select(meta.series),
-    Caption: prop.richText(caption),
+    // longText, not richText: richText cuts at 2000 characters, Instagram allows 2200,
+    // and the card's caption is what gets published.
+    Caption: prop.longText(caption),
     'Media URL': prop.url(firstUrl),
     Preview: prop.files([firstUrl]),
     Notes: prop.richText(`${pngs.length} slide(s). Approve by setting Status = "Approved For Publishing".`),
