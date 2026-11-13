@@ -19,7 +19,8 @@ Two things live here — see [README.md](README.md) for the full map:
 
 ## Local Server
 - **Always serve on localhost** — never screenshot a `file:///` URL.
-- Start the dev server: `node serve.mjs` (serves the project root at `http://localhost:3000`)
+- Start the dev server: `node serve.mjs` (serves the site at `http://localhost:3000`, loopback only; `HOST=0.0.0.0 node serve.mjs` to reach it from a phone)
+- It serves an **allowlist**, not the whole root: the deployed surface plus the preview folders in `PUBLIC_DIRS` (`serve.mjs`). `.env`, `.git`, root JSON ledgers, `*.mjs` and private folders return 403. To preview a new top-level folder, add it to `PUBLIC_DIRS`.
 - If the server is already running, do not start a second instance.
 
 ## Screenshot Workflow
