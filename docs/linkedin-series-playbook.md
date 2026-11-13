@@ -2,6 +2,14 @@
 
 Started 2026-11-13, after the LinkedIn editorial workshop at the LinkedIn office (sports cohort, community manager Luiz Gustavo). Goal: LinkedIn Top Voice within 6 to 9 months.
 
+## Launch log
+
+- **2026-11-13**: series built. The first post (text, LA bike lanes and Latino workers) was published the same day at 11:36 BRT on Jorge's call: https://www.linkedin.com/feed/update/urn:li:share:7527016639092105216/
+- **Queue after it:** photo (Tue 11/17), document/PDF carousel (Thu 11/19), video (Reel), photos, ai-image, then back to text.
+- **Not yet proven live:** the REST post paths (document, photos, video). Their uploads work; the first post of each is the real test.
+- **LinkedIn token expires ~2027-01-12.** Renew it at linkedin.com/developers/tools/oauth/token-generator (app JorgeEscreve; scopes openid, profile, w_member_social). Put it in `.env` directly, not in chat, then sync it to the VPS.
+- **Profile assets:** cover options are in `brand_assets/LinkedIn/` (B recommended). The headline and "Sobre" drafts are in the 2026-11-13 session.
+
 ## What the pipeline does
 
 | Step | Script | When (BRT) |
