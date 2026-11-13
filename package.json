@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.9.0"
   },
   "scripts": {
     "serve": "node serve.mjs",
@@ -35,7 +35,12 @@
     "images:blog": "node optimize-images.mjs --blog",
     "images:relatorios": "node optimize-images.mjs --relatorios",
     "content:regen": "node regen-feed-sitemap.mjs",
+    "test": "node test-seo-helpers.mjs && node test-photo-rotation.mjs && node test-topic-rotation.mjs && node test-prompt-date.mjs && node test-linkedin.mjs && node test-serve.mjs && node test-post-security.mjs && node test-newsletter-send.mjs && node test-publish-approved.mjs",
     "test:seo": "node test-seo-helpers.mjs",
+    "test:serve": "node test-serve.mjs",
+    "test:post-security": "node test-post-security.mjs",
+    "test:newsletter": "node test-newsletter-send.mjs",
+    "test:publish": "node test-publish-approved.mjs",
     "test:photos": "node test-photo-rotation.mjs",
     "test:topics": "node test-topic-rotation.mjs",
     "test:dates": "node test-prompt-date.mjs",
@@ -48,12 +53,12 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "@google/generative-ai": "^0.24.1",
-    "@vercel/blob": "^2.6.1",
+    "@vercel/blob": "^2.9.0",
     "@vercel/speed-insights": "^2.0.0",
     "openai": "^6.39.0",
     "puppeteer-core": "^25.0.4",
     "rss-parser": "^3.13.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "jimp": "^1.6.1"
