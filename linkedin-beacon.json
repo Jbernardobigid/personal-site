@@ -1,0 +1,65 @@
+{
+  "_comment": "News beacon for the LinkedIn cycling series (#EsportesNoLinkedIn). Read by linkedin-beacon.mjs. Each lens is one angle the series covers; 'weight' steers selection toward the Black/Latin focus without excluding the rest of the sport. Edit freely: empty or failing feeds are skipped.",
+  "_verified": "Feeds and queries tested 2026-11-13. In a 14-day window the narrow PT 'ciclista negro' and ES 'afrodescendiente' queries returned 0 items, so the beacon ALSO reads the big English cycling outlets and keeps only items that match a lens keyword. That is where the Black/African/Latin pro-peloton stories actually surface (Girmay, Team Amani, visas, Colombian riders). Rejected: pedal.com.br (403), cbc.esp.br (fetch failed), ciclismointernacional.com (404), bikemagazine.com.br (520).",
+  "freshnessDays": 10,
+  "googleNews": {
+    "pt": "https://news.google.com/rss/search?q={q}&hl=pt-BR&gl=BR&ceid=BR:pt-419",
+    "en": "https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en",
+    "es": "https://news.google.com/rss/search?q={q}&hl=es-419&gl=CO&ceid=CO:es-419",
+    "freshness": "when:10d"
+  },
+  "feeds": [
+    { "name": "Cyclingnews", "url": "https://www.cyclingnews.com/feeds.xml", "tier": 1 },
+    { "name": "Cycling Weekly", "url": "https://www.cyclingweekly.com/feeds/all", "tier": 1 },
+    { "name": "Velo", "url": "https://velo.outsideonline.com/feed/", "tier": 1 },
+    { "name": "Escape Collective", "url": "https://escapecollective.com/feed/", "tier": 1 },
+    { "name": "Global Peloton", "url": "https://globalpeloton.substack.com/feed", "tier": 1, "lens": "africa-cycling" },
+    { "name": "Revista Bicicleta", "url": "https://revistabicicleta.com/feed/", "tier": 2 },
+    { "name": "Observatório da Bicicleta (UCB)", "url": "https://observatoriodabicicleta.org.br/feed/", "tier": 1, "lens": "access-equity" },
+    { "name": "Ciclocidade", "url": "https://www.ciclocidade.org.br/feed/", "tier": 1, "lens": "access-equity" }
+  ],
+  "lenses": {
+    "black-cycling": {
+      "label": "Ciclistas negros no esporte",
+      "weight": 1.0,
+      "keywords": ["black cyclist", "black cyclists", "black rider", "black riders", "black athletes", "racism", "racist", "racial", "diversity", "major taylor", "l39ion", "justin williams", "cory williams", "kevin reza", "kévin reza", "ayesha mcgowan", "nelson vails", "ciclista negro", "ciclistas negros", "ciclista negra", "racismo", "antirracismo", "afro"],
+      "googleNews": {
+        "pt": ["ciclismo (\"ciclista negro\" OR \"ciclistas negros\" OR \"ciclismo negro\" OR antirracismo OR racismo)"],
+        "en": ["cycling (\"Black cyclist\" OR \"Black cyclists\" OR \"Major Taylor\" OR L39ION OR \"Black riders\")"]
+      }
+    },
+    "africa-cycling": {
+      "label": "Ciclismo africano",
+      "weight": 0.9,
+      "keywords": ["girmay", "biniam", "team amani", "amani", "rwanda", "eritrea", "eritrean", "african", "africa", "tour du faso", "kigali", "ethiopia", "kenya", "south africa", "visa", "visas"],
+      "googleNews": {
+        "en": ["cycling (Africa OR Rwanda OR Eritrea OR \"Team Amani\" OR Girmay)"]
+      }
+    },
+    "latin-cycling": {
+      "label": "Ciclismo latino-americano",
+      "weight": 0.9,
+      "keywords": ["colombia", "colombian", "colombiano", "ecuador", "carapaz", "del toro", "mexican", "mexicano", "bernal", "quintana", "buitrago", "urán", "uran", "venezuela", "latino", "latin america", "latinoamericano", "brazil", "brazilian"],
+      "googleNews": {
+        "es": ["ciclismo (colombiano OR ecuatoriano OR mexicano OR latinoamericano) (\"Del Toro\" OR Bernal OR Carapaz OR Quintana OR Buitrago)"]
+      }
+    },
+    "brasil-ciclismo": {
+      "label": "Ciclismo no Brasil",
+      "weight": 0.8,
+      "keywords": ["ciclismo brasileiro", "ciclista brasileiro", "ciclista brasileira", "gran fondo", "l'étape", "letape", "volta ciclística", "cbc", "seleção brasileira"],
+      "googleNews": {
+        "pt": ["ciclismo brasileiro OR \"ciclista brasileira\" OR \"ciclista brasileiro\" OR \"Gran Fondo\" OR \"L'Étape Brasil\""]
+      }
+    },
+    "access-equity": {
+      "label": "Quem pedala e quem fica de fora",
+      "weight": 0.8,
+      "keywords": ["periferia", "periférico", "mobilidade urbana", "ciclovia", "cicloativismo", "equity", "inclusion", "people of color", "community ride", "entregadores"],
+      "googleNews": {
+        "pt": ["bicicleta (periferia OR \"mobilidade urbana\" OR cicloativismo) (pesquisa OR dados OR coletivo) -atropelamento -atropelado -morte -morreu -acidente"],
+        "en": ["cycling (equity OR inclusion OR \"people of color\" OR Latino) community -crash -killed"]
+      }
+    }
+  }
+}

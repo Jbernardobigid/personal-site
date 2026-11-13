@@ -38,7 +38,12 @@
     "test:seo": "node test-seo-helpers.mjs",
     "test:photos": "node test-photo-rotation.mjs",
     "test:topics": "node test-topic-rotation.mjs",
-    "test:dates": "node test-prompt-date.mjs"
+    "test:dates": "node test-prompt-date.mjs",
+    "test:linkedin": "node test-linkedin.mjs",
+    "linkedin:beacon": "node linkedin-beacon.mjs",
+    "linkedin:prepare": "node prepare-linkedin.mjs",
+    "linkedin:prepare:dry": "node prepare-linkedin.mjs --dry-run",
+    "linkedin:publish": "node publish-linkedin.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

@@ -301,4 +301,11 @@ async function main() {
   console.log(JSON.stringify({ success: true, title: concept.title, bankId: concept.bankId, usesStrava: concept.usesStrava }));
 }
 
-main().catch(e => fail('unexpected', String(e?.stack || e)));
+// main() used to run on import, so importing the Strava helper would have picked and
+// burned a bank idea. Run only as the process entrypoint.
+export { stravaRecentRides };
+
+const isEntrypoint = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isEntrypoint) {
+  main().catch(e => fail('unexpected', String(e?.stack || e)));
+}

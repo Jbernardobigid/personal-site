@@ -45,9 +45,14 @@ async function main() {
     process.exit(1);
   }
 
+  // LinkedIn cards share this database and the same approval status, but belong to
+  // publish-linkedin.mjs. Without this filter an approved LinkedIn card would be pushed
+  // to Instagram as a carousel.
   const approved = await queryDatabase(dbId, {
-    property: 'Status',
-    select: { equals: 'Approved For Publishing' },
+    and: [
+      { property: 'Status', select: { equals: 'Approved For Publishing' } },
+      { property: 'Type', select: { does_not_equal: 'LinkedIn' } },
+    ],
   });
 
   if (approved.length === 0) {

@@ -1176,4 +1176,4 @@ if (isEntrypoint) {
   });
 }
 
-export { getAllPostMeta, generateSitemap, generateFeed, generateRobotsTxt };
+export { getAllPostMeta, generateSitemap, generateFeed, generateRobotsTxt, JORGE_CONTEXT, sanitizeEmDashes };

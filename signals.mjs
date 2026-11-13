@@ -368,3 +368,7 @@ export async function selectSignal({ forcePillar = null } = {}) {
 
   return { signal: winner, pillar: winner?.pillar || forcePillar || null, candidates };
 }
+
+// Feed plumbing shared with the LinkedIn beacon (linkedin-beacon.mjs), which runs its own
+// source set and scoring but must not re-implement fetching, dating or title keys.
+export { fetchFeed, cleanText, titleKey, itemDate, withinFreshness };

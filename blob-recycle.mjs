@@ -65,6 +65,8 @@ const POLICY = {
   'instagram':         { mode: 'age', retainDays: 30,
                          why: 'IG media staging; Instagram hosts its own copy after publish' },
   'reels':             { mode: 'age', retainDays: 30, why: 'superseded by the video/ prefix' },
+  'linkedin':          { mode: 'notion-state', graceDays: 7, orphanGraceDays: 30,
+                         why: 'LinkedIn hosts its own copy once the post is published' },
   'video-test':        { mode: 'age', retainDays: 7,  why: 'test artifacts' },
   'newsletter-charts': { mode: 'age', retainDays: 180,
                          why: 'referenced by delivered emails recipients can still reopen' },

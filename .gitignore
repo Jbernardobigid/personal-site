@@ -53,3 +53,6 @@ sim-predictions.json
 docs/audience-simulation-report.md
 temp/
 projects/*/out/
+# LinkedIn series: pipeline ledger lives on the VPS; build dirs are regenerated
+linkedin-ledger.json
+linkedin/
