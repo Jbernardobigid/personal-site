@@ -26,6 +26,7 @@ import { selectSignal, recordUsedSignal } from './signals.mjs';
 import { researchTopic, deriveResearchQuery } from './research.mjs';
 import { promptDateBlock } from './prompt-date.mjs';
 import { writeJson } from './claude-models.mjs';
+import { sanitizeContent, jsonLdScript } from './post-sanitize.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR    = path.join(__dirname, 'blog');
@@ -392,8 +393,8 @@ function escapeXml(str) {
 /* escapeJson was removed. It escaped a double quote as \" , which is correct for a JSON
  * string literal but closes a content="..." attribute early, and every one of its call
  * sites was an HTML attribute. One published post had its meta description silently
- * truncated to 'O audiobook de \"' that way. Attributes use escapeHtml; JSON-LD is
- * built with JSON.stringify, which escapes correctly on its own. */
+ * truncated to 'O audiobook de \"' that way. Attributes use escapeHtml; JSON-LD goes
+ * through jsonLdScript(), which also keeps a value from closing its <script> element. */
 
 function escapeHtml(str) {
   return String(str)
@@ -408,17 +409,6 @@ function decodeHtmlEntities(str) {
     .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
     .replace(/&amp;/g, '&');
-}
-
-function sanitizeContent(html) {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
-    .replace(/<object[\s\S]*?<\/object>/gi, '')
-    .replace(/<embed[^>]*>/gi, '')
-    .replace(/\s+on\w+\s*=\s*["'][^"']*["']/gi, '')
-    .replace(/\s+on\w+\s*=\s*[^\s>]*/gi, '')
-    .replace(/javascript\s*:/gi, '');
 }
 
 /* ── Related posts ───────────────────────────────────────── */
@@ -492,7 +482,7 @@ function buildPostHtml({ title, seoTitle, excerpt, pillar, date, readTime, conte
 
   const relatedHtml = buildRelatedHtml(related);
 
-  const faqJsonLd = faq.length ? JSON.stringify({
+  const faqJsonLd = faq.length ? jsonLdScript({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: faq.map(({ question, answer }) => ({
@@ -500,13 +490,13 @@ function buildPostHtml({ title, seoTitle, excerpt, pillar, date, readTime, conte
       name: question,
       acceptedAnswer: { '@type': 'Answer', text: answer }
     }))
-  }, null, 2) : null;
+  }) : null;
 
   const faqHtml = faq.length ? `
 <h2>Perguntas frequentes</h2>
 ${faq.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3>\n<p>${escapeHtml(answer)}</p>`).join('\n')}` : '';
 
-  const jsonLd = JSON.stringify({
+  const jsonLd = jsonLdScript({
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: title,
@@ -534,7 +524,7 @@ ${faq.map(({ question, answer }) => `<h3>${escapeHtml(question)}</h3>\n<p>${esca
       name: 'Jorge Bernardo',
       url: SITE_URL
     }
-  }, null, 2);
+  });
 
   return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -707,30 +697,112 @@ ${relatedHtml}
 
 /* ── Blog index list item ─────────────────────────────────── */
 
+// title and excerpt are model output and used to be interpolated raw, so markup in
+// either became live markup on the blog index. Everything dynamic is escaped here.
 function buildPostListItem({ title, pillar, date, excerpt, filename }) {
   const formattedDate = formatDate(date);
   const iso = isoDate(date);
-  return `    <a href="posts/${filename}" class="post-item" data-pillar="${pillar.id}">
+  return `    <a href="posts/${escapeHtml(filename)}" class="post-item" data-pillar="${escapeHtml(pillar.id)}">
       <div class="post-meta">
         <time class="post-date" datetime="${iso}">${formattedDate}</time>
-        <div class="post-pillar">${pillar.label}</div>
+        <div class="post-pillar">${escapeHtml(pillar.label)}</div>
       </div>
       <div class="post-content">
-        <div class="post-title">${title}</div>
-        <p class="post-excerpt">${excerpt}</p>
+        <div class="post-title">${escapeHtml(title)}</div>
+        <p class="post-excerpt">${escapeHtml(excerpt)}</p>
         <span class="post-read">Ler post <span>→</span></span>
       </div>
     </a>`;
 }
 
+const INDEX_LIST_OPEN = /<div class="posts-list" id="postsList">/;
+
+// The index is edited as LF text and written back in whatever line ending the file had
+// (CRLF in a Windows checkout), so an inserted entry never leaves the file mixed.
+function readIndexFile() {
+  const raw = fs.readFileSync(INDEX_FILE, 'utf8');
+  return { html: raw.replace(/\r\n/g, '\n'), eol: raw.includes('\r\n') ? '\r\n' : '\n' };
+}
+
+function writeIndexFile(html, eol) {
+  fs.writeFileSync(INDEX_FILE, eol === '\n' ? html : html.replace(/\n/g, eol), 'utf8');
+}
+
 function updateBlogIndex(newEntry) {
-  let html = fs.readFileSync(INDEX_FILE, 'utf8');
-  html = html.replace(/\s*<div class="posts-empty">[\s\S]*?<\/div>/, '');
-  html = html.replace(
-    /(<div class="posts-list" id="postsList">)/,
-    `$1\n${newEntry}`
-  );
-  fs.writeFileSync(INDEX_FILE, html, 'utf8');
+  const { html, eol } = readIndexFile();
+  const withoutEmptyState = html.replace(/\s*<div class="posts-empty">[\s\S]*?<\/div>/, '');
+  // A function replacer, not a string: in a replacement string "$1" and "$&" are
+  // patterns, so a title like "R$1 milhão" would splice the matched tag into itself.
+  writeIndexFile(withoutEmptyState.replace(INDEX_LIST_OPEN, open => `${open}\n${newEntry}`), eol);
+}
+
+/* ── Blog index reconciliation ───────────────────────────── */
+
+// A run writes the post file first and updates the index last, with the image call in
+// between. When that call failed the post was still committed, with no index entry and
+// nothing able to add one: 2026-09-23 sat unlinked for two months. The index is now
+// reconciled against the posts on disk on every run and by regen-feed-sitemap.mjs.
+const INDEX_ENTRY_ANCHOR = /^[ \t]*<a href="posts\/([^"]+)" class="post-item"/gm;
+
+/**
+ * Insert index entries that are not listed yet, keeping newest-first order (filenames
+ * start with the ISO date, so string order is date order). Pure: returns the new HTML.
+ * @param {string} indexHtml
+ * @param {{ filename: string, html: string }[]} entries
+ * @returns {string}
+ */
+function insertIndexEntries(indexHtml, entries) {
+  return [...entries]
+    .sort((a, b) => (a.filename < b.filename ? 1 : a.filename > b.filename ? -1 : 0))
+    .reduce((html, entry) => {
+      const listed = [...html.matchAll(INDEX_ENTRY_ANCHOR)];
+      if (listed.some(m => m[1] === entry.filename)) return html;
+      const firstOlder = listed.find(m => m[1] < entry.filename);
+      if (firstOlder) {
+        return `${html.slice(0, firstOlder.index)}${entry.html}\n${html.slice(firstOlder.index)}`;
+      }
+      // Older than everything listed (or the list is empty): goes after the last entry.
+      const last = listed[listed.length - 1];
+      if (!last) return html.replace(INDEX_LIST_OPEN, open => `${open}\n${entry.html}`);
+      const close = html.indexOf('</a>', last.index);
+      if (close < 0) return html;   // malformed list: leave it for the content check to flag
+      const end = close + '</a>'.length;
+      return `${html.slice(0, end)}\n${entry.html}${html.slice(end)}`;
+    }, indexHtml);
+}
+
+/** Index entry rebuilt from a published post's own markup. Null when the post lacks a
+ *  recognizable pillar or title, so a malformed file is reported instead of half-listed. */
+function indexEntryFromPost(filename) {
+  const html = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf8');
+  const pillar = PILLARS.find(p => p.id === (html.match(/data-pillar="([^"]+)"/) || [, ''])[1]);
+  const title = decodeHtmlEntities(readEditorialTitle(html));
+  const dateMatch = filename.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (!pillar || !title || !dateMatch) return null;
+  return buildPostListItem({
+    title,
+    pillar,
+    // Noon UTC, so the formatted day cannot slip across midnight in any timezone.
+    date: new Date(`${dateMatch[1]}T12:00:00Z`),
+    excerpt: decodeHtmlEntities(readMetaTag(html, 'og:description')),
+    filename,
+  });
+}
+
+/** Add an index entry for every post on disk the index does not link. Returns the
+ *  filenames added and the ones that could not be rebuilt. */
+function reconcileBlogIndex() {
+  if (!fs.existsSync(INDEX_FILE) || !fs.existsSync(POSTS_DIR)) return { added: [], skipped: [] };
+  const { html: indexHtml, eol } = readIndexFile();
+  const unlisted = fs.readdirSync(POSTS_DIR)
+    .filter(f => f.endsWith('.html') && !indexHtml.includes(`posts/${f}"`));
+  const rebuilt = unlisted.map(filename => ({ filename, html: indexEntryFromPost(filename) }));
+  const entries = rebuilt.filter(e => e.html);
+  if (entries.length) writeIndexFile(insertIndexEntries(indexHtml, entries), eol);
+  return {
+    added: entries.map(e => e.filename),
+    skipped: rebuilt.filter(e => !e.html).map(e => e.filename),
+  };
 }
 
 /* ── Sitemap ─────────────────────────────────────────────── */
@@ -1149,6 +1221,9 @@ Also provide 2-3 FAQ pairs: short reader questions this post answers, each with 
 
   updateBlogIndex(listItem);
   console.log('Blog index updated.');
+  const reconciled = reconcileBlogIndex();
+  if (reconciled.added.length) console.log(`Blog index healed: re-linked ${reconciled.added.join(', ')}`);
+  if (reconciled.skipped.length) console.warn(`Blog index: could not rebuild an entry for ${reconciled.skipped.join(', ')}`);
 
   // Regenerate sitemap with all posts including the new one
   const allPosts = getAllPostMeta();
@@ -1176,4 +1251,7 @@ if (isEntrypoint) {
   });
 }
 
-export { getAllPostMeta, generateSitemap, generateFeed, generateRobotsTxt, JORGE_CONTEXT, sanitizeEmDashes };
+export {
+  getAllPostMeta, generateSitemap, generateFeed, generateRobotsTxt, JORGE_CONTEXT, sanitizeEmDashes,
+  sanitizeContent, buildPostListItem, buildPostHtml, jsonLdScript, insertIndexEntries, reconcileBlogIndex
+};

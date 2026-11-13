@@ -12,13 +12,24 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { getAllPostMeta, generateSitemap, generateFeed, generateRobotsTxt } from './generate-post.mjs';
+import { getAllPostMeta, generateSitemap, generateFeed, generateRobotsTxt, reconcileBlogIndex } from './generate-post.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const posts = getAllPostMeta();
 if (!posts.length) {
   console.error('No posts found — refusing to write an empty sitemap or feed.');
   process.exit(1);
+}
+
+// blog/index.html is generator output too. Re-link any post on disk that it is missing
+// (a run that failed after writing the post leaves one behind) instead of hand-editing.
+const { added, skipped } = reconcileBlogIndex();
+console.log(added.length
+  ? `blog/index   re-linked ${added.length} post(s): ${added.join(', ')}`
+  : 'blog/index   already links every post');
+if (skipped.length) {
+  console.error(`blog/index   could not rebuild an entry for: ${skipped.join(', ')}`);
+  process.exitCode = 1;
 }
 
 const targets = [
