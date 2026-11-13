@@ -1,7 +1,7 @@
 /* Unit tests for the LinkedIn series: beacon matching/scoring, post assembly and
    policing, format rotation, slot dates, and the publisher's card reader. No network. */
 import { matchLens, isAboutCycling, scoreCandidate } from './linkedin-beacon.mjs';
-import { normaliseDashes, normaliseHashtag, assembleCommentary, policeFirstComment, citableUrl, SERIES_TAG } from './linkedin-writer.mjs';
+import { ridesBlock, normaliseDashes, normaliseHashtag, assembleCommentary, policeFirstComment, citableUrl, SERIES_TAG } from './linkedin-writer.mjs';
 import { pickFormat, nextSlotDate } from './prepare-linkedin.mjs';
 import { cardPayload } from './publish-linkedin.mjs';
 
@@ -59,6 +59,13 @@ t('comment: invented link removed', policeFirstComment('Fonte: https://made.up/x
 t('comment: trailing period tolerated', policeFirstComment('Leia https://cyclingnews.com/b.', allowed), 'Leia https://cyclingnews.com/b.');
 t('citable: google news dropped', citableUrl('https://news.google.com/rss/articles/abc'), null);
 t('citable: outlet kept', citableUrl('https://www.cyclingnews.com/x'), 'https://www.cyclingnews.com/x');
+
+const rides = [{ date: '2026-11-12', km: 35.1, elevationM: 0, movingMin: 61, avgKmh: 34.4 }, { date: '2026-11-06', km: 46.6, elevationM: 403, movingMin: 102, avgKmh: 27.5 }];
+const rb = ridesBlock(rides);
+t('rides: absolute dates', rb.includes('quinta-feira, 12 de novembro: 35.1 km'), true);
+t('rides: no relative day labels in the list', /há \d+ dias|, ontem:|, hoje:/.test(rb), false);
+t('rides: precomputed total and window', rb.includes('Total of these 2 rides, sexta-feira, 6 de novembro to quinta-feira, 12 de novembro: 82 km, 403 m de subida.'), true);
+t('rides: none', ridesBlock(null).startsWith('RIDE DATA: none'), true);
 
 /* rotation + slots */
 t('format: empty ledger starts with text', pickFormat([]), 'text');

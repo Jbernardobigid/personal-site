@@ -106,9 +106,25 @@ export function citableUrl(url) {
 
 /* ── Prompt pieces ───────────────────────────────────────── */
 
-function ridesBlock(rides) {
+const fmtDay = (iso) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('pt-BR', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' });
+
+/**
+ * Rides with ABSOLUTE dates and a precomputed total. Posts publish days after they are
+ * built, so "ontem" or "esta semana" written on build day is false on publish day (the
+ * first card said "esta semana pedalei 290 km" for a Nov 6-12 window, publishing Nov 17).
+ * The model also mis-sums, so it gets the total instead of doing arithmetic. Exported for tests.
+ */
+export function ridesBlock(rides) {
   if (!rides?.length) return 'RIDE DATA: none available. Do not mention specific recent rides.';
-  return `RIDE DATA (Jorge's own Strava, the only personal riding facts you may use):\n${rides.map(r => `- ${describeDay(r.date)}: ${r.km} km, ${r.elevationM} m de subida, ${r.movingMin} min em movimento${r.avgKmh ? `, média ${r.avgKmh} km/h` : ''}`).join('\n')}`;
+  const dates = rides.map(r => r.date).sort();
+  const km = rides.reduce((s, r) => s + r.km, 0);
+  const climb = rides.reduce((s, r) => s + r.elevationM, 0);
+  const list = rides.map(r => `- ${fmtDay(r.date)}: ${r.km} km, ${r.elevationM} m de subida, ${r.movingMin} min em movimento${r.avgKmh ? `, média ${r.avgKmh} km/h` : ''}`).join('\n');
+  return `RIDE DATA (Jorge's own Strava, the only personal riding facts you may use). Refer to rides by date ("no dia 10 de novembro", "entre 6 e 12 de novembro"), never as "hoje", "ontem", "esta semana" or "semana passada":\n${list}\nTotal of these ${rides.length} rides, ${fmtDay(dates[0])} to ${fmtDay(dates[dates.length - 1])}: ${Math.round(km)} km, ${climb} m de subida.`;
+}
+
+function publishBlock(publishDate) {
+  return publishDate ? `\n\nThis post is PUBLISHED on ${fmtDay(publishDate)}, not today. Never use relative time words (hoje, ontem, esta semana, semana passada, nesta sexta) for anything: give dates.` : '';
 }
 
 function recentBlock(recent) {
@@ -165,7 +181,7 @@ const POST_SCHEMA = {
   required: ['hook', 'body', 'closing_question', 'hashtags', 'first_comment', 'photo_choice', 'image_scene', 'alt_text']
 };
 
-export async function writePost(client, { story, angle, format, research, rides, recent, inventory, allowedUrls }) {
+export async function writePost(client, { story, angle, format, research, rides, recent, inventory, allowedUrls, publishDate = null }) {
   const inventoryBlock = format === 'photo' ? `\n\nPHOTO INVENTORY (pick one cycling photo of Jorge; recently used, do not pick: ${inventory.recent.join(', ') || 'none'}):\n${inventory.text}` : '';
   return writeJson(client, {
     label: 'linkedin post',
@@ -174,7 +190,7 @@ export async function writePost(client, { story, angle, format, research, rides,
     system: `You are a ghostwriter for Jorge Bernardo on LinkedIn. Write in Brazilian Portuguese, in his voice: thoughtful, direct, culturally grounded, never corporate.\n\n${SERIES_BRIEF}\n\n${JORGE_CONTEXT}\n\n${VOICE_RULES}`,
     messages: [{
       role: 'user',
-      content: `${promptDateBlock()}\n\nFORMAT: ${FORMAT_BRIEFS[format]}\n\nNEWS ITEM (${story.source}, ${story.lang}): ${story.title}\n${story.summary}\n\nANGLE: ${angle}\n\n${researchBlock(research)}\n\nALLOWED SOURCE LINKS for the first comment (use only these, copy exactly):\n${allowedUrls.length ? allowedUrls.map(u => `- ${u}`).join('\n') : '- (none: credit the outlet by name only)'}\n\n${ridesBlock(rides)}${recentBlock(recent)}${inventoryBlock}`
+      content: `${promptDateBlock()}${publishBlock(publishDate)}\n\nFORMAT: ${FORMAT_BRIEFS[format]}\n\nNEWS ITEM (${story.source}, ${story.lang}): ${story.title}\n${story.summary}\n\nANGLE: ${angle}\n\n${researchBlock(research)}\n\nALLOWED SOURCE LINKS for the first comment (use only these, copy exactly):\n${allowedUrls.length ? allowedUrls.map(u => `- ${u}`).join('\n') : '- (none: credit the outlet by name only)'}\n\n${ridesBlock(rides)}${recentBlock(recent)}${inventoryBlock}`
     }]
   });
 }

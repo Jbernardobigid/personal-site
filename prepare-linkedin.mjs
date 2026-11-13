@@ -234,7 +234,8 @@ async function main() {
   const data = await research(choice.research_query);
   const allowedUrls = [...new Set([citableUrl(story.url), ...(data?.sources || [])].filter(Boolean))].slice(0, 8);
   const inventory = { text: format === 'photo' ? inventoryExcerpt() : '', recent: [...new Set(recentPhotos(published))].slice(-20) };
-  const post = await writePost(client, { story, angle: choice.angle, format, research: data, rides, recent, inventory, allowedUrls });
+  const slot = nextSlotDate();
+  const post = await writePost(client, { story, angle: choice.angle, format, research: data, rides, recent, inventory, allowedUrls, publishDate: slot });
 
   const commentary = assembleCommentary(post);
   let firstComment = policeFirstComment(post.first_comment, allowedUrls);
@@ -265,7 +266,6 @@ async function main() {
 
   const tokenOk = await tokenIsValid();
   const mediaUrl = imagePath ? uploadToBlob(imagePath, `linkedin/${id}.jpg`) : null;
-  const slot = nextSlotDate();
   const notes = notesFor({ format, story, research: data, altText: post.alt_text, tokenOk, photo: media.photo, imagePrompt: media.prompt });
   const queued = await queueCard({ id, commentary, firstComment, mediaUrl, notes, slot });
   saveLedger(ledger, {
