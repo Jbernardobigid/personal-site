@@ -101,11 +101,18 @@ async function loadNotionState() {
   if (!dbId) throw new Error('NOTION_IG_DB_ID not set');
   const pages = await queryDatabase(dbId);
   if (!Array.isArray(pages)) throw new Error('Notion returned no page array');
+  // LinkedIn cards live in their own database; a LinkedIn card can carry several media
+  // files (multi-photo posts), so every Preview file counts, not just Media URL.
+  const liDbId = process.env.NOTION_LINKEDIN_DB_ID;
+  const liPages = liDbId ? await queryDatabase(liDbId) : [];
+  if (!Array.isArray(liPages)) throw new Error('Notion returned no LinkedIn page array');
   const byUrl = new Map();
-  for (const page of pages) {
-    const url = getUrl(page, 'Media URL');
-    if (url) byUrl.set(url.split('?')[0], { status: getSelect(page, 'Status') || '(none)', card: getTitle(page) });
+  for (const page of [...pages, ...liPages]) {
+    const state = { status: getSelect(page, 'Status') || '(none)', card: getTitle(page) };
+    const preview = (page.properties.Preview?.files || []).map(f => f.external?.url).filter(Boolean);
+    for (const url of [getUrl(page, 'Media URL'), ...preview].filter(Boolean)) byUrl.set(url.split('?')[0], state);
   }
+  pages.push(...liPages);
   return { byUrl, cardCount: pages.length };
 }
 

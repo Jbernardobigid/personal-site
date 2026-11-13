@@ -57,6 +57,8 @@ const allowed = ['https://www.infobae.com/a', 'https://cyclingnews.com/b'];
 t('comment: allowed link kept', policeFirstComment('Fonte: https://www.infobae.com/a', allowed), 'Fonte: https://www.infobae.com/a');
 t('comment: invented link removed', policeFirstComment('Fonte: https://made.up/x\nOutra: https://cyclingnews.com/b', allowed), 'Fonte:\nOutra: https://cyclingnews.com/b');
 t('comment: trailing period tolerated', policeFirstComment('Leia https://cyclingnews.com/b.', allowed), 'Leia https://cyclingnews.com/b.');
+const many = ['https://a.com/1','https://a.com/2','https://a.com/3','https://a.com/4','https://a.com/5'];
+t('comment: at most 3 links kept', (policeFirstComment('Fontes: ' + many.join(' '), many).match(/https:/g) || []).length, 3);
 t('citable: google news dropped', citableUrl('https://news.google.com/rss/articles/abc'), null);
 t('citable: outlet kept', citableUrl('https://www.cyclingnews.com/x'), 'https://www.cyclingnews.com/x');
 
@@ -69,11 +71,13 @@ t('rides: none', ridesBlock(null).startsWith('RIDE DATA: none'), true);
 
 /* rotation + slots */
 t('format: empty ledger starts with text', pickFormat([]), 'text');
-t('format: least recent next', pickFormat([{ format: 'text' }, { format: 'photo' }]), 'ai-image');
-t('format: cycles back to oldest', pickFormat([{ format: 'text' }, { format: 'photo' }, { format: 'ai-image' }]), 'text');
+t('format: never-used formats in FORMATS order', pickFormat([{ format: 'text' }, { format: 'photo' }]), 'document');
+const allSix = ['text', 'photo', 'document', 'video', 'photos', 'ai-image'].map(format => ({ format }));
+t('format: cycles back to oldest', pickFormat(allSix), 'text');
+t('format: oldest after a full cycle plus one', pickFormat([...allSix, { format: 'text' }]), 'photo');
 t('format: forced wins', pickFormat([], 'photo'), 'photo');
-t('format: unavailable format skipped', pickFormat([{ format: 'text' }], null, f => f !== 'photo'), 'ai-image');
-t('format: failed attempt counts as use', pickFormat([{ format: 'text' }, { format: 'photo', failed: true }]), 'ai-image');
+t('format: unavailable format skipped', pickFormat([{ format: 'text' }], null, f => f !== 'photo'), 'document');
+t('format: failed attempt counts as use', pickFormat([{ format: 'text' }, { format: 'photo', failed: true }]), 'document');
 t('format: nothing available falls back to text', pickFormat([], null, () => false), 'text');
 t('slot: Monday evening build -> Tuesday', nextSlotDate(new Date('2026-11-16T22:00:00Z')), '2026-11-17');
 t('slot: Wednesday build -> Thursday', nextSlotDate(new Date('2026-11-18T22:00:00Z')), '2026-11-19');
@@ -81,18 +85,27 @@ t('slot: Thursday -> next Tuesday', nextSlotDate(new Date('2026-11-19T12:00:00Z'
 t('slot: 01:00 UTC Wed is still Tue in Brazil -> Thursday', nextSlotDate(new Date('2026-11-18T01:00:00Z')), '2026-11-19');
 
 /* publisher card reader */
-const page = (caption, comment = '', url = null) => ({
+const page = (caption, { comment = '', url = null, format = null, preview = [] } = {}) => ({
   id: 'p1',
   properties: {
     Name: { type: 'title', title: [{ plain_text: '2026-11-13-linkedin-x' }] },
     Caption: { type: 'rich_text', rich_text: caption.match(/[\s\S]{1,2000}/g).map(plain_text => ({ plain_text })) },
     'First Comment': { type: 'rich_text', rich_text: comment ? [{ plain_text: comment }] : [] },
-    'Media URL': { type: 'url', url }
+    'Media URL': { type: 'url', url },
+    Format: { type: 'select', select: format ? { name: format } : null },
+    Preview: { type: 'files', files: preview.map(u => ({ type: 'external', external: { url: u } })) }
   }
 });
 const long = 'x'.repeat(2500);
 t('card: long caption rejoined from chunks', cardPayload(page(long)).text.length, 2500);
-t('card: comment and media read', cardPayload(page('ok', 'fonte', 'https://b/x.jpg')), { id: '2026-11-13-linkedin-x', text: 'ok', comment: 'fonte', mediaUrl: 'https://b/x.jpg' });
+t('card: missing Format means text, no media', cardPayload(page('ok')), { id: '2026-11-13-linkedin-x', text: 'ok', comment: '', format: 'text', kind: 'none', mediaUrls: [] });
+t('card: photo reads Media URL', cardPayload(page('ok', { comment: 'fonte', url: 'https://b/x.jpg', format: 'photo' })).mediaUrls, ['https://b/x.jpg']);
+t('card: photos read every Preview file', cardPayload(page('ok', { url: 'https://b/1.jpg', format: 'photos', preview: ['https://b/1.jpg', 'https://b/2.jpg', 'https://b/3.jpg'] })).mediaUrls.length, 3);
+t('card: document kind', cardPayload(page('ok', { url: 'https://b/c.pdf', format: 'document' })).kind, 'document');
+t('card: video kind', cardPayload(page('ok', { url: 'https://b/v.mp4', format: 'video' })).kind, 'video');
+throws('card: photos with one image blocked', () => cardPayload(page('ok', { url: 'https://b/1.jpg', format: 'photos', preview: ['https://b/1.jpg'] })), /at least 2/);
+throws('card: media format without media blocked', () => cardPayload(page('ok', { format: 'video' })), /needs media/);
+throws('card: unknown format blocked', () => cardPayload(page('ok', { format: 'gif' })), /unknown Format/);
 throws('card: edited-in em dash blocked', () => cardPayload(page('um — dois')), /dash/);
 
 console.log(`\n${pass} passed, ${fail} failed`);

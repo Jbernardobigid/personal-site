@@ -25,8 +25,13 @@ const SERIES_BRIEF = `THE SERIES: a LinkedIn series in Brazilian Portuguese abou
 const FORMAT_BRIEFS = {
   text: 'TEXT ONLY. No image. The words carry the whole post, so the hook and the rhythm matter more than ever.',
   photo: 'REAL PHOTO OF JORGE riding (chosen by you from the inventory). The photo makes the post personal: connect the news to his own riding or perspective in at least one paragraph. Never claim the photo shows something it does not (if the photo is from a 2026 race, do not say it is from the event in the news).',
-  'ai-image': 'AI-GENERATED ILLUSTRATION. Describe one editorial scene that illustrates the idea, not the news event itself. Never depict a real, identifiable person (no likeness of any named rider), no logos, no text, no team kits.'
+  photos: 'TWO TO FOUR REAL PHOTOS OF JORGE, ideally from ONE race day in the inventory, so they read as a sequence (effort, the pack, the finish). The photos make the post personal: tie the news to his own racing in at least one paragraph, without claiming the photos show the event in the news.',
+  'ai-image': 'AI-GENERATED ILLUSTRATION. Describe one editorial scene that illustrates the idea, not the news event itself. Never depict a real, identifiable person (no likeness of any named rider), no logos, no text, no team kits.',
+  document: 'PDF CAROUSEL ATTACHED. After you write, the post is cut into 6 to 8 swipeable slides built from YOUR text, so state the key facts and numbers plainly in the body. Keep the post itself shorter (at most 1300 characters) and make the hook promise what the slides deliver.',
+  video: "NATIVE VIDEO: one of Jorge's own short cycling videos (a Reel he already published on Instagram, narrated in his voice), described below in place of a news item. Frame it for LinkedIn: a hook that makes people press play, why it matters beyond the bike, and the question. Do not summarise the whole video, do not mention Instagram, and add no facts that are not in its description."
 };
+
+export const FORMATS_WITH_PHOTOS = { photo: 1, photos: 3 };
 
 const VOICE_RULES = `VOICE AND FORMAT (LinkedIn, mobile first):
 - First person, pointed outward. The post is about the story and what it means for the reader, not a biography.
@@ -93,11 +98,16 @@ export function assembleCommentary(post) {
 /** First comment with any URL the writer was not given removed, so no link is invented. */
 export function policeFirstComment(comment, allowedUrls) {
   const allowed = new Set(allowedUrls.map(u => u.replace(/[).,]+$/, '')));
+  let kept = 0;
+  // Allowed links only, and at most MAX_COMMENT_LINKS of them: a comment with eight
+  // links (the 2026-11-13 photos draft) reads as spam, not as sourcing.
   const cleaned = normaliseDashes(comment)
-    .replace(URL_ALL, (u) => (allowed.has(u.replace(/[).,]+$/, '')) ? u : ''))
-    .replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    .replace(URL_ALL, (u) => (allowed.has(u.replace(/[).,]+$/, '')) && ++kept <= MAX_COMMENT_LINKS ? u : ''))
+    .replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]*(?=\n)/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
   return cleaned;
 }
+
+const MAX_COMMENT_LINKS = 3;
 
 /** A news link a reader can open: Google News redirect URLs are useless in a comment. */
 export function citableUrl(url) {
@@ -120,7 +130,7 @@ export function ridesBlock(rides) {
   const km = rides.reduce((s, r) => s + r.km, 0);
   const climb = rides.reduce((s, r) => s + r.elevationM, 0);
   const list = rides.map(r => `- ${fmtDay(r.date)}: ${r.km} km, ${r.elevationM} m de subida, ${r.movingMin} min em movimento${r.avgKmh ? `, média ${r.avgKmh} km/h` : ''}`).join('\n');
-  return `RIDE DATA (Jorge's own Strava, the only personal riding facts you may use). Refer to rides by date ("no dia 10 de novembro", "entre 6 e 12 de novembro"), never as "hoje", "ontem", "esta semana" or "semana passada":\n${list}\nTotal of these ${rides.length} rides, ${fmtDay(dates[0])} to ${fmtDay(dates[dates.length - 1])}: ${Math.round(km)} km, ${climb} m de subida.`;
+  return `RIDE DATA (Jorge's own Strava, the only personal riding facts you may use). Ride data is seasoning, not the subject: use it only when it sharpens the point, in one or two sentences at most, and NEVER as the hook or opening line (the series opened with Jorge's mileage too often). Refer to rides by date ("no dia 10 de novembro", "entre 6 e 12 de novembro"), never as "hoje", "ontem", "esta semana" or "semana passada":\n${list}\nTotal of these ${rides.length} rides, ${fmtDay(dates[0])} to ${fmtDay(dates[dates.length - 1])}: ${Math.round(km)} km, ${climb} m de subida.`;
 }
 
 function publishBlock(publishDate) {
@@ -174,15 +184,16 @@ const POST_SCHEMA = {
     closing_question: { type: 'string' },
     hashtags: { type: 'array', items: { type: 'string' } },
     first_comment: { type: 'string', description: 'Portuguese. Credits the reporting and gives the source links from the allowed list, one per line. May add one extra fact that did not fit.' },
-    photo_choice: { type: 'string', description: 'photo format only: the filename stem from the inventory, else empty.' },
+    photo_choices: { type: 'array', items: { type: 'string' }, description: 'photo: exactly 1 filename stem from the inventory. photos: 2 to 4 stems, ideally from one shoot. Other formats: empty.' },
     image_scene: { type: 'string', description: 'ai-image format only: one English sentence describing the editorial scene, else empty.' },
     alt_text: { type: 'string', description: 'Portuguese description of the image for screen readers, empty for text posts.' }
   },
-  required: ['hook', 'body', 'closing_question', 'hashtags', 'first_comment', 'photo_choice', 'image_scene', 'alt_text']
+  required: ['hook', 'body', 'closing_question', 'hashtags', 'first_comment', 'photo_choices', 'image_scene', 'alt_text']
 };
 
 export async function writePost(client, { story, angle, format, research, rides, recent, inventory, allowedUrls, publishDate = null }) {
-  const inventoryBlock = format === 'photo' ? `\n\nPHOTO INVENTORY (pick one cycling photo of Jorge; recently used, do not pick: ${inventory.recent.join(', ') || 'none'}):\n${inventory.text}` : '';
+  const inventoryBlock = FORMATS_WITH_PHOTOS[format] ? `\n\nPHOTO INVENTORY (pick ${format === 'photos' ? '2 to 4 photos' : 'one photo'} of Jorge; recently used, do not pick: ${inventory.recent.join(', ') || 'none'}):\n${inventory.text}` : '';
+  const sourceLabel = format === 'video' ? "JORGE'S VIDEO (his own Reel; this replaces the news item)" : `NEWS ITEM (${story.source}, ${story.lang})`;
   return writeJson(client, {
     label: 'linkedin post',
     effort: 'high',
@@ -190,7 +201,7 @@ export async function writePost(client, { story, angle, format, research, rides,
     system: `You are a ghostwriter for Jorge Bernardo on LinkedIn. Write in Brazilian Portuguese, in his voice: thoughtful, direct, culturally grounded, never corporate.\n\n${SERIES_BRIEF}\n\n${JORGE_CONTEXT}\n\n${VOICE_RULES}`,
     messages: [{
       role: 'user',
-      content: `${promptDateBlock()}${publishBlock(publishDate)}\n\nFORMAT: ${FORMAT_BRIEFS[format]}\n\nNEWS ITEM (${story.source}, ${story.lang}): ${story.title}\n${story.summary}\n\nANGLE: ${angle}\n\n${researchBlock(research)}\n\nALLOWED SOURCE LINKS for the first comment (use only these, copy exactly):\n${allowedUrls.length ? allowedUrls.map(u => `- ${u}`).join('\n') : '- (none: credit the outlet by name only)'}\n\n${ridesBlock(rides)}${recentBlock(recent)}${inventoryBlock}`
+      content: `${promptDateBlock()}${publishBlock(publishDate)}\n\nFORMAT: ${FORMAT_BRIEFS[format]}\n\n${sourceLabel}: ${story.title}\n${story.summary}\n\nANGLE: ${angle}\n\n${researchBlock(research)}\n\nALLOWED SOURCE LINKS for the first comment (use only these, copy exactly):\n${allowedUrls.length ? allowedUrls.map(u => `- ${u}`).join('\n') : '- (none: credit the outlet by name only)'}\n\n${ridesBlock(rides)}${recentBlock(recent)}${inventoryBlock}`
     }]
   });
 }

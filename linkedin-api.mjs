@@ -78,32 +78,100 @@ async function uploadImage(personUrn, imageBuffer) {
   return data.value.asset;
 }
 
-/**
- * Publish a post. Returns the post URN.
- * @param {object} p
- * @param {string} p.text          commentary, <= 3000 chars
- * @param {Buffer} [p.imageBuffer] optional single image
- * @param {string} [p.imageTitle]
- */
-export async function publishPost({ text, imageBuffer = null, imageTitle = '' }) {
-  if (!text || !text.trim()) throw new PrePostError('empty commentary');
-  if (text.length > MAX_COMMENTARY) throw new PrePostError(`commentary is ${text.length} chars, over ${MAX_COMMENTARY}`);
+/* ── Versioned REST (multi-image, document, video) ───────── */
 
-  // Everything before the create call is retry-safe: no post can exist yet.
-  let personUrn;
-  const share = { shareCommentary: { text }, shareMediaCategory: 'NONE' };
-  try {
-    personUrn = await getMemberUrn();
-    if (imageBuffer) {
-      const asset = await uploadImage(personUrn, imageBuffer);
-      share.shareMediaCategory = 'IMAGE';
-      share.media = [{ status: 'READY', media: asset, title: { text: imageTitle.slice(0, 200) } }];
-    }
-  } catch (e) {
-    throw e instanceof PrePostError ? e : new PrePostError(`before posting: ${e.message}`);
+// LinkedIn retires versioned-API months on a rolling window and answers a stale one
+// with 426 NONEXISTENT_VERSION. Probe with GET /rest/me: 403 = live, 426 = retired.
+// 202607..202611 all probed live on 2026-11-13.
+const LINKEDIN_VERSION = process.env.LINKEDIN_API_VERSION || '202610';
+const VIDEO_READY_TIMEOUT_MS = 10 * 60 * 1000;
+const VIDEO_POLL_MS = 10000;
+
+const restHeaders = () => headers({ 'Content-Type': 'application/json', 'LinkedIn-Version': LINKEDIN_VERSION });
+
+/** The Posts API parses commentary as "little text"; these characters must be escaped
+ *  to render literally. '#' stays bare so hashtags resolve. Exported for tests. */
+export function escapeLittleText(text) {
+  return text.replace(/[\\|{}@[\]()<>*_~]/g, (ch) => `\\${ch}`);
+}
+
+async function restInit(kind, request) {
+  const res = await check(await fetch(`https://api.linkedin.com/rest/${kind}?action=initializeUpload`, timed({
+    method: 'POST', headers: restHeaders(), body: JSON.stringify({ initializeUploadRequest: request })
+  })), `${kind} initializeUpload`);
+  return (await res.json()).value;
+}
+
+async function putBytes(url, buffer, label) {
+  const res = await check(await fetch(url, timed({
+    method: 'PUT', headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/octet-stream' }, body: buffer
+  })), label);
+  return res.headers.get('etag');
+}
+
+/** urn:li:image:... */
+export async function uploadRestImage(personUrn, buffer) {
+  const v = await restInit('images', { owner: personUrn });
+  await putBytes(v.uploadUrl, buffer, 'image upload');
+  return v.image;
+}
+
+/** urn:li:document:... */
+export async function uploadRestDocument(personUrn, buffer) {
+  const v = await restInit('documents', { owner: personUrn });
+  await putBytes(v.uploadUrl, buffer, 'document upload');
+  return v.document;
+}
+
+/** urn:li:video:..., uploaded in the parts LinkedIn asks for, finalized, then waited on
+ *  until processing finishes (a post on an unprocessed video is rejected). */
+export async function uploadRestVideo(personUrn, buffer) {
+  const v = await restInit('videos', { owner: personUrn, fileSizeBytes: buffer.length, uploadCaptions: false, uploadThumbnail: false });
+  const partIds = [];
+  for (const part of v.uploadInstructions) {
+    partIds.push(await putBytes(part.uploadUrl, buffer.subarray(part.firstByte, part.lastByte + 1), 'video part upload'));
   }
+  await check(await fetch('https://api.linkedin.com/rest/videos?action=finalizeUpload', timed({
+    method: 'POST', headers: restHeaders(),
+    body: JSON.stringify({ finalizeUploadRequest: { video: v.video, uploadToken: v.uploadToken || '', uploadedPartIds: partIds } })
+  })), 'video finalizeUpload');
+  await waitForVideo(v.video);
+  return v.video;
+}
 
-  // From here on a failure is ambiguous unless LinkedIn answered with a 4xx.
+async function waitForVideo(videoUrn) {
+  const deadline = Date.now() + VIDEO_READY_TIMEOUT_MS;
+  while (Date.now() < deadline) {
+    const res = await fetch(`https://api.linkedin.com/rest/videos/${encodeURIComponent(videoUrn)}`, timed({ headers: restHeaders() }));
+    if (!res.ok) throw new Error(`video status ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    const { status } = await res.json();
+    if (status === 'AVAILABLE') return;
+    if (status === 'PROCESSING_FAILED') throw new Error('LinkedIn failed to process the video');
+    await new Promise(r => setTimeout(r, VIDEO_POLL_MS));
+  }
+  throw new Error('video still processing after 10 minutes');
+}
+
+async function restCreatePost({ personUrn, text, content }) {
+  const res = await check(await fetch('https://api.linkedin.com/rest/posts', timed({
+    method: 'POST',
+    headers: restHeaders(),
+    body: JSON.stringify({
+      author: personUrn,
+      commentary: escapeLittleText(text),
+      visibility: 'PUBLIC',
+      distribution: { feedDistribution: 'MAIN_FEED', targetEntities: [], thirdPartyDistributionChannels: [] },
+      content,
+      lifecycleState: 'PUBLISHED',
+      isReshareDisabledByAuthor: false
+    })
+  })), 'rest/posts');
+  const urn = res.headers.get('x-restli-id');
+  if (!urn) throw new Error('rest/posts returned no x-restli-id; the post may be live');
+  return urn;
+}
+
+async function legacyCreatePost({ personUrn, share }) {
   const res = await check(await fetch('https://api.linkedin.com/v2/ugcPosts', timed({
     method: 'POST',
     headers: headers({ 'Content-Type': 'application/json' }),
@@ -114,7 +182,61 @@ export async function publishPost({ text, imageBuffer = null, imageTitle = '' })
       visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' }
     })
   })), 'ugcPosts');
-  const urn = res.headers.get('x-restli-id') || (await res.json()).id;
+  return res.headers.get('x-restli-id') || (await res.json()).id;
+}
+
+/**
+ * Upload the media and describe how to create the post. Runs entirely BEFORE any post
+ * exists, so every failure in here is retry-safe.
+ * media.kind: 'none' | 'image' | 'images' | 'document' | 'video'
+ */
+async function stageMedia(personUrn, text, media) {
+  const { kind = 'none', buffers = [], title = '', altTexts = [] } = media;
+  if (kind === 'none') return () => legacyCreatePost({ personUrn, share: { shareCommentary: { text }, shareMediaCategory: 'NONE' } });
+  if (kind === 'image') {
+    // Single images stay on the legacy path: it is the one proven for this app since June.
+    const asset = await uploadImage(personUrn, buffers[0]);
+    const share = { shareCommentary: { text }, shareMediaCategory: 'IMAGE', media: [{ status: 'READY', media: asset, title: { text: title.slice(0, 200) } }] };
+    return () => legacyCreatePost({ personUrn, share });
+  }
+  if (kind === 'images') {
+    if (buffers.length < 2 || buffers.length > 20) throw new PrePostError(`multi-image needs 2-20 images, got ${buffers.length}`);
+    const images = [];
+    for (const [i, b] of buffers.entries()) images.push({ id: await uploadRestImage(personUrn, b), altText: (altTexts[i] || '').slice(0, 4000) });
+    return () => restCreatePost({ personUrn, text, content: { multiImage: { images } } });
+  }
+  if (kind === 'document') {
+    const id = await uploadRestDocument(personUrn, buffers[0]);
+    return () => restCreatePost({ personUrn, text, content: { media: { id, title: title.slice(0, 200) || 'Documento' } } });
+  }
+  if (kind === 'video') {
+    const id = await uploadRestVideo(personUrn, buffers[0]);
+    return () => restCreatePost({ personUrn, text, content: { media: { id, title: title.slice(0, 200) } } });
+  }
+  throw new PrePostError(`unknown media kind ${kind}`);
+}
+
+/**
+ * Publish a post. Returns { urn, personUrn }.
+ * @param {object} p
+ * @param {string} p.text   commentary, <= 3000 chars
+ * @param {object} [p.media] { kind, buffers, title, altTexts }; omitted = text only
+ */
+export async function publishPost({ text, media = { kind: 'none' } }) {
+  if (!text || !text.trim()) throw new PrePostError('empty commentary');
+  if (text.length > MAX_COMMENTARY) throw new PrePostError(`commentary is ${text.length} chars, over ${MAX_COMMENTARY}`);
+
+  // Everything before the create call is retry-safe: no post can exist yet.
+  let personUrn, create;
+  try {
+    personUrn = await getMemberUrn();
+    create = await stageMedia(personUrn, text, media);
+  } catch (e) {
+    throw e instanceof PrePostError ? e : new PrePostError(`before posting: ${e.message}`);
+  }
+
+  // From here on a failure is ambiguous unless LinkedIn answered with a 4xx.
+  const urn = await create();
   return { urn, personUrn };
 }
 

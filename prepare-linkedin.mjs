@@ -1,20 +1,23 @@
 /**
  * prepare-linkedin.mjs
  * Builds one post for the LinkedIn cycling series (#EsportesNoLinkedIn) and queues it
- * in the Notion pipeline for approval. Publishing is a separate step
- * (publish-linkedin.mjs), so nothing reaches LinkedIn without Jorge's approval.
+ * as a Draft in the Notion "LinkedIn Pipeline" database (IG Studio page). Publishing
+ * is a separate step (publish-linkedin.mjs), so nothing reaches LinkedIn without
+ * Jorge's approval.
  *
- *   beacon shortlist -> Opus picks story + angle -> Tavily research -> Opus writes
- *   -> media (real photo | AI image | none) -> Blob -> Notion card (Draft, Type=LinkedIn)
+ * News formats (text, photo, photos, ai-image, document):
+ *   beacon shortlist -> Opus picks story + angle -> Tavily research -> Opus writes -> media
+ * Video:
+ *   newest published Reel not used yet -> Opus frames it for LinkedIn -> copy the mp4
  *
- * Format rotates text -> photo -> ai-image by least recent use, so the feed keeps varying.
+ * The format rotates by least recent use, skipping formats this machine cannot make.
  *
  * Usage:
- *   node prepare-linkedin.mjs                 build + queue
- *   node prepare-linkedin.mjs --dry-run       build locally, no Blob/Notion/ledger writes
- *   node prepare-linkedin.mjs --format photo  force a format (text | photo | ai-image)
+ *   node prepare-linkedin.mjs                   build + queue
+ *   node prepare-linkedin.mjs --dry-run         build locally, no Blob/Notion/ledger writes
+ *   node prepare-linkedin.mjs --format photos   force a format (see FORMATS)
  *
- * Writes linkedin/<id>/ (post.txt, comment.txt, meta.json, image.jpg). Ledger:
+ * Writes linkedin/<id>/ (post.txt, comment.txt, meta.json, media). Ledger:
  * linkedin-ledger.json (gitignored; the VPS copy is the real one).
  * Prints one JSON line {success, ...} last, for the n8n guard node.
  */
@@ -22,18 +25,13 @@
 import './load-env.mjs';
 import fs from 'fs';
 import path from 'path';
-import { execFileSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
-import OpenAI from 'openai';
-import sharp from 'sharp';
 import { buildShortlist } from './linkedin-beacon.mjs';
-import { chooseStory, writePost, assembleCommentary, policeFirstComment, citableUrl } from './linkedin-writer.mjs';
+import { chooseStory, writePost, assembleCommentary, policeFirstComment, citableUrl, FORMATS_WITH_PHOTOS } from './linkedin-writer.mjs';
+import { hasPhotos, inventoryExcerpt, recentPhotos, photosMedia, aiMedia, documentMedia, pickReel, downloadBuffer, uploadToBlob } from './linkedin-media.mjs';
 import { researchTopic } from './research.mjs';
 import { stravaRecentRides } from './cycling-topics.mjs';
-import { pickPhoto, photoLedger } from './generate-carousel.mjs';
-import { buildImagePrompt } from './generate-image.mjs';
-import { OPENAI_IMAGE_MODEL } from './image-model.mjs';
 import { tokenIsValid } from './linkedin-api.mjs';
 import { queryDatabase, createPage, prop } from './notion-api.mjs';
 import { titleKey } from './signals.mjs';
@@ -41,16 +39,13 @@ import { titleKey } from './signals.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LEDGER_PATH = path.join(__dirname, 'linkedin-ledger.json');
 const OUT_ROOT = path.join(__dirname, 'linkedin');
-const PHOTO_DIR = path.join(__dirname, 'brand_assets', 'Fotos');
-const INVENTORY_PATH = path.join(PHOTO_DIR, 'INVENTORY.md');
-const DAY1_ROOT = process.env.NEWSLETTER_REPO || 'C:/DevWork/AI Automation Society/Day 1';
-const BLOB_UPLOAD = path.join(DAY1_ROOT, 'tools', 'blob_upload.mjs');
 
-export const FORMATS = ['text', 'photo', 'ai-image'];
+// Rotation order for formats never used yet. Text first: it is the cheapest and the
+// one the workshop called the base of the feed.
+export const FORMATS = ['text', 'photo', 'document', 'video', 'photos', 'ai-image'];
 const PUBLISH_WEEKDAYS = [2, 4];      // Tue, Thu: the slots publish-linkedin.mjs serves
 const RECENT_FOR_PROMPT = 8;
 const LEDGER_KEEP = 120;
-const INVENTORY_SECTIONS = ['⚡ FAST PICK', '1. `DSC00*`', '5. `20260816', '5b. `20260927'];
 
 class BuildError extends Error {
   constructor(msg, detail = '') { super(msg); this.detail = detail; }
@@ -96,8 +91,9 @@ export function pickFormat(posts, forced = null, isAvailable = () => true) {
 
 /** Checked BEFORE any paid call: can this machine make the media for the format? */
 function formatAvailable(format) {
-  if (format === 'photo') return fs.existsSync(PHOTO_DIR) && fs.readdirSync(PHOTO_DIR).some(f => /\.(jpe?g|png)$/i.test(f));
+  if (FORMATS_WITH_PHOTOS[format]) return hasPhotos();
   if (format === 'ai-image') return !!process.env.OPENAI_API_KEY;
+  if (format === 'video') return !!process.env.NOTION_IG_DB_ID;
   return true;
 }
 
@@ -110,90 +106,11 @@ export function nextSlotDate(now = new Date()) {
 }
 
 function slugify(s) {
-  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60).replace(/-$/, '');
 }
 
-/* ── Photo inventory + rotation ──────────────────────────── */
-
-function inventoryExcerpt() {
-  if (!fs.existsSync(INVENTORY_PATH)) return '';
-  const sections = fs.readFileSync(INVENTORY_PATH, 'utf8').split(/\n(?=## )/);
-  return sections.filter(s => INVENTORY_SECTIONS.some(h => s.startsWith(`## ${h}`))).join('\n').slice(0, 16000);
-}
-
-/** Photos used lately on LinkedIn AND on Instagram, oldest first (the pickPhoto contract). */
-function recentPhotos(ledger) {
-  let ig = [];
-  try { ig = photoLedger(JSON.parse(fs.readFileSync(path.join(__dirname, 'carousel-usage.json'), 'utf8'))); } catch { /* no IG ledger here */ }
-  const li = ledger.posts.map(p => p.photo).filter(Boolean);
-  return [...ig.slice(-30), ...li.slice(-20)];
-}
-
-async function photoMedia(choice, usedPhotos) {
-  if (!fs.existsSync(PHOTO_DIR)) throw new Error('brand_assets/Fotos is missing on this machine');
-  const files = fs.readdirSync(PHOTO_DIR).filter(f => /\.(jpe?g|png)$/i.test(f));
-  const stem = String(choice || '').replace(/\.(jpe?g|png|webp)$/i, '').replace(/[^A-Za-z0-9_-]/g, '');
-  const picked = pickPhoto(files, stem, usedPhotos);
-  if (!picked) throw new Error('no photo available');
-  const buffer = await sharp(path.join(PHOTO_DIR, picked)).rotate()
-    .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
-    .jpeg({ quality: 86, mozjpeg: true }).toBuffer();
-  return { buffer, photo: path.basename(picked, path.extname(picked)) };
-}
-
-async function aiMedia(scene, seed) {
-  if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY not set');
-  const prompt = buildImagePrompt({ pillarId: 'cycling', scene, seed });
-  const res = await new OpenAI().images.generate({ model: OPENAI_IMAGE_MODEL, prompt, n: 1, size: '1024x1536', quality: 'medium' });
-  const raw = Buffer.from(res.data[0].b64_json, 'base64');
-  // 4:5 is the tallest ratio the LinkedIn feed shows uncropped.
-  const buffer = await sharp(raw).resize(1080, 1350, { fit: 'cover', position: 'attention' }).jpeg({ quality: 88, mozjpeg: true }).toBuffer();
-  return { buffer, prompt };
-}
-
-function uploadToBlob(filePath, blobPath) {
-  const out = execFileSync('node', [BLOB_UPLOAD, filePath, blobPath], { encoding: 'utf8', timeout: 180000 });
-  const parsed = JSON.parse(out.trim().split('\n').pop());
-  if (!parsed.success || !parsed.url) throw new Error(`blob upload failed: ${parsed.error || 'no url'}`);
-  return parsed.url;
-}
-
-/* ── Notion ──────────────────────────────────────────────── */
-
-function notesFor({ format, story, research, altText, tokenOk, photo, imagePrompt }) {
-  const lines = [
-    tokenOk === false ? 'ATENÇÃO: o token do LinkedIn está expirado. Renove antes de aprovar, senão a publicação falha.' : null,
-    `Formato: ${format}${photo ? ` (foto ${photo})` : ''}${imagePrompt ? ' (imagem gerada por IA)' : ''}`,
-    `Notícia: ${story.title} (${story.source}, lente ${story.lens})`,
-    altText ? `Texto alternativo: ${altText}` : null,
-    research?.sources?.length ? `Pesquisa: ${research.sources.slice(0, 4).join(' ')}` : 'Pesquisa: nenhuma',
-    'Edite Caption e First Comment à vontade. Aprove com Status = "Approved For Publishing"; sai no próximo horário (ter/qui 08:30).'
-  ];
-  return lines.filter(Boolean).join('\n');
-}
-
-async function queueCard({ id, commentary, firstComment, mediaUrl, notes, slot }) {
-  const dbId = process.env.NOTION_IG_DB_ID;
-  if (!dbId) throw new Error('NOTION_IG_DB_ID not set');
-  const existing = await queryDatabase(dbId, { property: 'Name', title: { equals: id } });
-  if (existing.length) return false;
-  await createPage(dbId, {
-    Name: prop.title(id),
-    Status: prop.select('Draft'),
-    Type: prop.select('LinkedIn'),
-    Series: prop.select('EsportesNoLinkedIn'),
-    Pillar: prop.select('Cycling'),
-    Caption: prop.longText(commentary),
-    'First Comment': prop.longText(firstComment),
-    ...(mediaUrl ? { 'Media URL': prop.url(mediaUrl), Preview: prop.files([mediaUrl]) } : {}),
-    Notes: prop.longText(notes),
-    'Publish Date': prop.date(slot)
-  });
-  return true;
-}
-
-/* ── Main ────────────────────────────────────────────────── */
+/* ── Sources: a news story, or one of Jorge's Reels ──────── */
 
 async function research(query) {
   try {
@@ -205,40 +122,119 @@ async function research(query) {
   }
 }
 
-async function buildMedia(format, post, ledger, seed) {
-  if (format === 'photo') return photoMedia(post.photo_choice, recentPhotos(ledger));
-  if (format === 'ai-image') return aiMedia(post.image_scene, seed);
-  return {};
-}
-
-async function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const ledger = loadLedger();
-  const format = pickFormat(ledger.posts, args.format, formatAvailable);
-  // Ledger views below exclude failed attempts: they carry a format but no post.
-  const published = { posts: ledger.posts.filter(p => !p.failed) };
-  const recent = published.posts.slice(-RECENT_FOR_PROMPT);
-  console.log(`Format: ${format}`);
-
+async function newsSource(client, { format, published, recent, rides }) {
   const { shortlist, gathered } = await buildShortlist({ ledger: published });
   console.log(`Beacon: ${gathered.length} on-lens items, ${shortlist.length} shortlisted`);
   if (!shortlist.length) fail('no story passed the beacon screen', 'nothing queued; the next run will try again');
-
-  const client = new Anthropic();
-  const rides = await stravaRecentRides();
   const choice = await chooseStory(client, { shortlist, format, recent, rides });
   const story = shortlist[choice.choice];
   if (!story) fail('story choice out of range', `model returned ${choice.choice} for ${shortlist.length} items`);
   console.log(`Story: ${story.title} (${story.source})\nAngle: ${choice.angle}\nResearch: ${choice.research_query}`);
-
   const data = await research(choice.research_query);
   const allowedUrls = [...new Set([citableUrl(story.url), ...(data?.sources || [])].filter(Boolean))].slice(0, 8);
-  const inventory = { text: format === 'photo' ? inventoryExcerpt() : '', recent: [...new Set(recentPhotos(published))].slice(-20) };
+  return { story, angle: choice.angle, researchQuery: choice.research_query, data, allowedUrls };
+}
+
+async function reelSource(published) {
+  const used = new Set(published.posts.filter(p => p.format === 'video').map(p => p.signal?.title));
+  const reel = await pickReel(used);
+  if (!reel) return null;
+  console.log(`Reel: ${reel.name}`);
+  const story = { title: reel.name, summary: reel.caption.replace(/#\S+/g, '').trim(), source: 'Reel', lang: 'pt', lens: 'reel', url: reel.url };
+  const angle = 'Mostrar por que o vídeo importa para quem trabalha, não só para quem pedala.';
+  return { story, angle, researchQuery: null, data: null, allowedUrls: [] };
+}
+
+/* ── Media ───────────────────────────────────────────────── */
+
+/** Returns { files: [{ path, blobPath }], photos: [...], extra } with files written to outDir. */
+async function buildMedia(format, { client, post, commentary, source, published, id, outDir }) {
+  const used = recentPhotos(published.posts);
+  const write = (name, buffer) => { const p = path.join(outDir, name); fs.writeFileSync(p, buffer); return { path: p, blobPath: `linkedin/${id}-${name}` }; };
+
+  if (FORMATS_WITH_PHOTOS[format]) {
+    const want = format === 'photo' ? post.photo_choices.slice(0, 1) : post.photo_choices.slice(0, 4);
+    const shots = await photosMedia(want.length ? want : [''], used);
+    if (format === 'photos' && shots.length < 2) throw new Error('multi-photo post needs at least 2 photos');
+    return { files: shots.map((s, i) => write(`photo-${i + 1}.jpg`, s.buffer)), photos: shots.map(s => s.photo) };
+  }
+  if (format === 'ai-image') {
+    const { buffer, prompt } = await aiMedia(post.image_scene, id);
+    return { files: [write('image.jpg', buffer)], photos: [], extra: { imagePrompt: prompt } };
+  }
+  if (format === 'document') {
+    const doc = await documentMedia(client, { hook: post.hook, angle: source.angle, commentary, outDir, used });
+    return { files: [write('carrossel.pdf', doc.buffer)], photos: doc.photo ? [doc.photo] : [], extra: { slides: doc.slides } };
+  }
+  if (format === 'video') {
+    return { files: [write('video.mp4', await downloadBuffer(source.story.url))], photos: [] };
+  }
+  return { files: [], photos: [] };
+}
+
+/* ── Notion ──────────────────────────────────────────────── */
+
+function notesFor({ format, source, altText, tokenOk, media }) {
+  const { story, data } = source;
+  const lines = [
+    tokenOk === false ? 'ATENÇÃO: o token do LinkedIn está expirado. Renove antes de aprovar, senão a publicação falha.' : null,
+    media.photos.length ? `Fotos: ${media.photos.join(', ')}` : null,
+    media.extra?.imagePrompt ? 'Imagem gerada por IA (o primeiro comentário avisa).' : null,
+    media.extra?.slides ? `Carrossel em PDF com ${media.extra.slides} slides (abra o Media URL para revisar).` : null,
+    format === 'video' ? `Vídeo: Reel "${story.title}" já publicado no Instagram.` : `Notícia: ${story.title} (${story.source})`,
+    altText ? `Texto alternativo: ${altText}` : null,
+    data?.sources?.length ? `Pesquisa: ${data.sources.slice(0, 4).join(' ')}` : null
+  ];
+  return lines.filter(Boolean).join('\n');
+}
+
+async function queueCard({ id, format, lens, commentary, firstComment, urls, sourceUrl, notes, slot }) {
+  const dbId = process.env.NOTION_LINKEDIN_DB_ID;
+  if (!dbId) throw new Error('NOTION_LINKEDIN_DB_ID not set');
+  const existing = await queryDatabase(dbId, { property: 'Name', title: { equals: id } });
+  if (existing.length) return false;
+  await createPage(dbId, {
+    Name: prop.title(id),
+    Status: prop.select('Draft'),
+    Format: prop.select(format),
+    Lens: prop.select(lens),
+    'Publish Date': prop.date(slot),
+    Caption: prop.longText(commentary),
+    'First Comment': prop.longText(firstComment),
+    ...(urls.length ? { 'Media URL': prop.url(urls[0]), Preview: prop.files(urls) } : {}),
+    ...(sourceUrl ? { Source: prop.url(sourceUrl) } : {}),
+    Notes: prop.longText(notes)
+  });
+  return true;
+}
+
+/* ── Main ────────────────────────────────────────────────── */
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const ledger = loadLedger();
+  // Ledger views below exclude failed attempts: they carry a format but no post.
+  const published = { posts: ledger.posts.filter(p => !p.failed) };
+  const recent = published.posts.slice(-RECENT_FOR_PROMPT);
+  const client = new Anthropic();
+  const rides = await stravaRecentRides();
+
+  let format = pickFormat(ledger.posts, args.format, formatAvailable);
+  let source = format === 'video' ? await reelSource(published) : null;
+  if (format === 'video' && !source) {
+    if (args.format) fail('no unused published Reel with a live video', 'try another --format');
+    console.log('No usable Reel; falling back to the next format.');
+    format = pickFormat(ledger.posts, null, f => f !== 'video' && formatAvailable(f));
+  }
+  console.log(`Format: ${format}`);
+  source ??= await newsSource(client, { format, published, recent, rides });
+
   const slot = nextSlotDate();
-  const post = await writePost(client, { story, angle: choice.angle, format, research: data, rides, recent, inventory, allowedUrls, publishDate: slot });
+  const inventory = { text: FORMATS_WITH_PHOTOS[format] ? inventoryExcerpt() : '', recent: [...new Set(recentPhotos(published.posts))].slice(-20) };
+  const post = await writePost(client, { story: source.story, angle: source.angle, format, research: source.data, rides, recent, inventory, allowedUrls: source.allowedUrls, publishDate: slot });
 
   const commentary = assembleCommentary(post);
-  let firstComment = policeFirstComment(post.first_comment, allowedUrls);
+  let firstComment = policeFirstComment(post.first_comment, source.allowedUrls);
   if (format === 'ai-image') firstComment = `${firstComment}\n\nImagem ilustrativa gerada por IA.`.trim();
 
   const date = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
@@ -247,32 +243,31 @@ async function main() {
   fs.mkdirSync(outDir, { recursive: true });
   let media;
   try {
-    media = await buildMedia(format, post, published, id);
+    media = await buildMedia(format, { client, post, commentary, source, published, id, outDir });
   } catch (e) {
     if (!args.dryRun) saveLedger(ledger, { date, id, format, failed: true, error: String(e.message).slice(0, 200) });
     fail(`${format} media failed`, e.message);
   }
-  const imagePath = media.buffer ? path.join(outDir, 'image.jpg') : null;
-  if (imagePath) fs.writeFileSync(imagePath, media.buffer);
   fs.writeFileSync(path.join(outDir, 'post.txt'), commentary, 'utf8');
   fs.writeFileSync(path.join(outDir, 'comment.txt'), firstComment, 'utf8');
-  fs.writeFileSync(path.join(outDir, 'meta.json'), JSON.stringify({ id, format, story, angle: choice.angle, research_query: choice.research_query, post, photo: media.photo || null, imagePrompt: media.prompt || null, allowedUrls }, null, 2), 'utf8');
+  fs.writeFileSync(path.join(outDir, 'meta.json'), JSON.stringify({ id, format, story: source.story, angle: source.angle, research_query: source.researchQuery, post, photos: media.photos, extra: media.extra || null, allowedUrls: source.allowedUrls }, null, 2), 'utf8');
   console.log(`\n${commentary}\n\n--- first comment ---\n${firstComment}\n`);
 
   if (args.dryRun) {
-    console.log(JSON.stringify({ success: true, dryRun: true, id, format, chars: commentary.length, dir: outDir }));
+    console.log(JSON.stringify({ success: true, dryRun: true, id, format, chars: commentary.length, files: media.files.map(f => path.basename(f.path)), dir: outDir }));
     return;
   }
 
   const tokenOk = await tokenIsValid();
-  const mediaUrl = imagePath ? uploadToBlob(imagePath, `linkedin/${id}.jpg`) : null;
-  const notes = notesFor({ format, story, research: data, altText: post.alt_text, tokenOk, photo: media.photo, imagePrompt: media.prompt });
-  const queued = await queueCard({ id, commentary, firstComment, mediaUrl, notes, slot });
+  const urls = media.files.map(f => uploadToBlob(f.path, f.blobPath));
+  const notes = notesFor({ format, source, altText: post.alt_text, tokenOk, media });
+  const sourceUrl = format === 'video' ? null : citableUrl(source.story.url);
+  const queued = await queueCard({ id, format, lens: source.story.lens, commentary, firstComment, urls, sourceUrl, notes, slot });
   saveLedger(ledger, {
-    date, id, format, hook: post.hook.slice(0, 160), photo: media.photo || null,
-    signal: { title: story.title, titleKey: titleKey(story.title), url: story.url, lens: story.lens, source: story.source }
+    date, id, format, hook: post.hook.slice(0, 160), photos: media.photos,
+    signal: { title: source.story.title, titleKey: titleKey(source.story.title), url: source.story.url, lens: source.story.lens, source: source.story.source }
   });
-  console.log(JSON.stringify({ success: true, id, format, queued, slot, chars: commentary.length, tokenOk }));
+  console.log(JSON.stringify({ success: true, id, format, queued, slot, chars: commentary.length, media: urls.length, tokenOk }));
 }
 
 const isEntrypoint = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);

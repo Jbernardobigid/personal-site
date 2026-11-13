@@ -940,7 +940,7 @@ async function main() {
 // Only run when invoked directly. Importing this module used to fire main() —
 // the same trap generate-video.mjs carries — which makes the extractor
 // impossible to test without doing a full paid build.
-export { extractPostStructure, generateCaption, pickPhoto, photoLedger };
+export { extractPostStructure, generateCaption, pickPhoto, photoLedger, injectContent, screenshotSlides, TEMPLATE_MAP };
 
 const isDirectRun = process.argv[1]
   && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));

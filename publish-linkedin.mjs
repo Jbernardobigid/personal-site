@@ -1,8 +1,10 @@
 /**
  * publish-linkedin.mjs
- * Publishes ONE approved LinkedIn card from the Notion pipeline (Type = LinkedIn,
- * Status = "Approved For Publishing"), oldest Publish Date first, then posts the
+ * Publishes ONE approved card from the Notion "LinkedIn Pipeline" database
+ * (Status = "Approved For Publishing"), oldest Publish Date first, then posts the
  * First Comment (sources) and marks the card Published with the post link.
+ * The card's Format decides the media: text, photo / ai-image (one image), photos
+ * (every image in Preview), document (PDF), video (mp4).
  *
  * One per run on purpose: n8n fires this on the series slots (Tue/Thu 08:30 BRT), so
  * a batch of late approvals still goes out one slot at a time instead of flooding
@@ -18,10 +20,11 @@
 import './load-env.mjs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { queryDatabase, updatePage, prop, getTitle, getRichText, getUrl } from './notion-api.mjs';
+import { queryDatabase, updatePage, prop, getTitle, getRichText, getUrl, getSelect } from './notion-api.mjs';
 import { publishPost, postComment, postUrl, LinkedInAuthError, PrePostError } from './linkedin-api.mjs';
 
-const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+const MAX_BYTES = { image: 8 * 1024 * 1024, document: 100 * 1024 * 1024, video: 500 * 1024 * 1024 };
+const KIND_BY_FORMAT = { text: 'none', photo: 'image', 'ai-image': 'image', photos: 'images', document: 'document', video: 'video' };
 let stuckCard = null;
 
 // Report by setting exitCode, never process.exit(): exiting while undici sockets are
@@ -38,40 +41,51 @@ export function cardPayload(page) {
   const comment = getRichText(page, 'First Comment').trim();
   if (!text) throw new Error('card has an empty Caption');
   if (/[–—]/.test(text)) throw new Error('Caption contains an en/em dash (voice rules); edit the card');
-  return { id: getTitle(page), text, comment, mediaUrl: getUrl(page, 'Media URL') };
+  const format = getSelect(page, 'Format') || 'text';
+  const kind = KIND_BY_FORMAT[format];
+  if (!kind) throw new Error(`unknown Format "${format}"`);
+  const mediaUrl = getUrl(page, 'Media URL');
+  const previewUrls = (page.properties.Preview?.files || []).map(f => f.external?.url || f.file?.url).filter(Boolean);
+  const mediaUrls = kind === 'images' ? previewUrls : (mediaUrl ? [mediaUrl] : []);
+  if (kind !== 'none' && !mediaUrls.length) throw new Error(`Format "${format}" needs media but the card has none`);
+  if (kind === 'images' && mediaUrls.length < 2) throw new Error(`Format "photos" needs at least 2 images in Preview, found ${mediaUrls.length}`);
+  return { id: getTitle(page), text, comment, format, kind, mediaUrls };
 }
 
-async function fetchImage(url) {
-  const res = await fetch(url, { signal: AbortSignal.timeout(60000) });
-  if (!res.ok) throw new Error(`image download ${res.status}: ${url}`);
+async function fetchMedia(url, kind) {
+  const max = MAX_BYTES[kind === 'images' ? 'image' : kind];
+  const res = await fetch(url, { signal: AbortSignal.timeout(180000) });
+  if (!res.ok) throw new Error(`media download ${res.status}: ${url}`);
   const buf = Buffer.from(await res.arrayBuffer());
-  if (buf.length > MAX_IMAGE_BYTES) throw new Error(`image is ${buf.length} bytes, over ${MAX_IMAGE_BYTES}`);
+  if (buf.length > max) throw new Error(`media is ${buf.length} bytes, over ${max}`);
   return buf;
 }
 
+/** Document title shown on the carousel: the post's first line, trimmed. */
+const documentTitle = (text) => text.split(/\r?\n/)[0].slice(0, 100);
+
 async function nextApprovedCard(dbId) {
-  const cards = await queryDatabase(dbId, {
-    and: [
-      { property: 'Status', select: { equals: 'Approved For Publishing' } },
-      { property: 'Type', select: { equals: 'LinkedIn' } }
-    ]
-  }, [{ property: 'Publish Date', direction: 'ascending' }]);
+  const cards = await queryDatabase(dbId,
+    { property: 'Status', select: { equals: 'Approved For Publishing' } },
+    [{ property: 'Publish Date', direction: 'ascending' }]);
   return cards[0] || null;
 }
 
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
-  const dbId = process.env.NOTION_IG_DB_ID;
-  if (!dbId) return report({ success: false, error: 'NOTION_IG_DB_ID not set' }, 1);
+  const dbId = process.env.NOTION_LINKEDIN_DB_ID;
+  if (!dbId) return report({ success: false, error: 'NOTION_LINKEDIN_DB_ID not set' }, 1);
 
   const page = await nextApprovedCard(dbId);
   if (!page) return report({ success: true, published: 0, reason: 'nothing approved' });
 
   stuckCard = getTitle(page);
   const card = cardPayload(page);
-  if (dryRun) return report({ success: true, dryRun: true, id: card.id, chars: card.text.length, hasImage: !!card.mediaUrl, hasComment: !!card.comment });
+  if (dryRun) return report({ success: true, dryRun: true, id: card.id, format: card.format, chars: card.text.length, media: card.mediaUrls.length, hasComment: !!card.comment });
 
-  const imageBuffer = card.mediaUrl ? await fetchImage(card.mediaUrl) : null;
+  const buffers = [];
+  for (const url of card.mediaUrls) buffers.push(await fetchMedia(url, card.kind));
+  const media = { kind: card.kind, buffers, title: card.kind === 'document' ? documentTitle(card.text) : card.id };
 
   // In-flight lock: park the card in "Produced" before posting. If LinkedIn accepts the
   // post but the final Notion write fails, the card must not still read Approved, or the
@@ -80,7 +94,7 @@ async function main() {
   await updatePage(page.id, { Status: prop.select('Produced') });
   let published;
   try {
-    published = await publishPost({ text: card.text, imageBuffer, imageTitle: card.id });
+    published = await publishPost({ text: card.text, media });
   } catch (e) {
     // Re-approve ONLY when LinkedIn provably never received the post. A timeout, a 5xx or
     // an unreadable response to the create call may hide a live post, so the card stays
@@ -101,6 +115,7 @@ async function main() {
   const notes = getRichText(page, 'Notes');
   await updatePage(page.id, {
     Status: prop.select('Published'),
+    'Post URL': prop.url(postUrl(urn)),
     Notes: prop.longText(`${notes}\n\nPublicado: ${postUrl(urn)}${card.comment && !commented ? '\nPrimeiro comentário FALHOU: publique as fontes à mão.' : ''}`)
   });
   return report({ success: true, published: 1, id: card.id, url: postUrl(urn), commented });
