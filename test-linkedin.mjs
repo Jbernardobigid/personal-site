@@ -3,7 +3,7 @@
 import { matchLens, isAboutCycling, scoreCandidate } from './linkedin-beacon.mjs';
 import { ridesBlock, normaliseDashes, normaliseHashtag, assembleCommentary, policeFirstComment, citableUrl, SERIES_TAG } from './linkedin-writer.mjs';
 import { pickFormat, nextSlotDate } from './prepare-linkedin.mjs';
-import { cardPayload } from './publish-linkedin.mjs';
+import { cardPayload, isDue, dueCardsFilter, nextApprovedCard } from './publish-linkedin.mjs';
 
 let pass = 0, fail = 0;
 const t = (name, got, want) => {
@@ -107,6 +107,38 @@ throws('card: photos with one image blocked', () => cardPayload(page('ok', { url
 throws('card: media format without media blocked', () => cardPayload(page('ok', { format: 'video' })), /needs media/);
 throws('card: unknown format blocked', () => cardPayload(page('ok', { format: 'gif' })), /unknown Format/);
 throws('card: edited-in em dash blocked', () => cardPayload(page('um — dois')), /dash/);
+
+/* publisher: a card is only eligible once its Publish Date has arrived (Brazil time).
+   Sorting by date alone published a Thursday card on Tuesday if it was approved early. */
+const dated = (name, date) => ({ id: name, properties: {
+  Name: { type: 'title', title: [{ plain_text: name }] },
+  'Publish Date': { type: 'date', date: date ? { start: date } : null },
+} });
+const tuesday = new Date('2026-11-17T11:30:00Z');   // 08:30 BRT, the publish slot
+t('due: today', isDue(dated('a', '2026-11-17'), tuesday), true);
+t('due: past date (late approval)', isDue(dated('a', '2026-11-12'), tuesday), true);
+t('due: future date is not', isDue(dated('a', '2026-11-19'), tuesday), false);
+t('due: tomorrow is not', isDue(dated('a', '2026-11-18'), tuesday), false);
+t('due: no date means publish when approved', isDue(dated('a', null), tuesday), true);
+t('due: datetime value compared by its day', isDue(dated('a', '2026-11-19T08:30:00.000-03:00'), tuesday), false);
+t('due: 01:00 UTC Wed is still Tue in Brazil', isDue(dated('a', '2026-11-18'), new Date('2026-11-18T01:00:00Z')), false);
+t('due: 03:00 UTC Wed is Wed in Brazil', isDue(dated('a', '2026-11-18'), new Date('2026-11-18T03:00:00Z')), true);
+
+const filter = dueCardsFilter(tuesday);
+t('filter: still requires approval', filter.and[0], { property: 'Status', select: { equals: 'Approved For Publishing' } });
+t('filter: date on or before today in Brazil, or empty', filter.and[1], { or: [
+  { property: 'Publish Date', date: { on_or_before: '2026-11-17' } },
+  { property: 'Publish Date', date: { is_empty: true } },
+] });
+
+// Notion returns ascending by date; the fake ignores the filter on purpose, so this
+// also proves the client-side check holds if the server-side filter ever misbehaves.
+const queue = [dated('late', '2026-11-12'), dated('today', '2026-11-17'), dated('thursday', '2026-11-19')];
+const pick = async (cards, now) => (await nextApprovedCard('db', now, async () => cards))?.id ?? null;
+t('next: oldest due card first', await pick(queue, tuesday), 'late');
+t('next: future-only queue publishes nothing', await pick([dated('thursday', '2026-11-19')], tuesday), null);
+t('next: future card skipped for a due one behind it', await pick([dated('thursday', '2026-11-19'), dated('undated', null)], tuesday), 'undated');
+t('next: empty queue', await pick([], tuesday), null);
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

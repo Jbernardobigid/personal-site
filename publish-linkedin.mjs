@@ -1,7 +1,8 @@
 /**
  * publish-linkedin.mjs
  * Publishes ONE approved card from the Notion "LinkedIn Pipeline" database
- * (Status = "Approved For Publishing"), oldest Publish Date first, then posts the
+ * (Status = "Approved For Publishing" and Publish Date today or earlier in Brazil
+ * time, or unset), oldest Publish Date first, then posts the
  * First Comment (sources) and marks the card Published with the post link.
  * The card's Format decides the media: text, photo / ai-image (one image), photos
  * (every image in Preview), document (PDF), video (mp4).
@@ -64,11 +65,45 @@ async function fetchMedia(url, kind) {
 /** Document title shown on the carousel: the post's first line, trimmed. */
 const documentTitle = (text) => text.split(/\r?\n/)[0].slice(0, 100);
 
-async function nextApprovedCard(dbId) {
-  const cards = await queryDatabase(dbId,
-    { property: 'Status', select: { equals: 'Approved For Publishing' } },
-    [{ property: 'Publish Date', direction: 'ascending' }]);
-  return cards[0] || null;
+const PUBLISH_TIMEZONE = 'America/Sao_Paulo';
+
+/** Today as YYYY-MM-DD in Brazil time, the timezone prepare-linkedin.mjs writes Publish Date in. */
+const todayInBrazil = (now = new Date()) => now.toLocaleDateString('en-CA', { timeZone: PUBLISH_TIMEZONE });
+
+/**
+ * Whether a card's slot has arrived. Publish Date is the slot the post was written for
+ * (and the writer is told that date), so an early approval must wait for it. A card with
+ * no date has no slot to wait for. Exported for tests.
+ */
+export function isDue(page, now = new Date()) {
+  const start = page.properties['Publish Date']?.date?.start;
+  return !start || start.slice(0, 10) <= todayInBrazil(now);
+}
+
+/** Approved cards whose Publish Date is today or earlier (Brazil time), or unset. Exported for tests. */
+export function dueCardsFilter(now = new Date()) {
+  return {
+    and: [
+      { property: 'Status', select: { equals: 'Approved For Publishing' } },
+      {
+        or: [
+          { property: 'Publish Date', date: { on_or_before: todayInBrazil(now) } },
+          { property: 'Publish Date', date: { is_empty: true } },
+        ],
+      },
+    ],
+  };
+}
+
+/**
+ * The oldest approved card that is due. Sorting by Publish Date alone picked a card
+ * dated for a later slot whenever it was approved early. The Notion filter does the
+ * work; isDue() repeats it locally so a filter mistake cannot publish ahead of schedule.
+ * Exported for tests, which pass their own `query`.
+ */
+export async function nextApprovedCard(dbId, now = new Date(), query = queryDatabase) {
+  const cards = await query(dbId, dueCardsFilter(now), [{ property: 'Publish Date', direction: 'ascending' }]);
+  return cards.find(card => isDue(card, now)) || null;
 }
 
 async function main() {
