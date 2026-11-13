@@ -88,9 +88,25 @@ async function unlock(deps, page) {
   catch { return false; }
 }
 
+/** Notion's answer to a filter on a select option the database does not have. */
+const isMissingOptionError = (err, option) =>
+  /validation_error/.test(errorText(err)) && errorText(err).includes(`select option "${option}" not found`);
+
+/** Rows currently locked in Sending. The Sending option is created by Notion the first
+ *  time a row is set to it, and until then Notion rejects a filter on it outright. That
+ *  rejection means "no locked rows", not a failure; any other error still propagates. */
+async function lockedRows(deps) {
+  try {
+    return await deps.queryDatabase(deps.dbId, { property: 'Status', select: { equals: STATUS.SENDING } });
+  } catch (err) {
+    if (isMissingOptionError(err, STATUS.SENDING)) return [];
+    throw err;
+  }
+}
+
 /** Rows a previous run left locked: ask Resend what actually happened. */
 async function reconcileSending(deps) {
-  const locked = await deps.queryDatabase(deps.dbId, { property: 'Status', select: { equals: STATUS.SENDING } });
+  const locked = await lockedRows(deps);
   const stuck = [];
   let reconciled = 0;
   for (const page of locked) {

@@ -22,18 +22,31 @@ function makeNotion(rows) {
     },
   }));
   const failures = [];   // predicates: (pageId, properties) => boolean, consumed once
+  // Real Notion refuses to filter on a select option the database does not have yet,
+  // and "Sending" only comes into existence the first time a row is set to it. Rows
+  // created already in a status (e.g. Sending fixtures) mean that option exists.
+  const options = new Set(['Pending', 'Approved', 'Sent', 'Rejected', ...rows.map((r) => r[1])]);
   return {
     pages,
+    options,
     failOnce: (predicate) => failures.push(predicate),
     status: (slug) => pages.find((p) => p.id === `page-${slug}`).properties.Status.select.name,
     notes: (slug) => pages.find((p) => p.id === `page-${slug}`).properties.Notes.rich_text.map((x) => x.plain_text).join(''),
-    queryDatabase: async (_db, filter) =>
-      structuredClone(pages.filter((p) => p.properties.Status.select.name === filter.select.equals)),
+    queryDatabase: async (_db, filter) => {
+      const wanted = filter.select.equals;
+      if (!options.has(wanted)) {
+        throw new Error(`Notion API POST /databases/db/query failed — validation_error: select option "${wanted}" not found for property "Status". Available options: "Pending", "Approved", "Sent", "Rejected".`);
+      }
+      return structuredClone(pages.filter((p) => p.properties.Status.select.name === wanted));
+    },
     updatePage: async (pageId, properties) => {
       const hit = failures.findIndex((f) => f(pageId, properties));
       if (hit >= 0) { failures.splice(hit, 1); throw new Error('Notion 502'); }
       const page = pages.find((p) => p.id === pageId);
-      if (properties.Status) page.properties.Status.select.name = properties.Status.select.name;
+      if (properties.Status) {
+        page.properties.Status.select.name = properties.Status.select.name;
+        options.add(properties.Status.select.name);   // Notion creates the option on first use
+      }
       if (properties.Notes) page.properties.Notes.rich_text = properties.Notes.rich_text.map((x) => ({ plain_text: x.text.content }));
     },
   };
@@ -79,6 +92,17 @@ const run = (notion, resend) => processQueue({
 });
 const isStatus = (name) => (_id, props) => props.Status?.select.name === name;
 const isNotes = (_id, props) => !!props.Notes;
+
+/* ── first run ever: the database has no "Sending" option yet ─ */
+{
+  const notion = makeNotion([['2026-11-13-z', 'Pending']]);
+  const resend = makeResend();
+  const idle = await run(notion, resend);
+  t('no Sending option yet, nothing approved: clean no-op', [idle.success, idle.sent, idle.reason], [true, 0, 'nothing approved']);
+  notion.pages[0].properties.Status.select.name = 'Approved';
+  const first = await run(notion, resend);
+  t('no Sending option yet: an approved issue still goes out', [first.success, resend.sends.length, notion.status('2026-11-13-z')], [true, 1, 'Sent']);
+}
 
 /* ── happy path ──────────────────────────────────────────── */
 {
