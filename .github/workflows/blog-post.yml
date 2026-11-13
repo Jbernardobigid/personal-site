@@ -33,14 +33,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # The input reaches the shell through an environment variable, never through
+      # ${{ }} inside the script. Expressions are pasted into the script text before bash
+      # runs, so a value like $(curl ...) executed with the job's secrets in scope, ahead
+      # of the allowlist check meant to reject it. `case` also matches the whole value;
+      # `grep -qw` accepted fragments such as "black".
       - name: Validate pillar input
         if: ${{ github.event.inputs.pillar != '' }}
+        env:
+          PILLAR: ${{ github.event.inputs.pillar }}
         run: |
-          PILLAR="${{ github.event.inputs.pillar }}"
-          ALLOWED="black-identity cycling technology entrepreneurship fatherhood learning career-growth"
-          if ! echo "$ALLOWED" | grep -qw "$PILLAR"; then
-            echo "Invalid pillar value: $PILLAR" >&2; exit 1
-          fi
+          case "$PILLAR" in
+            black-identity|cycling|technology|entrepreneurship|fatherhood|learning|career-growth) ;;
+            *) echo "Invalid pillar value" >&2; exit 1 ;;
+          esac
 
       - name: Generate blog post
         env:
