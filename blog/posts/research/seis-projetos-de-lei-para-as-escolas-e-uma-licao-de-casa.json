@@ -1,0 +1,103 @@
+{
+  "topic": "dados Brasil discriminação racial escolas estudantes negros pesquisa IBGE Inep evasão escolar por cor ou raça",
+  "slug": "seis-projetos-de-lei-para-as-escolas-e-uma-licao-de-casa",
+  "generated_at": "2026-11-13T12:01:01.027Z",
+  "sources": [
+    "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/abandono-evasao-escolar",
+    "https://lepesufrj.org.br/wp-content/uploads/2024/12/ARTES-Amelia.-OLIVEIRA-Daniele-2019-O-QUE-MUDOU-PARA-A-POPULACAO-NEGRA-NO-ACESSO-A-__EDUCACAO-BRASILEIRA_-QUAIS-OS-NOVOS-DESAFIOS.pdf",
+    "https://buscaativaescolar.org.br/noticia/pnad-recuo-no-abandono-escolar-avanco-na-formacao-de-jovens-negros-e-melhora-no-acesso-a-creches",
+    "https://almapreta.com.br/sessao/cotidiano/abandono-escolar-e-maior-entre-negros-diz-levantamento-do-ibge",
+    "https://www.bbc.com/portuguese/articles/cjd04gj09d5o",
+    "https://download.inep.gov.br/educacao_superior/censo_superior/boas_praticas_do_censo_da_educacao_superior/4_participacao_de_negros_na_graduacao_e_o_crescimento_da_ead_no_brasil.pdf",
+    "https://anuario.todospelaeducacao.org.br/2024/capitulo-10-erer.html",
+    "https://download.inep.gov.br/educacao_basica/educacenso/matricula_inicial/2015/documentos/10_anos_do_campo_cor_raca_no_censo_escolar.pdf",
+    "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao",
+    "https://cedra.org.br/conjuntos-de-dados/numero-de-matriculas-por-etapa-de-ensino-sexo-e-raca-cor-2010-2019",
+    "https://imdsbrasil.org/wp-content/uploads/2022/06/ImdsA001-2022-DiagnosticoAbandonoEvasaoEscolarBrasil.pdf"
+  ],
+  "insights": [
+    "Os dados do IBGE de 2023 mostram que a maioria dos índices de abandono escolar está entre pessoas pretas e pardas.",
+    "Em 2025, a taxa de conclusão do ensino médio foi de 81,7% para brancos e amarelos, enquanto para pretos, pardos e indígenas foi de 69,5%, evidenciando uma desigualdade racial.",
+    "Apesar dos avanços na inclusão e retenção de estudantes, a desigualdade educacional persiste entre diferentes grupos raciais.",
+    "A taxa de analfabetismo entre pretos e pardos de 15 anos ou mais caiu para 6,5% em 2025, enquanto entre brancos foi de 2,8%.",
+    "A necessidade de trabalhar é um dos principais motivos para o abandono escolar, com percentuais próximos entre brancos e negros."
+  ],
+  "stats": [
+    {
+      "value": "81,7%",
+      "context": "taxa de conclusão do ensino médio para brancos e amarelos em 2025",
+      "source": "https://www.bbc.com/portuguese/articles/cjd04gj09d5o"
+    },
+    {
+      "value": "69,5%",
+      "context": "taxa de conclusão do ensino médio para pretos, pardos e indígenas em 2025",
+      "source": "https://www.bbc.com/portuguese/articles/cjd04gj09d5o"
+    },
+    {
+      "value": "6,5%",
+      "context": "taxa de analfabetismo entre pretos e pardos de 15 anos ou mais em 2025",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "2,8%",
+      "context": "taxa de analfabetismo entre brancos de 15 anos ou mais em 2025",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "16,0% a 21,1%",
+      "context": "percentuais de abandono escolar entre pessoas a partir dos 16 anos em 2023",
+      "source": "https://almapreta.com.br/sessao/cotidiano/abandono-escolar-e-maior-entre-negros-diz-levantamento-do-ibge"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "As desigualdades educacionais observadas entre brancos e negros não se limitavam exclusivamente a questões socioeconômicas.",
+      "attribution": "https://lepesufrj.org.br/wp-content/uploads/2024/12/ARTES-Amelia.-OLIVEIRA-Daniele-2019-O-QUE-MUDOU-PARA-A-POPULACAO-NEGRA-NO-ACESSO-A-__EDUCACAO-BRASILEIRA_-QUAIS-OS-NOVOS-DESAFIOS.pdf"
+    },
+    {
+      "text": "A pesquisa do IBGE revela aumento da frequência escolar e retração nas taxas de abandono escolar.",
+      "attribution": "https://buscaativaescolar.org.br/noticia/pnad-recuo-no-abandono-escolar-avanco-na-formacao-de-jovens-negros-e-melhora-no-acesso-a-creches"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2025,
+      "value": 81.7,
+      "unit": "%",
+      "label": "taxa de conclusão do ensino médio para brancos e amarelos"
+    },
+    {
+      "year": 2025,
+      "value": 69.5,
+      "unit": "%",
+      "label": "taxa de conclusão do ensino médio para pretos, pardos e indígenas"
+    },
+    {
+      "year": 2025,
+      "value": 6.5,
+      "unit": "%",
+      "label": "taxa de analfabetismo entre pretos e pardos de 15 anos ou mais"
+    },
+    {
+      "year": 2025,
+      "value": 2.8,
+      "unit": "%",
+      "label": "taxa de analfabetismo entre brancos de 15 anos ou mais"
+    },
+    {
+      "year": 2023,
+      "value": 16,
+      "unit": "%",
+      "label": "percentuais de abandono escolar entre pessoas a partir dos 16 anos"
+    }
+  ],
+  "summary": "Os dados de 2023 do IBGE revelam que a desigualdade racial na educação persiste, com taxas de abandono escolar mais altas entre estudantes pretos e pardos. Apesar de avanços na inclusão e retenção, a diferença nas taxas de conclusão do ensino médio entre brancos e negros ainda é significativa.",
+  "pillar": "learning",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-13-seis-projetos-de-lei-para-as-escolas-e-uma-licao-de-casa.html",
+  "signal": {
+    "title": "Movimento negro reivindica projetos de leis antirracistas para escolas",
+    "source": "Geledés",
+    "url": "https://www.geledes.org.br/movimento-negro-reivindica-projetos-de-leis-antirracistas-para-escolas/",
+    "date": "2026-11-13T11:23:07.000Z"
+  }
+}
