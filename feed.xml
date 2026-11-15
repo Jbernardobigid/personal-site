@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Fri, 13 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 15 Nov 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Campinas e a palavra que muda a educação racial</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-11-15-a-palavra-mais-importante-da-politica-racial-de-campinas-e.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-11-15-a-palavra-mais-importante-da-politica-racial-de-campinas-e.html</guid>
+      <pubDate>Sun, 15 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Campinas publicou a política de educação étnico-racial. A palavra do meio, relações, diz que identidade negra se forma na sala inteira, não só no aluno negro.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-11-15-a-palavra-mais-importante-da-politica-racial-de-campinas-e.jpg" length="157221" type="image/jpeg"/>
+    </item>
     <item>
       <title>Seis leis antirracistas e a lição de casa dos adultos</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-11-13-seis-projetos-de-lei-para-as-escolas-e-uma-licao-de-casa.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Wed, 07 Oct 2026 12:00:00 GMT</pubDate>
       <description>Quando um filho pega a câmera para contar a história da mãe, ele não está só preservando memória: está revelando o que herdou e o que escolheu passar adiante.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-07-clementino-junior-filmou-a-mae-e-disse-mais-sobre.jpg" length="160735" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Ciclismo, risco e política nas ruas do Brasil</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-05-david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-05-david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de.html</guid>
-      <pubDate>Mon, 05 Oct 2026 12:00:00 GMT</pubDate>
-      <description>David Mendes pedalou de Portugal até a Turquia para chegar à COP31. No Brasil, quase 15 mil ciclistas morreram em dez anos.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-05-david-mendes-vai-de-bicicleta-ate-a-cop31-o-brasil-vai-de.jpg" length="223764" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

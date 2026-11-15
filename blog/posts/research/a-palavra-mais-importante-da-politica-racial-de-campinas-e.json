@@ -1,0 +1,113 @@
+{
+  "topic": "dados percentual estudantes negros pretos e pardos rede pública educação básica desigualdade racial Campinas IBGE INEP",
+  "slug": "a-palavra-mais-importante-da-politica-racial-de-campinas-e",
+  "generated_at": "2026-11-15T12:01:04.292Z",
+  "sources": [
+    "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao",
+    "https://anuario.todospelaeducacao.org.br/2024/capitulo-10-erer.html",
+    "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf",
+    "https://www.geledes.org.br/uma-analise-dos-instrumentos-de-pesquisa-do-inep",
+    "https://www.youtube.com/watch?v=wA1VV9tFUb8",
+    "http://educa.fcc.org.br/scielo.php?script=sci_arttext&pid=S0102-46982020000100293",
+    "https://buscaativaescolar.org.br/noticia/pnad-recuo-no-abandono-escolar-avanco-na-formacao-de-jovens-negros-e-melhora-no-acesso-a-creches",
+    "https://desafioonline.ufms.br/index.php/intm/article/download/3371/2645",
+    "https://www.gov.br/mec/pt-br/assuntos/noticias/2024/novembro/pretos-e-pardos-juntos-sao-maioria-entre-concluintes-do-ensino-medio",
+    "https://periodicos.ufms.br/index.php/intm/article/download/3371/2645"
+  ],
+  "insights": [
+    "Em 2023, a população preta e parda representou 41% das matrículas na educação básica brasileira, enquanto os brancos eram cerca de 30%.",
+    "No ensino fundamental, a taxa de analfabetismo entre pretos e pardos de 15 anos ou mais foi de 6,5% em 2025, mais de duas vezes superior à de 2,8% entre pessoas brancas.",
+    "No ensino superior, em 2023, 40,1% dos ingressantes eram pretos, pardos ou indígenas, com 41,9% na rede pública.",
+    "Em 2019, 65% dos alunos brancos concluíram os anos iniciais do ensino fundamental com aprendizado adequado, enquanto apenas 40% dos alunos pretos o fizeram.",
+    "Os dados mostram uma redução na desigualdade na série histórica da pesquisa, embora ainda persistam barreiras no acesso e na permanência de estudantes pretos e pardos."
+  ],
+  "stats": [
+    {
+      "value": "41%",
+      "context": "representa a porcentagem de matrículas na educação básica brasileira de estudantes pretos e pardos em 2023",
+      "source": "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf"
+    },
+    {
+      "value": "6,5%",
+      "context": "taxa de analfabetismo entre pretos e pardos de 15 anos ou mais em 2025",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "2,8%",
+      "context": "taxa de analfabetismo entre pessoas brancas de 15 anos ou mais em 2025",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "40,1%",
+      "context": "percentual de ingressantes no ensino superior que eram pretos, pardos ou indígenas em 2023",
+      "source": "https://observatoriodeeducacao.institutounibanco.org.br/em-debate/desigualdade-racial-na-educacao"
+    },
+    {
+      "value": "65%",
+      "context": "percentual de alunos brancos que concluíram os anos iniciais do ensino fundamental com aprendizado adequado em 2019",
+      "source": "https://anuario.todospelaeducacao.org.br/2024/capitulo-10-erer.html"
+    },
+    {
+      "value": "40%",
+      "context": "percentual de alunos pretos que concluíram os anos iniciais do ensino fundamental com aprendizado adequado em 2019",
+      "source": "https://anuario.todospelaeducacao.org.br/2024/capitulo-10-erer.html"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Os dados evidenciam que apesar da redução das desigualdades no ensino médio, ainda persistem barreiras no acesso e na permanência de estudantes.",
+      "attribution": "William Kratochwill, IBGE"
+    },
+    {
+      "text": "A pesquisa sugere que os efeitos podem ocorrer por mecanismos como referência, motivação, mentoria e apoio.",
+      "attribution": "Observatório de Educação"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2023,
+      "value": 41,
+      "unit": "%",
+      "label": "percentual de matrículas na educação básica de estudantes pretos e pardos"
+    },
+    {
+      "year": 2025,
+      "value": 6.5,
+      "unit": "%",
+      "label": "taxa de analfabetismo entre pretos e pardos de 15 anos ou mais"
+    },
+    {
+      "year": 2025,
+      "value": 2.8,
+      "unit": "%",
+      "label": "taxa de analfabetismo entre pessoas brancas de 15 anos ou mais"
+    },
+    {
+      "year": 2023,
+      "value": 40.1,
+      "unit": "%",
+      "label": "percentual de ingressantes no ensino superior que eram pretos, pardos ou indígenas"
+    },
+    {
+      "year": 2019,
+      "value": 65,
+      "unit": "%",
+      "label": "percentual de alunos brancos que concluíram os anos iniciais do ensino fundamental com aprendizado adequado"
+    },
+    {
+      "year": 2019,
+      "value": 40,
+      "unit": "%",
+      "label": "percentual de alunos pretos que concluíram os anos iniciais do ensino fundamental com aprendizado adequado"
+    }
+  ],
+  "summary": "Os dados de 2023 revelam uma significativa representação de estudantes pretos e pardos na educação básica brasileira, mas ainda evidenciam desigualdades marcantes, especialmente em taxas de analfabetismo e aprendizado. Apesar de avanços, as barreiras de acesso e permanência na educação continuam a afetar negativamente esses grupos.",
+  "pillar": "black-identity",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-15-a-palavra-mais-importante-da-politica-racial-de-campinas-e.html",
+  "signal": {
+    "title": "Campinas publica Política de Educação para as Relações Étnico-Raciais",
+    "source": "Geledés",
+    "url": "https://www.geledes.org.br/campinas-publica-politica-de-educacao-para-as-relacoes-etnico-raciais/",
+    "date": "2026-11-13T21:56:42.000Z"
+  }
+}
