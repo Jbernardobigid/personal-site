@@ -1,0 +1,58 @@
+{
+  "topic": "monitoramento de viagens em bicicleta São Paulo contagem ciclistas série histórica dados Ciclocidade",
+  "slug": "a-bicicleta-mais-barata-de-sao-paulo-esta-perdendo-a-rua",
+  "generated_at": "2026-11-17T12:00:43.983Z",
+  "sources": [
+    "https://www.mobilize.org.br/noticias/14680/pedalar-em-sao-paulo-nao-deveria-ser-ato-de-coragem-diz-ciclocidade.html",
+    "https://www.instagram.com/p/DZ_IS_FgJp0",
+    "https://www.ciclocidade.org.br",
+    "https://www.ciclocidade.org.br/wp-content/uploads/2022/09/Monitoramento",
+    "https://www1.folha.uol.com.br/cotidiano/2022/10/prefeitura-de-sao-paulo-faz-parceria-para-contar-ciclistas-na-cidade.shtml",
+    "https://folha.com/px2k6r1u",
+    "https://www1.folha.uol.com.br/amp/cotidiano/2022/10/prefeitura-de-sao-paulo-faz-parceria-para-contar-ciclistas-na-cidade.shtml",
+    "https://bdta.abcd.usp.br/directbitstream/e4c8c0f4-2b43-4fc6-bfd0-cf903eb9b661/JO%C3%83O%20LUIS%20GARCIA%20MARTINS%202016.pdf",
+    "https://www.prefeitura.sp.gov.br/cidade/secretarias/upload/mobilidade/Apresenta%C3%A7%C3%A3o%20-%20Consulta%20p%C3%BAblica%20Contagem%20de%20Linha%20de%20Base.pdf",
+    "https://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf",
+    "https://www.ciclocidade.org.br/wp-content/uploads/2026/06/Relatorio-de-monitoramento-de-viagens-em-bicicleta-Ciclocidade-1.docx.pdf",
+    "https://www.mobilize.org.br/estudos/560/monitoramento-de-viagens-em-bicicleta-2026.html"
+  ],
+  "insights": [
+    "A Ciclocidade realizou uma contagem de ciclistas em 2026, revelando uma queda de 7,5% nas viagens por bicicletas convencionais desde 2023.",
+    "A pesquisa destaca a necessidade de melhorias na infraestrutura cicloviária e políticas para aumentar a segurança e incentivar o uso de bicicletas.",
+    "A contagem de ciclistas em São Paulo foi realizada em 218 pontos, com a participação de 43 pesquisadores e mais de 1.500 horas de campo.",
+    "A parceria entre a Ciclocidade, a CET e o aplicativo Strava visa mensurar a circulação de ciclistas e entender as tendências de uso de bicicletas na cidade.",
+    "O PlanClima estabelece a meta de que 4% das viagens na cidade sejam feitas de bicicleta até 2030."
+  ],
+  "stats": [
+    {
+      "value": "7.5%",
+      "context": "representa a diminuição nas viagens por bicicletas convencionais em São Paulo desde 2023.",
+      "source": "https://www.mobilize.org.br/noticias/14680/pedalar-em-sao-paulo-nao-deveria-ser-ato-de-coragem-diz-ciclocidade.html"
+    },
+    {
+      "value": "4%",
+      "context": "é a meta estabelecida pelo PlanClima para o uso de bicicletas até 2030.",
+      "source": "https://www1.folha.uol.com.br/cotidiano/2022/10/prefeitura-de-sao-paulo-faz-parceria-para-contar-ciclistas-na-cidade.shtml"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Em 2026, o número de ciclistas convencionais caiu 7,5%, o que deveria acender o sinal de alerta dos gestores.",
+      "attribution": "Ciclocidade"
+    },
+    {
+      "text": "A maior contagem de ciclistas da história de São Paulo acabou de acontecer.",
+      "attribution": "Ciclocidade"
+    }
+  ],
+  "time_series": [],
+  "summary": "A pesquisa da Ciclocidade sobre viagens de bicicleta em São Paulo revela uma queda significativa nas viagens por bicicletas convencionais e destaca a necessidade de melhorias na infraestrutura cicloviária. A parceria com a CET e o uso de dados do Strava são fundamentais para entender as tendências de uso e planejar ações futuras.",
+  "pillar": "cycling",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-17-a-bicicleta-mais-barata-de-sao-paulo-esta-perdendo-a-rua.html",
+  "signal": {
+    "title": "A cidade está pedalando diferente: o que mostram os novos dados do monitoramento de viagens em bicicleta",
+    "source": "Ciclocidade",
+    "url": "https://www.ciclocidade.org.br/noticias/monitoramento-viagens-em-bicicleta-ciclocidade/",
+    "date": "2026-11-16T20:08:38.000Z"
+  }
+}

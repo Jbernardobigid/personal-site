@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "valladolid traffic surges after city rolls back bike and bus lanes",
-      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQRmxaT3g1ckFBTENJUTczbUFkY2pyWHp6UXVhMDIta0h0Skt3QjhGbjlHbnZFb25uT18xME1SSUFJNmtNM1BUOHhuVFMwVzMwaUd3M0hlR0Z0QkVaMWxZbW10dnZtaHBKUVZ6M2ozYk1Uby1ycHBLbTFZRW8yakR2T0IyNGRQMkEzbXZpTXNWQTRIWFEzZ3ptcGhVQ1h1QnJY?oc=5",
-      "pillar": "cycling",
-      "title": "Valladolid Traffic Surges After City Rolls Back Bike and Bus Lanes",
-      "recordedAt": "2026-09-17T12:02:12.402Z"
-    },
-    {
       "titleKey": "mil vezes lamine yamal relata episodios de racismo e critica preconceito velado",
       "url": "https://noticiapreta.com.br/mil-vezes-lamine-yamal-relata-episodios-de-racismo-e-critica-preconceito-velado/?utm_source=rss&utm_medium=rss&utm_campaign=mil-vezes-lamine-yamal-relata-episodios-de-racismo-e-critica-preconceito-velado",
       "pillar": "black-identity",
@@ -202,6 +195,13 @@
       "pillar": "black-identity",
       "title": "Campinas publica Política de Educação para as Relações Étnico-Raciais",
       "recordedAt": "2026-11-15T12:02:41.274Z"
+    },
+    {
+      "titleKey": "a cidade esta pedalando diferente o que mostram os novos dados do monitoramento ",
+      "url": "https://www.ciclocidade.org.br/noticias/monitoramento-viagens-em-bicicleta-ciclocidade/",
+      "pillar": "cycling",
+      "title": "A cidade está pedalando diferente: o que mostram os novos dados do monitoramento de viagens em bicicleta",
+      "recordedAt": "2026-11-17T12:02:25.733Z"
     }
   ]
 }

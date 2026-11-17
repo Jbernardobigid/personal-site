@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sun, 15 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 17 Nov 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Bicicleta comum perde espaço nas ruas de São Paulo</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-11-17-a-bicicleta-mais-barata-de-sao-paulo-esta-perdendo-a-rua.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-11-17-a-bicicleta-mais-barata-de-sao-paulo-esta-perdendo-a-rua.html</guid>
+      <pubDate>Tue, 17 Nov 2026 12:00:00 GMT</pubDate>
+      <description>A contagem da Ciclocidade mostrou queda de 7,5% nas viagens de bicicleta convencional em São Paulo, e a pergunta é quem está deixando de pedalar, e por quê.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-11-17-a-bicicleta-mais-barata-de-sao-paulo-esta-perdendo-a-rua.jpg" length="312718" type="image/jpeg"/>
+    </item>
     <item>
       <title>Campinas e a palavra que muda a educação racial</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-11-15-a-palavra-mais-importante-da-politica-racial-de-campinas-e.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Fri, 09 Oct 2026 12:00:00 GMT</pubDate>
       <description>O LABDicró selecionou cinco projetos de danças negras no Rio, e o que eles revelam sobre aprendizado real vai muito além da sala de aula ou do certificado.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-09-cinco-artistas-45-dias-e-a-unica-forma-de-aprendizado-que.jpg" length="190508" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Filmar a mãe é um ato de paternidade às avessas</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-07-clementino-junior-filmou-a-mae-e-disse-mais-sobre.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-07-clementino-junior-filmou-a-mae-e-disse-mais-sobre.html</guid>
-      <pubDate>Wed, 07 Oct 2026 12:00:00 GMT</pubDate>
-      <description>Quando um filho pega a câmera para contar a história da mãe, ele não está só preservando memória: está revelando o que herdou e o que escolheu passar adiante.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-07-clementino-junior-filmou-a-mae-e-disse-mais-sobre.jpg" length="160735" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
