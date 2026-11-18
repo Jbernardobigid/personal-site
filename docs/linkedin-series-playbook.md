@@ -8,6 +8,8 @@ Started 2026-11-13, after the LinkedIn editorial workshop at the LinkedIn office
 - **Queue after it:** photo (Tue 11/17), document/PDF carousel (Thu 11/19), video (Reel), photos, ai-image, then back to text.
 - **Not yet proven live:** the REST post paths (document, photos, video). Their uploads work; the first post of each is the real test.
 - **LinkedIn token expires ~2027-01-12.** Renew it at linkedin.com/developers/tools/oauth/token-generator (app JorgeEscreve; scopes openid, profile, w_member_social). Put it in `.env` directly, not in chat, then sync it to the VPS.
+- **2026-11-17**: second post (photo, Cape Town) published by the scheduled 08:30 run, the first with no manual step: https://www.linkedin.com/feed/update/urn:li:share:7528419190656069633/
+- **Luiz Gustavo's answer (2026-11-18)**: LinkedIn's sports curation looks for "conversas que valem ser destacadas": good content with relevant information. They watch the hashtag broadly; there is **no editorial calendar**, and whatever stands out appears in the curation. Takeaways: the comment thread is part of what gets curated, so reply fast and keep the closing question specific. #EsportesNoLinkedIn is how they find posts, so it stays first on every post. Follow the hashtag to see what gets featured, and do the daily commenting there.
 - **Profile assets:** cover options are in `brand_assets/LinkedIn/` (B recommended). The headline and "Sobre" drafts are in the 2026-11-13 session.
 
 ## What the pipeline does
