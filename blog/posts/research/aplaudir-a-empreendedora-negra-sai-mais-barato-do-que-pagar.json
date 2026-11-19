@@ -1,0 +1,71 @@
+{
+  "topic": "número de mulheres negras empreendedoras no Brasil rendimento médio comparado a homens brancos empreendedores SEBRAE IBGE",
+  "slug": "aplaudir-a-empreendedora-negra-sai-mais-barato-do-que-pagar",
+  "generated_at": "2026-11-19T12:00:49.870Z",
+  "sources": [
+    "https://mulher.istoe.com.br/empreendedoras-negras-ganham-ate-61-menos-que-homens-brancos-apesar-de-mais-estudo",
+    "https://almapreta.com.br?p=70900",
+    "https://almapreta.com.br/sessao/cotidiano/empreendedoras-negras-faturam-menos-homens-brancos",
+    "https://agenciasebrae.com.br/dados/empreendedoras-negras-no-brasil-faturam-quase-60-menos-que-homens-brancos-aponta-sebrae",
+    "https://almapreta.com.br?p=54703",
+    "https://www.instagram.com/p/DXE3t5FmEx_",
+    "https://almapreta.com.br/sessao/cotidiano/empreendedoras-negras-ganham-menos-que-empresarios-brancos-mesmo-com-maior-escolaridade-aponta-sebrae",
+    "https://exame.com/pme/informalidade-estudo-e-ganhos-o-desafio-das-empreendedoras-negras",
+    "https://agenciasebrae.com.br/tag/negros/feed",
+    "https://static.poder360.com.br/2023/02/Empreendedorismo-Raca-cor-Sexo-sebrae-2-trimestre-2022.pdf"
+  ],
+  "insights": [
+    "Empreendedoras negras no Brasil faturam até 59% menos que homens brancos empreendedores.",
+    "Apesar de 65,4% das empreendedoras negras terem ensino médio completo ou mais, elas ainda enfrentam desvalorização no mercado.",
+    "A renda média de mulheres negras empreendedoras é de R$ 2.090,16, o menor valor entre os grupos analisados.",
+    "58% das empreendedoras negras são chefes de domicílio, em comparação com 49,5% das mulheres brancas.",
+    "Mulheres negras recebem apenas 52,5% da renda das mulheres brancas com negócios próprios."
+  ],
+  "stats": [
+    {
+      "value": "59%",
+      "context": "diferença de faturamento entre empreendedoras negras e homens brancos",
+      "source": "https://almapreta.com.br?p=70900"
+    },
+    {
+      "value": "R$ 5.143,68",
+      "context": "renda média de homens brancos empreendedores",
+      "source": "https://almapreta.com.br?p=70900"
+    },
+    {
+      "value": "R$ 2.090,16",
+      "context": "renda média de mulheres negras empreendedoras",
+      "source": "https://almapreta.com.br?p=70900"
+    },
+    {
+      "value": "46%",
+      "context": "diferença de faturamento entre empreendedoras negras e empreendedoras brancas",
+      "source": "https://almapreta.com.br?p=70900"
+    },
+    {
+      "value": "65,4%",
+      "context": "percentual de empreendedoras negras com ensino médio completo ou mais",
+      "source": "https://almapreta.com.br?p=70900"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "As barreiras raciais e de gênero persistem.",
+      "attribution": "Margarete Coelho, diretora de Administração e Finanças do Sebrae Nacional"
+    },
+    {
+      "text": "O recorte racial impacta a posição que as mulheres assumem na manutenção das famílias.",
+      "attribution": "https://almapreta.com.br?p=70900"
+    }
+  ],
+  "time_series": [],
+  "summary": "As empreendedoras negras no Brasil enfrentam uma significativa desigualdade de renda em comparação com homens brancos, faturando até 59% menos. Apesar de terem alta escolaridade, elas continuam a ser desvalorizadas no mercado, refletindo barreiras raciais e de gênero que impactam suas oportunidades de crescimento.",
+  "pillar": "entrepreneurship",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-19-aplaudir-a-empreendedora-negra-sai-mais-barato-do-que-pagar.html",
+  "signal": {
+    "title": "Além da “superação”: o peso e a potência das 4,7 milhões de empreendedoras negras no Brasil",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/empreendedoras-negras-brasil-dados-sebrae/",
+    "date": "2026-11-19T05:18:40.000Z"
+  }
+}
