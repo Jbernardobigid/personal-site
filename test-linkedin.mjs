@@ -4,6 +4,7 @@ import { matchLens, isAboutCycling, isAboutSport, isOffBeat, rankShortlist, winI
 import { ridesBlock, normaliseDashes, normaliseHashtag, assembleCommentary, policeFirstComment, citableUrl, SERIES_TAG } from './linkedin-writer.mjs';
 import { pickFormat, nextSlotDate } from './prepare-linkedin.mjs';
 import { cardPayload, isDue, dueCardsFilter, nextApprovedCard } from './publish-linkedin.mjs';
+import { postComment } from './linkedin-api.mjs';
 
 let pass = 0, fail = 0;
 const t = (name, got, want) => {
@@ -176,6 +177,39 @@ t('next: oldest due card first', await pick(queue, tuesday), 'late');
 t('next: future-only queue publishes nothing', await pick([dated('thursday', '2026-11-19')], tuesday), null);
 t('next: future card skipped for a due one behind it', await pick([dated('thursday', '2026-11-19'), dated('undated', null)], tuesday), 'undated');
 t('next: empty queue', await pick([], tuesday), null);
+
+/* first comment (2026-11-19: the first REST document post's comment 404'd on v2 socialActions) */
+// Always a fake token: load-env loaded the real one, and a test must never be able to post.
+process.env.LINKEDIN_ACCESS_TOKEN = 'test-token';
+const fakeFetch = (statuses) => {
+  const calls = [];
+  const fn = async (url, init) => {
+    calls.push({ url, version: init.headers['LinkedIn-Version'] || null });
+    const s = statuses[calls.length - 1];
+    if (s === 'throw') throw new Error('timeout');
+    return { ok: s >= 200 && s < 300, status: s, text: async () => 'body' };
+  };
+  return { fn, calls };
+};
+const noSleep = async () => {};
+const urn = 'urn:li:ugcPost:1';
+let ff = fakeFetch([201]);
+t('comment: v2 success first try', await postComment('urn:li:person:x', urn, 'oi', { fetchImpl: ff.fn, sleep: noSleep }), true);
+t('comment: v2 success uses one call', ff.calls.length, 1);
+ff = fakeFetch([404, 201]);
+t('comment: v2 404 falls back to rest', await postComment('urn:li:person:x', urn, 'oi', { fetchImpl: ff.fn, sleep: noSleep }), true);
+t('comment: rest fallback is versioned', ff.calls[1].url.includes('/rest/socialActions/') && !!ff.calls[1].version, true);
+ff = fakeFetch([404, 404, 404, 201]);
+t('comment: retries after a pause when both 404', await postComment('urn:li:person:x', urn, 'oi', { fetchImpl: ff.fn, sleep: noSleep }), true);
+ff = fakeFetch(Array(20).fill(404));
+t('comment: gives up after every round', await postComment('urn:li:person:x', urn, 'oi', { fetchImpl: ff.fn, sleep: noSleep, delays: [0, 1, 2] }), false);
+t('comment: two endpoints per round', ff.calls.length, 6);
+ff = fakeFetch([400, 400, 201]);
+t('comment: definite refusal is not retried', await postComment('urn:li:person:x', urn, 'oi', { fetchImpl: ff.fn, sleep: noSleep }), false);
+t('comment: refusal stops after both endpoints', ff.calls.length, 2);
+ff = fakeFetch(['throw', 201]);
+t('comment: ambiguous network error never retried (no duplicate comment)', await postComment('urn:li:person:x', urn, 'oi', { fetchImpl: ff.fn, sleep: noSleep }), false);
+t('comment: ambiguous error stops at one call', ff.calls.length, 1);
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

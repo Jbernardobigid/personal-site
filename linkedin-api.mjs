@@ -240,23 +240,45 @@ export async function publishPost({ text, media = { kind: 'none' } }) {
   return { urn, personUrn };
 }
 
-/** Comment as the author. Returns true on success; never throws (the post already exists). */
-export async function postComment(personUrn, postUrn, text) {
-  try {
-    const res = await fetch(`https://api.linkedin.com/v2/socialActions/${encodeURIComponent(postUrn)}/comments`, timed({
-      method: 'POST',
-      headers: headers({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ actor: personUrn, object: postUrn, message: { text } })
-    }));
-    if (!res.ok) {
-      console.warn(`First comment failed (post is live): ${res.status} ${(await res.text()).slice(0, 300)}`);
-      return false;
+// The first REST document post (urn:li:ugcPost, 2026-11-19) got a 404 from v2 socialActions'
+// authorization check right after creation, while legacy urn:li:share posts comment fine.
+// Either the new post was not resolvable yet or v2 will not authorise REST posts, so: try v2,
+// then the versioned /rest endpoint, and repeat after a pause while the answer is "not found".
+const COMMENT_RETRY_DELAYS_MS = [0, 20000, 60000];
+const commentRetryable = (status) => status === 404 || status === 429 || status >= 500;
+
+/**
+ * Comment as the author. Returns true on success; never throws (the post already exists).
+ * A network error or timeout is ambiguous (the comment may exist), so it is never retried:
+ * a duplicate sources comment is worse than a missing one, which the card's Notes flag.
+ */
+export async function postComment(personUrn, postUrn, text, { fetchImpl = fetch, sleep = (ms) => new Promise(r => setTimeout(r, ms)), delays = COMMENT_RETRY_DELAYS_MS } = {}) {
+  const body = JSON.stringify({ actor: personUrn, object: postUrn, message: { text } });
+  const enc = encodeURIComponent(postUrn);
+  const endpoints = [
+    { label: 'v2', url: `https://api.linkedin.com/v2/socialActions/${enc}/comments`, headers: headers({ 'Content-Type': 'application/json' }) },
+    { label: 'rest', url: `https://api.linkedin.com/rest/socialActions/${enc}/comments`, headers: restHeaders() }
+  ];
+  const failures = [];
+  for (const wait of delays) {
+    if (wait) await sleep(wait);
+    let retryable = false;
+    for (const ep of endpoints) {
+      let res;
+      try {
+        res = await fetchImpl(ep.url, timed({ method: 'POST', headers: ep.headers, body }));
+      } catch (e) {
+        console.warn(`First comment failed (post is live): ${ep.label} ${e.message}; not retried, it may have landed`);
+        return false;
+      }
+      if (res.ok) return true;
+      failures.push(`${ep.label} ${res.status} ${(await res.text().catch(() => '')).slice(0, 200)}`);
+      retryable ||= commentRetryable(res.status);
     }
-    return true;
-  } catch (e) {
-    console.warn(`First comment failed (post is live): ${e.message}`);
-    return false;
+    if (!retryable) break;
   }
+  console.warn(`First comment failed (post is live): ${failures.join(' | ')}`);
+  return false;
 }
 
 export const postUrl = (urn) => `https://www.linkedin.com/feed/update/${urn}/`;
