@@ -123,10 +123,10 @@ async function research(query) {
 }
 
 async function newsSource(client, { format, published, recent, rides }) {
-  const { shortlist, gathered } = await buildShortlist({ ledger: published });
-  console.log(`Beacon: ${gathered.length} on-lens items, ${shortlist.length} shortlisted`);
+  const { shortlist, gathered, winDue } = await buildShortlist({ ledger: published });
+  console.log(`Beacon: ${gathered.length} on-lens items, ${shortlist.length} shortlisted, win due: ${winDue}`);
   if (!shortlist.length) fail('no story passed the beacon screen', 'nothing queued; the next run will try again');
-  const choice = await chooseStory(client, { shortlist, format, recent, rides });
+  const choice = await chooseStory(client, { shortlist, format, recent, rides, winDue });
   const story = shortlist[choice.choice];
   if (!story) fail('story choice out of range', `model returned ${choice.choice} for ${shortlist.length} items`);
   console.log(`Story: ${story.title} (${story.source})\nAngle: ${choice.angle}\nResearch: ${choice.research_query}`);
@@ -265,7 +265,7 @@ async function main() {
   const queued = await queueCard({ id, format, lens: source.story.lens, commentary, firstComment, urls, sourceUrl, notes, slot });
   saveLedger(ledger, {
     date, id, format, hook: post.hook.slice(0, 160), photos: media.photos,
-    signal: { title: source.story.title, titleKey: titleKey(source.story.title), url: source.story.url, lens: source.story.lens, source: source.story.source }
+    signal: { title: source.story.title, titleKey: titleKey(source.story.title), url: source.story.url, lens: source.story.lens, tone: source.story.tone || null, source: source.story.source }
   });
   console.log(JSON.stringify({ success: true, id, format, queued, slot, chars: commentary.length, media: urls.length, tokenOk }));
 }

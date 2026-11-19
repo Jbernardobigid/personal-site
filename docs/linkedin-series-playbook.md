@@ -10,13 +10,14 @@ Started 2026-11-13, after the LinkedIn editorial workshop at the LinkedIn office
 - **LinkedIn token expires ~2027-01-12.** Renew it at linkedin.com/developers/tools/oauth/token-generator (app JorgeEscreve; scopes openid, profile, w_member_social). Put it in `.env` directly, not in chat, then sync it to the VPS.
 - **2026-11-17**: second post (photo, Cape Town) published by the scheduled 08:30 run, the first with no manual step: https://www.linkedin.com/feed/update/urn:li:share:7528419190656069633/
 - **Luiz Gustavo's answer (2026-11-18)**: LinkedIn's sports curation looks for "conversas que valem ser destacadas": good content with relevant information. They watch the hashtag broadly; there is **no editorial calendar**, and whatever stands out appears in the curation. Takeaways: the comment thread is part of what gets curated, so reply fast and keep the closing question specific. #EsportesNoLinkedIn is how they find posts, so it stays first on every post. Follow the hashtag to see what gets featured, and do the daily commenting there.
+- **2026-11-19: beat corrected to sport.** Two of the first three posts were urban mobility (LA bike lanes; Santos e-bike fines, tagged #MobilidadeUrbana #BicicletaEletrica). Jorge: sports only, mostly cycling, the niche that affects Black people, and the good news as well, not only struggle. Changes: the `access-equity` lens and its Ciclocidade / Observatório da Bicicleta feeds are gone; transport titles are dropped in code (`OFF_BEAT` in the beacon); mobility hashtags are stripped from the post; the screener tags each story `win` / `barrier` / `neutral`, and whenever the last post was not a win, wins lead the shortlist and the editor is told to pick one; a lower-weight `black-athletes` lens lets in Black athletes' milestones in other sports.
 - **Profile assets:** cover options are in `brand_assets/LinkedIn/` (B recommended). The headline and "Sobre" drafts are in the 2026-11-13 session.
 
 ## What the pipeline does
 
 | Step | Script | When (BRT) |
 |---|---|---|
-| Gather cycling news through the Black / African / Latin / access lenses (PT, EN, ES), screen with Haiku | `linkedin-beacon.mjs` + `linkedin-beacon.json` | inside the build |
+| Gather sports news (mostly cycling) through the Black cycling / African / Latin / Brazil / Black athletes lenses (PT, EN, ES), drop transport stories, screen with Haiku (relevance + win/barrier tone) | `linkedin-beacon.mjs` + `linkedin-beacon.json` | inside the build |
 | Opus picks the story and angle, Tavily researches, Opus writes the post | `linkedin-writer.mjs` | inside the build |
 | Rotate format (see below), build media (`linkedin-media.mjs`), queue a **Draft** card in Notion **IG Studio > LinkedIn Pipeline** | `prepare-linkedin.mjs` | Mon + Wed 19:00, n8n `WN80uKN1zvvqrRS4` |
 | Publish ONE approved card, then post the sources as the first comment | `publish-linkedin.mjs` | Tue to Fri 08:30, n8n `bjhjku5vhY73W09h` |
@@ -25,7 +26,8 @@ Nothing reaches LinkedIn without approval. Edit Caption and First Comment in the
 
 ## Rules baked into the writer (and why)
 
-- **#EsportesNoLinkedIn on every post**, plus exactly 2 specific tags. Research consensus: 3 to 5 tags maximum; past that, reach drops.
+- **The beat is sport, not mobility.** Bike lanes, commuting, e-bike rules, traffic and delivery riders are off-beat even with a bicycle in the story. Wins, firsts and milestones by Black, African and Latin-American athletes are half the beat: at least one post in every two is a win when the beacon finds one.
+- **#EsportesNoLinkedIn on every post**, plus exactly 2 specific sport tags (mobility/transport tags are stripped). Research consensus: 3 to 5 tags maximum; past that, reach drops.
 - **No links in the post body.** Third-party analyses put the reach penalty for external links around 50 to 60% (unconfirmed by LinkedIn, consistent across sources). Sources go in the first comment, which the publisher posts automatically.
 - **Hook within roughly 210 characters**: that's what shows before "ver mais".
 - **Value over promotion, an open question at the end**: straight from the workshop slides ("Consistência, Valor, Interação").

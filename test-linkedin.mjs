@@ -1,6 +1,6 @@
 /* Unit tests for the LinkedIn series: beacon matching/scoring, post assembly and
    policing, format rotation, slot dates, and the publisher's card reader. No network. */
-import { matchLens, isAboutCycling, scoreCandidate } from './linkedin-beacon.mjs';
+import { matchLens, isAboutCycling, isAboutSport, isOffBeat, rankShortlist, winIsDue, diverseBatch, scoreCandidate } from './linkedin-beacon.mjs';
 import { ridesBlock, normaliseDashes, normaliseHashtag, assembleCommentary, policeFirstComment, citableUrl, SERIES_TAG } from './linkedin-writer.mjs';
 import { pickFormat, nextSlotDate } from './prepare-linkedin.mjs';
 import { cardPayload, isDue, dueCardsFilter, nextApprovedCard } from './publish-linkedin.mjs';
@@ -29,6 +29,39 @@ t('cycling gate: funding cycle rejected', isAboutCycling('NLC awards grants unde
 t('cycling gate: ciclismo accepted', isAboutCycling('Quintana alerta por el futuro del ciclismo colombiano'), true);
 t('cycling gate: rider story accepted', isAboutCycling('Team Amani shuts down its men\'s road team, bike sponsor stays'), true);
 
+/* beat: sport, not urban mobility (2026-11-19: the series drifted into LA bike lanes and Santos e-bike fines) */
+t('off-beat: e-bike fines rejected', isOffBeat('Santos reforça fiscalização e multas para bicicletas elétricas, ciclomotores e autopropelidos'), true);
+t('off-beat: bike lane plan rejected', isOffBeat("Nithya Raman's Bike Lane Plan Could Change How Latino Workers Get Around Los Angeles"), true);
+t('off-beat: mobilidade urbana rejected', isOffBeat('Pesquisa mostra avanço da mobilidade urbana por bicicleta na periferia'), true);
+t('off-beat: ciclovia rejected', isOffBeat('Prefeitura entrega nova ciclovia na zona leste'), true);
+t('off-beat: delivery riders rejected', isOffBeat('Entregadores de aplicativo protestam em São Paulo'), true);
+t('off-beat: race story kept', isOffBeat('Girmay wins stage, the first Black African to take the green jersey'), false);
+t('off-beat: velodrome story kept', isOffBeat('One Final Lap: Honouring the Enduring Legacy of the Bellville Velodrome'), false);
+t('off-beat: e-MTB race kept (sport, not transport)', isOffBeat('Brazilian rider takes e-MTB world cup podium'), false);
+t('sport gate: athletics accepted', isAboutSport('Primeira atleta negra a ganhar medalha no salto'), true);
+t('sport gate: cycling accepted', isAboutSport('Ciclista brasileira vence Gran Fondo'), true);
+t('sport gate: politics rejected', isAboutSport('Primeira deputada negra assume comissão'), false);
+
+const it = (title, relevance, tone, score) => ({ title, relevance, tone, score, ok: true });
+const pool = [it('barrier r3', 3, 'barrier', 0.9), it('win r2', 2, 'win', 0.5), it('neutral r3', 3, 'neutral', 0.8), it('win r3', 3, 'win', 0.4)];
+t('rank: relevance then score by default', rankShortlist(pool, false).map(c => c.title), ['barrier r3', 'neutral r3', 'win r3', 'win r2']);
+t('rank: wins first when a win is due', rankShortlist(pool, true).map(c => c.title), ['win r3', 'win r2', 'barrier r3', 'neutral r3']);
+t('rank: drops not-ok and low relevance', rankShortlist([{ ...it('x', 3, 'win', 1), ok: false }, it('y', 1, 'win', 1)], true), []);
+t('win due: empty ledger', winIsDue([]), true);
+t('win due: last post a barrier', winIsDue([{ signal: { tone: 'win' } }, { signal: { tone: 'barrier' } }]), true);
+t('win due: last post a win', winIsDue([{ signal: { tone: 'barrier' } }, { signal: { tone: 'win' } }]), false);
+t('win due: untagged old posts count as not-win', winIsDue([{ signal: { lens: 'access-equity' } }]), true);
+
+t('sport gate: figure skating accepted', isAboutSport('Alexa Gasparotto Becomes First Black Woman To Land Triple Axel in figure skating'), true);
+t('sport gate: head coach accepted', isAboutSport('Yolanda Thomas promoted to head coach of the Pride'), true);
+
+// A lens returning 30+ items (latin, africa) must not take every screening slot (2026-11-19:
+// the Gran Fondo Brasil record never reached the screener).
+const flood = [...Array(5)].map((_, i) => ({ lens: 'latin', title: `l${i}`, score: 0.9 - i * 0.01 }));
+const quiet = [{ lens: 'brasil', title: 'b0', score: 0.5 }, { lens: 'black', title: 'k0', score: 0.4 }];
+t('diverse batch: every lens gets a turn', diverseBatch([...flood, ...quiet], 4).map(c => c.title), ['l0', 'b0', 'k0', 'l1']);
+t('diverse batch: fills from the deep lens when others run out', diverseBatch([...flood, ...quiet], 6).map(c => c.title), ['l0', 'b0', 'k0', 'l1', 'l2', 'l3']);
+
 const cfg = { freshnessDays: 10, lenses: { a: { weight: 1 }, b: { weight: 0.5 } } };
 const fresh = new Date().toISOString();
 t('score: heavier lens wins', scoreCandidate({ lens: 'a', tier: 1, date: fresh }, cfg) > scoreCandidate({ lens: 'b', tier: 1, date: fresh }, cfg), true);
@@ -52,6 +85,10 @@ t('dashes: clause en dash becomes a comma', normaliseDashes('um ponto – outro'
 t('assemble: en dash range normalised, not fatal', assembleCommentary({ ...base, body: 'De 2020–2026.' }).includes('De 2020-2026.'), true);
 throws('assemble: over 3000 rejected', () => assembleCommentary({ ...base, body: 'a'.repeat(3100) }), /3000/);
 t('assemble: second call after a rejected link still works (regex state)', assembleCommentary(base) === text, true);
+const mobilityTags = assembleCommentary({ ...base, hashtags: ['#MobilidadeUrbana', '#BicicletaEletrica', '#Ciclismo'] });
+t('assemble: mobility hashtags dropped', mobilityTags.endsWith(`${SERIES_TAG} #Ciclismo`), true);
+t('assemble: ciclovia/transito tags dropped', /#Ciclovia|#Transito/.test(assembleCommentary({ ...base, hashtags: ['Ciclovia', 'Trânsito'] })), false);
+t('assemble: sport tags kept', assembleCommentary({ ...base, hashtags: ['AtletasNegros', 'CiclismoDeEstrada'] }).endsWith('#AtletasNegros #CiclismoDeEstrada'), true);
 
 const allowed = ['https://www.infobae.com/a', 'https://cyclingnews.com/b'];
 t('comment: allowed link kept', policeFirstComment('Fonte: https://www.infobae.com/a', allowed), 'Fonte: https://www.infobae.com/a');
