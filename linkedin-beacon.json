@@ -1,7 +1,8 @@
 {
-  "_comment": "News beacon for the LinkedIn sports series (#EsportesNoLinkedIn). Read by linkedin-beacon.mjs. The beat is SPORT, mostly cycling, with a focus on Black, African and Latin-American athletes, their wins as much as their barriers. Each lens is one angle; 'weight' steers selection. anySport lenses accept any sport, the rest must be about cycling. Urban mobility / transport titles are dropped in code (OFF_BEAT). Edit freely: empty or failing feeds are skipped.",
+  "_comment": "News beacon for the LinkedIn sports series (#EsportesNoLinkedIn). Read by linkedin-beacon.mjs. The beat is SPORT, mostly cycling, often through Black, African, Latin-American and Brazilian athletes, but sport first: racism/representation stories are at most one post in three (IDENTITY_EVERY in code). Each lens is one angle; 'weight' steers selection. anySport lenses accept any sport, the rest must be about cycling. fallbackLens catches tier-1 cycling outlet stories that match no lens keyword. Urban mobility / transport titles are dropped in code (OFF_BEAT). Edit freely: empty or failing feeds are skipped.",
   "_verified": "Feeds and queries tested 2026-11-13. In a 14-day window the narrow PT 'ciclista negro' and ES 'afrodescendiente' queries returned 0 items, so the beacon ALSO reads the big English cycling outlets and keeps only items that match a lens keyword. That is where the Black/African/Latin pro-peloton stories actually surface (Girmay, Team Amani, visas, Colombian riders). Rejected: pedal.com.br (403), cbc.esp.br (fetch failed), ciclismointernacional.com (404), bikemagazine.com.br (520).",
   "freshnessDays": 10,
+  "fallbackLens": "ciclismo",
   "googleNews": {
     "pt": "https://news.google.com/rss/search?q={q}&hl=pt-BR&gl=BR&ceid=BR:pt-419",
     "en": "https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en",
@@ -179,7 +180,12 @@
           "(\"first Black\" OR \"Black athletes\") (championship OR medal OR Olympic OR record OR title)"
         ]
       }
+    },
+    "ciclismo": {
+      "label": "Ciclismo",
+      "weight": 0.5,
+      "keywords": []
     }
   },
-  "_changed": "2026-11-19: removed the access-equity lens and the Ciclocidade / Observatório da Bicicleta feeds (urban mobility, off-beat: produced the LA bike-lane and Santos e-bike posts). Added good-news queries to black-cycling, a black-athletes lens for other sports at lower weight, and tightened the brasil-ciclismo query."
+  "_changed": "2026-11-19: removed the access-equity lens and the Ciclocidade / Observatório da Bicicleta feeds (urban mobility, off-beat). Added a black-athletes lens for other sports at lower weight, a general 'ciclismo' fallback lens for tier-1 outlets, and tightened the brasil-ciclismo query."
 }

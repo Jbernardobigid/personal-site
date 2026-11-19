@@ -1,6 +1,6 @@
 /* Unit tests for the LinkedIn series: beacon matching/scoring, post assembly and
    policing, format rotation, slot dates, and the publisher's card reader. No network. */
-import { matchLens, isAboutCycling, isAboutSport, isOffBeat, rankShortlist, winIsDue, diverseBatch, scoreCandidate } from './linkedin-beacon.mjs';
+import { matchLens, isAboutCycling, isAboutSport, isOffBeat, rankShortlist, identityIsResting, feedLens, diverseBatch, scoreCandidate } from './linkedin-beacon.mjs';
 import { ridesBlock, normaliseDashes, normaliseHashtag, assembleCommentary, policeFirstComment, citableUrl, SERIES_TAG } from './linkedin-writer.mjs';
 import { pickFormat, nextSlotDate } from './prepare-linkedin.mjs';
 import { cardPayload, isDue, dueCardsFilter, nextApprovedCard } from './publish-linkedin.mjs';
@@ -43,15 +43,24 @@ t('sport gate: athletics accepted', isAboutSport('Primeira atleta negra a ganhar
 t('sport gate: cycling accepted', isAboutSport('Ciclista brasileira vence Gran Fondo'), true);
 t('sport gate: politics rejected', isAboutSport('Primeira deputada negra assume comissão'), false);
 
-const it = (title, relevance, tone, score) => ({ title, relevance, tone, score, ok: true });
-const pool = [it('barrier r3', 3, 'barrier', 0.9), it('win r2', 2, 'win', 0.5), it('neutral r3', 3, 'neutral', 0.8), it('win r3', 3, 'win', 0.4)];
-t('rank: relevance then score by default', rankShortlist(pool, false).map(c => c.title), ['barrier r3', 'neutral r3', 'win r3', 'win r2']);
-t('rank: wins first when a win is due', rankShortlist(pool, true).map(c => c.title), ['win r3', 'win r2', 'barrier r3', 'neutral r3']);
-t('rank: drops not-ok and low relevance', rankShortlist([{ ...it('x', 3, 'win', 1), ok: false }, it('y', 1, 'win', 1)], true), []);
-t('win due: empty ledger', winIsDue([]), true);
-t('win due: last post a barrier', winIsDue([{ signal: { tone: 'win' } }, { signal: { tone: 'barrier' } }]), true);
-t('win due: last post a win', winIsDue([{ signal: { tone: 'barrier' } }, { signal: { tone: 'win' } }]), false);
-t('win due: untagged old posts count as not-win', winIsDue([{ signal: { lens: 'access-equity' } }]), true);
+// Not every post is about race: identity stories (racism, representation, being a minority)
+// get at most one post in IDENTITY_EVERY; the rest is the sport itself (2026-11-19, Jorge).
+const it = (title, relevance, theme, score) => ({ title, relevance, theme, score, ok: true });
+const pool = [it('identity r3', 3, 'identity', 0.9), it('sport r2', 2, 'sport', 0.5), it('identity r3b', 3, 'identity', 0.8), it('sport r3', 3, 'sport', 0.4)];
+t('rank: relevance then score by default', rankShortlist(pool, false).map(c => c.title), ['identity r3', 'identity r3b', 'sport r3', 'sport r2']);
+t('rank: identity stories go last while they rest', rankShortlist(pool, true).map(c => c.title), ['sport r3', 'sport r2', 'identity r3', 'identity r3b']);
+t('rank: drops not-ok and low relevance', rankShortlist([{ ...it('x', 3, 'sport', 1), ok: false }, it('y', 1, 'sport', 1)], true), []);
+t('identity rest: empty ledger', identityIsResting([]), false);
+t('identity rest: identity post last', identityIsResting([{ signal: { theme: 'sport' } }, { signal: { theme: 'identity' } }]), true);
+t('identity rest: identity two posts ago', identityIsResting([{ signal: { theme: 'identity' } }, { signal: { theme: 'sport' } }]), true);
+t('identity rest: identity three posts ago is fine', identityIsResting([{ signal: { theme: 'identity' } }, { signal: { theme: 'sport' } }, { signal: { theme: 'sport' } }]), false);
+t('identity rest: untagged old posts do not count', identityIsResting([{ signal: { lens: 'access-equity' } }]), false);
+
+const lensMatchers = [{ id: 'africa-cycling', regexes: [/(?<![p{L}p{N}])girmay(?![p{L}p{N}])/iu] }];
+t('feed lens: fixed lens wins', feedLens({ lens: 'x', tier: 1 }, 'girmay', lensMatchers, 'ciclismo'), 'x');
+t('feed lens: keyword match', feedLens({ tier: 1 }, 'girmay sprints', lensMatchers, 'ciclismo'), 'africa-cycling');
+t('feed lens: tier-1 outlet falls back to general cycling', feedLens({ tier: 1 }, 'tour de france route revealed', lensMatchers, 'ciclismo'), 'ciclismo');
+t('feed lens: tier-2 outlet has no fallback', feedLens({ tier: 2 }, 'tour de france route revealed', lensMatchers, 'ciclismo'), null);
 
 t('sport gate: figure skating accepted', isAboutSport('Alexa Gasparotto Becomes First Black Woman To Land Triple Axel in figure skating'), true);
 t('sport gate: head coach accepted', isAboutSport('Yolanda Thomas promoted to head coach of the Pride'), true);

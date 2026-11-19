@@ -20,7 +20,7 @@ export const SERIES_TAG = '#EsportesNoLinkedIn';
 export const TARGET_MAX_CHARS = 1900;   // room under LinkedIn's 3000 for Jorge's own edits
 const HOOK_MAX_CHARS = 210;             // roughly what the feed shows before "...ver mais"
 
-const SERIES_BRIEF = `THE SERIES: a LinkedIn series in Brazilian Portuguese about SPORT, mostly cycling (road, track, gravel, MTB, racing, teams, clubs), with a focus on Black, African and Latin-American athletes. It celebrates their wins, firsts and milestones as much as it names the barriers: good news is half the beat, not a break from it. It is NOT about urban mobility, commuting, bike lanes, e-bike rules or transport policy. Jorge is an amateur road cyclist, not a pro, a journalist or a coach. His standing is that of a Black Brazilian who rides seriously, works in data and AI governance, and reads the sport through the lens of representation and careers. The goal is to become a reference voice on this beat, which LinkedIn rewards for originality, expertise and real conversation, not volume.`;
+const SERIES_BRIEF = `THE SERIES: a LinkedIn series in Brazilian Portuguese about SPORT, mostly cycling (road, track, gravel, MTB, racing, teams, clubs), often seen through Black, African, Latin-American and Brazilian athletes. It is a sport series first: most posts are about the sport itself (a race, a performance, training, a career move, a team and its business, an event, data, the culture of the sport), and only some are about racism or representation, when the story is actually about that. Never force an identity angle onto a story that is not about it. It is NOT about urban mobility, commuting, bike lanes, e-bike rules or transport policy. Jorge is an amateur road cyclist, not a pro, a journalist or a coach. His standing is that of a Black Brazilian who rides seriously, works in data and AI governance, and reads the sport with an eye for performance, careers and the people in it. The goal is to become a reference voice on this beat, which LinkedIn rewards for originality, expertise and real conversation, not volume.`;
 
 const FORMAT_BRIEFS = {
   text: 'TEXT ONLY. No image. The words carry the whole post, so the hook and the rhythm matter more than ever.',
@@ -37,7 +37,7 @@ const VOICE_RULES = `VOICE AND FORMAT (LinkedIn, mobile first):
 - First person, pointed outward. The post is about the story and what it means for the reader, not a biography.
 - HOOK: the first one or two lines must stand alone and earn the "ver mais" tap, at most ${HOOK_MAX_CHARS} characters. A specific fact, number, scene or tension from the story, never a broad statement, never a question like "Você sabia que...".
 - Then 4 to 7 very short paragraphs (1 to 3 sentences each), blank line between them.
-- Bring VALUE to a professional audience: connect the sport story to something people recognise from work, careers, talent pipelines, sponsorship, leadership, or who gets a seat at the table. Earn the bridge, never force a corporate moral.
+- Bring VALUE to a professional audience: connect the sport story to something people recognise from work, careers, talent pipelines, sponsorship, leadership, preparation, performance under pressure. Earn the bridge, never force a corporate moral.
 - End with ONE specific, open question that invites people to answer from their own experience. Not "Concorda?", not "O que você acha?".
 - Total post at most ${TARGET_MAX_CHARS} characters including hashtags.
 - Facts: use ONLY facts from the news item and the research given. Name the outlet in the text when you use its reporting ("segundo o Cyclingnews"). Translate quotes from Spanish or English and mark them as "em tradução livre". Never invent numbers, quotes, people, or anything about Jorge's life beyond the background and the ride data given.
@@ -45,8 +45,8 @@ const VOICE_RULES = `VOICE AND FORMAT (LinkedIn, mobile first):
 - Allegations about named people stay allegations: report what was reported and by whom, add no judgement of the person.
 - NO links in the post body (LinkedIn suppresses posts with external links). Sources go in the first comment.
 - Never use the em dash or en dash. Never use "Além disso", "Portanto", "Vale ressaltar", "Em suma", "Nesse contexto", "No entanto", "O fato é que", "É fundamental". No emoji bullets, no hollow motivation, no "Bora?".
-- When the story is a win, let it be a win: say what was achieved and why it matters before any caveat. Do not turn every good story into a lament.
-- Hashtags: give exactly 2 specific SPORT ones (in Portuguese, CamelCase, no accents, e.g. #Ciclismo, #CiclismoDeEstrada, #CiclismoAfricano, #AtletasNegros, #Representatividade), the series tag ${SERIES_TAG} is added for you. Never mobility or transport tags (#MobilidadeUrbana, #BicicletaEletrica, #Ciclovia): they are dropped.`;
+- Write the story it is. A race is about the race, a career move about the career: do not turn every story into one about racism or struggle.
+- Hashtags: give exactly 2 specific SPORT ones that match the story (in Portuguese, CamelCase, no accents, e.g. #Ciclismo, #CiclismoDeEstrada, #CiclismoAfricano, #Gravel, #TourDeFrance; #Representatividade only when the story is about that), the series tag ${SERIES_TAG} is added for you. Never mobility or transport tags (#MobilidadeUrbana, #BicicletaEletrica, #Ciclovia): they are dropped.`;
 
 /* ── Pure helpers (tested) ───────────────────────────────── */
 
@@ -166,10 +166,10 @@ const CHOICE_SCHEMA = {
   required: ['choice', 'angle', 'research_query']
 };
 
-export async function chooseStory(client, { shortlist, format, recent, rides, winDue = false }) {
-  const items = shortlist.map((c, i) => `${i}. [${c.lens}, ${c.tone || 'neutral'}] ${c.title} (${c.source}, ${c.date ? describeDay(c.date.slice(0, 10)) : 'data desconhecida'})\n   ${c.summary.slice(0, 300)}`).join('\n');
-  const winLine = winDue && shortlist.some(c => c.tone === 'win')
-    ? '\n\nGOOD NEWS IS DUE: the last post was not a win. Pick an item tagged "win" unless none of them gives Jorge anything to add.'
+export async function chooseStory(client, { shortlist, format, recent, rides, identityResting = false }) {
+  const items = shortlist.map((c, i) => `${i}. [${c.lens}, ${c.theme || 'sport'}] ${c.title} (${c.source}, ${c.date ? describeDay(c.date.slice(0, 10)) : 'data desconhecida'})\n   ${c.summary.slice(0, 300)}`).join('\n');
+  const themeLine = identityResting && shortlist.some(c => c.theme !== 'identity')
+    ? '\n\nA recent post was about racism or representation. This one must be a "sport" item: pick none tagged "identity".'
     : '';
   return writeJson(client, {
     label: 'linkedin story choice',
@@ -179,7 +179,7 @@ export async function chooseStory(client, { shortlist, format, recent, rides, wi
     system: `You are the editor of Jorge Bernardo's LinkedIn series.\n\n${SERIES_BRIEF}\n\n${JORGE_CONTEXT}`,
     messages: [{
       role: 'user',
-      content: `${promptDateBlock()}\n\nToday's format: ${FORMAT_BRIEFS[format]}\n\nPick the ONE story where Jorge has the most to add for a professional audience, favouring Black, African and Latin-American athletes in cycling. Prefer substance (a win that means something, a first, a career, a decision, a barrier, data) over bare results and rumours. Never pick urban mobility or transport. The series is mostly cycling: pick another sport ([black-athletes]) only when no cycling item is as strong.${winLine}\n\nNEWS ITEMS:\n${items}\n\n${ridesBlock(rides)}${recentBlock(recent)}`
+      content: `${promptDateBlock()}\n\nToday's format: ${FORMAT_BRIEFS[format]}\n\nPick the ONE story where Jorge has the most to add for a professional audience, favouring stories with Black, African, Latin-American or Brazilian athletes in cycling, whatever the story is about. Prefer substance (a race that means something, a performance, a career, a team decision, data) over bare results and rumours. Never pick urban mobility or transport. The series is mostly cycling: pick another sport ([black-athletes]) only when no cycling item is as strong.${themeLine}\n\nNEWS ITEMS:\n${items}\n\n${ridesBlock(rides)}${recentBlock(recent)}`
     }]
   });
 }
