@@ -92,8 +92,7 @@ const STYLE = `<style>
 </style>`;
 
 /** LinkedIn-paste HTML from the newsletter content (the single source). */
-function buildLinkedInPaste(nl, slug) {
-  const canonicalUrl = `${PUBLIC_SITE_URL}/blog/posts/${slug}.html`;
+function buildLinkedInPaste(nl, postUrl) {
   const sections = (nl.sections || [])
     .map(s => `<h2>${escapeHtml(s.heading)}</h2>\n${s.body}`).join('\n');
   const content = `
@@ -108,7 +107,7 @@ function buildLinkedInPaste(nl, slug) {
     <p><strong>Recebeu A Interseção pelo LinkedIn?</strong> Os próximos artigos chegam primeiro no email — sem algoritmo no meio, sem ruído.</p>
     <p>👉 <a href="${NEWSLETTER_URL}">Assine em jorgebernardo.tech</a></p>
   </div>
-  <p class="source">Publicado originalmente em <a href="${canonicalUrl}">${canonicalUrl}</a></p>`;
+  ${postUrl ? `<p class="source">Publicado originalmente em <a href="${postUrl}">${postUrl}</a></p>` : ''}`;
   const banner = `<div class="banner">Abra este arquivo no navegador, selecione tudo (Ctrl/Cmd+A), copie e cole no editor de artigo do LinkedIn.</div>`;
   return `<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><title>${escapeHtml(NEWSLETTER_NAME)} · ${escapeHtml(nl.title)}</title>
@@ -178,18 +177,27 @@ async function main() {
   if (!fs.existsSync(nlJsonPath)) fail(`newsletter.json missing: ${nlJsonPath}`);
   const nl = JSON.parse(fs.readFileSync(nlJsonPath, 'utf8'));
 
+  // Off-cycle editions (build_from_topic.py) have no blog post: linking one would 404.
+  const postUrl = fs.existsSync(path.join(__dirname, 'blog', 'posts', `${slug}.html`))
+    ? `${PUBLIC_SITE_URL}/blog/posts/${slug}.html`
+    : null;
+
   // 1. LinkedIn paste from the same content.
   if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
   const liPath = path.join(OUT_DIR, `${slug}-linkedin.html`);
-  const liHtml = buildLinkedInPaste(nl, slug);
+  const liHtml = buildLinkedInPaste(nl, postUrl);
   fs.writeFileSync(liPath, liHtml, 'utf8');
 
   // 2. Email: preview (the broadcast itself) + a LINK to the LinkedIn paste + cover image.
   //    The paste is linked, never attached — see the file header for why.
   const paste = await uploadPaste(slug, liHtml);
   const attachments = [];
-  const coverPath = path.join(__dirname, 'blog', 'posts', 'images', `${slug}.png`);
-  if (fs.existsSync(coverPath)) {
+  // The post's OG image, else the edition's own hero (the only cover an off-cycle edition has).
+  const coverPath = [
+    path.join(__dirname, 'blog', 'posts', 'images', `${slug}.png`),
+    path.join(TMP_DIR, `${slug}_hero.png`),
+  ].find(p => fs.existsSync(p));
+  if (coverPath) {
     attachments.push({ filename: `cover-${slug}.png`, content: fs.readFileSync(coverPath).toString('base64') });
   }
   const pasteLine = paste.url
@@ -206,12 +214,13 @@ async function main() {
     Status: prop.select('Pending'),
     Subject: prop.richText(manifest.subject || nl.title || slug),
     Preview: prop.richText(manifest.preview_text || nl.preview_text || ''),
-    'Source Post': prop.url(`${PUBLIC_SITE_URL}/blog/posts/${slug}.html`),
     Notes: prop.richText(
       'Revise a prévia no email. Aprove definindo Status = "Approved" para enviar à lista.'
+      + (postUrl ? '' : ' | Edição avulsa, sem post no blog.')
       + (paste.url ? ` | LinkedIn: ${paste.url}` : '')
     ),
   };
+  if (postUrl) properties['Source Post'] = prop.url(postUrl);
   const dateMatch = /^(\d{4}-\d{2}-\d{2})/.exec(slug);
   if (dateMatch) properties['Built At'] = prop.date(dateMatch[1]);
   if (nl.hero_image_url) properties.Cover = prop.files([nl.hero_image_url]);
@@ -222,7 +231,7 @@ async function main() {
   out({
     success: true, slug, subject: manifest.subject, emailId,
     linkedinPaste: liPath, linkedinUrl: paste.url, pasteError: paste.error,
-    cover: fs.existsSync(coverPath),
+    cover: Boolean(coverPath),
   });
 }
 
