@@ -1,0 +1,86 @@
+{
+  "topic": "indicadores desigualdade racial Brasil IBGE pretos e pardos renda desemprego escolaridade 2023",
+  "slug": "zumbi-vivo-no-dia-21-a-identidade-negra-que-nao-cabe-no",
+  "generated_at": "2026-11-21T12:00:44.647Z",
+  "sources": [
+    "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf",
+    "https://hjur.com.br/desigualdade-racial-no-brasil-pretos-e-pardos-ainda-ganham-menos-estudam-menos-e-morrem-mais",
+    "https://www.youtube.com/watch?v=Lhxs0GgYwNw",
+    "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/35467-pessoas-pretas-e-pardas-continuam-com-menor-acesso-a-emprego-educacao-seguranca-e-saneamento",
+    "https://g1.globo.com/economia/noticia/2026/11/18/desigualdades-sociais-cor-raca-ibge.ghtml",
+    "https://www.gynnoticias.com.br/brasil/pretos-e-pardos-ganham-menos-enfrentam-mais-desemprego-e-sao-maioria-das-vitimas-de-homicidio-aponta-ibge/5882",
+    "https://biblioteca.ibge.gov.br/visualizacao/livros/liv101972_informativo.pdf",
+    "https://www.youtube.com/watch?v=e5gxS5vriUE",
+    "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/acoes-e-programas/programas-projetos-acoes-obras-e-atividades/estatisticas-trabalho/o-pdet/boletim-desigualdade-racial/BoletimsobreadesigualdaderacialnomercadodetrabalhoVF.pdf",
+    "https://gemaa.iesp.uerj.br/wp-content/uploads/2023/02/Relatorio-das-Desigualdades-Raciais-2022-1.pdf"
+  ],
+  "insights": [
+    "A taxa de analfabetismo entre a população negra de 15 anos ou mais foi de 7,1%, comparado a 3,2% entre brancos.",
+    "A média de anos de estudo para a população negra de 25 anos ou mais foi de 9,2 anos, inferior aos 10,8 anos da população branca.",
+    "Apenas 13% da população negra com 25 anos ou mais tinha ensino superior completo, contra 28% da população branca.",
+    "O rendimento médio por hora dos homens brancos ocupados foi de R$ 29,20, enquanto para homens pretos ou pardos foi de R$ 17,20.",
+    "Pessoas pretas e pardas são maioria entre os trabalhadores desocupados e subutilizados, e estão mais expostas à pobreza e à violência letal."
+  ],
+  "stats": [
+    {
+      "value": "7,1%",
+      "context": "taxa de analfabetismo entre a população negra de 15 anos ou mais",
+      "source": "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf"
+    },
+    {
+      "value": "3,2%",
+      "context": "taxa de analfabetismo entre a população branca de 15 anos ou mais",
+      "source": "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf"
+    },
+    {
+      "value": "9,2 anos",
+      "context": "média de anos de estudo para a população negra de 25 anos ou mais",
+      "source": "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf"
+    },
+    {
+      "value": "10,8 anos",
+      "context": "média de anos de estudo para a população branca de 25 anos ou mais",
+      "source": "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf"
+    },
+    {
+      "value": "13%",
+      "context": "percentual da população negra com 25 anos ou mais que possui ensino superior completo",
+      "source": "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf"
+    },
+    {
+      "value": "28%",
+      "context": "percentual da população branca com 25 anos ou mais que possui ensino superior completo",
+      "source": "https://observatoriofindes.com.br/wp-content/uploads/2024/11/Edicacao-em-Foco_A-face-da-desigualdade-racial.pdf"
+    },
+    {
+      "value": "R$ 29,20",
+      "context": "rendimento médio por hora dos homens brancos ocupados",
+      "source": "https://g1.globo.com/economia/noticia/2026/11/18/desigualdades-sociais-cor-raca-ibge.ghtml"
+    },
+    {
+      "value": "R$ 17,20",
+      "context": "rendimento médio por hora dos homens pretos ou pardos",
+      "source": "https://g1.globo.com/economia/noticia/2026/11/18/desigualdades-sociais-cor-raca-ibge.ghtml"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "As pessoas pretas e pardas são maioria entre os trabalhadores desocupados e subutilizados do país.",
+      "attribution": "https://g1.globo.com/economia/noticia/2026/11/18/desigualdades-sociais-cor-raca-ibge.ghtml"
+    },
+    {
+      "text": "O trabalhador branco ganha em média o dobro do Preto.",
+      "attribution": "https://www.youtube.com/watch?v=Lhxs0GgYwNw"
+    }
+  ],
+  "time_series": [],
+  "summary": "Em 2023, a população negra no Brasil continua a enfrentar desigualdades significativas em termos de renda, desemprego e escolaridade. Dados do IBGE mostram que a taxa de analfabetismo e a média de anos de estudo são inferiores em comparação à população branca, refletindo um cenário de desigualdade racial persistente.",
+  "pillar": "black-identity",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-21-zumbi-vivo-no-dia-21-a-identidade-negra-que-nao-cabe-no.html",
+  "signal": {
+    "title": "Consciência Negra não é só em novembro",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/consciencia-negra-nao-e-so-em-novembro/",
+    "date": "2026-11-20T16:29:03.000Z"
+  }
+}

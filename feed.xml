@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Thu, 19 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>A identidade negra que não cabe no feriado</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-11-21-zumbi-vivo-no-dia-21-a-identidade-negra-que-nao-cabe-no.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-11-21-zumbi-vivo-no-dia-21-a-identidade-negra-que-nao-cabe-no.html</guid>
+      <pubDate>Sat, 21 Nov 2026 12:00:00 GMT</pubDate>
+      <description>A Consciência Negra terminou ontem no calendário, mas a diferença de R$ 12 por hora medida pelo IBGE segue. Identidade negra é prática diária, não data.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-11-21-zumbi-vivo-no-dia-21-a-identidade-negra-que-nao-cabe-no.jpg" length="197490" type="image/jpeg"/>
+    </item>
     <item>
       <title>Aplaudir a empreendedora negra sai mais barato</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-11-19-aplaudir-a-empreendedora-negra-sai-mais-barato-do-que-pagar.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Tue, 13 Oct 2026 12:00:00 GMT</pubDate>
       <description>A ciclovia provisória de Vitória abriu hoje na Beira-Mar. A infraestrutura cresceu, mas a pergunta sobre quem ocupa esse espaço continua sem resposta.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-13-vitoria-abriu-uma-ciclovia-na-beira-mar-a-pergunta-que-fica.jpg" length="197599" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Herança, presença e o que um pai passa adiante</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-11-sergio-malheiros-tem-27-anos-de-carreira-e-33-de-idade-isso.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-11-sergio-malheiros-tem-27-anos-de-carreira-e-33-de-idade-isso.html</guid>
-      <pubDate>Sun, 11 Oct 2026 12:00:00 GMT</pubDate>
-      <description>Sérgio Malheiros estreou antes de completar 10 anos. Aos 33, protagoniza uma série. O que isso revela sobre herança, representação e o legado que um pai…</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-11-sergio-malheiros-tem-27-anos-de-carreira-e-33-de-idade-isso.jpg" length="144320" type="image/jpeg"/>
     </item>
   </channel>
 </rss>

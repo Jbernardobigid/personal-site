@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "senac rj abre mais de 6 mil vagas gratuitas em cursos tecnicos para quem ja conc",
-      "url": "https://noticiapreta.com.br/senac-rj-abre-mais-de-6-mil-vagas-gratuitas-em-cursos-tecnicos-para-quem-ja-concluiu-o-ensino-medio/?utm_source=rss&utm_medium=rss&utm_campaign=senac-rj-abre-mais-de-6-mil-vagas-gratuitas-em-cursos-tecnicos-para-quem-ja-concluiu-o-ensino-medio",
-      "pillar": "learning",
-      "title": "Senac RJ abre mais de 6 mil vagas gratuitas em cursos Técnicos para quem já concluiu o Ensino Médio",
-      "recordedAt": "2026-09-21T12:01:56.666Z"
-    },
-    {
       "titleKey": "formacao sobre equidade racial avanca nas escolas e passa de 48 para 69 das rede",
       "url": "https://mundonegro.inf.br/formacao-sobre-equidade-racial-avanca-nas-escolas-e-passa-de-48-para-69-das-redes-municipais-em-dois-anos/",
       "pillar": "learning",
@@ -202,6 +195,13 @@
       "pillar": "entrepreneurship",
       "title": "Além da “superação”: o peso e a potência das 4,7 milhões de empreendedoras negras no Brasil",
       "recordedAt": "2026-11-19T12:02:17.898Z"
+    },
+    {
+      "titleKey": "consciencia negra nao e so em novembro",
+      "url": "https://mundonegro.inf.br/consciencia-negra-nao-e-so-em-novembro/",
+      "pillar": "black-identity",
+      "title": "Consciência Negra não é só em novembro",
+      "recordedAt": "2026-11-21T12:02:19.865Z"
     }
   ]
 }
