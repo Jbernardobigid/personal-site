@@ -1,0 +1,54 @@
+{
+  "topic": "empreendedores negros acesso à tecnologia digital e e-commerce no Brasil percentual IBGE",
+  "slug": "a-empreendedora-negra-ja-vende-pela-tela-a-proxima-aula-de",
+  "generated_at": "2026-11-23T12:00:43.371Z",
+  "sources": [
+    "https://cearacriolo.com.br/empreendedores-negros",
+    "https://agenciasebrae.com.br/dados/76-dos-empreendedores-negros-vendem-com-uso-de-ferramentas-digitais-aponta-pesquisa-do-sebrae",
+    "https://agenciabrasil.ebc.com.br/radioagencia-nacional/economia/audio/2026-11/sebrae-abre-inscricoes-para-empreendedores-negros",
+    "https://anotabahia.com/empreendedores-negros-representam-35-do-mercado-de-economia-criativa-indica-ibge",
+    "https://almapreta.com.br/sessao/cotidiano/desigualdade-racial-no-acesso-a-internet-diminui-no-brasil-aponta-pnad",
+    "https://fastcompanybrasil.com/money/brasil-15-milhoes-empreendedores-negros-numero-cresce-17-uma-decada",
+    "https://datasebrae.com.br/empreendedorismo-negro",
+    "https://www.anf.org.br/desigualdade-racial-no-acesso-a-internet-cai-85-em-dez-anos-no-brasil",
+    "https://www.threads.com/@brasil_247/post/DgBJYaXGWme/diferenca-de-acesso-a-internet-entre-pretos-e-brancos-tem-queda-de-em-uma"
+  ],
+  "insights": [
+    "76% dos empreendedores negros no Brasil utilizam ferramentas digitais para vender, com uma parte significativa usando redes sociais.",
+    "Os empreendedores negros representam 35% do mercado da economia criativa no Brasil.",
+    "O acesso à tecnologia digital entre empreendedores negros melhorou, com uma diminuição na desigualdade racial no acesso à internet."
+  ],
+  "stats": [
+    {
+      "value": "76%",
+      "context": "percentual de empreendedores negros que usam ferramentas digitais para vendas",
+      "source": "https://cearacriolo.com.br/empreendedores-negros"
+    },
+    {
+      "value": "35%",
+      "context": "percentual de empreendedores negros no mercado da economia criativa",
+      "source": "https://anotabahia.com/empreendedores-negros-representam-35-do-mercado-de-economia-criativa-indica-ibge"
+    },
+    {
+      "value": "85%",
+      "context": "redução da desigualdade racial no acesso à internet entre 2016 e 2025",
+      "source": "https://www.anf.org.br/desigualdade-racial-no-acesso-a-internet-cai-85-em-dez-anos-no-brasil"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "A economia criativa tem se estabelecido como um setor que contribui para a inclusão social e econômica da população negra.",
+      "attribution": "https://anotabahia.com/empreendedores-negros-representam-35-do-mercado-de-economia-criativa-indica-ibge"
+    }
+  ],
+  "time_series": [],
+  "summary": "Os empreendedores negros no Brasil estão cada vez mais integrados ao uso de ferramentas digitais, com 76% utilizando essas tecnologias para vendas. Além disso, eles representam uma parte significativa da economia criativa, com 35% de participação, refletindo um avanço no acesso à tecnologia e uma diminuição da desigualdade racial no acesso à internet.",
+  "pillar": "technology",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-23-a-empreendedora-negra-ja-vende-pela-tela-a-proxima-aula-de.html",
+  "signal": {
+    "title": "Movimento Black Money e MOVER oferecem cursos gratuitos de IA e e-commerce para empreendedores negros",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/afreektech-mover-cursos-gratuitos-pessoas-negras/",
+    "date": "2026-11-21T17:59:03.000Z"
+  }
+}

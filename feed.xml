@@ -5,8 +5,16 @@
     <link>https://www.jorgebernardo.tech/blog/</link>
     <description>Ensaios sobre tecnologia, identidade negra, ciclismo, carreira e empreendedorismo.</description>
     <language>pt-BR</language>
-    <lastBuildDate>Sat, 21 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 23 Nov 2026 12:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.jorgebernardo.tech/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>A aula de IA que falta ao empreendedor negro</title>
+      <link>https://www.jorgebernardo.tech/blog/posts/2026-11-23-a-empreendedora-negra-ja-vende-pela-tela-a-proxima-aula-de.html</link>
+      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-11-23-a-empreendedora-negra-ja-vende-pela-tela-a-proxima-aula-de.html</guid>
+      <pubDate>Mon, 23 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Cursos gratuitos de IA para empreendedores negros chegam em boa hora. Mas usar a ferramenta é metade da lição: a outra é saber o que ela leva do seu negócio.</description>
+      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-11-23-a-empreendedora-negra-ja-vende-pela-tela-a-proxima-aula-de.jpg" length="58962" type="image/jpeg"/>
+    </item>
     <item>
       <title>A identidade negra que não cabe no feriado</title>
       <link>https://www.jorgebernardo.tech/blog/posts/2026-11-21-zumbi-vivo-no-dia-21-a-identidade-negra-que-nao-cabe-no.html</link>
@@ -158,14 +166,6 @@
       <pubDate>Thu, 15 Oct 2026 12:00:00 GMT</pubDate>
       <description>A Sernegra 2026 reúne pesquisas sobre negritude e desigualdade em novembro, mas os dados que ela analisa já batem à porta de todo brasileiro negro há décadas.</description>
       <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-15-a-sernegra-recebe-pesquisas-o-pais-ainda-recusa-as-perguntas.jpg" length="157702" type="image/jpeg"/>
-    </item>
-    <item>
-      <title>Ciclovia na Beira-Mar e quem tem direito de pedalar</title>
-      <link>https://www.jorgebernardo.tech/blog/posts/2026-10-13-vitoria-abriu-uma-ciclovia-na-beira-mar-a-pergunta-que-fica.html</link>
-      <guid isPermaLink="true">https://www.jorgebernardo.tech/blog/posts/2026-10-13-vitoria-abriu-uma-ciclovia-na-beira-mar-a-pergunta-que-fica.html</guid>
-      <pubDate>Tue, 13 Oct 2026 12:00:00 GMT</pubDate>
-      <description>A ciclovia provisória de Vitória abriu hoje na Beira-Mar. A infraestrutura cresceu, mas a pergunta sobre quem ocupa esse espaço continua sem resposta.</description>
-      <enclosure url="https://www.jorgebernardo.tech/blog/posts/images/2026-10-13-vitoria-abriu-uma-ciclovia-na-beira-mar-a-pergunta-que-fica.jpg" length="197599" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
