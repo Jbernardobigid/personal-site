@@ -1,13 +1,6 @@
 {
   "used": [
     {
-      "titleKey": "formacao sobre equidade racial avanca nas escolas e passa de 48 para 69 das rede",
-      "url": "https://mundonegro.inf.br/formacao-sobre-equidade-racial-avanca-nas-escolas-e-passa-de-48-para-69-das-redes-municipais-em-dois-anos/",
-      "pillar": "learning",
-      "title": "Formação sobre equidade racial avança nas escolas e passa de 48% para 69% das redes municipais em dois anos",
-      "recordedAt": "2026-09-25T12:02:22.529Z"
-    },
-    {
       "titleKey": "kodie academy abre inscricoes para formacao gratuita em inteligencia artificial ",
       "url": "https://noticiapreta.com.br/kodie-academy-abre-inscricoes-para-formacao-gratuita-em-inteligencia-artificial-para-desenvolvedores/?utm_source=rss&utm_medium=rss&utm_campaign=kodie-academy-abre-inscricoes-para-formacao-gratuita-em-inteligencia-artificial-para-desenvolvedores",
       "pillar": "technology",
@@ -209,6 +202,13 @@
       "pillar": "technology",
       "title": "Movimento Black Money e MOVER oferecem cursos gratuitos de IA e e-commerce para empreendedores negros",
       "recordedAt": "2026-11-23T12:02:00.117Z"
+    },
+    {
+      "titleKey": "genealogia negra a memoria como instrumento de justica ancestral",
+      "url": "https://mundonegro.inf.br/genealogia-negra-memoria-justica-ancestral/",
+      "pillar": "fatherhood",
+      "title": "Genealogia negra: a memória como instrumento de justiça ancestral",
+      "recordedAt": "2026-11-25T12:01:57.083Z"
     }
   ]
 }

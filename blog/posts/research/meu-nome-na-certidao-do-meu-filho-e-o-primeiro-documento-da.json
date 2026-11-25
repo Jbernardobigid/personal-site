@@ -1,0 +1,98 @@
+{
+  "topic": "registro de nascimento sem pai declarado no Brasil percentual por cor ou raça IBGE Registro Civil",
+  "slug": "meu-nome-na-certidao-do-meu-filho-e-o-primeiro-documento-da",
+  "generated_at": "2026-11-25T12:00:46.254Z",
+  "sources": [
+    "https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/f4123976338435df8ff742c071ebda82.pdf",
+    "https://www.cnnbrasil.com.br/nacional/brasil-avanca-nos-registros-de-nascimentos-em-cartorios",
+    "https://www.youtube.com/watch?v=M4gnLQ4Wp7Q",
+    "https://storymaps.arcgis.com/stories/cbb7b14e0f1844e799852298ae26f4f1",
+    "https://agenciabrasil.ebc.com.br/radioagencia-nacional/geral/audio/2021-11/3-milhoes-de-brasileiros-nao-tem-registro-civil-de-nascimento",
+    "https://educa.ibge.gov.br/jovens/conheca-o-brasil/populacao/18319-cor-ou-raca.html",
+    "https://www.instagram.com/p/DYkP_FPgFP-",
+    "https://noticias.r7.com/prisma/r7-planalto/pais-ausentes-percentual-de-2025-e-o-segundo-maior-numero-da-decada-05012026",
+    "https://almapreta.com.br/almapretinha-conteudo/brasil-17-milhao-criancas-sem-nome-pai-certidao",
+    "https://www.brasilparalelo.com.br/noticias/um-pais-sem-pais-mais-de-100-mil-criancas-foram-registradas-sem-o-nome-do-pai-em-2025",
+    "https://www.dm.com.br/brasil/brasil-registra-17-milhao-de-criancas-sem-nome-do-pai-na-certidao-de-nascimento",
+    "https://www.dw.com/pt-br/brasil-tem-17-milh%C3%A3o-de-crian%C3%A7as-registradas-sem-pai/a-77081836"
+  ],
+  "insights": [
+    "O percentual de registros de nascimentos sem pai declarado aumentou ao longo do tempo, especialmente entre 2010 e 2022.",
+    "O registro de nascimentos para pessoas indígenas cresceu 21,9 pontos percentuais entre 2010 e 2022.",
+    "Em 2022, a taxa de registro de crianças com menos de cinco anos foi de 81,3% para indivíduos negros na região Norte.",
+    "A maior taxa de registro foi de 99,7% para indivíduos indígenas na região Sudeste.",
+    "A população parda se tornou a maior parte da população brasileira, representando 45,3% em 2022."
+  ],
+  "stats": [
+    {
+      "value": "87,5%",
+      "context": "percentual de registros de nascimentos para pessoas de cor ou raça indígena em 2022, representando um crescimento significativo.",
+      "source": "https://www.cnnbrasil.com.br/nacional/brasil-avanca-nos-registros-de-nascimentos-em-cartorios"
+    },
+    {
+      "value": "81,3%",
+      "context": "percentual de registros de nascimentos para indivíduos negros na região Norte em 2022.",
+      "source": "https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/f4123976338435df8ff742c071ebda82.pdf"
+    },
+    {
+      "value": "99,7%",
+      "context": "percentual de registros de nascimentos para indivíduos indígenas na região Sudeste em 2022.",
+      "source": "https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/f4123976338435df8ff742c071ebda82.pdf"
+    },
+    {
+      "value": "6,9%",
+      "context": "percentual de nascimentos registrados sem o nome do pai em 2025, representando 172 mil crianças.",
+      "source": "https://www.brasilparalelo.com.br/noticias/um-pais-sem-pais-mais-de-100-mil-criancas-foram-registradas-sem-o-nome-do-pai-em-2025"
+    },
+    {
+      "value": "35 mil",
+      "context": "número de crianças registradas sem o nome do pai desde 2020.",
+      "source": "https://www.youtube.com/watch?v=M4gnLQ4Wp7Q"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Houve aumento do percentual de registros de nascimentos, principalmente em crianças com menos de 1 ano (+4,5 pontos percentuais) entre os Censos de 2010 e 2022.",
+      "attribution": "https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/f4123976338435df8ff742c071ebda82.pdf"
+    },
+    {
+      "text": "A maior porcentagem de registros de nascimento de cor branca está na região Sul, enquanto a menor porcentagem se encontra na região Norte.",
+      "attribution": "https://storymaps.arcgis.com/stories/cbb7b14e0f1844e799852298ae26f4f1"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2010,
+      "value": 93.8,
+      "unit": "%",
+      "label": "percentual de registros de nascimentos no Brasil"
+    },
+    {
+      "year": 2022,
+      "value": 99.7,
+      "unit": "%",
+      "label": "percentual de registros de nascimentos para indígenas na região Sudeste"
+    },
+    {
+      "year": 2022,
+      "value": 81.3,
+      "unit": "%",
+      "label": "percentual de registros de nascimentos para negros na região Norte"
+    },
+    {
+      "year": 2025,
+      "value": 6.9,
+      "unit": "%",
+      "label": "percentual de nascimentos registrados sem o nome do pai"
+    }
+  ],
+  "summary": "O Brasil tem visto um aumento no percentual de registros de nascimentos sem pai declarado, especialmente entre populações indígenas e negras. Em 2022, a taxa de registro de nascimentos variou significativamente entre as diferentes raças e regiões, com a população parda se tornando a maior parte da população brasileira.",
+  "pillar": "fatherhood",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-25-meu-nome-na-certidao-do-meu-filho-e-o-primeiro-documento-da.html",
+  "signal": {
+    "title": "Genealogia negra: a memória como instrumento de justiça ancestral",
+    "source": "Mundo Negro",
+    "url": "https://mundonegro.inf.br/genealogia-negra-memoria-justica-ancestral/",
+    "date": "2026-11-24T18:13:01.000Z"
+  }
+}
