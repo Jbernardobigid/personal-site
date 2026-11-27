@@ -1,0 +1,97 @@
+{
+  "topic": "matrículas ensino superior graduação Brasil série histórica Censo da Educação Superior INEP 2015 2025 número de matrículas por modalidade e categoria administrativa",
+  "slug": "trezentas-mil-pessoas-a-mais-escolheram-estudar-para-ensinar",
+  "generated_at": "2026-11-27T12:00:47.446Z",
+  "sources": [
+    "https://download.inep.gov.br/publicacoes/institucionais/estatisticas_e_indicadores/notas_estatisticas_censo_escolar_da_educacao_superior_2024.pdf",
+    "https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/censo-da-educacao-superior/brasil-tem-recorde-de-estudantes-na-graduacao",
+    "https://abmes.org.br/arquivos/documentos/notas-inep-censo2024-20102025.pdf",
+    "https://www.brasil247.com/brasil/brasil-atinge-recorde-de-106-milhoes-de-matriculas-no-ensino-superior-em-2025",
+    "https://educacao.uol.com.br/noticias/2026/11/26/brasil-alcanca-maior-nivel-da-historia-de-estudantes-na-graduacao-em-2025.ghtm",
+    "https://download.inep.gov.br/educacao_superior/censo_superior/documentos/2024/apresentacao_censo_da_educacao_superior_2024.pdf",
+    "https://www.instagram.com/p/DgOCi68p0qA",
+    "https://www.instagram.com/reel/DgNQm3BJzBY",
+    "https://www.acritica.com/educacao/brasil-atinge-recorde-de-106-milhoes-de-matriculas-no-ensino-superior",
+    "https://www.semesp.org.br/mapa/edicao-15/brasil",
+    "https://download.inep.gov.br/educacao_superior/censo_superior/documentos/2025/apresentacao_censo_educacao_superior_2025.pdf"
+  ],
+  "insights": [
+    "Em 2025, o Brasil alcançou um recorde de 10,6 milhões de estudantes matriculados em cursos de graduação, o maior número desde 1980.",
+    "A modalidade de educação a distância (EaD) apresentou uma queda pela primeira vez, com 11.203 cursos em 2025, em comparação a 11.297 em 2024.",
+    "A rede privada foi responsável por 88,6% das novas matrículas em 2025, enquanto a rede federal teve um aumento de 40.000 novos alunos, totalizando 362.000.",
+    "Entre 2015 e 2025, as matrículas em licenciaturas aumentaram de 1,4 milhão para 1,7 milhão, com um crescimento significativo no número de ingressos.",
+    "O Censo de 2025 foi o primeiro a incluir dados sobre o modelo semipresencial, que contabilizou 880 cursos e 51 mil matrículas."
+  ],
+  "stats": [
+    {
+      "value": "4%",
+      "context": "crescimento em relação ao ano anterior, quando o Brasil tinha 10,2 milhões de matrículas",
+      "source": "https://www.brasil247.com/brasil/brasil-atinge-recorde-de-106-milhoes-de-matriculas-no-ensino-superior-em-2025"
+    },
+    {
+      "value": "32,4%",
+      "context": "aumento no número de matrículas na educação superior entre 2015 e 2025",
+      "source": "https://www.acritica.com/educacao/brasil-atinge-recorde-de-106-milhoes-de-matriculas-no-ensino-superior"
+    },
+    {
+      "value": "1,4 milhões",
+      "context": "número de matrículas em licenciaturas em 2015",
+      "source": "https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/censo-da-educacao-superior/brasil-tem-recorde-de-estudantes-na-graduacao"
+    },
+    {
+      "value": "1,7 milhões",
+      "context": "número de matrículas em licenciaturas em 2025",
+      "source": "https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/censo-da-educacao-superior/brasil-tem-recorde-de-estudantes-na-graduacao"
+    },
+    {
+      "value": "362.000",
+      "context": "total de alunos na rede federal em 2025",
+      "source": "https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/censo-da-educacao-superior/brasil-tem-recorde-de-estudantes-na-graduacao"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "O Brasil alcançou 10,6 milhões de estudantes matriculados em cursos de graduação em 2025, o maior nível de acesso ao ensino superior da história do país.",
+      "attribution": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira | Inep"
+    },
+    {
+      "text": "O Censo revelou que o Brasil bateu recorde de estudantes na graduação.",
+      "attribution": "Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira | Inep"
+    }
+  ],
+  "time_series": [
+    {
+      "year": 2015,
+      "value": 1.4,
+      "unit": "milhões",
+      "label": "matrículas em licenciaturas"
+    },
+    {
+      "year": 2025,
+      "value": 1.7,
+      "unit": "milhões",
+      "label": "matrículas em licenciaturas"
+    },
+    {
+      "year": 2024,
+      "value": 10.2,
+      "unit": "milhões",
+      "label": "total de matrículas no ensino superior"
+    },
+    {
+      "year": 2025,
+      "value": 10.6,
+      "unit": "milhões",
+      "label": "total de matrículas no ensino superior"
+    }
+  ],
+  "summary": "Em 2025, o Brasil atingiu um recorde histórico de 10,6 milhões de matrículas em cursos de graduação, com um crescimento de 4% em relação ao ano anterior. A educação a distância apresentou uma queda pela primeira vez, enquanto a rede privada continua a dominar as novas matrículas, representando 88,6% do total.",
+  "pillar": "learning",
+  "post_url": "https://www.jorgebernardo.tech/blog/posts/2026-11-27-trezentas-mil-pessoas-a-mais-escolheram-estudar-para-ensinar.html",
+  "signal": {
+    "title": "Brasil atinge recorde de 10,6 milhões de matrículas no ensino superior",
+    "source": "Geledés",
+    "url": "https://www.geledes.org.br/brasil-atinge-recorde-de-106-milhoes-de-matriculas-no-ensino-superior/",
+    "date": "2026-11-26T18:03:42.000Z"
+  }
+}
